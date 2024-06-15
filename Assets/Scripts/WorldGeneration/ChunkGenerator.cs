@@ -1,13 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System;
 
 public class ChunkGenerator : MonoBehaviour
 {
     private Dictionary<Vector2Int, Chunk> _chunkDictionary;
-    private List<Chunk> _chunkList;
-    private List<Chunk> _loadedChunkList;
-    private List<Chunk> _unloadedChunkList;
 
     [Header("Tile Setup")]
     [SerializeField] private TileConfigSO _tileConfigSO;
@@ -21,13 +19,12 @@ public class ChunkGenerator : MonoBehaviour
     private void Awake()
     {
         _chunkDictionary = new Dictionary<Vector2Int, Chunk>();
-        _chunkList = new List<Chunk>();
     }
 
     private void Start()
     {
-        Chunk.OnPlayerEnteredChunk += Chunk_OnPlayerEnteredChunk;
-        Chunk.OnPlayerLeftChunk += Chunk_OnPlayerLeftChunk;
+        Chunk.OnPlayerEnteredChunkRange += Chunk_OnPlayerEnteredChunkRange;
+        Chunk.OnPlayerLeftChunkRange += Chunk_OnPlayerLeftChunkRange;
 
         CreateInitialChunks();
     }
@@ -36,67 +33,106 @@ public class ChunkGenerator : MonoBehaviour
     {
         int distanceToNextChunk = (_chunkLayerCount * 2) + 1;
 
-        StartCoroutine(GenerateChunk(new Vector2Int(-distanceToNextChunk, distanceToNextChunk)));
-        StartCoroutine(GenerateChunk(new Vector2Int(-distanceToNextChunk, -distanceToNextChunk)));
-        StartCoroutine(GenerateChunk(new Vector2Int(-distanceToNextChunk, 0)));
-        StartCoroutine(GenerateChunk(new Vector2Int(0, distanceToNextChunk)));
-        StartCoroutine(GenerateChunk(new Vector2Int(0, 0)));
-        StartCoroutine(GenerateChunk(new Vector2Int(0, -distanceToNextChunk)));
-        StartCoroutine(GenerateChunk(new Vector2Int(distanceToNextChunk, 0)));
-        StartCoroutine(GenerateChunk(new Vector2Int(distanceToNextChunk, distanceToNextChunk)));
-        StartCoroutine(GenerateChunk(new Vector2Int(distanceToNextChunk, -distanceToNextChunk)));
+        GenerateChunk(new Vector2Int(-distanceToNextChunk, -distanceToNextChunk));
+        GenerateChunk(new Vector2Int(-distanceToNextChunk, distanceToNextChunk));
+        GenerateChunk(new Vector2Int(-distanceToNextChunk, 0));
+        GenerateChunk(new Vector2Int(0, -distanceToNextChunk));
+        GenerateChunk(new Vector2Int(0, 0));
+        GenerateChunk(new Vector2Int(0, distanceToNextChunk));
+        GenerateChunk(new Vector2Int(distanceToNextChunk, 0));
+        GenerateChunk(new Vector2Int(distanceToNextChunk, distanceToNextChunk));
+        GenerateChunk(new Vector2Int(distanceToNextChunk, -distanceToNextChunk));
     }
 
-    private void Chunk_OnPlayerEnteredChunk(object sender, Chunk.OnPlayerCrossedChunkeventArgs e)
+    private void Chunk_OnPlayerEnteredChunkRange(object sender, EventArgs e)
     {
-        Chunk chunk = sender as Chunk;
+        Chunk enteredChunk = sender as Chunk;
 
-        List<Vector2Int> chunkNeighbours = chunk.GetNeighbourChunkList();
-
-        foreach (Vector2Int neighbourPosition in chunkNeighbours)
+        if(!enteredChunk.IsFilled())
         {
-            if (_chunkDictionary.ContainsKey(neighbourPosition))
-                continue;
+            StartCoroutine(FillChunkWithTilesCoroutine(enteredChunk));
+        }
 
-            StartCoroutine(GenerateChunk(neighbourPosition));
+        enteredChunk.LoadChunk();
+
+        List<Vector2Int> enteredChunkNeighbourPositionList = enteredChunk.GetNeighbourChunkList();
+
+        foreach(Vector2Int chunkNeighbourPosition in enteredChunkNeighbourPositionList)
+        {
+            if(!_chunkDictionary.ContainsKey(chunkNeighbourPosition))
+            {
+                GenerateEmptyChunk(chunkNeighbourPosition);
+            }
         }
     }
 
-    private void Chunk_OnPlayerLeftChunk(object sender, Chunk.OnPlayerCrossedChunkeventArgs e)
+    private void Chunk_OnPlayerLeftChunkRange(object sender, EventArgs e)
     {
+        Chunk exitChunk = sender as Chunk;
 
+        if(exitChunk.IsLoadingTiles())
+        {
+            exitChunk.OnFinishTileLoading += ExitChunk_OnFinishTileLoading;
+        }
+        else
+        {
+            exitChunk.UnloadChunk();
+        }
     }
 
-    public IEnumerator GenerateChunk(Vector2Int startingPosition)
+    private void ExitChunk_OnFinishTileLoading(object sender, Chunk.OnFinishTileLoadingEventArgs e)
     {
-        if (_chunkDictionary.ContainsKey(startingPosition))
-        {
-            Debug.LogError($"Chunk at {startingPosition} is already created!");
-            yield break;
-        }
+        Chunk chunk = e.chunk;
 
-        Vector3 chunkPosition = new Vector3(startingPosition.x, startingPosition.y, 0);
+        if(!chunk.IsPlayerInRange())
+            chunk.UnloadChunk();
+
+        chunk.OnFinishTileLoading -= ExitChunk_OnFinishTileLoading;
+    }
+
+    private Chunk GenerateChunk(Vector2Int chunkCenter)
+    {
+        Chunk chunk = GenerateEmptyChunk(chunkCenter);
+
+        StartCoroutine(FillChunkWithTilesCoroutine(chunk));
+
+        return chunk;
+    }
+
+    private Chunk GenerateEmptyChunk(Vector2Int chunkCenter)
+    {
+        Vector3 chunkPosition = new Vector3(chunkCenter.x, chunkCenter.y, 0);
         Transform chunkTransform = Instantiate(_chunkPrefab, chunkPosition, Quaternion.identity);
 
-        chunkTransform.gameObject.name = $"Chunk  ({startingPosition.x} | {startingPosition.y})";
+        chunkTransform.gameObject.name = $"Chunk  ({chunkCenter.x} | {chunkCenter.y})";
 
         chunkTransform.SetParent(_chunkParent);
 
         Chunk chunk = chunkTransform.GetComponent<Chunk>();
-        chunk.InitializeChunk(_chunkLayerCount);
+        chunk.InitializeChunkData(_chunkLayerCount);
 
-        _chunkDictionary.Add(startingPosition, chunk);
-        _chunkList.Add(chunk);
+        if(!_chunkDictionary.ContainsKey(chunkCenter))
+        {
+            _chunkDictionary.Add(chunkCenter, chunk);
+        }
+
+        return chunk;
+    }
+
+    private IEnumerator FillChunkWithTilesCoroutine(Chunk parentChunk)
+    {
+        parentChunk.StartLoadingTiles();
+
+        Vector2Int startingPosition = parentChunk.GetChunkPositionVector2Int();
 
         for (int y = startingPosition.y + _chunkLayerCount; y >= startingPosition.y - _chunkLayerCount; y--)
         {
             for (int x = startingPosition.x - _chunkLayerCount; x <= startingPosition.x + _chunkLayerCount; x++)
             {
                 Vector3 tilPlacementPosition = new Vector3(x, y, 0);
-
                 Transform tileTransform = Instantiate(_tilePrefab, tilPlacementPosition, Quaternion.identity);
 
-                tileTransform.SetParent(chunkTransform);
+                tileTransform.SetParent(parentChunk.transform);
 
                 Tile tile = tileTransform.GetComponent<Tile>();
 
@@ -104,15 +140,25 @@ public class ChunkGenerator : MonoBehaviour
 
                 tile.SetSprite(sprite);
 
-                chunk.AddTileToChunk(tile);
+                parentChunk.AddTileToChunk(tile);
             }
 
             yield return new WaitForEndOfFrame();
         }
+
+        parentChunk.FillChunk();
+
+        parentChunk.FinishLoadingTiles();
     }
 
     private Sprite GetRandomSpriteForTile()
     {
         return _tileConfigSO.tileSpriteList[UnityEngine.Random.Range(0, _tileConfigSO.tileSpriteList.Count)];
+    }
+
+    private void OnDestroy()
+    {
+        Chunk.OnPlayerEnteredChunkRange -= Chunk_OnPlayerEnteredChunkRange;
+        Chunk.OnPlayerLeftChunkRange -= Chunk_OnPlayerLeftChunkRange;
     }
 }

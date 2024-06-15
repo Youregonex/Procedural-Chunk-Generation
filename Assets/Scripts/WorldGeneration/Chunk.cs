@@ -1,18 +1,19 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-using System.Collections;
 
+[Serializable]
 public class Chunk : MonoBehaviour
 {
     private List<Tile> _chunkTiles;
-    private BoxCollider2D _trigerZone;
 
-    public static event EventHandler<OnPlayerCrossedChunkeventArgs> OnPlayerEnteredChunk;
-    public static event EventHandler<OnPlayerCrossedChunkeventArgs> OnPlayerLeftChunk;
-    public class OnPlayerCrossedChunkeventArgs : EventArgs
+    public static event EventHandler OnPlayerEnteredChunkRange;
+    public static event EventHandler OnPlayerLeftChunkRange;
+
+    public event EventHandler<OnFinishTileLoadingEventArgs> OnFinishTileLoading;
+    public class OnFinishTileLoadingEventArgs : EventArgs
     {
-        public Vector2 playerPosition;
+        public Chunk chunk;
     }
 
     [Header("Debug Fields")]
@@ -20,46 +21,34 @@ public class Chunk : MonoBehaviour
     [SerializeField] private int _chunkLayerCount;
     [SerializeField] private Transform _markerPrefab;
     [SerializeField] private bool _isLoaded;
+    [SerializeField] private bool _isPlayerInRange;
+    [SerializeField] private bool _isFilled = false;
+    [SerializeField] private bool _isLoadingTiles = false;
 
     private void Awake()
     {
         _chunkTiles = new List<Tile>();
-        _trigerZone = GetComponent<BoxCollider2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<IPlayer>() != null)
+        if (collision.GetComponent<PlayerChunkInteraction>() != null)
         {
-            OnPlayerEnteredChunk?.Invoke(this, new OnPlayerCrossedChunkeventArgs
-            {
-                playerPosition = collision.transform.position
-            });
+            OnPlayerEnteredChunkRange?.Invoke(this, EventArgs.Empty);
+            _isPlayerInRange = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision is IPlayer)
+        if (collision.GetComponent<PlayerChunkInteraction>() != null)
         {
-            OnPlayerLeftChunk?.Invoke(this, new OnPlayerCrossedChunkeventArgs
-            {
-                playerPosition = collision.transform.position
-            });
+            OnPlayerLeftChunkRange?.Invoke(this, EventArgs.Empty);
+            _isPlayerInRange = false;
         }
     }
 
-    public void AddTileToChunk(Tile tile)
-    {
-        _chunkTiles.Add(tile);
-    }
-
-    public void SetChunkSize(int chunkLayerCount)
-    {
-        _chunkLayerCount = chunkLayerCount;
-    }
-
-    public void InitializeChunk(int chunkLayerCount)
+    public void InitializeChunkData(int chunkLayerCount)
     {
         _chunkLayerCount = chunkLayerCount;
 
@@ -76,12 +65,9 @@ public class Chunk : MonoBehaviour
 
                 _neighbourChunkList.Add(neighbourChunkPosition);
 
+                // For debug purposes
                 Transform marker = Instantiate(_markerPrefab, new Vector3(x, y), Quaternion.identity);
                 marker.SetParent(gameObject.transform);
-
-                float trigerZoneSize = (_chunkLayerCount * 2) + 1 - .01f;
-
-                _trigerZone.size = new Vector2(trigerZoneSize, trigerZoneSize);
             }
         }
     }
@@ -102,16 +88,35 @@ public class Chunk : MonoBehaviour
 
         foreach (Tile tile in _chunkTiles)
         {
-            tile.gameObject.SetActive(false);
+            tile.gameObject.SetActive(true);
         }
     }
 
-    public bool IsLoaded() => _isLoaded;
-
-    public List<Vector2Int> GetNeighbourChunkList() => _neighbourChunkList;
-
-    public Vector2Int GetRandomNeighbourChunk()
+    public void AddTileToChunk(Tile tile)
     {
-        return _neighbourChunkList[UnityEngine.Random.Range(0, _neighbourChunkList.Count)];
+        _chunkTiles.Add(tile);
+    }
+
+    public Vector2Int GetChunkPositionVector2Int() => new Vector2Int((int)transform.position.x, (int)transform.position.y);
+    public bool IsFilled() => _isFilled;
+    public bool IsLoaded() => _isLoaded;
+    public void FillChunk() => _isFilled = true;
+    public List<Vector2Int> GetNeighbourChunkList() => _neighbourChunkList;
+    public bool IsLoadingTiles() => _isLoadingTiles;
+    public bool IsPlayerInRange() => _isPlayerInRange;
+
+    public void StartLoadingTiles()
+    {
+        _isLoadingTiles = true;
+    }
+
+    public void FinishLoadingTiles()
+    {
+        _isLoadingTiles = false;
+
+        OnFinishTileLoading?.Invoke(this, new OnFinishTileLoadingEventArgs
+        {
+            chunk = this
+        });
     }
 }

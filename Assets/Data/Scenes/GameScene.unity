@@ -229,7 +229,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -643,7 +643,7 @@ MonoBehaviour:
   _tilePrefab: {fileID: 8186711949924987174, guid: 26f1f069836a74bf5a2abbd377f682bd, type: 3}
   _chunkParent: {fileID: 1135924300}
   _chunkPrefab: {fileID: 8187302419217306237, guid: 3869156d3cb594c878510c213c972227, type: 3}
-  _chunkLayerCount: 5
+  _chunkLayerCount: 11
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

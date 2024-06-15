@@ -2,13 +2,13 @@ using UnityEngine;
 
 [SelectionBase]
 [RequireComponent(typeof(PlayerInput), typeof(Rigidbody2D), typeof(CharacterStats))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, IPlayer
 {
     private CharacterStats _playerStats;
     private Rigidbody2D _rigidBody2D;
     private PlayerInput _playerInput;
 
-    [Header("Debug fields")]
+    [Header("Debug Fields")]
     [SerializeField] private Vector2 _movementDirection;
     [SerializeField] private Vector2 _lastMovementDirection;
 

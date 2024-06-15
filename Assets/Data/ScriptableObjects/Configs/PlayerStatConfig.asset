@@ -16,7 +16,7 @@ MonoBehaviour:
   - statName: 0
     maxValue: 10
     minValue: 1
-    currentValue: 5
+    currentValue: 10
   - statName: 1
     maxValue: 10
     minValue: 1

@@ -725,6 +725,10 @@ MonoBehaviour:
   _chunkParent: {fileID: 1135924300}
   _chunkPrefab: {fileID: 8187302419217306237, guid: 3869156d3cb594c878510c213c972227, type: 3}
   _chunkLayerCount: 11
+  _amountOfWallsToChangeTile: 4
+  _wallPercent: 50
+  _smootheGenerations: 3
+  _loadingChunks: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

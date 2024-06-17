@@ -28,7 +28,7 @@ public class Chunk : MonoBehaviour
     [SerializeField] private bool _isFilled = false;
     [SerializeField] private bool _isLoadingTiles = false;
     [SerializeField] private bool _chunkMapFilled;
-    [SerializeField] private int[,] _chunkMap;
+    [SerializeField] private int[,] _chunkMapArray;
 
     private void Awake()
     {
@@ -82,13 +82,13 @@ public class Chunk : MonoBehaviour
         if (_chunkMapFilled)
             return;
 
-        _chunkMap = new int[_sideLength, _sideLength];
+        _chunkMapArray = new int[_sideLength, _sideLength];
 
         for (int x = 0; x < _sideLength; x++)
         {
             for (int y = 0; y < _sideLength; y++)
             {
-                _chunkMap[x, y] = UnityEngine.Random.Range(0, 101) > wallPercent ? 0 : 1;
+                _chunkMapArray[x, y] = UnityEngine.Random.Range(0, 101) > wallPercent ? 0 : 1;
             }
         }
 
@@ -105,40 +105,87 @@ public class Chunk : MonoBehaviour
             {
                 for (int y = 0; y < _sideLength; y++)
                 {
-                    int neighbourWallTilesAmount = GetSurroundingWallsCount(x, y);
+                    int wallsAroundAmount = GetSurroundingWallsCount(x, y);
 
-                    if (neighbourWallTilesAmount > amountOfWallsToChangeTile)
+                    if (wallsAroundAmount > amountOfWallsToChangeTile)
                     {
-                        _chunkMap[x, y] = 1;
+                        _chunkMapArray[x, y] = 1;
                     }
-                    else if (neighbourWallTilesAmount < amountOfWallsToChangeTile)
+                    else if (wallsAroundAmount < amountOfWallsToChangeTile)
                     {
-                        _chunkMap[x, y] = 0;
+                        _chunkMapArray[x, y] = 0;
                     }
                 }
             }
         }
     }
 
-    private int GetSurroundingWallsCount(int x, int y)
+    private int GetSurroundingWallsCount(int arrayIndexX, int arrayIndexY)
     {
         int wallCount = 0;
 
-        for (int neighbourX = x - 1; neighbourX <= x + 1; neighbourX++)
+        for (int neighbourX = arrayIndexX - 1; neighbourX <= arrayIndexX + 1; neighbourX++)
         {
-            for (int neighbourY = y - 1; neighbourY <= y + 1; neighbourY++)
+            for (int neighbourY = arrayIndexY - 1; neighbourY <= arrayIndexY + 1; neighbourY++)
             {
-                //if(neighbourX > _sideLength)
-                //{
+                if (neighbourX < 0)
+                {
+                    Vector2Int leftChunkNeighbourPosition = new Vector2Int((int)transform.position.x - _sideLength, (int)transform.position.y);
 
-                //}
+                    if (ChunkGenerator.Instance.ChunkExistsAtPosition(leftChunkNeighbourPosition))
+                    {
+                        if (ChunkGenerator.Instance.GetChunkMapArrayWithPosition(leftChunkNeighbourPosition)[_sideLength - 1, arrayIndexY] == 1)
+                        {
+                            wallCount++;
+                        }
+                    }
+                }
+
+                if (neighbourX == _sideLength)
+                {
+                    Vector2Int rightChunkNeighbourPosition = new Vector2Int((int)transform.position.x + _sideLength, (int)transform.position.y);
+
+                    if (ChunkGenerator.Instance.ChunkExistsAtPosition(rightChunkNeighbourPosition))
+                    {
+                        if (ChunkGenerator.Instance.GetChunkMapArrayWithPosition(rightChunkNeighbourPosition)[0, arrayIndexY] == 1)
+                        {
+                            wallCount++;
+                        }
+                    }
+                }
+
+                if (neighbourY < 0)
+                {
+                    Vector2Int bottomChunkNeighbourPosition = new Vector2Int((int)transform.position.x, (int)transform.position.y - _sideLength);
+
+                    if (ChunkGenerator.Instance.ChunkExistsAtPosition(bottomChunkNeighbourPosition))
+                    {
+                        if (ChunkGenerator.Instance.GetChunkMapArrayWithPosition(bottomChunkNeighbourPosition)[arrayIndexX, _sideLength - 1] == 1)
+                        {
+                            wallCount++;
+                        }
+                    }
+                }
+
+                if (neighbourX == _sideLength)
+                {
+                    Vector2Int topChunkNeighbourPosition = new Vector2Int((int)transform.position.x, (int)transform.position.y + _sideLength);
+
+                    if (ChunkGenerator.Instance.ChunkExistsAtPosition(topChunkNeighbourPosition))
+                    {
+                        if (ChunkGenerator.Instance.GetChunkMapArrayWithPosition(topChunkNeighbourPosition)[arrayIndexX, 0] == 1)
+                        {
+                            wallCount++;
+                        }
+                    }
+                }
 
                 if (neighbourX >= 0 && neighbourX < _sideLength && neighbourY >= 0 && neighbourY < _sideLength)
                 {
-                    if (neighbourX != x || neighbourY != y)
+                    if (neighbourX != arrayIndexX || neighbourY != arrayIndexY)
                     {
-                        if (_chunkMap[neighbourX, neighbourY] == 1)
-                            wallCount += _chunkMap[neighbourX, neighbourY];
+                        if (_chunkMapArray[neighbourX, neighbourY] == 1)
+                            wallCount += _chunkMapArray[neighbourX, neighbourY];
                     }
                 }
             }
@@ -171,17 +218,20 @@ public class Chunk : MonoBehaviour
     {
         _chunkTiles.Add(tile);
         _tilesCount++;
+
+        tile.SetParentChunk(this);
     }
 
-    public Vector2Int GetChunkPositionVector2Int() => new Vector2Int((int)transform.position.x, (int)transform.position.y);
     public bool IsFilled() => _isFilled;
     public bool IsLoaded() => _isLoaded;
     public void FillChunk() => _isFilled = true;
-    public List<Vector2Int> GetNeighbourChunkList() => _neighbourChunkList;
     public bool IsLoadingTiles() => _isLoadingTiles;
-    public bool IsPlayerInRange() => _isPlayerInRange;
     public bool ChunkMapFilled() => _chunkMapFilled;
-    public int GetChunkMapValue(int x, int y) => _chunkMap[x, y];
+    public bool IsPlayerInRange() => _isPlayerInRange;
+    public int[,] GetChunkMapArray() => _chunkMapArray;
+    public int GetChunkMapValue(int x, int y) => _chunkMapArray[x, y];
+    public List<Vector2Int> GetNeighbourChunkList() => _neighbourChunkList;
+    public Vector2Int GetChunkPositionVector2Int() => new Vector2Int((int)transform.position.x, (int)transform.position.y);
 
     public void StartLoadingTiles()
     {

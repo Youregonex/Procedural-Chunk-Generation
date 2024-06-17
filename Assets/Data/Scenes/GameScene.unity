@@ -524,7 +524,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 35
+  m_Radius: 100
 --- !u!114 &1475274999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -727,7 +727,7 @@ MonoBehaviour:
   _chunkLayerCount: 11
   _amountOfWallsToChangeTile: 4
   _wallPercent: 50
-  _smootheGenerations: 3
+  _smootheGenerations: 2
   _loadingChunks: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

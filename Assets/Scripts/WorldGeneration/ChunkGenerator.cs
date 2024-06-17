@@ -138,7 +138,9 @@ public class ChunkGenerator : MonoBehaviour
             _chunkDictionary.Add(chunkCenter, chunk);
         }
 
-        chunk.GenerateChunkMap(_wallPercent, _smootheGenerations, _amountOfWallsToChangeTile);
+        int randomWallFillPercent = UnityEngine.Random.Range(_wallPercent - 10, _wallPercent + 11);
+
+        chunk.GenerateChunkMap(randomWallFillPercent, _smootheGenerations, _amountOfWallsToChangeTile);
 
         return chunk;
     }
@@ -221,7 +223,7 @@ public class ChunkGenerator : MonoBehaviour
         Chunk.OnPlayerLeftChunkRange -= Chunk_OnPlayerLeftChunkRange;
     }
 
-    public Chunk GetChunkAt(Vector2Int chunkPosition)
+    public Chunk GetChunkAtPosition(Vector2Int chunkPosition)
     {
         bool chunkExists = ChunkExistsAtPosition(chunkPosition);
 
@@ -229,6 +231,16 @@ public class ChunkGenerator : MonoBehaviour
             return null;
 
         return _chunkDictionary[chunkPosition];
+    }
+
+    public int[,] GetChunkMapArrayWithPosition(Vector2Int chunkPosition)
+    {
+        if(!ChunkExistsAtPosition(chunkPosition))
+        {
+            return null;
+        }
+
+        return _chunkDictionary[chunkPosition].GetChunkMapArray();
     }
 
     public bool ChunkExistsAtPosition(Vector2Int chunkPosition) => _chunkDictionary.ContainsKey(chunkPosition);

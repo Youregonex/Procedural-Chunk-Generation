@@ -28,7 +28,7 @@ public class Chunk : MonoBehaviour
     [SerializeField] private bool _isFilled = false;
     [SerializeField] private bool _isLoadingTiles = false;
     [SerializeField] private bool _chunkMapFilled;
-    [SerializeField] private int[,] _chunkMapArray;
+    [SerializeField] private float[,] _chunkMapArray;
 
     private void Awake()
     {
@@ -77,121 +77,16 @@ public class Chunk : MonoBehaviour
         }
     }
 
-    public void GenerateChunkMap(int wallPercent, int smootheGenerations, int amountOfWallsToChangeTile)
+    public void GenerateChunkMap(int seed, float noiseScale, int octaves, float persistance, float lacunarity, Vector2 offset, Noise.NormalizeMode normalizeMode)
     {
         if (_chunkMapFilled)
             return;
 
-        _chunkMapArray = new int[_sideLength, _sideLength];
+        _chunkMapArray = new float[_sideLength, _sideLength];
 
-        for (int x = 0; x < _sideLength; x++)
-        {
-            for (int y = 0; y < _sideLength; y++)
-            {
-                _chunkMapArray[x, y] = UnityEngine.Random.Range(0, 101) > wallPercent ? 0 : 1;
-            }
-        }
-
-        SmootheChunkMap(smootheGenerations, amountOfWallsToChangeTile);
+        _chunkMapArray = Noise.GenerateNoiseMap(_sideLength, _sideLength, seed, noiseScale, octaves, persistance, lacunarity, offset, normalizeMode);
 
         _chunkMapFilled = true;
-    }
-
-    private void SmootheChunkMap(int smootheGenerations, int amountOfWallsToChangeTile)
-    {
-        for (int i = 0; i < smootheGenerations; i++)
-        {
-            for (int x = 0; x < _sideLength; x++)
-            {
-                for (int y = 0; y < _sideLength; y++)
-                {
-                    int wallsAroundAmount = GetSurroundingWallsCount(x, y);
-
-                    if (wallsAroundAmount > amountOfWallsToChangeTile)
-                    {
-                        _chunkMapArray[x, y] = 1;
-                    }
-                    else if (wallsAroundAmount < amountOfWallsToChangeTile)
-                    {
-                        _chunkMapArray[x, y] = 0;
-                    }
-                }
-            }
-        }
-    }
-
-    private int GetSurroundingWallsCount(int arrayIndexX, int arrayIndexY)
-    {
-        int wallCount = 0;
-
-        for (int neighbourX = arrayIndexX - 1; neighbourX <= arrayIndexX + 1; neighbourX++)
-        {
-            for (int neighbourY = arrayIndexY - 1; neighbourY <= arrayIndexY + 1; neighbourY++)
-            {
-                if (neighbourX < 0)
-                {
-                    Vector2Int leftChunkNeighbourPosition = new Vector2Int((int)transform.position.x - _sideLength, (int)transform.position.y);
-
-                    if (ChunkGenerator.Instance.ChunkExistsAtPosition(leftChunkNeighbourPosition))
-                    {
-                        if (ChunkGenerator.Instance.GetChunkMapArrayWithPosition(leftChunkNeighbourPosition)[_sideLength - 1, arrayIndexY] == 1)
-                        {
-                            wallCount++;
-                        }
-                    }
-                }
-
-                if (neighbourX == _sideLength)
-                {
-                    Vector2Int rightChunkNeighbourPosition = new Vector2Int((int)transform.position.x + _sideLength, (int)transform.position.y);
-
-                    if (ChunkGenerator.Instance.ChunkExistsAtPosition(rightChunkNeighbourPosition))
-                    {
-                        if (ChunkGenerator.Instance.GetChunkMapArrayWithPosition(rightChunkNeighbourPosition)[0, arrayIndexY] == 1)
-                        {
-                            wallCount++;
-                        }
-                    }
-                }
-
-                if (neighbourY < 0)
-                {
-                    Vector2Int bottomChunkNeighbourPosition = new Vector2Int((int)transform.position.x, (int)transform.position.y - _sideLength);
-
-                    if (ChunkGenerator.Instance.ChunkExistsAtPosition(bottomChunkNeighbourPosition))
-                    {
-                        if (ChunkGenerator.Instance.GetChunkMapArrayWithPosition(bottomChunkNeighbourPosition)[arrayIndexX, _sideLength - 1] == 1)
-                        {
-                            wallCount++;
-                        }
-                    }
-                }
-
-                if (neighbourX == _sideLength)
-                {
-                    Vector2Int topChunkNeighbourPosition = new Vector2Int((int)transform.position.x, (int)transform.position.y + _sideLength);
-
-                    if (ChunkGenerator.Instance.ChunkExistsAtPosition(topChunkNeighbourPosition))
-                    {
-                        if (ChunkGenerator.Instance.GetChunkMapArrayWithPosition(topChunkNeighbourPosition)[arrayIndexX, 0] == 1)
-                        {
-                            wallCount++;
-                        }
-                    }
-                }
-
-                if (neighbourX >= 0 && neighbourX < _sideLength && neighbourY >= 0 && neighbourY < _sideLength)
-                {
-                    if (neighbourX != arrayIndexX || neighbourY != arrayIndexY)
-                    {
-                        if (_chunkMapArray[neighbourX, neighbourY] == 1)
-                            wallCount += _chunkMapArray[neighbourX, neighbourY];
-                    }
-                }
-            }
-        }
-
-        return wallCount;
     }
 
     public void UnloadChunk()
@@ -228,8 +123,8 @@ public class Chunk : MonoBehaviour
     public bool IsLoadingTiles() => _isLoadingTiles;
     public bool ChunkMapFilled() => _chunkMapFilled;
     public bool IsPlayerInRange() => _isPlayerInRange;
-    public int[,] GetChunkMapArray() => _chunkMapArray;
-    public int GetChunkMapValue(int x, int y) => _chunkMapArray[x, y];
+    public float[,] GetChunkMapArray() => _chunkMapArray;
+    public float GetChunkMapValue(int x, int y) => _chunkMapArray[x, y];
     public List<Vector2Int> GetNeighbourChunkList() => _neighbourChunkList;
     public Vector2Int GetChunkPositionVector2Int() => new Vector2Int((int)transform.position.x, (int)transform.position.y);
 

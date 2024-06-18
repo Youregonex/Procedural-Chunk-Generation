@@ -8,6 +8,7 @@ public class ChunkGenerator : MonoBehaviour
     public static ChunkGenerator Instance { get; private set; }
 
     private Dictionary<Vector2Int, Chunk> _chunkDictionary;
+    [SerializeField] private List<Chunk> _loadingChunks;
 
     [Header("Tile Setup")]
     [SerializeField] private TileConfigSO _tileConfigSO;
@@ -19,11 +20,17 @@ public class ChunkGenerator : MonoBehaviour
     [SerializeField] private int _chunkLayerCount;
 
     [Header("Map Gentration Settings")]
-    [SerializeField] private int _amountOfWallsToChangeTile = 4;
-    [Range(0, 100)]
-    [SerializeField] private int _wallPercent = 50;
-    [SerializeField] private int _smootheGenerations = 4;
-    [SerializeField] private List<Chunk> _loadingChunks;
+    [SerializeField] private float _noiseScale;
+    [SerializeField] private int _octaves;
+
+    [Range(0, 1)]
+    [SerializeField] private float _persistance;
+
+    [SerializeField] private float _lacunarity;
+    [SerializeField] private float _obstacleChance;
+    [SerializeField] private int _seed;
+    [SerializeField] Vector2 seamOffset;
+    [SerializeField] private Noise.NormalizeMode _normalizeMode;
 
     private void Awake()
     {
@@ -138,9 +145,7 @@ public class ChunkGenerator : MonoBehaviour
             _chunkDictionary.Add(chunkCenter, chunk);
         }
 
-        int randomWallFillPercent = UnityEngine.Random.Range(_wallPercent - 10, _wallPercent + 11);
-
-        chunk.GenerateChunkMap(randomWallFillPercent, _smootheGenerations, _amountOfWallsToChangeTile);
+        chunk.GenerateChunkMap(_seed, _noiseScale, _octaves, _persistance, _lacunarity, chunkCenter + seamOffset, _normalizeMode);
 
         return chunk;
     }
@@ -170,7 +175,7 @@ public class ChunkGenerator : MonoBehaviour
 
                     Tile tile = tileTransform.GetComponent<Tile>();
 
-                    int chunkMapValue = parentChunk.GetChunkMapValue(loopIndexX, loopIndexY);
+                    float chunkMapValue = parentChunk.GetChunkMapValue(loopIndexX, loopIndexY);
                     Sprite sprite = GetRandomSpriteForTile(chunkMapValue);
 
                     tile.SetSprite(sprite);
@@ -182,6 +187,7 @@ public class ChunkGenerator : MonoBehaviour
 
                 loopIndexX++;
                 loopIndexY = 0;
+
                 yield return new WaitForEndOfFrame();
             }
             
@@ -191,30 +197,16 @@ public class ChunkGenerator : MonoBehaviour
         }
     }
 
-    private Sprite GetRandomSpriteForTile(int tileType)
+    private Sprite GetRandomSpriteForTile(float tileType)
     {
-        Sprite tileSprite;
-
-        switch (tileType)
+        if (tileType >= _obstacleChance)
         {
-            default:
-                tileSprite = _tileConfigSO.groundTiles[UnityEngine.Random.Range(0, _tileConfigSO.groundTiles.Count)];
-                break;
-
-            case 0:
-
-                tileSprite = _tileConfigSO.groundTiles[UnityEngine.Random.Range(0, _tileConfigSO.groundTiles.Count)];
-
-                break;
-
-            case 1:
-
-                tileSprite = _tileConfigSO.obstacleTiles[UnityEngine.Random.Range(0, _tileConfigSO.groundTiles.Count)];
-
-                break;
+            return _tileConfigSO.obstacleTiles[0];
         }
-
-        return tileSprite;
+        else
+        {
+            return _tileConfigSO.groundTiles[0];
+        }
     }
 
     private void OnDestroy()
@@ -233,7 +225,7 @@ public class ChunkGenerator : MonoBehaviour
         return _chunkDictionary[chunkPosition];
     }
 
-    public int[,] GetChunkMapArrayWithPosition(Vector2Int chunkPosition)
+    public float[,] GetChunkMapArrayWithPosition(Vector2Int chunkPosition)
     {
         if(!ChunkExistsAtPosition(chunkPosition))
         {

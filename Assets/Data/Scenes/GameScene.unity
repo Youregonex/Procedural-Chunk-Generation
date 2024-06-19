@@ -482,6 +482,8 @@ GameObject:
   m_Component:
   - component: {fileID: 623641771}
   - component: {fileID: 623641772}
+  - component: {fileID: 623641773}
+  - component: {fileID: 623641774}
   m_Layer: 0
   m_Name: PlayerVisual
   m_TagString: Untagged
@@ -556,6 +558,39 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &623641773
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623641770}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1d310ed686c0b4acb9bcc66e008ab6d3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &623641774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623641770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f48120411ca504b4fa1fd49e9de0f4d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1047845763
 GameObject:
   m_ObjectHideFlags: 0
@@ -945,6 +980,7 @@ GameObject:
   - component: {fileID: 1854188133}
   - component: {fileID: 1854188132}
   - component: {fileID: 1854188134}
+  - component: {fileID: 1854188135}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1057,6 +1093,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _movementDirection: {x: 0, y: 0}
   _lastMovementDirection: {x: 0, y: 0}
+  _playerAnimation: {fileID: 623641774}
 --- !u!114 &1854188134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1070,6 +1107,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _initialStatConfigSO: {fileID: 11400000, guid: 8441f2ed4cece486988b97a874241246, type: 2}
+--- !u!114 &1854188135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854188128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c581758ee4dd4aa1bb06bf14cd40680, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackCooldownCurrent: 0
+  _attackCooldownMax: 1
+  _attackRadius: 0.3
+  _playerAnimation: {fileID: 623641774}
 --- !u!1 &2103127305
 GameObject:
   m_ObjectHideFlags: 0
@@ -1117,6 +1170,8 @@ MonoBehaviour:
   _loadingChunks: []
   _tileConfigSO: {fileID: 11400000, guid: 073936655548941fa8018fc99aa45ee9, type: 2}
   _tilePrefab: {fileID: 8186711949924987174, guid: 26f1f069836a74bf5a2abbd377f682bd, type: 3}
+  _obstacleBasePrefab: {fileID: 6871983408722695856, guid: 3380324ea54c745378db9fdbbaa7bd3a, type: 3}
+  _obstacleSprit: {fileID: 0}
   _chunkParent: {fileID: 1135924300}
   _chunkPrefab: {fileID: 8187302419217306237, guid: 3869156d3cb594c878510c213c972227, type: 3}
   _chunkLayerCount: 11

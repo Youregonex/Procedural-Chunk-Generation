@@ -5,7 +5,7 @@ using System;
 [Serializable]
 public class Chunk : MonoBehaviour
 {
-    private List<Tile> _chunkTiles;
+    private List<TerrainTile> _chunkTiles;
 
     public static event EventHandler OnPlayerEnteredChunkRange;
     public static event EventHandler OnPlayerLeftChunkRange;
@@ -32,7 +32,7 @@ public class Chunk : MonoBehaviour
 
     private void Awake()
     {
-        _chunkTiles = new List<Tile>();
+        _chunkTiles = new List<TerrainTile>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -93,7 +93,7 @@ public class Chunk : MonoBehaviour
     {
         _isLoaded = false;
 
-        foreach(Tile tile in _chunkTiles)
+        foreach(TerrainTile tile in _chunkTiles)
         {
             tile.gameObject.SetActive(false);
         }
@@ -103,13 +103,13 @@ public class Chunk : MonoBehaviour
     {
         _isLoaded = true;
 
-        foreach (Tile tile in _chunkTiles)
+        foreach (TerrainTile tile in _chunkTiles)
         {
             tile.gameObject.SetActive(true);
         }
     }
 
-    public void AddTileToChunk(Tile tile)
+    public void AddTileToChunk(TerrainTile tile)
     {
         _chunkTiles.Add(tile);
         _tilesCount++;

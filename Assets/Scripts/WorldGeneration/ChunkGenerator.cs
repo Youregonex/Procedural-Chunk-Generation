@@ -13,6 +13,7 @@ public class ChunkGenerator : MonoBehaviour
     [Header("Tile Setup")]
     [SerializeField] private TileConfigSO _tileConfigSO;
     [SerializeField] private Transform _tilePrefab;
+    [SerializeField] private Transform _obstacleBasePrefab;
 
     [Header("Chunk Setup")]
     [SerializeField] private Transform _chunkParent;
@@ -157,26 +158,35 @@ public class ChunkGenerator : MonoBehaviour
 
         parentChunk.StartLoadingTiles();
 
-        Vector2Int startingPosition = parentChunk.GetChunkPositionVector2Int();
+        Vector2Int chunkCenter = parentChunk.GetChunkPositionVector2Int();
 
         int loopIndexX = 0;
         int loopIndexY = 0;
 
         if (parentChunk.ChunkMapFilled())
         {
-            for (int x = startingPosition.x - _chunkLayerCount; x <= startingPosition.x + _chunkLayerCount; x++)
+            for (int x = chunkCenter.x - _chunkLayerCount; x <= chunkCenter.x + _chunkLayerCount; x++)
             {
-                for (int y = startingPosition.y - _chunkLayerCount; y <= startingPosition.y + _chunkLayerCount; y++)
+                for (int y = chunkCenter.y - _chunkLayerCount; y <= chunkCenter.y + _chunkLayerCount; y++)
                 {
+
+                    float chunkMapValue = parentChunk.GetChunkMapValue(loopIndexX, loopIndexY);
+
                     Vector3 tilPlacementPosition = new Vector3(x, y, 0);
-                    Transform tileTransform = Instantiate(_tilePrefab, tilPlacementPosition, Quaternion.identity);
+
+                    Transform tileToCreate;
+
+                    if (chunkMapValue >= _obstacleChance)
+                        tileToCreate = _obstacleBasePrefab;
+                    else
+                        tileToCreate = _tilePrefab;
+
+                    Transform tileTransform = Instantiate(tileToCreate, tilPlacementPosition, Quaternion.identity);
 
                     tileTransform.SetParent(parentChunk.transform);
 
-                    Tile tile = tileTransform.GetComponent<Tile>();
-
-                    float chunkMapValue = parentChunk.GetChunkMapValue(loopIndexX, loopIndexY);
-                    Sprite sprite = GetRandomSpriteForTile(chunkMapValue);
+                    TerrainTile tile = tileTransform.GetComponent<TerrainTile>();
+                    Sprite sprite = GetSpriteForTile(chunkMapValue);
 
                     tile.SetSprite(sprite);
 
@@ -197,7 +207,7 @@ public class ChunkGenerator : MonoBehaviour
         }
     }
 
-    private Sprite GetRandomSpriteForTile(float tileType)
+    private Sprite GetSpriteForTile(float tileType)
     {
         if (tileType >= _obstacleChance)
         {

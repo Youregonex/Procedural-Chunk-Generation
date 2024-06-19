@@ -18,7 +18,7 @@ public static class Noise
 
 		float maxPossibleHeight = 0;
 		float amplitude = 1;
-		float frequency = 1;
+		float frequency;
 
 		for (int i = 0; i < octaves; i++)
 		{

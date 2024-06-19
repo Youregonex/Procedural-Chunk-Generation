@@ -1,10 +1,11 @@
 using UnityEngine;
 
 [SelectionBase]
-public class Tile : MonoBehaviour
+public class TerrainTile : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    [SerializeField] private Chunk _parentChunk;
+
+    private Chunk _parentChunk;
 
     public void SetSprite(Sprite sprite)
     {

@@ -15,4 +15,4 @@ MonoBehaviour:
   groundTiles:
   - {fileID: 21300000, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
   obstacleTiles:
-  - {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  - {fileID: 21300036, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}

@@ -38,13 +38,11 @@ public class PlayerAnimation : MonoBehaviour
 
     private void PlayerAttackAnimationStarted() // Used by Animation Event
     {
-        Debug.Log("Attack Started");
         OnPlayerAttackAnimationStarted?.Invoke(this, EventArgs.Empty);
     }
 
     private void PlayerAttackAnimationFinished() // Used by Animation Event
     {
-        Debug.Log("Attack Ended");
         OnPlayerAttackAnimationFinished?.Invoke(this, EventArgs.Empty);
     }
 }

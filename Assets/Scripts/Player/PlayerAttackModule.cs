@@ -37,7 +37,7 @@ public class PlayerAttackModule : MonoBehaviour
 
     private void Attack()
     {
-        if (_attackCooldownCurrent > 0)
+        if (_attackCooldownCurrent > 0 || IsPointerOverUIObject())
             return;
 
         _attackCooldownCurrent = _attackCooldownMax;

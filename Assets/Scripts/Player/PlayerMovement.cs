@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour, IPlayer
         _canMove = false;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         HandleMovement();
     }

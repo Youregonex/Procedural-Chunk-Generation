@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
-[System.Serializable]
+[Serializable]
 public class Inventory
 {
+    public event EventHandler OnInventorySlotChanged;
+
     [SerializeField] private List<InventorySlot> _inventoryContentList;
 
     private int _inventorySize;
@@ -36,6 +39,8 @@ public class Inventory
         InventorySlot freeSlot = GetFirstFreeSlot();
 
         freeSlot.SetSlotData(itemToAdd.GetItemDataSO(), itemToAdd.GetItemQuantity());
+
+        OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private InventorySlot GetFirstFreeSlot()
@@ -46,7 +51,6 @@ public class Inventory
     }
 
     private bool InventoryHasFreeSlot() => _inventoryContentList.Any(slot => slot.GetSlotItemDataSO() == null);
-
     public int GetInventorySize() => _inventoryContentList.Count;
     public List<InventorySlot> GetInventoryList() => _inventoryContentList;
 }

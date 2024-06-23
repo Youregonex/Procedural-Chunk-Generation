@@ -1,6 +1,5 @@
 using UnityEngine;
 using System;
-using System.Collections.Generic;
 
 [Serializable]
 [RequireComponent(typeof(PlayerInput))]
@@ -13,6 +12,8 @@ public class PlayerInventorySystem : MonoBehaviour
     {
         public Inventory inventory;
     }
+
+    public event EventHandler OnHotbarInventorySlotChanged;
 
     [SerializeField] private int _mainInventorySize;
     [SerializeField] private Inventory _hotbar;
@@ -31,9 +32,15 @@ public class PlayerInventorySystem : MonoBehaviour
         _mainInventory.InitializeInventory(_mainInventorySize);
     }
 
+    private void Hotbar_OnInventorySlotChanged(object sender, EventArgs e)
+    {
+        OnHotbarInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+    }
+
     private void Start()
     {
         _playerInput.OnInventoryKeyPressed += PlayerInput_OnInventoryKeyPressed;
+        _hotbar.OnInventorySlotChanged += Hotbar_OnInventorySlotChanged;
     }
 
     private void PlayerInput_OnInventoryKeyPressed(object sender, System.EventArgs e)
@@ -47,6 +54,12 @@ public class PlayerInventorySystem : MonoBehaviour
     private void OnDestroy()
     {
         _playerInput.OnInventoryKeyPressed -= PlayerInput_OnInventoryKeyPressed;
+        _hotbar.OnInventorySlotChanged -= Hotbar_OnInventorySlotChanged;
+    }
+
+    public void AddItemToInventory(Item item)
+    {
+        _hotbar.AddItemToInventory(item);
     }
 
     public int GetHotbarSize() => HOTBAR_SIZE;

@@ -4,10 +4,22 @@ using System.Collections.Generic;
 public class HotbarDisplay : InventoryDisplay
 {
     [SerializeField] private PlayerInventorySystem _playerInventory;
+    [SerializeField] private float _inventorySlotUISize = 75f;
 
     protected override void Awake()
     {
+        base.Awake();
         InitializeHotbar();
+    }
+
+    private void Start()
+    {
+        _playerInventory.OnHotbarInventorySlotChanged += PlayerInventory_OnHotbarInventorySlotChanged;
+    }
+
+    private void PlayerInventory_OnHotbarInventorySlotChanged(object sender, System.EventArgs e)
+    {
+        RefreshInventoryDisplay();
     }
 
     private void InitializeHotbar()
@@ -19,6 +31,8 @@ public class HotbarDisplay : InventoryDisplay
             InventorySlotUI slotUI = CreateInventorySlotUI();
 
             slotUI.SetSlotUI(hotbarInventoryContent[i]);
+
+            slotUI.GetComponent<RectTransform>().sizeDelta = new Vector2(_inventorySlotUISize, _inventorySlotUISize);
         }
     }
 }

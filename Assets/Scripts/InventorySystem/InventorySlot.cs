@@ -1,8 +1,11 @@
 using UnityEngine;
+using System;
 
-[System.Serializable]
+[Serializable]
 public class InventorySlot
 {
+    public event EventHandler OnInventorySlotChanged;
+
     [SerializeField] private ItemDataSO _itemDataSO;
     [SerializeField] private int _currentStackSize;
 
@@ -22,16 +25,30 @@ public class InventorySlot
     {
         _itemDataSO = itemDataSO;
         _currentStackSize = quantity;
+
+        OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void AddToStackSize(int quantity)
     {
         _currentStackSize += quantity;
+
+        OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void SubstractFromStackSize(int quantity)
     {
         _currentStackSize -= quantity;
+
+        OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void ClearSlot()
+    {
+        _itemDataSO = null;
+        _currentStackSize = -1;
+
+        OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public ItemDataSO GetSlotItemDataSO() => _itemDataSO;

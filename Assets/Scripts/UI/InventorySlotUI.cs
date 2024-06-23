@@ -1,15 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System;
 
 public class InventorySlotUI : MonoBehaviour
 {
-    public event EventHandler OnUISlotClicked;
-
     [SerializeField] private Image _itemImage;
     [SerializeField] private RectTransform _quantityTextBackground;
     [SerializeField] private TextMeshProUGUI _itemQuantityText;
+
+    [SerializeField] private InventoryDisplay _parentDisplay;
 
     private Button _button;
     private InventorySlot _assignedInventorySlot;
@@ -23,8 +22,8 @@ public class InventorySlotUI : MonoBehaviour
     {
         _button.onClick.AddListener(() =>
         {
-            OnUISlotClicked?.Invoke(this, EventArgs.Empty);
-            Debug.Log("Slot Clicked");
+            Debug.Log("Slot clicked");
+            _parentDisplay.InventorySlotUIClicked(this);
         });
     }
 
@@ -32,13 +31,15 @@ public class InventorySlotUI : MonoBehaviour
     {
         _assignedInventorySlot = slot;
 
+        _assignedInventorySlot.OnInventorySlotChanged += InventorySlot_OnInventorySlotChanged;
+
         if(slot.GetSlotItemDataSO() == null)
         {
             SetClearSlot();
             return;
         }
 
-        _itemImage.color = new Color(1, 1, 1, 1);
+        _itemImage.color = Color.white;
         _itemImage.sprite = slot.GetSlotItemDataSO().Icon;
 
         if(slot.GetCurrentStackSize() <= 1)
@@ -54,11 +55,19 @@ public class InventorySlotUI : MonoBehaviour
         }
     }
 
+    private void InventorySlot_OnInventorySlotChanged(object sender, System.EventArgs e)
+    {
+        SetSlotUI(sender as InventorySlot);
+    }
+
     private void SetClearSlot()
     {
-        _itemImage.color = new Color(0,0,0,0);
+        _itemImage.color = Color.clear;
         _quantityTextBackground.gameObject.SetActive(false);
     }
 
+    public InventorySlot GetAssignedInventorySlot() => _assignedInventorySlot;
     public void AssignInventorySlot(InventorySlot slot) => _assignedInventorySlot = slot;
+    public bool InventorySlotUIEmpty() => _assignedInventorySlot.GetSlotItemDataSO() == null;
+    public void SetParentDisplay(InventoryDisplay inventoryDisplay) => _parentDisplay = inventoryDisplay;
 }

@@ -4,6 +4,7 @@ public class DynamicInventoryDisplay : InventoryDisplay
 {
     [SerializeField] protected RectTransform _inventoryBackground;
 
+    private Inventory _currentInventory;
     private bool _isOpened = false;
 
     protected void Start()
@@ -26,6 +27,10 @@ public class DynamicInventoryDisplay : InventoryDisplay
             return;
         }
 
+        _currentInventory = inventoryToDisplay;
+
+        _currentInventory.OnInventorySlotChanged += Inventory_OnInventorySlotChanged;
+
         _inventoryBackground.gameObject.SetActive(true);
 
         _isOpened = true;
@@ -40,10 +45,21 @@ public class DynamicInventoryDisplay : InventoryDisplay
         }
     }
 
+    private void Inventory_OnInventorySlotChanged(object sender, System.EventArgs e)
+    {
+        RefreshInventoryDisplay();
+    }
+
     private void HideInventory()
     {
         ClearAllSlots();
         _isOpened = false;
+
+        if(_currentInventory != null)
+        {
+            _currentInventory.OnInventorySlotChanged -= Inventory_OnInventorySlotChanged;
+            _currentInventory = null;
+        }
 
         _inventoryBackground.gameObject.SetActive(false);
     }

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d92fc432b46e488eb8a8a74494a7f9f, type: 3}
-  m_Name: Wood
+  m_Name: StoneItemData
   m_EditorClassIdentifier: 
   <Id>k__BackingField: 0
-  <Name>k__BackingField: Wood
-  <Description>k__BackingField: Wood
-  <Icon>k__BackingField: {fileID: 21300066, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
-  <Prefab>k__BackingField: {fileID: 4131089868975367161, guid: cbe5c1f5c1515461e8c13c5b54d6cf1b, type: 3}
-  <StackSize>k__BackingField: 5
+  <Name>k__BackingField: Stone
+  <Description>k__BackingField: Stone
+  <Icon>k__BackingField: {fileID: 21300104, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
+  <Prefab>k__BackingField: {fileID: 7751994548152071265, guid: 140dd409c796e43b6829be8ac6c9ca6c, type: 3}
+  <MaxStackSize>k__BackingField: 5

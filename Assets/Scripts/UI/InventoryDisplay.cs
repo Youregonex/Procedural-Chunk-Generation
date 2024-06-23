@@ -50,6 +50,57 @@ public class InventoryDisplay : MonoBehaviour
 
             return;
         }
+
+        // UI slot NOT EMPTY && Mouse slot NOT EMPTY
+        if (!clickedUISlot.InventorySlotUIEmpty() && !_mouseItemSlot.MouseSlotEmpty())
+        {
+            // UI slot item == Mouse slot item
+            if(clickedUISlot.GetAssignedInventorySlot().GetSlotItemDataSO() == _mouseItemSlot.GetItemdDataSO())
+            {
+                // One of slots is full
+                if(clickedUISlot.GetAssignedInventorySlot().SlotIsFull() || _mouseItemSlot.SlotIsFull())
+                {
+                    SwapItems(clickedUISlot.GetAssignedInventorySlot());
+
+                    return;
+                }
+
+                // UI slot can fit whole Mouse slot quantity
+                if(clickedUISlot.GetAssignedInventorySlot().StackCanFit(_mouseItemSlot.GetItemQuantity(), out int stackCantFit))
+                {
+                    clickedUISlot.GetAssignedInventorySlot().AddToStackSize(_mouseItemSlot.GetItemQuantity());
+
+                    _mouseItemSlot.ClearSlot();
+
+                    return;
+                }
+                // UI slot can't fit whole Mouse slot quantity
+                else
+                {
+                    clickedUISlot.GetAssignedInventorySlot().SetMaxStackSize();
+
+                    _mouseItemSlot.SetMouseSlot(_mouseItemSlot.GetItemdDataSO(), stackCantFit);
+
+                    return;
+                }
+            }
+
+            // UI slot item != Mouse slot item
+            if (clickedUISlot.GetAssignedInventorySlot().GetSlotItemDataSO() != _mouseItemSlot.GetItemdDataSO())
+            {
+                SwapItems(clickedUISlot.GetAssignedInventorySlot());
+            }
+        }
+    }
+
+    private void SwapItems(InventorySlot slot)
+    {
+        ItemDataSO mouseItemDataSO = _mouseItemSlot.GetItemdDataSO();
+        int mouseItemQuantity = _mouseItemSlot.GetItemQuantity();
+
+        _mouseItemSlot.SetMouseSlot(slot.GetSlotItemDataSO(), slot.GetCurrentStackSize());
+
+        slot.SetSlotData(mouseItemDataSO, mouseItemQuantity);
     }
 
     protected void RefreshInventoryDisplay()
@@ -59,6 +110,4 @@ public class InventoryDisplay : MonoBehaviour
             slotUI.SetSlotUI(slotUI.GetAssignedInventorySlot());
         }
     }
-
-
 }

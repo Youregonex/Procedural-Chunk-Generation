@@ -30,9 +30,13 @@ public class MouseItemSlot : MonoBehaviour
 
     public void SetMouseSlot(InventorySlot slot)
     {
+        SetMouseSlot(slot.GetSlotItemDataSO(), slot.GetCurrentStackSize());
+    }
 
-        _itemDataSO = slot.GetSlotItemDataSO();
-        _itemQuantity = slot.GetCurrentStackSize();
+    public void SetMouseSlot(ItemDataSO itemDataSO, int itemQuantity)
+    {
+        _itemDataSO = itemDataSO;
+        _itemQuantity = itemQuantity;
 
         if (_itemDataSO == null)
         {
@@ -76,5 +80,6 @@ public class MouseItemSlot : MonoBehaviour
 
     public ItemDataSO GetItemdDataSO() => _itemDataSO;
     public int GetItemQuantity() => _itemQuantity;
+    public bool SlotIsFull() => _itemQuantity == _itemDataSO.MaxStackSize;
     public bool MouseSlotEmpty() => _itemDataSO == null;
 }

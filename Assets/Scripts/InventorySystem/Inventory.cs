@@ -29,18 +29,58 @@ public class Inventory
         }
     }
 
-    public void AddItemToInventory(Item itemToAdd)
+    public bool AddItemToInventory(Item itemToAdd)
     {
-        if(!InventoryHasFreeSlot())
+        if(InventoryHasSameSlot(itemToAdd.GetItemDataSO(), out List<InventorySlot> sameItemList))
         {
-            return;
+            foreach(InventorySlot slot in sameItemList)
+            {
+                if(slot.StackCanFit(itemToAdd.GetItemQuantity(), out int slotCantFitQuantity))
+                {
+                    slot.AddToStackSize(itemToAdd.GetItemQuantity());
+                    itemToAdd.ChangeItemQuantity(0);
+
+                    OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+
+                    return true;
+                }
+                else
+                {
+                    slot.SetMaxStackSize();
+                    itemToAdd.ChangeItemQuantity(slotCantFitQuantity);
+
+                    OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
         }
 
-        InventorySlot freeSlot = GetFirstFreeSlot();
+        while (itemToAdd.GetItemQuantity() != 0 && InventoryHasFreeSlot())
+        {
+            if (itemToAdd.GetItemQuantity() <= itemToAdd.GetItemDataSO().MaxStackSize)
+            {
+                InventorySlot freeSlot = GetFirstFreeSlot();
 
-        freeSlot.SetSlotData(itemToAdd.GetItemDataSO(), itemToAdd.GetItemQuantity());
+                freeSlot.SetSlotData(itemToAdd.GetItemDataSO(), itemToAdd.GetItemQuantity());
+
+                itemToAdd.ChangeItemQuantity(0);
+
+                OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+
+                return true;
+            }
+            else
+            {
+                InventorySlot freeSlot = GetFirstFreeSlot();
+
+                freeSlot.SetSlotData(itemToAdd.GetItemDataSO(), itemToAdd.GetItemDataSO().MaxStackSize);
+
+                itemToAdd.ChangeItemQuantity(itemToAdd.GetItemQuantity() - itemToAdd.GetItemDataSO().MaxStackSize);
+            }
+        }
 
         OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+
+        return false;
     }
 
     private InventorySlot GetFirstFreeSlot()
@@ -48,6 +88,22 @@ public class Inventory
         InventorySlot slot = _inventoryContentList.First(slot => slot.GetSlotItemDataSO() == null);
 
         return slot;
+    }
+
+    private bool InventoryHasSameSlot(ItemDataSO itemDataSO, out List<InventorySlot> sameSlotsList)
+    {
+        sameSlotsList = new List<InventorySlot>();
+
+        sameSlotsList = _inventoryContentList.Where(slot => slot.GetSlotItemDataSO() == itemDataSO).ToList();
+
+        if(sameSlotsList.Count != 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private bool InventoryHasFreeSlot() => _inventoryContentList.Any(slot => slot.GetSlotItemDataSO() == null);

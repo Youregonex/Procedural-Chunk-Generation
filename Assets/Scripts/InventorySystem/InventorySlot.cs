@@ -29,6 +29,29 @@ public class InventorySlot
         OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    public bool StackCanFit(int quantityToAdd, out int stackCantFit)
+    {
+        int roomLeftInStack = _itemDataSO.MaxStackSize - _currentStackSize;
+
+        if (roomLeftInStack >= quantityToAdd)
+        {
+            stackCantFit = 0;
+            return true;
+        }
+        else
+        {
+            stackCantFit = quantityToAdd - roomLeftInStack;
+            return false;
+        }
+    }
+
+    public void SetMaxStackSize()
+    {
+        _currentStackSize = _itemDataSO.MaxStackSize;
+
+        OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+    }
+
     public void AddToStackSize(int quantity)
     {
         _currentStackSize += quantity;
@@ -53,4 +76,5 @@ public class InventorySlot
 
     public ItemDataSO GetSlotItemDataSO() => _itemDataSO;
     public int GetCurrentStackSize() => _currentStackSize;
+    public bool SlotIsFull() => _currentStackSize == _itemDataSO.MaxStackSize;
 }

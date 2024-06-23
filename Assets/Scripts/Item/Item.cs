@@ -11,6 +11,11 @@ public class Item : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void ChangeItemQuantity(int newQuantity)
+    {
+        _itemQuantity = newQuantity;
+    }
+
     public ItemDataSO GetItemDataSO() => _itemDataSO;
     public int GetItemQuantity() => _itemQuantity;
 }

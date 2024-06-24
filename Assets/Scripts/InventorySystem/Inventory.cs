@@ -14,6 +14,9 @@ public class Inventory
 
     private bool _isInitialized = false;
 
+    public List<InventorySlot> InventoryContentList => _inventoryContentList; 
+    public int InventorySize => _inventoryContentList.Count;
+
     public void InitializeInventory(int inventorySize)
     {
         if (_isInitialized)
@@ -29,40 +32,41 @@ public class Inventory
         }
     }
 
-    public bool AddItemToInventory(Item itemToAdd)
+    public bool AddItemToInventory(Item item)
     {
-        if(InventoryHasSameSlot(itemToAdd.GetItemDataSO(), out List<InventorySlot> sameItemList))
+        if (ContainsItem(item.ItemDataSO, out List<InventorySlot> sameItemSlots)) // If inventory cointains same item -> get List of slots, containing this item
         {
-            foreach(InventorySlot slot in sameItemList)
+            foreach (InventorySlot slot in sameItemSlots)
             {
-                if(slot.StackCanFit(itemToAdd.GetItemQuantity(), out int slotCantFitQuantity))
+                if (slot.ItemDataSO.MaxStackSize - slot.CurrentStackSize >= item.ItemQuantity) // If we can add whole item quantity to already existing stack -> update slot item quantity
                 {
-                    slot.AddToStackSize(itemToAdd.GetItemQuantity());
-                    itemToAdd.ChangeItemQuantity(0);
-
+                    slot.AddToStackSize(item.ItemQuantity);
+                    item.ChangeItemQuantity(0);
                     OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
 
                     return true;
                 }
-                else
+                else // If we can't add whole item quantity -> add what we can, reduce quantity
                 {
-                    slot.SetMaxStackSize();
-                    itemToAdd.ChangeItemQuantity(slotCantFitQuantity);
+                    int slotCanAdd = slot.ItemDataSO.MaxStackSize - slot.CurrentStackSize;
+
+                    if (slotCanAdd == 0)
+                        continue;
+
+                    slot.AddToStackSize(slotCanAdd);
+
+                    item.ChangeItemQuantity(item.ItemQuantity - slotCanAdd);
 
                     OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
 
-        while (itemToAdd.GetItemQuantity() != 0 && InventoryHasFreeSlot())
+        while (item.ItemQuantity > 0 && InventoryHasFreeSlot(out InventorySlot freeSlot)) // If we didnt find slots with same item/all slots with same item are full -> add item to free slot
         {
-            if (itemToAdd.GetItemQuantity() <= itemToAdd.GetItemDataSO().MaxStackSize)
+            if (item.ItemDataSO.MaxStackSize >= item.ItemQuantity) // If we can add whole item quantity to one slot -> update slot
             {
-                InventorySlot freeSlot = GetFirstFreeSlot();
-
-                freeSlot.SetSlotData(itemToAdd.GetItemDataSO(), itemToAdd.GetItemQuantity());
-
-                itemToAdd.ChangeItemQuantity(0);
+                freeSlot.SetSlotData(item.ItemDataSO, item.ItemQuantity);
 
                 OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
 
@@ -70,31 +74,21 @@ public class Inventory
             }
             else
             {
-                InventorySlot freeSlot = GetFirstFreeSlot();
+                freeSlot.SetSlotData(item.ItemDataSO, item.ItemDataSO.MaxStackSize); // Add amount that slot can hold
+                item.ChangeItemQuantity(item.ItemQuantity - item.ItemDataSO.MaxStackSize);
 
-                freeSlot.SetSlotData(itemToAdd.GetItemDataSO(), itemToAdd.GetItemDataSO().MaxStackSize);
-
-                itemToAdd.ChangeItemQuantity(itemToAdd.GetItemQuantity() - itemToAdd.GetItemDataSO().MaxStackSize);
+                OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
             }
         }
-
-        OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
 
         return false;
     }
 
-    private InventorySlot GetFirstFreeSlot()
-    {
-        InventorySlot slot = _inventoryContentList.First(slot => slot.GetSlotItemDataSO() == null);
-
-        return slot;
-    }
-
-    private bool InventoryHasSameSlot(ItemDataSO itemDataSO, out List<InventorySlot> sameSlotsList)
+    private bool ContainsItem(ItemDataSO itemDataSO, out List<InventorySlot> sameSlotsList)
     {
         sameSlotsList = new List<InventorySlot>();
 
-        sameSlotsList = _inventoryContentList.Where(slot => slot.GetSlotItemDataSO() == itemDataSO).ToList();
+        sameSlotsList = _inventoryContentList.Where(slot => slot.ItemDataSO == itemDataSO).ToList();
 
         if(sameSlotsList.Count != 0)
         {
@@ -106,7 +100,13 @@ public class Inventory
         }
     }
 
-    private bool InventoryHasFreeSlot() => _inventoryContentList.Any(slot => slot.GetSlotItemDataSO() == null);
-    public int GetInventorySize() => _inventoryContentList.Count;
-    public List<InventorySlot> GetInventoryList() => _inventoryContentList;
+    private bool InventoryHasFreeSlot(out InventorySlot freeSlot)
+    {
+        freeSlot = _inventoryContentList.FirstOrDefault(slot => slot.ItemDataSO == null);
+
+        if (freeSlot == null)
+            return false;
+
+        return true;
+    }
 }

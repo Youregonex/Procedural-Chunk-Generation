@@ -35,13 +35,15 @@ public class DynamicInventoryDisplay : InventoryDisplay
 
         _isOpened = true;
 
-        for (int i = 0; i < inventoryToDisplay.GetInventorySize(); i++)
+        for (int i = 0; i < inventoryToDisplay.InventorySize; i++)
         {
             InventorySlotUI slotUI = CreateInventorySlotUI();
 
-            InventorySlot slot = inventoryToDisplay.GetInventoryList()[i];
+            InventorySlot slot = inventoryToDisplay.InventoryContentList[i];
 
-            slotUI.SetSlotUI(slot);
+            slotUI.AssignInventorySlot(slot);
+
+            slotUI.RefreshSlotUI();
         }
     }
 

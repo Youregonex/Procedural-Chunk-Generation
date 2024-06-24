@@ -9,6 +9,9 @@ public class InventorySlot
     [SerializeField] private ItemDataSO _itemDataSO;
     [SerializeField] private int _currentStackSize;
 
+    public ItemDataSO ItemDataSO => _itemDataSO;
+    public int CurrentStackSize => _currentStackSize;
+
     public InventorySlot()
     {
         _itemDataSO = null;
@@ -59,7 +62,7 @@ public class InventorySlot
         OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public void SubstractFromStackSize(int quantity)
+    public void RemoveFromStackSize(int quantity)
     {
         _currentStackSize -= quantity;
 
@@ -74,7 +77,21 @@ public class InventorySlot
         OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public ItemDataSO GetSlotItemDataSO() => _itemDataSO;
-    public int GetCurrentStackSize() => _currentStackSize;
+    public bool SplitStack(out int halfStack)
+    {
+        if (_currentStackSize <= 1)
+        {
+            halfStack = 0;
+            return false;
+        }
+
+        halfStack = Mathf.RoundToInt(_currentStackSize / 2);
+        RemoveFromStackSize(halfStack);
+
+        OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+
+        return true;
+    }
+
     public bool SlotIsFull() => _currentStackSize == _itemDataSO.MaxStackSize;
 }

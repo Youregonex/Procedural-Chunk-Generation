@@ -24,13 +24,15 @@ public class HotbarDisplay : InventoryDisplay
 
     private void InitializeHotbar()
     {
-        List<InventorySlot> hotbarInventoryContent = _playerInventory.GetHotbarInventory().GetInventoryList();
+        List<InventorySlot> hotbarInventoryContent = _playerInventory.GetHotbarInventory().InventoryContentList;
 
         for (int i = 0; i < _playerInventory.GetHotbarSize(); i++)
         {
             InventorySlotUI slotUI = CreateInventorySlotUI();
 
-            slotUI.SetSlotUI(hotbarInventoryContent[i]);
+            slotUI.AssignInventorySlot(hotbarInventoryContent[i]);
+
+            slotUI.RefreshSlotUI();
 
             slotUI.GetComponent<RectTransform>().sizeDelta = new Vector2(_inventorySlotUISize, _inventorySlotUISize);
         }

@@ -11,9 +11,15 @@ public class MouseItemSlot : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _itemQuantityText;
     [SerializeField] private RectTransform _quantityTextBackground;
     [SerializeField] private Vector2 _mouseItemOffset;
+    [SerializeField] private PlayerMovement _playerMovement;
 
+    [Header("Debug Fields")]
     [SerializeField] private ItemDataSO _itemDataSO;
     [SerializeField] private int _itemQuantity;
+
+
+    public int ItemQuantity => _itemQuantity;
+    public ItemDataSO ItemdDataSO => _itemDataSO;
 
     private void Start()
     {
@@ -26,11 +32,22 @@ public class MouseItemSlot : MonoBehaviour
             return;
 
         transform.position = Mouse.current.position.ReadValue() + _mouseItemOffset;
+
+        if (Mouse.current.leftButton.wasPressedThisFrame && !IsPointerOverUIObject())
+        {
+            ItemFactory itemFactory = new ItemFactory();
+
+            Item item = itemFactory.CreateItem(_itemDataSO, _itemQuantity);
+
+            item.transform.position = _playerMovement.transform.position + new Vector3(_playerMovement.GetCurrentDirection().x, _playerMovement.GetCurrentDirection().y, 0);
+
+            ClearSlot();
+        }
     }
 
     public void SetMouseSlot(InventorySlot slot)
     {
-        SetMouseSlot(slot.GetSlotItemDataSO(), slot.GetCurrentStackSize());
+        SetMouseSlot(slot.ItemDataSO, slot.CurrentStackSize);
     }
 
     public void SetMouseSlot(ItemDataSO itemDataSO, int itemQuantity)
@@ -78,8 +95,6 @@ public class MouseItemSlot : MonoBehaviour
         return results.Count > 0;
     }
 
-    public ItemDataSO GetItemdDataSO() => _itemDataSO;
-    public int GetItemQuantity() => _itemQuantity;
     public bool SlotIsFull() => _itemQuantity == _itemDataSO.MaxStackSize;
     public bool MouseSlotEmpty() => _itemDataSO == null;
 }

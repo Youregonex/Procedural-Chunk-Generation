@@ -10,12 +10,8 @@ public class PlayerItemInteraction : MonoBehaviour
 
         if (item != null)
         {
-            _playerInventory.AddItemToInventory(item);
-
-            if(item.GetItemQuantity() <= 0)
-            {
+            if (_playerInventory.AddItemToInventory(item))
                 item.DestroyItem();
-            }
         }
     }
 }

@@ -4,7 +4,10 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     [SerializeField] private ItemDataSO _itemDataSO;
+    public ItemDataSO ItemDataSO => _itemDataSO;
+
     [SerializeField] private int _itemQuantity;
+    public int ItemQuantity => _itemQuantity;
 
     public void DestroyItem()
     {
@@ -16,6 +19,9 @@ public class Item : MonoBehaviour
         _itemQuantity = newQuantity;
     }
 
-    public ItemDataSO GetItemDataSO() => _itemDataSO;
-    public int GetItemQuantity() => _itemQuantity;
+    public void SetItemData(ItemDataSO itemDataSO, int itemQuantity)
+    {
+        _itemDataSO = itemDataSO;
+        _itemQuantity = itemQuantity;
+    }
 }

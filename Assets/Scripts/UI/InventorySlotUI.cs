@@ -13,6 +13,9 @@ public class InventorySlotUI : MonoBehaviour
     private Button _button;
     private InventorySlot _assignedInventorySlot;
 
+
+    public InventorySlot AssignedInventorySlot => _assignedInventorySlot;
+
     private void Awake()
     {
         _button = GetComponent<Button>();
@@ -27,22 +30,29 @@ public class InventorySlotUI : MonoBehaviour
         });
     }
 
-    public void SetSlotUI(InventorySlot slot)
+    private void OnDestroy()
     {
-        _assignedInventorySlot = slot;
+        _assignedInventorySlot.OnInventorySlotChanged -= InventorySlot_OnInventorySlotChanged;
+    }
 
-        _assignedInventorySlot.OnInventorySlotChanged += InventorySlot_OnInventorySlotChanged;
+    public void RefreshSlotUI()
+    {
+        if(_assignedInventorySlot == null)
+        {
+            Debug.LogError($"There is no Inventory slot assigned to this {gameObject}");
+            return;
+        }
 
-        if(slot.GetSlotItemDataSO() == null)
+        if (_assignedInventorySlot.ItemDataSO == null)
         {
             SetClearSlot();
             return;
         }
 
         _itemImage.color = Color.white;
-        _itemImage.sprite = slot.GetSlotItemDataSO().Icon;
+        _itemImage.sprite = _assignedInventorySlot.ItemDataSO.Icon;
 
-        if(slot.GetCurrentStackSize() <= 1)
+        if (_assignedInventorySlot.CurrentStackSize <= 1)
         {
             _itemQuantityText.gameObject.SetActive(false);
             _quantityTextBackground.gameObject.SetActive(false);
@@ -51,13 +61,13 @@ public class InventorySlotUI : MonoBehaviour
         {
             _itemQuantityText.gameObject.SetActive(true);
             _quantityTextBackground.gameObject.SetActive(true);
-            _itemQuantityText.text = slot.GetCurrentStackSize().ToString();
+            _itemQuantityText.text = _assignedInventorySlot.CurrentStackSize.ToString();
         }
     }
 
     private void InventorySlot_OnInventorySlotChanged(object sender, System.EventArgs e)
     {
-        SetSlotUI(sender as InventorySlot);
+        RefreshSlotUI();
     }
 
     private void SetClearSlot()
@@ -66,8 +76,14 @@ public class InventorySlotUI : MonoBehaviour
         _quantityTextBackground.gameObject.SetActive(false);
     }
 
-    public InventorySlot GetAssignedInventorySlot() => _assignedInventorySlot;
-    public void AssignInventorySlot(InventorySlot slot) => _assignedInventorySlot = slot;
-    public bool InventorySlotUIEmpty() => _assignedInventorySlot.GetSlotItemDataSO() == null;
+    public void AssignInventorySlot(InventorySlot slot)
+    {
+        _assignedInventorySlot = slot;
+
+        _assignedInventorySlot.OnInventorySlotChanged += InventorySlot_OnInventorySlotChanged;
+        RefreshSlotUI();
+    }
+
+    public bool InventorySlotUIEmpty() => _assignedInventorySlot.ItemDataSO == null;
     public void SetParentDisplay(InventoryDisplay inventoryDisplay) => _parentDisplay = inventoryDisplay;
 }

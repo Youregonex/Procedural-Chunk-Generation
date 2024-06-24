@@ -7,9 +7,13 @@ public class InventoryDisplay : MonoBehaviour
     [SerializeField] protected RectTransform _inventorySlotUIPrefab;
     [SerializeField] protected RectTransform _inventorySlotContainer;
     [SerializeField] protected MouseItemSlot _mouseItemSlot;
+    [SerializeField] protected ItemDescriptionWindow _itemDescriptionWindow;
 
     protected Dictionary<InventorySlot, InventorySlotUI> _inventorySlotsDictionary;
     protected List<InventorySlotUI> _inventorySlotsUIList;
+    protected bool _isOpened = false;
+    protected Inventory _currentInventory;
+
 
     protected virtual void Awake()
     {
@@ -17,27 +21,48 @@ public class InventoryDisplay : MonoBehaviour
         _inventorySlotsDictionary = new Dictionary<InventorySlot, InventorySlotUI>();
     }
 
-    protected InventorySlotUI CreateInventorySlotUI()
-    {
-        Transform slotTransform = Instantiate(_inventorySlotUIPrefab, _inventorySlotContainer);
+    public bool IsInventoryOpened() => _isOpened;
 
-        InventorySlotUI inventorySlotUI = slotTransform.GetComponent<InventorySlotUI>();
-
-        _inventorySlotsUIList.Add(inventorySlotUI);
-
-        inventorySlotUI.SetParentDisplay(this);
-
-        return inventorySlotUI;
-    }
+    public Inventory GetCurrentInventory() => _currentInventory;
 
     public void InventorySlotUIClicked(InventorySlotUI clickedUISlot)
     {
+        _itemDescriptionWindow.HideItemDescription();
+
         bool isCtrlKeyPressed = Keyboard.current.leftCtrlKey.isPressed;
         bool isShiftKeyPressed = Keyboard.current.leftShiftKey.isPressed;
 
         // UI slot NOT EMPTY && Mouse slot EMPTY
         if (!clickedUISlot.InventorySlotUIEmpty() && _mouseItemSlot.MouseSlotEmpty())
         {
+            if (isShiftKeyPressed)
+            {
+                List<Inventory> openedInventoriesList = OpenedInventoriesManager.Instance.GetOpenedInventories();
+                int currentAmount = clickedUISlot.AssignedInventorySlot.CurrentStackSize;
+
+                foreach (Inventory inventory in openedInventoriesList)
+                {
+                    if (inventory == _currentInventory)
+                        continue;
+
+                    currentAmount = inventory.AddItemToInventory(clickedUISlot.AssignedInventorySlot.ItemDataSO,
+                                                                 currentAmount);
+
+                    if (currentAmount == clickedUISlot.AssignedInventorySlot.ItemDataSO.MaxStackSize)
+                        continue;
+
+                    if (currentAmount == 0)
+                    {
+                        clickedUISlot.AssignedInventorySlot.ClearSlot();
+                        return;
+                    }
+
+                    clickedUISlot.AssignedInventorySlot.RemoveFromStackSize(clickedUISlot.AssignedInventorySlot.CurrentStackSize - currentAmount);
+                }
+
+                return;
+            }
+
             if (isCtrlKeyPressed && clickedUISlot.AssignedInventorySlot.SplitStack(out int splitStack))
             {
                 _mouseItemSlot.SetMouseSlot(clickedUISlot.AssignedInventorySlot.ItemDataSO, splitStack);
@@ -81,15 +106,47 @@ public class InventoryDisplay : MonoBehaviour
         // UI slot NOT EMPTY && Mouse slot NOT EMPTY
         if (!clickedUISlot.InventorySlotUIEmpty() && !_mouseItemSlot.MouseSlotEmpty())
         {
+            if (isShiftKeyPressed)
+            {
+                List<Inventory> openedInventoriesList = OpenedInventoriesManager.Instance.GetOpenedInventories();
+                int currentAmount = clickedUISlot.AssignedInventorySlot.CurrentStackSize;
+
+                foreach (Inventory inventory in openedInventoriesList)
+                {
+                    if (inventory == _currentInventory)
+                        continue;
+
+                    currentAmount = inventory.AddItemToInventory(clickedUISlot.AssignedInventorySlot.ItemDataSO,
+                                                                 currentAmount);
+
+                    if (currentAmount == clickedUISlot.AssignedInventorySlot.ItemDataSO.MaxStackSize)
+                        continue;
+
+                    if (currentAmount == 0)
+                    {
+                        clickedUISlot.AssignedInventorySlot.ClearSlot();
+                        return;
+                    }
+
+                    clickedUISlot.AssignedInventorySlot.RemoveFromStackSize(clickedUISlot.AssignedInventorySlot.CurrentStackSize - currentAmount);
+                }
+
+                return;
+            }
+
             // UI slot item == Mouse slot item
             if (clickedUISlot.AssignedInventorySlot.ItemDataSO == _mouseItemSlot.ItemdDataSO)
             {
                 if(isCtrlKeyPressed &&
-                   _mouseItemSlot.ItemQuantity > 1 &&
                    clickedUISlot.AssignedInventorySlot.CurrentStackSize != clickedUISlot.AssignedInventorySlot.ItemDataSO.MaxStackSize)
                 {
+                    clickedUISlot.AssignedInventorySlot.AddToStackSize(1);
+                    _mouseItemSlot.SetMouseSlot(_mouseItemSlot.ItemdDataSO, _mouseItemSlot.ItemQuantity - 1);
 
+                    if (_mouseItemSlot.ItemQuantity <= 0)
+                        _mouseItemSlot.ClearSlot();
 
+                    return;
                 }
 
                 // One of slots is full
@@ -128,6 +185,41 @@ public class InventoryDisplay : MonoBehaviour
                 return;
             }
         }
+    }
+
+    protected InventorySlotUI CreateInventorySlotUI()
+    {
+        Transform slotTransform = Instantiate(_inventorySlotUIPrefab, _inventorySlotContainer);
+
+        InventorySlotUI inventorySlotUI = slotTransform.GetComponent<InventorySlotUI>();
+
+        _inventorySlotsUIList.Add(inventorySlotUI);
+
+        inventorySlotUI.SetParentDisplay(this);
+
+        inventorySlotUI.OnUISlotClicked += InventorySlotUI_OnUISlotClicked;
+        inventorySlotUI.OnPointerEnterUISlot += InventorySlotUI_OnPointerEnterUISlot;
+        inventorySlotUI.OnPointerExitUISlot += InventorySlotUI_OnPointerExitUISlot;
+
+        return inventorySlotUI;
+    }
+
+    protected void InventorySlotUI_OnPointerExitUISlot(object sender, System.EventArgs e)
+    {
+        _itemDescriptionWindow.HideItemDescription();
+    }
+
+    protected void InventorySlotUI_OnPointerEnterUISlot(object sender, System.EventArgs e)
+    {
+        InventorySlotUI pointerOverSlot = sender as InventorySlotUI;
+
+        _itemDescriptionWindow.DisplayItemDescription(pointerOverSlot);
+    }
+
+    protected void InventorySlotUI_OnUISlotClicked(object sender, System.EventArgs e)
+    {
+        InventorySlotUI clickedSlot = sender as InventorySlotUI;
+        InventorySlotUIClicked(clickedSlot);
     }
 
     private void SwapItems(InventorySlot slot)

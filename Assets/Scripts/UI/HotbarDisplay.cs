@@ -9,12 +9,16 @@ public class HotbarDisplay : InventoryDisplay
     protected override void Awake()
     {
         base.Awake();
+
+        _isOpened = true;
         InitializeHotbar();
     }
 
     private void Start()
     {
         _playerInventory.OnHotbarInventorySlotChanged += PlayerInventory_OnHotbarInventorySlotChanged;
+
+        _currentInventory = _playerInventory.GetHotbarInventory();
     }
 
     private void PlayerInventory_OnHotbarInventorySlotChanged(object sender, System.EventArgs e)

@@ -32,19 +32,19 @@ public class Inventory
         }
     }
 
-    public bool AddItemToInventory(Item item)
+    public int AddItemToInventory(ItemDataSO itemDataSO, int amount)
     {
-        if (ContainsItem(item.ItemDataSO, out List<InventorySlot> sameItemSlots)) // If inventory cointains same item -> get List of slots, containing this item
+
+        if (ContainsItem(itemDataSO, out List<InventorySlot> sameItemSlots)) // If inventory cointains same item -> get List of slots, containing this item
         {
             foreach (InventorySlot slot in sameItemSlots)
             {
-                if (slot.ItemDataSO.MaxStackSize - slot.CurrentStackSize >= item.ItemQuantity) // If we can add whole item quantity to already existing stack -> update slot item quantity
+                if (slot.ItemDataSO.MaxStackSize - slot.CurrentStackSize >= amount) // If we can add whole item quantity to already existing stack -> update slot item quantity
                 {
-                    slot.AddToStackSize(item.ItemQuantity);
-                    item.ChangeItemQuantity(0);
+                    slot.AddToStackSize(amount);
                     OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
 
-                    return true;
+                    return 0;
                 }
                 else // If we can't add whole item quantity -> add what we can, reduce quantity
                 {
@@ -55,33 +55,33 @@ public class Inventory
 
                     slot.AddToStackSize(slotCanAdd);
 
-                    item.ChangeItemQuantity(item.ItemQuantity - slotCanAdd);
+                    amount -= slotCanAdd;
 
                     OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
 
-        while (item.ItemQuantity > 0 && InventoryHasFreeSlot(out InventorySlot freeSlot)) // If we didnt find slots with same item/all slots with same item are full -> add item to free slot
+        while (amount > 0 && InventoryHasFreeSlot(out InventorySlot freeSlot)) // If we didnt find slots with same item/all slots with same item are full -> add item to free slot
         {
-            if (item.ItemDataSO.MaxStackSize >= item.ItemQuantity) // If we can add whole item quantity to one slot -> update slot
+            if (itemDataSO.MaxStackSize >= amount) // If we can add whole item quantity to one slot -> update slot
             {
-                freeSlot.SetSlotData(item.ItemDataSO, item.ItemQuantity);
+                freeSlot.SetSlotData(itemDataSO, amount);
 
                 OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
 
-                return true;
+                return 0;
             }
             else
             {
-                freeSlot.SetSlotData(item.ItemDataSO, item.ItemDataSO.MaxStackSize); // Add amount that slot can hold
-                item.ChangeItemQuantity(item.ItemQuantity - item.ItemDataSO.MaxStackSize);
+                freeSlot.SetSlotData(itemDataSO, itemDataSO.MaxStackSize); // Add amount that slot can hold
+                amount -= itemDataSO.MaxStackSize;
 
                 OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        return false;
+        return amount;
     }
 
     private bool ContainsItem(ItemDataSO itemDataSO, out List<InventorySlot> sameSlotsList)

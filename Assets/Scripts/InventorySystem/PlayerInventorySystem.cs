@@ -57,14 +57,16 @@ public class PlayerInventorySystem : MonoBehaviour
         _hotbar.OnInventorySlotChanged -= Hotbar_OnInventorySlotChanged;
     }
 
-    public bool AddItemToInventory(Item item)
+    public int AddItemToInventory(Item item)
     {
-        if(_hotbar.AddItemToInventory(item))
+        int amountDidntFit = _hotbar.AddItemToInventory(item.ItemDataSO, item.ItemQuantity);
+
+        if (amountDidntFit == 0)
         {
-            return true;
+            return 0;
         }
 
-        return _mainInventory.AddItemToInventory(item);
+        return _mainInventory.AddItemToInventory(item.ItemDataSO, amountDidntFit);
     }
 
     public int GetHotbarSize() => HOTBAR_SIZE;

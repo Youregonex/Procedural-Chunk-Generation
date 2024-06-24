@@ -463,7 +463,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 0.627451, g: 0.5764706, b: 0.49019608, a: 1}
     m_HighlightedColor: {r: 0.627451, g: 0.5764706, b: 0.49019608, a: 1}
-    m_PressedColor: {r: 0.627451, g: 0.5764706, b: 0.49019608, a: 1}
+    m_PressedColor: {r: 0.4339623, g: 0.42407823, b: 0.4073514, a: 1}
     m_SelectedColor: {r: 0.627451, g: 0.5764706, b: 0.49019608, a: 1}
     m_DisabledColor: {r: 0.627451, g: 0.5764706, b: 0.49019608, a: 1}
     m_ColorMultiplier: 1
@@ -499,6 +499,7 @@ MonoBehaviour:
   _itemImage: {fileID: 9058339192658002243}
   _quantityTextBackground: {fileID: 1207746350646077098}
   _itemQuantityText: {fileID: 2683557738170462413}
+  _parentDisplay: {fileID: 0}
 --- !u!1 &7617980168602430725
 GameObject:
   m_ObjectHideFlags: 0

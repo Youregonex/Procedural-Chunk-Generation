@@ -1,9 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
+using System;
 
-public class InventorySlotUI : MonoBehaviour
+public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    public event EventHandler OnUISlotClicked;
+    public event EventHandler OnPointerEnterUISlot;
+    public event EventHandler OnPointerExitUISlot;
+
+
     [SerializeField] private Image _itemImage;
     [SerializeField] private RectTransform _quantityTextBackground;
     [SerializeField] private TextMeshProUGUI _itemQuantityText;
@@ -26,13 +33,35 @@ public class InventorySlotUI : MonoBehaviour
         _button.onClick.AddListener(() =>
         {
             Debug.Log("Slot clicked");
-            _parentDisplay.InventorySlotUIClicked(this);
+            OnUISlotClicked?.Invoke(this, EventArgs.Empty);
         });
     }
 
     private void OnDestroy()
     {
         _assignedInventorySlot.OnInventorySlotChanged -= InventorySlot_OnInventorySlotChanged;
+    }
+
+    public void AssignInventorySlot(InventorySlot slot)
+    {
+        _assignedInventorySlot = slot;
+
+        _assignedInventorySlot.OnInventorySlotChanged += InventorySlot_OnInventorySlotChanged;
+        RefreshSlotUI();
+    }
+
+    public bool InventorySlotUIEmpty() => _assignedInventorySlot.ItemDataSO == null;
+    public void SetParentDisplay(InventoryDisplay inventoryDisplay) => _parentDisplay = inventoryDisplay;
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (!InventorySlotUIEmpty())
+            OnPointerEnterUISlot?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        OnPointerExitUISlot?.Invoke(this, EventArgs.Empty);
     }
 
     public void RefreshSlotUI()
@@ -75,15 +104,4 @@ public class InventorySlotUI : MonoBehaviour
         _itemImage.color = Color.clear;
         _quantityTextBackground.gameObject.SetActive(false);
     }
-
-    public void AssignInventorySlot(InventorySlot slot)
-    {
-        _assignedInventorySlot = slot;
-
-        _assignedInventorySlot.OnInventorySlotChanged += InventorySlot_OnInventorySlotChanged;
-        RefreshSlotUI();
-    }
-
-    public bool InventorySlotUIEmpty() => _assignedInventorySlot.ItemDataSO == null;
-    public void SetParentDisplay(InventoryDisplay inventoryDisplay) => _parentDisplay = inventoryDisplay;
 }

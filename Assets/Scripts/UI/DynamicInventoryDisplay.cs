@@ -4,14 +4,16 @@ public class DynamicInventoryDisplay : InventoryDisplay
 {
     [SerializeField] protected RectTransform _inventoryBackground;
 
-    private Inventory _currentInventory;
-    private bool _isOpened = false;
-
     protected void Start()
     {
         PlayerInventorySystem.OnInventoryDisplayRequested += PlayerInventorySystem_OnInventoryDisplayRequested;
 
         HideInventory();
+    }
+
+    private void OnDestroy()
+    {
+        PlayerInventorySystem.OnInventoryDisplayRequested -= PlayerInventorySystem_OnInventoryDisplayRequested;
     }
 
     private void PlayerInventorySystem_OnInventoryDisplayRequested(object sender, PlayerInventorySystem.OnInventoryDisplayRequestedEventArgs e)
@@ -70,14 +72,13 @@ public class DynamicInventoryDisplay : InventoryDisplay
     {
         foreach (InventorySlotUI slotUI in _inventorySlotsUIList)
         {
+            slotUI.OnUISlotClicked -= InventorySlotUI_OnUISlotClicked;
+            slotUI.OnPointerEnterUISlot -= InventorySlotUI_OnPointerEnterUISlot;
+            slotUI.OnPointerExitUISlot -= InventorySlotUI_OnPointerExitUISlot;
+
             Destroy(slotUI.gameObject);
         }
 
         _inventorySlotsUIList.Clear();
-    }
-
-    private void OnDisable()
-    {
-        PlayerInventorySystem.OnInventoryDisplayRequested -= PlayerInventorySystem_OnInventoryDisplayRequested;
     }
 }

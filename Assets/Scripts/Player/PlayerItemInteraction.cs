@@ -10,8 +10,16 @@ public class PlayerItemInteraction : MonoBehaviour
 
         if (item != null)
         {
-            if (_playerInventory.AddItemToInventory(item))
+            int amountDidntFit = _playerInventory.AddItemToInventory(item);
+
+            if (amountDidntFit == 0)
+            {
                 item.DestroyItem();
+            }
+            else
+            {
+                item.ChangeItemQuantity(amountDidntFit);
+            }
         }
     }
 }

@@ -84,6 +84,26 @@ public class Inventory
         return amount;
     }
 
+    public bool ContainsItemWithQuantity(ItemDataSO item, int amount)
+    {
+        if (ContainsItem(item, out List<InventorySlot> inventorySlots))
+        {
+            foreach (InventorySlot slot in inventorySlots)
+            {
+                if (slot.CurrentStackSize >= amount)
+                {
+                    return true;
+                }
+                else
+                {
+                    amount -= slot.CurrentStackSize;
+                }
+            }
+        }
+
+        return false;
+    }
+
     private bool ContainsItem(ItemDataSO itemDataSO, out List<InventorySlot> sameSlotsList)
     {
         sameSlotsList = new List<InventorySlot>();

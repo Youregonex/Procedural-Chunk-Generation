@@ -17,7 +17,6 @@ public class Chunk : MonoBehaviour
     }
 
     private int _sideLength;
-    [SerializeField] private int _tilesCount = 0;
 
     [Header("Debug Fields")]
     [SerializeField] private List<Vector2Int> _neighbourChunkList;
@@ -29,6 +28,7 @@ public class Chunk : MonoBehaviour
     [SerializeField] private bool _isLoadingTiles = false;
     [SerializeField] private bool _chunkMapFilled;
     [SerializeField] private float[,] _chunkMapArray;
+    [SerializeField] private int _tilesCount = 0;
 
     private void Awake()
     {

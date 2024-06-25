@@ -6,22 +6,10 @@ public class DynamicInventoryDisplay : InventoryDisplay
 
     protected void Start()
     {
-        PlayerInventorySystem.OnInventoryDisplayRequested += PlayerInventorySystem_OnInventoryDisplayRequested;
-
         HideInventory();
     }
 
-    private void OnDestroy()
-    {
-        PlayerInventorySystem.OnInventoryDisplayRequested -= PlayerInventorySystem_OnInventoryDisplayRequested;
-    }
-
-    private void PlayerInventorySystem_OnInventoryDisplayRequested(object sender, PlayerInventorySystem.OnInventoryDisplayRequestedEventArgs e)
-    {
-        ShowInventory(e.inventory);
-    }
-
-    private void ShowInventory(Inventory inventoryToDisplay)
+    public void ShowInventory(Inventory inventoryToDisplay)
     {
         if (_isOpened)
         {
@@ -49,12 +37,7 @@ public class DynamicInventoryDisplay : InventoryDisplay
         }
     }
 
-    private void Inventory_OnInventorySlotChanged(object sender, System.EventArgs e)
-    {
-        RefreshInventoryDisplay();
-    }
-
-    private void HideInventory()
+    public void HideInventory()
     {
         ClearAllSlots();
         _isOpened = false;
@@ -66,6 +49,11 @@ public class DynamicInventoryDisplay : InventoryDisplay
         }
 
         _inventoryBackground.gameObject.SetActive(false);
+    }
+
+    private void Inventory_OnInventorySlotChanged(object sender, System.EventArgs e)
+    {
+        RefreshInventoryDisplay();
     }
 
     private void ClearAllSlots()

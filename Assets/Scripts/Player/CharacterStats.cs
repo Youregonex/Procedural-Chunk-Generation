@@ -23,26 +23,9 @@ public class CharacterStats : MonoBehaviour
         InitializeStatDictionary();
     }
 
-    private void InitializeStatDictionary()
-    {
-        foreach(Stat stat in _initialStatConfigSO.stats)
-        {
-            if (_characterStatDictionary.ContainsKey(stat.statName))
-                continue;
-
-            _characterStatDictionary.Add(stat.statName, new Stat
-            {
-                statName = stat.statName,
-                maxValue = stat.maxValue,
-                minValue = stat.minValue,
-                currentValue = stat.currentValue
-            });
-        }
-    }
-
     public void LogStats()
     {
-        foreach(Stat stat in _characterStatDictionary.Values)
+        foreach (Stat stat in _characterStatDictionary.Values)
         {
             Debug.Log($"Stat {stat.statName}\n" +
           $"Max Value : {stat.maxValue}\n" +
@@ -87,4 +70,21 @@ public class CharacterStats : MonoBehaviour
     }
 
     public Dictionary<StatsEnum, Stat> GetCharacterStatDictionary() => _characterStatDictionary;
+
+    private void InitializeStatDictionary()
+    {
+        foreach(Stat stat in _initialStatConfigSO.stats)
+        {
+            if (_characterStatDictionary.ContainsKey(stat.statName))
+                continue;
+
+            _characterStatDictionary.Add(stat.statName, new Stat
+            {
+                statName = stat.statName,
+                maxValue = stat.maxValue,
+                minValue = stat.minValue,
+                currentValue = stat.currentValue
+            });
+        }
+    }
 }

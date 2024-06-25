@@ -27,6 +27,8 @@ public class PlayerMovement : MonoBehaviour, IPlayer
         _playerAnimation.OnPlayerAttackAnimationFinished += PlayerAnimation_OnPlayerAttackAnimationFinished;
     }
 
+    public Vector2 GetCurrentDirection() => _lastMovementDirection;
+
     private void PlayerAnimation_OnPlayerAttackAnimationFinished(object sender, System.EventArgs e)
     {
         _canMove = true;
@@ -68,6 +70,4 @@ public class PlayerMovement : MonoBehaviour, IPlayer
         _playerAnimation.OnPlayerAttackAnimationStarted -= PlayerAnimation_OnPlayerAttackAnimationStarted;
         _playerAnimation.OnPlayerAttackAnimationFinished -= PlayerAnimation_OnPlayerAttackAnimationFinished;
     }
-
-    public Vector2 GetCurrentDirection() => _lastMovementDirection;
 }

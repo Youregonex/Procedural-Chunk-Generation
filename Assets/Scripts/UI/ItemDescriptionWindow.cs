@@ -16,6 +16,8 @@ public class ItemDescriptionWindow : MonoBehaviour
         HideItemDescription();
     }
 
+    public void HideItemDescription() => _itemDescriptionUIPanel.gameObject.SetActive(false);
+
     public void DisplayItemDescription(InventorySlotUI currentItem)
     {
         ItemDataSO itemDataSO = currentItem.AssignedInventorySlot.ItemDataSO;
@@ -77,6 +79,4 @@ public class ItemDescriptionWindow : MonoBehaviour
         _itemNameText.text = itemData.Name;
         _itemDescriptionText.text = itemData.Description;
     }
-
-    public void HideItemDescription() => _itemDescriptionUIPanel.gameObject.SetActive(false);
 }

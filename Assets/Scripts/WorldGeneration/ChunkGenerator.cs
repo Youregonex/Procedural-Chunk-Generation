@@ -54,6 +54,28 @@ public class ChunkGenerator : MonoBehaviour
         CreateInitialChunk();
     }
 
+    public Chunk GetChunkAtPosition(Vector2Int chunkPosition)
+    {
+        bool chunkExists = ChunkExistsAtPosition(chunkPosition);
+
+        if (!chunkExists)
+            return null;
+
+        return _chunkDictionary[chunkPosition];
+    }
+
+    public float[,] GetChunkMapArrayWithPosition(Vector2Int chunkPosition)
+    {
+        if (!ChunkExistsAtPosition(chunkPosition))
+        {
+            return null;
+        }
+
+        return _chunkDictionary[chunkPosition].GetChunkMapArray();
+    }
+
+    public bool ChunkExistsAtPosition(Vector2Int chunkPosition) => _chunkDictionary.ContainsKey(chunkPosition);
+
     private void CreateInitialChunk()
     {
         GenerateChunk(new Vector2Int(0, 0));
@@ -224,26 +246,4 @@ public class ChunkGenerator : MonoBehaviour
         Chunk.OnPlayerEnteredChunkRange -= Chunk_OnPlayerEnteredChunkRange;
         Chunk.OnPlayerLeftChunkRange -= Chunk_OnPlayerLeftChunkRange;
     }
-
-    public Chunk GetChunkAtPosition(Vector2Int chunkPosition)
-    {
-        bool chunkExists = ChunkExistsAtPosition(chunkPosition);
-
-        if (!chunkExists)
-            return null;
-
-        return _chunkDictionary[chunkPosition];
-    }
-
-    public float[,] GetChunkMapArrayWithPosition(Vector2Int chunkPosition)
-    {
-        if(!ChunkExistsAtPosition(chunkPosition))
-        {
-            return null;
-        }
-
-        return _chunkDictionary[chunkPosition].GetChunkMapArray();
-    }
-
-    public bool ChunkExistsAtPosition(Vector2Int chunkPosition) => _chunkDictionary.ContainsKey(chunkPosition);
 }

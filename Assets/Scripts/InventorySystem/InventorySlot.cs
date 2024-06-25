@@ -4,7 +4,7 @@ using System;
 [Serializable]
 public class InventorySlot
 {
-    public event EventHandler OnInventorySlotChanged;
+    public event EventHandler InventorySlot_OnInventorySlotChanged;
 
     [SerializeField] private ItemDataSO _itemDataSO;
     [SerializeField] private int _currentStackSize;
@@ -29,7 +29,7 @@ public class InventorySlot
         _itemDataSO = itemDataSO;
         _currentStackSize = quantity;
 
-        OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+        InventorySlot_OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public bool StackCanFit(int quantityToAdd, out int stackCantFit)
@@ -52,21 +52,21 @@ public class InventorySlot
     {
         _currentStackSize = _itemDataSO.MaxStackSize;
 
-        OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+        InventorySlot_OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void AddToStackSize(int quantity)
     {
         _currentStackSize += quantity;
 
-        OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+        InventorySlot_OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void RemoveFromStackSize(int quantity)
     {
         _currentStackSize -= quantity;
 
-        OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+        InventorySlot_OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void ClearSlot()
@@ -74,7 +74,7 @@ public class InventorySlot
         _itemDataSO = null;
         _currentStackSize = -1;
 
-        OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+        InventorySlot_OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public bool SplitStack(out int halfStack)
@@ -88,7 +88,7 @@ public class InventorySlot
         halfStack = Mathf.RoundToInt(_currentStackSize / 2);
         RemoveFromStackSize(halfStack);
 
-        OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+        InventorySlot_OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
 
         return true;
     }

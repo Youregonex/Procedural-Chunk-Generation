@@ -39,14 +39,14 @@ public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     private void OnDestroy()
     {
-        _assignedInventorySlot.OnInventorySlotChanged -= InventorySlot_OnInventorySlotChanged;
+        _assignedInventorySlot.InventorySlot_OnInventorySlotChanged -= InventorySlot_OnInventorySlotChanged;
     }
 
     public void AssignInventorySlot(InventorySlot slot)
     {
         _assignedInventorySlot = slot;
 
-        _assignedInventorySlot.OnInventorySlotChanged += InventorySlot_OnInventorySlotChanged;
+        _assignedInventorySlot.InventorySlot_OnInventorySlotChanged += InventorySlot_OnInventorySlotChanged;
         RefreshSlotUI();
     }
 

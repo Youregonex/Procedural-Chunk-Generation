@@ -13,7 +13,7 @@ public class PlayerInventorySystem : MonoBehaviour
         public Inventory inventory;
     }
 
-    public event EventHandler OnHotbarInventorySlotChanged;
+    public event EventHandler OnInventoryContentChanged;
 
     [SerializeField] private int _mainInventorySize;
     [SerializeField] private Inventory _hotbar;
@@ -35,7 +35,15 @@ public class PlayerInventorySystem : MonoBehaviour
     private void Start()
     {
         _playerInput.OnInventoryKeyPressed += PlayerInput_OnInventoryKeyPressed;
-        _hotbar.OnInventorySlotChanged += Hotbar_OnInventorySlotChanged;
+        _hotbar.Inventory_OnInventorySlotChanged += Inventory_OnInventorySlotChanged;
+        _mainInventory.Inventory_OnInventorySlotChanged += Inventory_OnInventorySlotChanged;
+    }
+
+    private void OnDestroy()
+    {
+        _playerInput.OnInventoryKeyPressed -= PlayerInput_OnInventoryKeyPressed;
+        _hotbar.Inventory_OnInventorySlotChanged -= Inventory_OnInventorySlotChanged;
+        _mainInventory.Inventory_OnInventorySlotChanged -= Inventory_OnInventorySlotChanged;
     }
 
     public int AddItemToInventory(Item item)
@@ -71,6 +79,11 @@ public class PlayerInventorySystem : MonoBehaviour
     public int GetHotbarSize() => HOTBAR_SIZE;
     public Inventory GetHotbarInventory() => _hotbar;
 
+    private void Inventory_OnInventorySlotChanged(object sender, EventArgs e)
+    {
+        OnInventoryContentChanged?.Invoke(this, EventArgs.Empty);
+    }
+
     private Inventory GetCombinedInventory() // Get PlayerInventory + Hotbar
     {
         int mainInventorySize = _mainInventory.InventorySize;
@@ -95,7 +108,7 @@ public class PlayerInventorySystem : MonoBehaviour
         return combinedPlayerInventories;
     }
 
-    private void UpdatePlayerinventoriesWithCombinedInventory(Inventory combinedPlayerInventories) // Updates Player Inventory + Hotbar data with combined inventory data
+    private void UpdatePlayerInventoriesWithCombinedInventory(Inventory combinedPlayerInventories) // Updates Player Inventory + Hotbar data with combined inventory data
     {
         int mainInventorySize = _mainInventory.InventorySize;
         int hotbarSize = _hotbar.InventorySize;
@@ -127,22 +140,11 @@ public class PlayerInventorySystem : MonoBehaviour
         }
     }
 
-    private void Hotbar_OnInventorySlotChanged(object sender, EventArgs e)
-    {
-        OnHotbarInventorySlotChanged?.Invoke(this, EventArgs.Empty);
-    }
-
     private void PlayerInput_OnInventoryKeyPressed(object sender, System.EventArgs e)
     {
         OnInventoryDisplayRequested?.Invoke(this, new OnInventoryDisplayRequestedEventArgs
         {
             inventory = _mainInventory
         });
-    }
-
-    private void OnDestroy()
-    {
-        _playerInput.OnInventoryKeyPressed -= PlayerInput_OnInventoryKeyPressed;
-        _hotbar.OnInventorySlotChanged -= Hotbar_OnInventorySlotChanged;
     }
 }

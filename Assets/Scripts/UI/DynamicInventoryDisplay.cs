@@ -19,7 +19,7 @@ public class DynamicInventoryDisplay : InventoryDisplay
 
         _currentInventory = inventoryToDisplay;
 
-        _currentInventory.OnInventorySlotChanged += Inventory_OnInventorySlotChanged;
+        _currentInventory.Inventory_OnInventorySlotChanged += Inventory_OnInventorySlotChanged;
 
         _inventoryBackground.gameObject.SetActive(true);
 
@@ -44,7 +44,7 @@ public class DynamicInventoryDisplay : InventoryDisplay
 
         if(_currentInventory != null)
         {
-            _currentInventory.OnInventorySlotChanged -= Inventory_OnInventorySlotChanged;
+            _currentInventory.Inventory_OnInventorySlotChanged -= Inventory_OnInventorySlotChanged;
             _currentInventory = null;
         }
 

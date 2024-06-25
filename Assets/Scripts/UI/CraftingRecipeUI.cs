@@ -20,6 +20,9 @@ public class CraftingRecipeUI : MonoBehaviour
     private CraftingRecipeSO _currentCraftingRecipeSO;
     private bool _craftPossible = false;
 
+    public CraftingRecipeSO CurrentCraftingRecipeSO => _currentCraftingRecipeSO;
+
+
     private void Awake()
     {
         _craftRecipeButton.onClick.AddListener(() =>
@@ -33,10 +36,14 @@ public class CraftingRecipeUI : MonoBehaviour
 
     public void SetCraftingRecipeUIData(CraftingRecipeSO craftingRecipeSO, bool craftPossible)
     {
-        _craftRecipItemIcon.sprite = craftingRecipeSO.RecipeResult.Icon;
-
         _currentCraftingRecipeSO = craftingRecipeSO;
+        _craftRecipItemIcon.sprite = _currentCraftingRecipeSO.RecipeResult.Icon;
 
+        UpdateCraftingRecipeUIData(craftPossible);
+    }
+
+    public void UpdateCraftingRecipeUIData(bool craftPossible)
+    {
         _craftPossible = craftPossible;
 
         if (craftPossible)

@@ -6,7 +6,7 @@ using System;
 [Serializable]
 public class Inventory
 {
-    public event EventHandler OnInventorySlotChanged;
+    public event EventHandler Inventory_OnInventorySlotChanged;
 
     [SerializeField] private List<InventorySlot> _inventoryContentList;
 
@@ -28,7 +28,11 @@ public class Inventory
 
         for (int i = 0; i < _inventorySize; i++)
         {
-            _inventoryContentList.Add(new InventorySlot());
+            InventorySlot inventorySlot = new InventorySlot();
+
+            _inventoryContentList.Add(inventorySlot);
+
+            inventorySlot.InventorySlot_OnInventorySlotChanged += InventorySlot_OnInventorySlotChanged;
         }
     }
 
@@ -42,7 +46,7 @@ public class Inventory
                 if (slot.ItemDataSO.MaxStackSize - slot.CurrentStackSize >= amount) // If we can add whole item quantity to already existing stack -> update slot item quantity
                 {
                     slot.AddToStackSize(amount);
-                    OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+                    Inventory_OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
 
                     return 0;
                 }
@@ -57,7 +61,7 @@ public class Inventory
 
                     amount -= slotCanAdd;
 
-                    OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+                    Inventory_OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
@@ -68,7 +72,7 @@ public class Inventory
             {
                 freeSlot.SetSlotData(itemDataSO, amount);
 
-                OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+                Inventory_OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
 
                 return 0;
             }
@@ -77,7 +81,7 @@ public class Inventory
                 freeSlot.SetSlotData(itemDataSO, itemDataSO.MaxStackSize); // Add amount that slot can hold
                 amount -= itemDataSO.MaxStackSize;
 
-                OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+                Inventory_OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -102,6 +106,11 @@ public class Inventory
         }
 
         return false;
+    }
+
+    private void InventorySlot_OnInventorySlotChanged(object sender, EventArgs e)
+    {
+        Inventory_OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private bool ContainsItem(ItemDataSO itemDataSO, out List<InventorySlot> sameSlotsList)

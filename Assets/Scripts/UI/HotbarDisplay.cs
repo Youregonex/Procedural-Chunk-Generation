@@ -16,8 +16,6 @@ public class HotbarDisplay : InventoryDisplay
 
     private void Start()
     {
-        _playerInventory.OnHotbarInventorySlotChanged += PlayerInventory_OnHotbarInventorySlotChanged;
-
         _currentInventory = _playerInventory.GetHotbarInventory();
     }
 

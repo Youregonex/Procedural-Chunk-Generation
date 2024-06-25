@@ -7,6 +7,7 @@ public class InventoryCraftOpenCloseManager : MonoBehaviour
 
     private bool _windowsOpened;
 
+
     private void Start()
     {
         PlayerInventorySystem.OnInventoryDisplayRequested += PlayerInventorySystem_OnInventoryDisplayRequested;

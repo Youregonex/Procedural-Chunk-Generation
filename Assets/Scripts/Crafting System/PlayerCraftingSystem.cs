@@ -5,5 +5,5 @@ public class PlayerCraftingSystem : MonoBehaviour
 {
     [SerializeField] private List<CraftingRecipeSO> _availableCraftingRecipeList;
 
-    public List<CraftingRecipeSO> GetAvailableCrafts() => _availableCraftingRecipeList;
+    public List<CraftingRecipeSO> GetAvailableCraftingRecipes() => _availableCraftingRecipeList;
 }

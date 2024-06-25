@@ -14,6 +14,8 @@ public class CraftingListDisplay : MonoBehaviour
     [SerializeField] private Transform _crafingRecipeUIPrefab;
 
     private List<CraftingRecipeUI> _craftRecipeUIList = new List<CraftingRecipeUI>();
+    private List<CraftingRecipeUI> _activeRecipeUIList = new List<CraftingRecipeUI>();
+
 
     private void OnDestroy()
     {
@@ -38,6 +40,7 @@ public class CraftingListDisplay : MonoBehaviour
         for (int i = 0; i < availableCrafts.Count; i++)
         {
             _craftRecipeUIList[i].gameObject.SetActive(true);
+            _activeRecipeUIList.Add(_craftRecipeUIList[i]);
 
             bool recipeCraftPossible = playerInventory.CanCraftRecipe(availableCrafts[i]);
 
@@ -45,14 +48,24 @@ public class CraftingListDisplay : MonoBehaviour
         }
     }
 
+    public void RefreshCraftingList(PlayerInventorySystem playerInventory)
+    {
+        foreach(CraftingRecipeUI craftingRecipeUI in _activeRecipeUIList)
+        {
+            bool craftPossible = playerInventory.CanCraftRecipe(craftingRecipeUI.CurrentCraftingRecipeSO);
+            craftingRecipeUI.UpdateCraftingRecipeUIData(craftPossible);
+        }
+    }
+
     public void HideCrafingRecipes()
     {
-        if (_craftRecipeUIList.Count == 0)
+        if (_activeRecipeUIList.Count == 0)
             return;
 
-        foreach(CraftingRecipeUI craftingRecipeUI in _craftRecipeUIList)
+        for (int i = 0; i < _activeRecipeUIList.Count; i++)
         {
-            craftingRecipeUI.gameObject.SetActive(false);
+            _activeRecipeUIList[i].gameObject.SetActive(false);
+            _activeRecipeUIList.Remove(_activeRecipeUIList[i]);
         }
     }
 

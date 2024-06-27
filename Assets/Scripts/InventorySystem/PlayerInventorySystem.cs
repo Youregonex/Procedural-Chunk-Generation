@@ -58,15 +58,34 @@ public class PlayerInventorySystem : MonoBehaviour
         return _mainInventory.AddItemToInventory(item.ItemDataSO, amountDidntFit);
     }
 
+    public void CraftItem(CraftingRecipeSO craftingRecipeSO, int craftItemAmount)
+    {
+        Inventory combinedPlayerInventories = GetCombinedInventory();
+
+        foreach (CraftingComponentStruct craftingComponent in craftingRecipeSO.RecipeComponentsList)
+        {
+            combinedPlayerInventories.RemoveItem(craftingComponent.componentItemDataSO, craftingComponent.amountForCraft * craftItemAmount);
+        }
+
+        int inventoryCantFit = combinedPlayerInventories.AddItemToInventory(craftingRecipeSO.RecipeResult, craftItemAmount);
+
+        if(inventoryCantFit != 0)
+        {
+            ItemFactory itemFactory = new ItemFactory();
+
+            itemFactory.CreateItem(craftingRecipeSO.RecipeResult, craftItemAmount);
+        }
+    }
+
     public bool CanCraftRecipe(CraftingRecipeSO craftingRecipeSO)
     {
         bool recipeCraftPossible = true;
 
         Inventory combinedPlayerInventories = GetCombinedInventory();
 
-        foreach(CraftingComponent craftingComponent in craftingRecipeSO.RecipeComponents)
+        foreach(CraftingComponentStruct craftingComponent in craftingRecipeSO.RecipeComponentsList)
         {
-            if(!combinedPlayerInventories.ContainsItemWithQuantity(craftingComponent.itemDataSO, craftingComponent.amountForCraft))
+            if(!combinedPlayerInventories.ContainsItemWithQuantity(craftingComponent.componentItemDataSO, craftingComponent.amountForCraft))
             {
                 recipeCraftPossible = false;
                 break;
@@ -74,6 +93,18 @@ public class PlayerInventorySystem : MonoBehaviour
         }
 
         return recipeCraftPossible;
+    }
+
+    public bool CraftingComponentAvailable(ItemDataSO itemDataSO, int amount)
+    {
+        Inventory combinedPlayerInventories = GetCombinedInventory();
+
+        if(combinedPlayerInventories.ContainsItemWithQuantity(itemDataSO, amount))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     public int GetHotbarSize() => HOTBAR_SIZE;
@@ -95,49 +126,17 @@ public class PlayerInventorySystem : MonoBehaviour
 
         for (int i = 0; i < combinedPlayerInventories.InventorySize; i++)
         {
-            if (i < mainInventorySize)
+            if (i < hotbarSize)
             {
-                combinedPlayerInventories.InventoryContentList[i] = _mainInventory.InventoryContentList[i];
+                combinedPlayerInventories.InventoryContentList[i] = _hotbar.InventoryContentList[i];
             }
             else
             {
-                combinedPlayerInventories.InventoryContentList[i] = _hotbar.InventoryContentList[i - mainInventorySize];
+                combinedPlayerInventories.InventoryContentList[i] = _mainInventory.InventoryContentList[i - hotbarSize];
             }
         }
 
         return combinedPlayerInventories;
-    }
-
-    private void UpdatePlayerInventoriesWithCombinedInventory(Inventory combinedPlayerInventories) // Updates Player Inventory + Hotbar data with combined inventory data
-    {
-        int mainInventorySize = _mainInventory.InventorySize;
-        int hotbarSize = _hotbar.InventorySize;
-
-        bool slotDidntChange;
-
-        for (int i = 0; i < combinedPlayerInventories.InventorySize; i++)
-        {
-            if (i < mainInventorySize)
-            {
-                slotDidntChange = _mainInventory.InventoryContentList[i] == combinedPlayerInventories.InventoryContentList[i];
-
-                if (slotDidntChange)
-                    continue;
-
-                _mainInventory.InventoryContentList[i].SetSlotData(combinedPlayerInventories.InventoryContentList[i].ItemDataSO,
-                                                                   combinedPlayerInventories.InventoryContentList[i].CurrentStackSize);
-            }
-            else
-            {
-                slotDidntChange = _hotbar.InventoryContentList[i - mainInventorySize] == combinedPlayerInventories.InventoryContentList[i];
-
-                if (slotDidntChange)
-                    continue;
-
-                _hotbar.InventoryContentList[i - mainInventorySize].SetSlotData(combinedPlayerInventories.InventoryContentList[i].ItemDataSO,
-                                                                                combinedPlayerInventories.InventoryContentList[i].CurrentStackSize);
-            }
-        }
     }
 
     private void PlayerInput_OnInventoryKeyPressed(object sender, System.EventArgs e)

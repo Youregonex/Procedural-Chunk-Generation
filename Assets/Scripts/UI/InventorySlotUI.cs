@@ -32,7 +32,6 @@ public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         _button.onClick.AddListener(() =>
         {
-            Debug.Log("Slot clicked");
             OnUISlotClicked?.Invoke(this, EventArgs.Empty);
         });
     }

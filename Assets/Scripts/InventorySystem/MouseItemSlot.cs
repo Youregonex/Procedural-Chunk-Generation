@@ -11,7 +11,7 @@ public class MouseItemSlot : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _itemQuantityText;
     [SerializeField] private RectTransform _quantityTextBackground;
     [SerializeField] private Vector2 _mouseItemOffset;
-    [SerializeField] private PlayerMovement _playerMovement;
+    [SerializeField] private AgentMovement _playerMovement;
 
     [Header("Debug Fields")]
     [SerializeField] private ItemDataSO _itemDataSO;

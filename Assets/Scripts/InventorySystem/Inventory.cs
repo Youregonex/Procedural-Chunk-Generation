@@ -88,6 +88,46 @@ public class Inventory
         return amount;
     }
 
+    public bool RemoveItem(ItemDataSO itemDataSO, int quantity)
+    {
+        if (ContainsItem(itemDataSO, out List<InventorySlot> inventorySlots))
+        {
+            int inventoryHasItemAmount = 0;
+
+            foreach (InventorySlot slot in inventorySlots)
+            {
+                inventoryHasItemAmount += slot.CurrentStackSize;
+            }
+
+            if (inventoryHasItemAmount < quantity)
+                return false;
+
+            foreach (InventorySlot slot in inventorySlots)
+            {
+                if (slot.CurrentStackSize >= quantity)
+                {
+                    slot.RemoveFromStackSize(quantity);
+
+                    if (slot.CurrentStackSize == 0)
+                        slot.ClearSlot();
+
+                    Inventory_OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+
+                    return true;
+                }
+                else
+                {
+                    quantity -= slot.CurrentStackSize;
+                    slot.ClearSlot();
+
+                    Inventory_OnInventorySlotChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
+
+        return false;
+    }
+
     public bool ContainsItemWithQuantity(ItemDataSO item, int amount)
     {
         if (ContainsItem(item, out List<InventorySlot> inventorySlots))

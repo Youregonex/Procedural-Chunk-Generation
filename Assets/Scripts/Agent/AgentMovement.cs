@@ -1,10 +1,11 @@
 using UnityEngine;
 
 [SelectionBase]
-[RequireComponent(typeof(PlayerInput), typeof(Rigidbody2D), typeof(CharacterStats))]
+[RequireComponent(typeof(AgentInput), typeof(Rigidbody2D), typeof(CharacterStats))]
 public class AgentMovement : MonoBehaviour, IPlayer
 {
     [SerializeField] private AgentInput _agentInput;
+    [SerializeField] private AgentAnimation _agentAnimation;
 
     private CharacterStats _agentStats;
     private Rigidbody2D _rigidBody2D;
@@ -13,7 +14,6 @@ public class AgentMovement : MonoBehaviour, IPlayer
     [Header("Debug Fields")]
     [SerializeField] private Vector2 _movementDirection;
     [SerializeField] private Vector2 _lastMovementDirection;
-    [SerializeField] private AgentAnimation _agentAnimation;
 
     private void Awake()
     {
@@ -23,18 +23,24 @@ public class AgentMovement : MonoBehaviour, IPlayer
 
     private void Start()
     {
-        _agentAnimation.OnAgentAttackAnimationStarted += PlayerAnimation_OnPlayerAttackAnimationStarted;
-        _agentAnimation.OnAgentAttackAnimationFinished += PlayerAnimation_OnPlayerAttackAnimationFinished;
+        _agentAnimation.OnAgentAttackAnimationStarted += AgentAnimation_OnAgentAttackAnimationStarted;
+        _agentAnimation.OnAgentAttackAnimationFinished += AgentAnimation_OnAgentAttackAnimationFinished;
+    }
+
+    private void OnDestroy()
+    {
+        _agentAnimation.OnAgentAttackAnimationStarted -= AgentAnimation_OnAgentAttackAnimationStarted;
+        _agentAnimation.OnAgentAttackAnimationFinished -= AgentAnimation_OnAgentAttackAnimationFinished;
     }
 
     public Vector2 GetCurrentDirection() => _lastMovementDirection;
 
-    private void PlayerAnimation_OnPlayerAttackAnimationFinished(object sender, System.EventArgs e)
+    private void AgentAnimation_OnAgentAttackAnimationFinished(object sender, System.EventArgs e)
     {
         _canMove = true;
     }
 
-    private void PlayerAnimation_OnPlayerAttackAnimationStarted(object sender, System.EventArgs e)
+    private void AgentAnimation_OnAgentAttackAnimationStarted(object sender, System.EventArgs e)
     {
         _canMove = false;
     }
@@ -63,11 +69,5 @@ public class AgentMovement : MonoBehaviour, IPlayer
         _rigidBody2D.velocity = new Vector3(_movementDirection.x, _movementDirection.y, 0f) * _agentStats.GetCurrentStatValue(moveSpeedStat);
 
         _agentAnimation.ManageMoveAnimation(_movementDirection);
-    }
-
-    private void OnDestroy()
-    {
-        _agentAnimation.OnAgentAttackAnimationStarted -= PlayerAnimation_OnPlayerAttackAnimationStarted;
-        _agentAnimation.OnAgentAttackAnimationFinished -= PlayerAnimation_OnPlayerAttackAnimationFinished;
     }
 }

@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 6871983408722695856}
   - component: {fileID: 5674683822768755735}
   - component: {fileID: 6157666926760569713}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PF_ObstacleTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}

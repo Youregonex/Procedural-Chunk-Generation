@@ -29,7 +29,6 @@ public class PlayerInput : AgentInput
     public Vector2 GetMouseScreenPosition() => Mouse.current.position.ReadValue();
     public Vector2 GetMouseScreenPositionNormalized() => GetMouseScreenPosition().normalized;
     public override Vector2 GetAimPosition() => Camera.main.ScreenToWorldPoint(GetMouseScreenPosition());
-    public Vector2 GetAimPositionNormalized() => GetAimPosition().normalized;
 
     private void PlayerInputActions_Inventory_performed(InputAction.CallbackContext obj)
     {

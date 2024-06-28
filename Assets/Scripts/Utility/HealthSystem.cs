@@ -1,10 +1,15 @@
 using UnityEngine;
+using System;
 
-public class HealthSystem : MonoBehaviour
+public class HealthSystem : MonoBehaviour, IDamageable
 {
+    public event Action<DamageStruct> OnDamageTaken;
+
     [Header("Debug Fields")]
     [SerializeField] protected float _maxHealth;
     [SerializeField] protected float _currentHealth;
+
+    public FactionEnum Faction { get; set; }
 
     protected virtual void Awake()
     {
@@ -15,7 +20,9 @@ public class HealthSystem : MonoBehaviour
     {
         _currentHealth -= damageStruct.damageAmount;
 
-        if(_currentHealth <= 0)
+        OnDamageTaken?.Invoke(damageStruct);
+
+        if (_currentHealth <= 0)
         {
             _currentHealth = 0;
             Die();

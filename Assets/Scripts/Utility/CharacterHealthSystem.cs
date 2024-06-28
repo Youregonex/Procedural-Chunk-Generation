@@ -9,11 +9,6 @@ public class CharacterHealthSystem : HealthSystem
     [SerializeField] private float _vitalityToHealthRatio;
     [SerializeField] private float _initialHealth;
 
-    protected override void Awake()
-    {
-
-    }
-
     private void Start()
     {
         _characterStats = GetComponent<CharacterStats>();

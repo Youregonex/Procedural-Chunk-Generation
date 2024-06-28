@@ -8,16 +8,21 @@ public class Weapon : MonoBehaviour, IWeapon
     public event EventHandler OnAttackStarted;
     public event EventHandler OnAttackFinished;
 
-    [SerializeField] private Animator _animator;
+    [SerializeField] private Animator _weaponAnimator;
     [SerializeField] private Transform _attackOrigin;
 
     [Header("Debug Fields")]
     [SerializeField] private float _attackRadius;
-    [SerializeField] private float _attackDamage;
+    [SerializeField] private float _attackDamageMax;
+    [SerializeField] private float _attackDamageMin;
+    [SerializeField] private float _knockbackForce;
+    [SerializeField] private AgentAttackModule _weaponHolder;
+    [SerializeField] private bool _showGizmos;
+
 
     public void Attack()
     {
-        _animator.SetTrigger(ATTACK);
+        _weaponAnimator.SetTrigger(ATTACK);
 
         Collider2D[] targetsHit = Physics2D.OverlapCircleAll(_attackOrigin.position, _attackRadius);
 
@@ -25,13 +30,16 @@ public class Weapon : MonoBehaviour, IWeapon
         {
             IDamageable damageable = hit.GetComponent<IDamageable>();
 
+            if (damageable == _weaponHolder.GetComponent<IDamageable>())
+                continue;
+
             if (damageable != null)
             {
-                Debug.Log($"{damageable} hit");
                 damageable.TakeDamage(new DamageStruct
                 {
                     damageSender = gameObject,
-                    damageAmount = _attackDamage
+                    damageAmount = UnityEngine.Random.Range(_attackDamageMin, _attackDamageMax),
+                    knockbackForce = _knockbackForce
                 });
             }
         }
@@ -49,6 +57,9 @@ public class Weapon : MonoBehaviour, IWeapon
 
     private void OnDrawGizmos()
     {
+        if (!_showGizmos)
+            return;
+
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(_attackOrigin.transform.position, _attackRadius);
     }

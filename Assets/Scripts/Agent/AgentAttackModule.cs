@@ -4,8 +4,6 @@ using UnityEngine;
 public class AgentAttackModule : MonoBehaviour
 {
     [SerializeField] protected float _attackCooldownCurrent;
-    [SerializeField] protected float _attackCooldownMax = 1f;
-    [SerializeField] private float _attackRadius;
     [SerializeField] private AgentAnimation _agentAnimation;
 
     private AgentInput _agentInput;
@@ -13,6 +11,7 @@ public class AgentAttackModule : MonoBehaviour
 
     [Header("Debug Fields")]
     [SerializeField] protected Weapon _currentWeapon;
+    [SerializeField] protected float _attackCooldownMax = 1f;
 
     private void Awake()
     {

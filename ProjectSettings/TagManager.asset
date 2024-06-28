@@ -14,8 +14,8 @@ TagManager:
   - PlayerChunkInteraction
   - ChunkLayer
   - Item
-  - 
-  - 
+  - Obstacle
+  - Player
   - 
   - 
   - 

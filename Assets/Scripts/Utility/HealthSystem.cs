@@ -5,9 +5,10 @@ public class HealthSystem : MonoBehaviour, IDamageable
 {
     public event Action<DamageStruct> OnDamageTaken;
 
-    [Header("Debug Fields")]
+    [Header("Config")]
     [SerializeField] protected float _maxHealth;
     [SerializeField] protected float _currentHealth;
+    [SerializeField] protected AgentAnimation _agentAnimation;
 
     public FactionEnum Faction { get; set; }
 
@@ -18,6 +19,7 @@ public class HealthSystem : MonoBehaviour, IDamageable
 
     public virtual void TakeDamage(DamageStruct damageStruct)
     {
+        _agentAnimation.ManageGetHitAnimation();
         _currentHealth -= damageStruct.damageAmount;
 
         OnDamageTaken?.Invoke(damageStruct);

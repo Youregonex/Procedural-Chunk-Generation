@@ -4,6 +4,7 @@ using System;
 public class AgentAnimation : MonoBehaviour
 {
     private const string MOVE = "MOVE";
+    private const string GET_HIT = "GET_HIT";
 
     private Animator _agentAnimator;
 
@@ -18,6 +19,11 @@ public class AgentAnimation : MonoBehaviour
     public void ManageMoveAnimation(Vector2 movementDirection)
     {
         _agentAnimator.SetBool(MOVE, movementDirection.x != 0 || movementDirection.y != 0);
+    }
+
+    public void ManageGetHitAnimation()
+    {
+        _agentAnimator.SetTrigger(GET_HIT);
     }
 
     private void AgentAttackAnimationStarted() // Used by Animation Event

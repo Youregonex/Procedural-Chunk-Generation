@@ -47,9 +47,6 @@ public class EnemyAttackState : BaseState<EnemyStateMachine.EEnemyState>
 
     public override void UpdateState()
     {
-        if (_parentStateMachine.GetCurrentTargetTransform() == null || _parentStateMachine == null)
-            return;
-
         if (_attackDelayCurrent > 0)
         {
             _attackDelayCurrent -= Time.deltaTime;
@@ -60,7 +57,10 @@ public class EnemyAttackState : BaseState<EnemyStateMachine.EEnemyState>
             _attackDelayCurrent = Random.Range(_attackDelayMin, _attackDelayMax);
         }
 
-        if(Vector2.Distance(_parentStateMachine.GetPosition(), _parentStateMachine.GetCurrentTargetTransform().position) < _attackRangeMin)
+        if (_parentStateMachine.GetCurrentTargetTransform() == null)
+            return;
+
+        if (Vector2.Distance(_parentStateMachine.GetPosition(), _parentStateMachine.GetCurrentTargetTransform().position) < _attackRangeMin)
         {
             _parentStateMachine.SetMovementDirection(_parentStateMachine.GetPosition() - (Vector2)_parentStateMachine.GetCurrentTargetTransform().position);
             _parentStateMachine.SetAimPosition(_parentStateMachine.GetCurrentTargetTransform().position);
@@ -70,5 +70,6 @@ public class EnemyAttackState : BaseState<EnemyStateMachine.EEnemyState>
             _parentStateMachine.SetMovementDirection(Vector3.zero);
             _parentStateMachine.SetAimPosition(_parentStateMachine.GetCurrentTargetTransform().position);
         }
+
     }
 }

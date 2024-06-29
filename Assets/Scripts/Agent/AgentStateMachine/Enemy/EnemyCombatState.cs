@@ -2,40 +2,23 @@ using UnityEngine;
 
 public class EnemyCombatState : BaseState<EnemyStateMachine.EEnemyState>
 {
-    public EnemyCombatState(EnemyStateMachine.EEnemyState key) : base(key) {}
-
-    public override void EnterState()
+    public EnemyCombatState(
+    EnemyStateMachine.EEnemyState key,
+    EnemyStateMachine parentStateMachine
+    ) : base(key)
     {
-        throw new System.NotImplementedException();
+        _parentStateMachine = parentStateMachine;
     }
 
-    public override void ExitState()
+    private EnemyStateMachine _parentStateMachine;
+
+    public override void UpdateState()
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override EnemyStateMachine.EEnemyState GetNextState()
     {
         return StateKey;
-    }
-
-    public override void OnTriggerEnter2D(Collider2D collision)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnTriggerExit2D(Collider2D collision)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnTriggerStay2D(Collider2D collision)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void UpdateState()
-    {
-        throw new System.NotImplementedException();
     }
 }

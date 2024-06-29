@@ -2,40 +2,51 @@ using UnityEngine;
 
 public class EnemyRoamState : BaseState<EnemyStateMachine.EEnemyState>
 {
-    public EnemyRoamState(EnemyStateMachine.EEnemyState key) : base(key) {}
+    public EnemyRoamState(
+        EnemyStateMachine.EEnemyState key,
+        EnemyStateMachine parentStateMachine
+        ) : base(key)
+    {
+        _parentStateMachine = parentStateMachine;
+    }
+
+    private EnemyStateMachine _parentStateMachine;
+
+    private Vector2 _currentRoamPosition;
+    private float _distanceThreshold = .1f;
+    private float _timeThreshold = 5f;
+
+
 
     public override void EnterState()
     {
-        throw new System.NotImplementedException();
-    }
+        base.EnterState();
 
-    public override void ExitState()
-    {
-        throw new System.NotImplementedException();
+        _currentRoamPosition = _parentStateMachine.GetCurrentRoamPosition();
     }
 
     public override EnemyStateMachine.EEnemyState GetNextState()
     {
+        if (_parentStateMachine.GetTargetTransformList().Count != 0)
+            return EnemyStateMachine.EEnemyState.Chase;
+
+        if (Vector2.Distance(_parentStateMachine.GetPosition(), _currentRoamPosition) <= _distanceThreshold)
+            return EnemyStateMachine.EEnemyState.Idle;
+
+        if(StateCurrentTime >= _timeThreshold)
+            return EnemyStateMachine.EEnemyState.Idle;
+
         return StateKey;
-    }
-
-    public override void OnTriggerEnter2D(Collider2D collision)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnTriggerExit2D(Collider2D collision)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnTriggerStay2D(Collider2D collision)
-    {
-        throw new System.NotImplementedException();
     }
 
     public override void UpdateState()
     {
-        throw new System.NotImplementedException();
+        _parentStateMachine.SetMovementDirection(_currentRoamPosition - _parentStateMachine.GetPosition());
+        _parentStateMachine.SetAimPosition(_currentRoamPosition);
+    }
+
+    public override void ExitState()
+    {
+        _currentRoamPosition = Vector2.zero;
     }
 }

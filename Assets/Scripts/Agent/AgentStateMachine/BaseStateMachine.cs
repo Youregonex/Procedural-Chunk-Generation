@@ -9,12 +9,12 @@ public abstract class BaseStateMachine<EState> : MonoBehaviour where EState : En
     protected BaseState<EState> _currentState;
     protected bool _isTransitioningState = false;
 
-    private void Start()
+    protected virtual void Start()
     {
         _currentState.EnterState();
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         EState nextStateKey = _currentState.GetNextState();
 
@@ -28,7 +28,7 @@ public abstract class BaseStateMachine<EState> : MonoBehaviour where EState : En
         }
     }
 
-    public void TransitionState(EState stateKey)
+    protected virtual void TransitionState(EState stateKey)
     {
         _isTransitioningState = true;
         _currentState.ExitState();
@@ -39,17 +39,17 @@ public abstract class BaseStateMachine<EState> : MonoBehaviour where EState : En
 
     protected abstract void InitializeStates();
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         _currentState.OnTriggerEnter2D(collision);
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    protected virtual void OnTriggerStay2D(Collider2D collision)
     {
         _currentState.OnTriggerStay2D(collision);
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    protected virtual void OnTriggerExit2D(Collider2D collision)
     {
         _currentState.OnTriggerExit2D(collision);
     }

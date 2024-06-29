@@ -21,7 +21,7 @@ public class EnemyInput : AgentInput
         _enemyBehaviour.OnTargetInAttackRange -= EnemyBehaviour_OnTargetInAttackRange;
     }
 
-    private void EnemyBehaviour_OnTargetInAttackRange(object sender, System.EventArgs e)
+    private void EnemyBehaviour_OnTargetInAttackRange()
     {
         Invoke_OnAgentAttackTriggered();
     }

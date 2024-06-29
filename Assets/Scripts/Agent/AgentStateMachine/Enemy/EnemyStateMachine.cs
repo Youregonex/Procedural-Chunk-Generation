@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-using System.Linq;
 
 public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
 {
@@ -14,7 +13,7 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
         Attack,
     }
 
-    public event EventHandler OnTargetInAttackRange;
+    public event Action OnTargetInAttackRange;
 
     [Header("Config")]
     [SerializeField] private float _attackRangeMax;
@@ -22,23 +21,17 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
     [SerializeField] private float _aggroRange;
 
     [SerializeField] private float _attackDelayMin = .1f;
-    [SerializeField] private float _attackDelayMax = .2f;
+    [SerializeField] private float _attackDelayMax = .3f;
 
     [SerializeField] private float _timeToStartRoamMax;
-    [SerializeField] private float _roamMaxTime;
     [SerializeField] private Vector2 _roamPositionOffsetMax;
 
     [SerializeField] private TargetDetectionZone _targetDetectionZone;
 
     [Header("Debug Fields")]
-    [SerializeField] private float _attackDelayCurrent;
-
-    [SerializeField] private float _timeToStartRoamCurrent;
     [SerializeField] private Vector2 _currentRoamPosition;
-    [SerializeField] private float _roamCurrentTime;
 
     [SerializeField] private List<Transform> _targetTransformList = new List<Transform>();
-    [SerializeField] private EEnemyState _currentEnemyState = EEnemyState.Idle;
     [SerializeField] private Transform _currentTargetTransform;
     [SerializeField] private HealthSystem _healthSystem;
 
@@ -49,47 +42,21 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
 
     private void Awake()
     {
-        _attackDelayCurrent = UnityEngine.Random.Range(_attackDelayMin, _attackDelayMax);
         _healthSystem = GetComponent<HealthSystem>();
 
         InitializeStates();
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+
         _targetDetectionZone.SetDetectionRadius(_aggroRange);
 
         _healthSystem.OnDamageTaken += HealthSystem_OnDamageTaken;
         _healthSystem.OnDeath += HealthSystem_OnDeath;
         _targetDetectionZone.OnTargetEnteredDetectionZone += TargetDetectionZone_OnTargetEnteredDetectionZone;
         _targetDetectionZone.OnTargetLeftDetectionZone += TargetDetectionZone_OnTargetLeftDetectionZone;
-    }
-
-    private void Update()
-    {
-        switch(_currentEnemyState)
-        {
-            default:
-            case EEnemyState.Idle:
-
-                ManageIdleState();
-                break;
-
-            case EEnemyState.Chase:
-
-                ManageChaseState();
-                break;
-
-            case EEnemyState.Attack:
-
-                ManageAttackState();
-                break;
-
-            case EEnemyState.Roam:
-
-                ManageRoamState();
-                break;
-        }
     }
 
     private void OnDestroy()
@@ -100,13 +67,29 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
         _healthSystem.OnDeath -= HealthSystem_OnDeath;
     }
 
+    public void SetAimPosition(Vector2 aimPosition) => AimPosition = aimPosition;
+    public void SetMovementDirection(Vector2 movementDirection) => MovementDirection = movementDirection;
+
+    public Vector2 GetPosition() => transform.position;
+    public List<Transform> GetTargetTransformList() => _targetTransformList;
+
+    public Vector2 GetCurrentRoamPosition() => _currentRoamPosition;
+    public Vector2 SetCurrentRoamPosition(Vector2 newRoamPosition) => _currentRoamPosition = newRoamPosition;
+
+    public void TriggerAttack()
+    {
+        OnTargetInAttackRange.Invoke();
+    }
+
+    public Transform GetCurrentTargetTransform() => _currentTargetTransform;
+
     protected override void InitializeStates()
     {
-        _stateDictionary.Add(EEnemyState.Idle, new EnemyIdleState(EEnemyState.Idle));
-        _stateDictionary.Add(EEnemyState.Roam, new EnemyRoamState(EEnemyState.Roam));
-        _stateDictionary.Add(EEnemyState.Chase, new EnemyChaseState(EEnemyState.Chase));
-        _stateDictionary.Add(EEnemyState.Combat, new EnemyCombatState(EEnemyState.Combat));
-        _stateDictionary.Add(EEnemyState.Attack, new EnemyAttackState(EEnemyState.Attack));
+        _stateDictionary.Add(EEnemyState.Idle, new EnemyIdleState(EEnemyState.Idle, this, _timeToStartRoamMax, _roamPositionOffsetMax));
+        _stateDictionary.Add(EEnemyState.Roam, new EnemyRoamState(EEnemyState.Roam, this));
+        _stateDictionary.Add(EEnemyState.Chase, new EnemyChaseState(EEnemyState.Chase, this, _attackRangeMax));
+        _stateDictionary.Add(EEnemyState.Combat, new EnemyCombatState(EEnemyState.Combat, this));
+        _stateDictionary.Add(EEnemyState.Attack, new EnemyAttackState(EEnemyState.Attack, this, _attackDelayMin, _attackDelayMax, _attackRangeMax, _attackRangeMin));
 
         _currentState = _stateDictionary[EEnemyState.Idle];
     }
@@ -118,126 +101,7 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
 
     private void HealthSystem_OnDamageTaken(DamageStruct damageStruct)
     {
-        _currentTargetTransform = damageStruct.damageSender.transform;
-    }
-
-    private void ManageIdleState()
-    {
-        _currentRoamPosition = Vector2.zero;
-
-        if (_timeToStartRoamCurrent > 0)
-        {
-            _timeToStartRoamCurrent -= Time.deltaTime;
-        }
-        else
-        {
-            _timeToStartRoamCurrent = _timeToStartRoamMax;
-
-            _currentRoamPosition = PickRandomRoamPosition();
-            _currentEnemyState = EEnemyState.Roam;
-        }
-
-        MovementDirection = Vector3.zero;
-    }
-
-    private void ManageChaseState()
-    {
-        TargetExistscheck();
-
-        float distanceToTarget = GetDistanceToTarget(_currentTargetTransform);
-
-        MovementDirection = _currentTargetTransform.position - transform.position;
-        AimPosition = _currentTargetTransform.transform.position;
-
-        if (distanceToTarget <= _attackRangeMax)
-            _currentEnemyState = EEnemyState.Attack;
-    }
-
-    private void ManageAttackState()
-    {
-        TargetExistscheck();
-
-        if(_attackDelayCurrent > 0)
-        {
-            _attackDelayCurrent -= Time.deltaTime;
-            return;
-        }
-
-        _attackDelayCurrent = UnityEngine.Random.Range(_attackDelayMin, _attackDelayMax);
-
-        MovementDirection = Vector3.zero;
-        AimPosition = _currentTargetTransform.position;
-
-        OnTargetInAttackRange?.Invoke(this, EventArgs.Empty);
-
-        float distanceToTarget = GetDistanceToTarget(_currentTargetTransform);
-
-        if (distanceToTarget > _attackRangeMax)
-            _currentEnemyState = EEnemyState.Chase;
-
-        if (distanceToTarget < _attackRangeMin)
-            FallbackFromTarget(_currentTargetTransform);
-    }
-
-    private void ManageRoamState()
-    {
-        if (_currentRoamPosition == Vector2.zero)
-            return;
-
-        if (_roamCurrentTime <= 0)
-        {
-            _roamCurrentTime = _roamMaxTime;
-            _currentEnemyState = EEnemyState.Idle;
-
-            return;
-        }
-        else
-            _roamCurrentTime -= Time.deltaTime;
-
-        float closeToRoamPosition = .1f;
-
-        if(Vector2.Distance(transform.position, _currentRoamPosition) >= closeToRoamPosition)
-        {
-            MovementDirection = _currentRoamPosition - (Vector2)transform.position;
-            AimPosition = _currentRoamPosition;
-        }
-        else
-        {
-            _currentRoamPosition = Vector2.zero;
-            _currentEnemyState = EEnemyState.Idle;
-        }
-    }
-
-    private void FallbackFromTarget(Transform target)
-    {
-        if (target == null)
-            return;
-
-        MovementDirection = transform.position - target.transform.position;
-        AimPosition = _currentTargetTransform.position;
-    }
-
-    private void TargetExistscheck()
-    {
-        if (_currentTargetTransform == null)
-        {
-            if (_targetTransformList.Count > 0)
-            {
-                _currentTargetTransform = GetClosestTargetTransform();
-            }
-            else
-            {
-                _currentEnemyState = EEnemyState.Idle;
-                return;
-            }
-        }
-    }
-
-    private Transform GetClosestTargetTransform()
-    {
-        _targetTransformList = _targetTransformList.OrderBy(targetTransform => Vector3.Distance(transform.position, targetTransform.position)).ToList();
-
-        return _targetTransformList[0];
+        //ChangeCurrentTarget(damageStruct.damageSender.transform);
     }
 
     private void TargetDetectionZone_OnTargetLeftDetectionZone(Collider2D collider)
@@ -247,9 +111,8 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
 
         if (_targetTransformList.Count == 1)
         {
-            _currentTargetTransform = null;
+            ClearCurrentTarget();
             _targetTransformList.Remove(collider.transform);
-            _currentEnemyState = EEnemyState.Idle;
 
             return;
         }
@@ -257,24 +120,10 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
         if (_currentTargetTransform == collider.transform)
         {
             _targetTransformList.Remove(collider.transform);
-            _currentTargetTransform = _targetTransformList[0];
+            ChangeCurrentTarget(_targetTransformList[0]);
         }
         else
             _targetTransformList.Remove(collider.transform);
-    }
-
-    private Vector2 PickRandomRoamPosition()
-    {
-        if (_currentRoamPosition != Vector2.zero)
-            return _currentRoamPosition;
-
-        float roamPositionX = UnityEngine.Random.Range(-_roamPositionOffsetMax.x, _roamPositionOffsetMax.x);
-        float roamPositionY = UnityEngine.Random.Range(-_roamPositionOffsetMax.y, _roamPositionOffsetMax.y);
-
-        Vector2 randomRoamPosition = new Vector2(roamPositionX, roamPositionY);
-
-        return (Vector2)transform.position + randomRoamPosition;
-
     }
 
     private void TargetDetectionZone_OnTargetEnteredDetectionZone(Collider2D collider)
@@ -286,11 +135,47 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
 
         if (_targetTransformList.Count == 0)
         {
-            _currentTargetTransform = agentMovement.transform;
-            _currentEnemyState = EEnemyState.Chase;
+            ChangeCurrentTarget(agentMovement.transform);
         }
 
         _targetTransformList.Add(agentMovement.transform);
+    }
+
+    private void ChangeCurrentTarget(Transform newTarget)
+    {
+        if (newTarget == null)
+        {
+            ClearCurrentTarget();
+            return;
+        }
+
+        HealthSystem targetHealthSystem = newTarget.GetComponent<HealthSystem>();
+        targetHealthSystem.OnDeath += CurrentTarget_HealthSystem_OnDeath;
+
+        if (_currentTargetTransform != null)
+            _currentTargetTransform.GetComponent<HealthSystem>().OnDeath -= CurrentTarget_HealthSystem_OnDeath;
+
+        _currentTargetTransform = newTarget;
+    }
+
+    private void ClearCurrentTarget()
+    {
+        if (_currentTargetTransform == null)
+            return;
+
+        HealthSystem targetHealthSystem = _currentTargetTransform.GetComponent<HealthSystem>();
+        targetHealthSystem.OnDeath -= CurrentTarget_HealthSystem_OnDeath;
+        _currentTargetTransform = null;
+    }
+
+
+    private void CurrentTarget_HealthSystem_OnDeath()
+    {
+        _targetTransformList.Remove(_currentTargetTransform);
+        _currentTargetTransform = null;
+
+        if (_targetTransformList.Count != 0)
+            ChangeCurrentTarget(_targetTransformList[0]);
     }
 
     private void OnDrawGizmos()
@@ -306,13 +191,5 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
 
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, _attackRangeMin);
-    }
-
-    private float GetDistanceToTarget(Transform target)
-    {
-        if (target == null)
-            return 0;
-
-        return Vector3.Distance(transform.position, target.position);
     }
 }

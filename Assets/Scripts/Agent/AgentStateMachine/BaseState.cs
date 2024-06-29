@@ -9,12 +9,18 @@ public abstract class BaseState<EState> where EState : Enum
     }
 
     public EState StateKey { get; private set; }
+    public float StateStartTime { get; private set; }
+    public float StateCurrentTime => Time.time - StateStartTime;
 
-    public abstract void EnterState();
-    public abstract void ExitState();
+    public virtual void EnterState()
+    {
+        StateStartTime = Time.time;
+    }
+
+    public virtual void ExitState() { }
     public abstract void UpdateState();
     public abstract EState GetNextState();
-    public abstract void OnTriggerEnter2D(Collider2D collision);
-    public abstract void OnTriggerStay2D(Collider2D collision);
-    public abstract void OnTriggerExit2D(Collider2D collision);
+    public virtual void OnTriggerEnter2D(Collider2D collision) { }
+    public virtual void OnTriggerStay2D(Collider2D collision) { }
+    public virtual void OnTriggerExit2D(Collider2D collision) { }
 }

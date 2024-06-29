@@ -15,7 +15,7 @@ public class HealthSystem : MonoBehaviour, IDamageable
 
     [Header("Debug Fields")]
     [SerializeField] private CapsuleCollider2D _hitCollider;
-    [field: SerializeField] public bool IsDead { get; private set; } = false;
+    [SerializeField] private bool _isDead = false;
 
     protected virtual void Awake()
     {
@@ -25,7 +25,7 @@ public class HealthSystem : MonoBehaviour, IDamageable
 
     public virtual void TakeDamage(DamageStruct damageStruct)
     {
-        if (IsDead)
+        if (_isDead)
             return;
 
         _agentAnimation.ManageGetHitAnimation();
@@ -45,7 +45,7 @@ public class HealthSystem : MonoBehaviour, IDamageable
 
     protected virtual void Die()
     {
-        IsDead = true;
+        _isDead = true;
         _hitCollider.enabled = false;
 
         _agentAnimation.PlayDeathAnimation();
@@ -58,4 +58,6 @@ public class HealthSystem : MonoBehaviour, IDamageable
 
         Destroy(gameObject);
     }
+
+    public bool IsDead() => _isDead;
 }

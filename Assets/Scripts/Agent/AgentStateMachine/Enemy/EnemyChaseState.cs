@@ -2,40 +2,36 @@ using UnityEngine;
 
 public class EnemyChaseState : BaseState<EnemyStateMachine.EEnemyState>
 {
-    public EnemyChaseState(EnemyStateMachine.EEnemyState key) : base(key) {}
-
-    public override void EnterState()
+    public EnemyChaseState(
+        EnemyStateMachine.EEnemyState key,
+        EnemyStateMachine parentStateMachine,
+        float attackRangeMax
+        ) : base(key)
     {
-        throw new System.NotImplementedException();
+        _parentStateMachine = parentStateMachine;
+        _attackRangeMax = attackRangeMax;
     }
 
-    public override void ExitState()
-    {
-        throw new System.NotImplementedException();
-    }
+    private EnemyStateMachine _parentStateMachine;
+    private float _attackRangeMax;
 
     public override EnemyStateMachine.EEnemyState GetNextState()
     {
+        if (_parentStateMachine.GetCurrentTargetTransform() == null)
+            return EnemyStateMachine.EEnemyState.Idle;
+
+        if (Vector2.Distance(_parentStateMachine.GetPosition(), _parentStateMachine.GetCurrentTargetTransform().position) <= _attackRangeMax)
+            return EnemyStateMachine.EEnemyState.Attack;
+
         return StateKey;
-    }
-
-    public override void OnTriggerEnter2D(Collider2D collision)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnTriggerExit2D(Collider2D collision)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnTriggerStay2D(Collider2D collision)
-    {
-        throw new System.NotImplementedException();
     }
 
     public override void UpdateState()
     {
-        throw new System.NotImplementedException();
+        if (_parentStateMachine.GetCurrentTargetTransform() == null)
+            return;
+
+        _parentStateMachine.SetMovementDirection((Vector2)_parentStateMachine.GetCurrentTargetTransform().position - _parentStateMachine.GetPosition());
+        _parentStateMachine.SetAimPosition(_parentStateMachine.GetCurrentTargetTransform().position);
     }
 }

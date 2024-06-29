@@ -3,22 +3,34 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
-public class EnemyBehaviour : MonoBehaviour
+public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
 {
+    public enum EEnemyState
+    {
+        Idle,
+        Roam,
+        Chase,
+        Combat,
+        Attack,
+    }
+
     public event EventHandler OnTargetInAttackRange;
 
     [Header("Config")]
     [SerializeField] private float _attackRangeMax;
     [SerializeField] private float _attackRangeMin;
     [SerializeField] private float _aggroRange;
+
+    [SerializeField] private float _attackDelayMin = .1f;
+    [SerializeField] private float _attackDelayMax = .2f;
+
     [SerializeField] private float _timeToStartRoamMax;
     [SerializeField] private float _roamMaxTime;
     [SerializeField] private Vector2 _roamPositionOffsetMax;
+
     [SerializeField] private TargetDetectionZone _targetDetectionZone;
 
     [Header("Debug Fields")]
-    [SerializeField] private float _attackDelayMin = .1f;
-    [SerializeField] private float _attackDelayMax = .2f;
     [SerializeField] private float _attackDelayCurrent;
 
     [SerializeField] private float _timeToStartRoamCurrent;
@@ -26,8 +38,9 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] private float _roamCurrentTime;
 
     [SerializeField] private List<Transform> _targetTransformList = new List<Transform>();
-    [SerializeField] private EnemyStateEnum _currentEnemyState = EnemyStateEnum.Idle;
+    [SerializeField] private EEnemyState _currentEnemyState = EEnemyState.Idle;
     [SerializeField] private Transform _currentTargetTransform;
+    [SerializeField] private HealthSystem _healthSystem;
 
     [field: SerializeField] public Vector2 MovementDirection { get; private set; }
     [field: SerializeField] public Vector2 AimPosition { get; private set; }
@@ -37,12 +50,17 @@ public class EnemyBehaviour : MonoBehaviour
     private void Awake()
     {
         _attackDelayCurrent = UnityEngine.Random.Range(_attackDelayMin, _attackDelayMax);
+        _healthSystem = GetComponent<HealthSystem>();
+
+        InitializeStates();
     }
 
     private void Start()
     {
         _targetDetectionZone.SetDetectionRadius(_aggroRange);
 
+        _healthSystem.OnDamageTaken += HealthSystem_OnDamageTaken;
+        _healthSystem.OnDeath += HealthSystem_OnDeath;
         _targetDetectionZone.OnTargetEnteredDetectionZone += TargetDetectionZone_OnTargetEnteredDetectionZone;
         _targetDetectionZone.OnTargetLeftDetectionZone += TargetDetectionZone_OnTargetLeftDetectionZone;
     }
@@ -52,22 +70,22 @@ public class EnemyBehaviour : MonoBehaviour
         switch(_currentEnemyState)
         {
             default:
-            case EnemyStateEnum.Idle:
+            case EEnemyState.Idle:
 
                 ManageIdleState();
                 break;
 
-            case EnemyStateEnum.Chase:
+            case EEnemyState.Chase:
 
                 ManageChaseState();
                 break;
 
-            case EnemyStateEnum.Attack:
+            case EEnemyState.Attack:
 
                 ManageAttackState();
                 break;
 
-            case EnemyStateEnum.Roam:
+            case EEnemyState.Roam:
 
                 ManageRoamState();
                 break;
@@ -76,8 +94,31 @@ public class EnemyBehaviour : MonoBehaviour
 
     private void OnDestroy()
     {
+        _healthSystem.OnDamageTaken -= HealthSystem_OnDamageTaken;
         _targetDetectionZone.OnTargetEnteredDetectionZone -= TargetDetectionZone_OnTargetEnteredDetectionZone;
         _targetDetectionZone.OnTargetLeftDetectionZone -= TargetDetectionZone_OnTargetLeftDetectionZone;
+        _healthSystem.OnDeath -= HealthSystem_OnDeath;
+    }
+
+    protected override void InitializeStates()
+    {
+        _stateDictionary.Add(EEnemyState.Idle, new EnemyIdleState(EEnemyState.Idle));
+        _stateDictionary.Add(EEnemyState.Roam, new EnemyRoamState(EEnemyState.Roam));
+        _stateDictionary.Add(EEnemyState.Chase, new EnemyChaseState(EEnemyState.Chase));
+        _stateDictionary.Add(EEnemyState.Combat, new EnemyCombatState(EEnemyState.Combat));
+        _stateDictionary.Add(EEnemyState.Attack, new EnemyAttackState(EEnemyState.Attack));
+
+        _currentState = _stateDictionary[EEnemyState.Idle];
+    }
+
+    private void HealthSystem_OnDeath()
+    {
+        this.enabled = false;
+    }
+
+    private void HealthSystem_OnDamageTaken(DamageStruct damageStruct)
+    {
+        _currentTargetTransform = damageStruct.damageSender.transform;
     }
 
     private void ManageIdleState()
@@ -93,7 +134,7 @@ public class EnemyBehaviour : MonoBehaviour
             _timeToStartRoamCurrent = _timeToStartRoamMax;
 
             _currentRoamPosition = PickRandomRoamPosition();
-            _currentEnemyState = EnemyStateEnum.Roam;
+            _currentEnemyState = EEnemyState.Roam;
         }
 
         MovementDirection = Vector3.zero;
@@ -109,7 +150,7 @@ public class EnemyBehaviour : MonoBehaviour
         AimPosition = _currentTargetTransform.transform.position;
 
         if (distanceToTarget <= _attackRangeMax)
-            _currentEnemyState = EnemyStateEnum.Attack;
+            _currentEnemyState = EEnemyState.Attack;
     }
 
     private void ManageAttackState()
@@ -132,7 +173,7 @@ public class EnemyBehaviour : MonoBehaviour
         float distanceToTarget = GetDistanceToTarget(_currentTargetTransform);
 
         if (distanceToTarget > _attackRangeMax)
-            _currentEnemyState = EnemyStateEnum.Chase;
+            _currentEnemyState = EEnemyState.Chase;
 
         if (distanceToTarget < _attackRangeMin)
             FallbackFromTarget(_currentTargetTransform);
@@ -146,7 +187,7 @@ public class EnemyBehaviour : MonoBehaviour
         if (_roamCurrentTime <= 0)
         {
             _roamCurrentTime = _roamMaxTime;
-            _currentEnemyState = EnemyStateEnum.Idle;
+            _currentEnemyState = EEnemyState.Idle;
 
             return;
         }
@@ -163,7 +204,7 @@ public class EnemyBehaviour : MonoBehaviour
         else
         {
             _currentRoamPosition = Vector2.zero;
-            _currentEnemyState = EnemyStateEnum.Idle;
+            _currentEnemyState = EEnemyState.Idle;
         }
     }
 
@@ -186,7 +227,7 @@ public class EnemyBehaviour : MonoBehaviour
             }
             else
             {
-                _currentEnemyState = EnemyStateEnum.Idle;
+                _currentEnemyState = EEnemyState.Idle;
                 return;
             }
         }
@@ -208,7 +249,7 @@ public class EnemyBehaviour : MonoBehaviour
         {
             _currentTargetTransform = null;
             _targetTransformList.Remove(collider.transform);
-            _currentEnemyState = EnemyStateEnum.Idle;
+            _currentEnemyState = EEnemyState.Idle;
 
             return;
         }
@@ -246,7 +287,7 @@ public class EnemyBehaviour : MonoBehaviour
         if (_targetTransformList.Count == 0)
         {
             _currentTargetTransform = agentMovement.transform;
-            _currentEnemyState = EnemyStateEnum.Chase;
+            _currentEnemyState = EEnemyState.Chase;
         }
 
         _targetTransformList.Add(agentMovement.transform);

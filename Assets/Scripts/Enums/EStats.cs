@@ -1,5 +1,5 @@
 
-public enum StatsEnum
+public enum EStats
 {
     MoveSpeed,
     Vitality,

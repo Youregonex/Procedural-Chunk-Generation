@@ -3,26 +3,41 @@ using System;
 
 public class Weapon : MonoBehaviour, IWeapon
 {
-    private const string ATTACK = "ATTACK";
+    public event Action OnAttackStarted;
+    public event Action OnAttackFinished;
 
-    public event EventHandler OnAttackStarted;
-    public event EventHandler OnAttackFinished;
-
-    [SerializeField] private Animator _weaponAnimator;
-    [SerializeField] private Transform _attackOrigin;
-
-    [Header("Debug Fields")]
+    [Header("Config")]
     [SerializeField] private float _attackRadius;
     [SerializeField] private float _attackDamageMax;
     [SerializeField] private float _attackDamageMin;
     [SerializeField] private float _knockbackForce;
+    [SerializeField] private WeaponAnimation _weaponAnimation;
+    [SerializeField] private Transform _attackOrigin;
+
+    [Header("Debug Fields")]
     [SerializeField] private AgentAttackModule _weaponHolder;
     [SerializeField] private bool _showGizmos;
 
+    private void Awake()
+    {
+        _weaponHolder = transform.root.GetComponent<AgentAttackModule>();
+    }
+
+    private void Start()
+    {
+        _weaponAnimation.OnAttackAnimationStarted += WeaponAnimation_OnAttackAnimationStarted;
+        _weaponAnimation.OnAttackAnimationFinished += WeaponAnimation_OnAttackAnimationFinished;
+    }
+
+    private void OnDestroy()
+    {
+        _weaponAnimation.OnAttackAnimationStarted -= WeaponAnimation_OnAttackAnimationStarted;
+        _weaponAnimation.OnAttackAnimationFinished -= WeaponAnimation_OnAttackAnimationFinished;
+    }
 
     public void Attack()
     {
-        _weaponAnimator.SetTrigger(ATTACK);
+        _weaponAnimation.PlayWeaponAttackAnimation();
 
         Collider2D[] targetsHit = Physics2D.OverlapCircleAll(_attackOrigin.position, _attackRadius);
 
@@ -45,14 +60,14 @@ public class Weapon : MonoBehaviour, IWeapon
         }
     }
 
-    private void AttackStarted() // Used by Animation Event
+    private void WeaponAnimation_OnAttackAnimationFinished()
     {
-        OnAttackStarted?.Invoke(this, EventArgs.Empty);
+        OnAttackFinished?.Invoke();
     }
 
-    private void AttackFinished() // Used by Animation Event
+    private void WeaponAnimation_OnAttackAnimationStarted()
     {
-        OnAttackFinished?.Invoke(this, EventArgs.Empty);
+        OnAttackStarted?.Invoke();
     }
 
     private void OnDrawGizmos()

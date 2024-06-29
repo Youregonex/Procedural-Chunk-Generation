@@ -1,5 +1,5 @@
 
-public interface IDamageable : IHaveFaction
+public interface IDamageable
 {
     public void TakeDamage(DamageStruct damageStruct);
 }

@@ -20,12 +20,18 @@ public class KnockbackOnHitEffect : MonoBehaviour
     private void Start()
     {
         _healthSystem.OnDamageTaken += HealthSystem_OnDamageTaken;
+        _healthSystem.OnDeath += HealthSystem_OnDeath;
     }
-
 
     private void OnDestroy()
     {
         _healthSystem.OnDamageTaken -= HealthSystem_OnDamageTaken;
+        _healthSystem.OnDeath -= HealthSystem_OnDeath;
+    }
+
+    private void HealthSystem_OnDeath()
+    {
+        StopKnockBack();
     }
 
     private IEnumerator ApplyKnockback(DamageStruct damageStruct)
@@ -40,6 +46,13 @@ public class KnockbackOnHitEffect : MonoBehaviour
 
         _rigidBody2D.velocity = Vector2.zero;
         _agentMovement.enabled = true;
+    }
+
+    private void StopKnockBack()
+    {
+        StopAllCoroutines();
+
+        _rigidBody2D.velocity = Vector2.zero;
     }
 
     private void HealthSystem_OnDamageTaken(DamageStruct damageStruct)

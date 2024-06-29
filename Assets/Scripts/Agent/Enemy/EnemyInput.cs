@@ -1,14 +1,14 @@
 using UnityEngine;
 
-[RequireComponent(typeof(EnemyBehaviour))]
+[RequireComponent(typeof(EnemyStateMachine))]
 public class EnemyInput : AgentInput
 {
     [Header("Debug Fields")]
-    [SerializeField] private EnemyBehaviour _enemyBehaviour;
+    [SerializeField] private EnemyStateMachine _enemyBehaviour;
 
     private void Awake()
     {
-        _enemyBehaviour = GetComponent<EnemyBehaviour>();
+        _enemyBehaviour = GetComponent<EnemyStateMachine>();
     }
 
     private void Start()

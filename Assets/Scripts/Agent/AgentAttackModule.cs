@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(AgentInput))]
 public class AgentAttackModule : MonoBehaviour
 {
-    [SerializeField] protected float _attackCooldownCurrent;
+    [Header("Config")]
     [SerializeField] private AgentAnimation _agentAnimation;
 
     private AgentInput _agentInput;
@@ -12,15 +12,19 @@ public class AgentAttackModule : MonoBehaviour
     [Header("Debug Fields")]
     [SerializeField] protected Weapon _currentWeapon;
     [SerializeField] protected float _attackCooldownMax = 1f;
+    [SerializeField] protected float _attackCooldownCurrent;
+    [SerializeField] private HealthSystem _healthSystem;
 
     private void Awake()
     {
         _agentInput = GetComponent<AgentInput>();
+        _healthSystem = GetComponent<HealthSystem>();
     }
 
     private void Start()
     {
         _agentInput.OnAgentAttackTriggered += AgentInput_OnAgentAttackTrigger;
+        _healthSystem.OnDeath += HealthSystem_OnDeath;
     }
 
     private void Update()
@@ -32,6 +36,7 @@ public class AgentAttackModule : MonoBehaviour
     private void OnDestroy()
     {
         _agentInput.OnAgentAttackTriggered -= AgentInput_OnAgentAttackTrigger;
+        _healthSystem.OnDeath -= HealthSystem_OnDeath;
 
         if (_currentWeapon != null)
         {
@@ -43,6 +48,11 @@ public class AgentAttackModule : MonoBehaviour
     private void AgentInput_OnAgentAttackTrigger(object sender, System.EventArgs e)
     {
         Attack();
+    }
+
+    private void HealthSystem_OnDeath()
+    {
+        this.enabled = false;
     }
 
     protected virtual void Attack()
@@ -69,12 +79,12 @@ public class AgentAttackModule : MonoBehaviour
         _currentWeapon.OnAttackFinished += Weapon_OnAttackFinished;
     }
 
-    private void Weapon_OnAttackFinished(object sender, System.EventArgs e)
+    private void Weapon_OnAttackFinished()
     {
         _canAttack = true;
     }
 
-    private void Weapon_OnAttackStarted(object sender, System.EventArgs e)
+    private void Weapon_OnAttackStarted()
     {
         _canAttack = false;
     }

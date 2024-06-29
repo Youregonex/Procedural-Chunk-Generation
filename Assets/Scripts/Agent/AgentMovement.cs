@@ -2,10 +2,11 @@ using UnityEngine;
 
 [SelectionBase]
 [RequireComponent(typeof(AgentInput), typeof(Rigidbody2D), typeof(CharacterStats))]
-public class AgentMovement : MonoBehaviour, IPlayer
+public class AgentMovement : MonoBehaviour
 {
     [SerializeField] private AgentInput _agentInput;
     [SerializeField] private AgentAnimation _agentAnimation;
+    [SerializeField] private HealthSystem _healthSystem;
 
     private CharacterStats _agentStats;
     private Rigidbody2D _rigidBody2D;
@@ -19,30 +20,25 @@ public class AgentMovement : MonoBehaviour, IPlayer
     {
         _rigidBody2D = GetComponent<Rigidbody2D>();
         _agentStats = GetComponent<CharacterStats>();
+        _healthSystem = GetComponent<HealthSystem>();
     }
 
     private void Start()
     {
-        _agentAnimation.OnAgentAttackAnimationStarted += AgentAnimation_OnAgentAttackAnimationStarted;
-        _agentAnimation.OnAgentAttackAnimationFinished += AgentAnimation_OnAgentAttackAnimationFinished;
+        _healthSystem.OnDeath += HealthSystem_OnDeath;
     }
 
     private void OnDestroy()
     {
-        _agentAnimation.OnAgentAttackAnimationStarted -= AgentAnimation_OnAgentAttackAnimationStarted;
-        _agentAnimation.OnAgentAttackAnimationFinished -= AgentAnimation_OnAgentAttackAnimationFinished;
+        _healthSystem.OnDeath -= HealthSystem_OnDeath;
     }
 
     public Vector2 GetCurrentDirection() => _lastMovementDirection;
 
-    private void AgentAnimation_OnAgentAttackAnimationFinished(object sender, System.EventArgs e)
+    private void HealthSystem_OnDeath()
     {
-        _canMove = true;
-    }
-
-    private void AgentAnimation_OnAgentAttackAnimationStarted(object sender, System.EventArgs e)
-    {
-        _canMove = false;
+        _rigidBody2D.velocity = Vector2.zero;
+        this.enabled = false;
     }
 
     private void FixedUpdate()
@@ -64,7 +60,7 @@ public class AgentMovement : MonoBehaviour, IPlayer
         if (_movementDirection != Vector2.zero)
             _lastMovementDirection = _movementDirection;
 
-        StatsEnum moveSpeedStat = StatsEnum.MoveSpeed;
+        EStats moveSpeedStat = EStats.MoveSpeed;
 
         _rigidBody2D.velocity = new Vector3(_movementDirection.x, _movementDirection.y, 0f) * _agentStats.GetCurrentStatValue(moveSpeedStat);
 

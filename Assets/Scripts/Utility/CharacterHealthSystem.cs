@@ -13,7 +13,7 @@ public class CharacterHealthSystem : HealthSystem
     {
         _characterStats = GetComponent<CharacterStats>();
 
-        float vitalityValue = _characterStats.GetCurrentStatValue(StatsEnum.Vitality);
+        float vitalityValue = _characterStats.GetCurrentStatValue(EStats.Vitality);
         _maxHealth = _initialHealth + (vitalityValue * _vitalityToHealthRatio);
         _currentHealth = _maxHealth;
     }

@@ -669,7 +669,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: demon__30
+      name: demon__death_1
       rect:
         serializedVersion: 2
         x: 10
@@ -690,7 +690,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: demon__31
+      name: demon__death_2
       rect:
         serializedVersion: 2
         x: 42
@@ -711,7 +711,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: demon__32
+      name: demon__death_3
       rect:
         serializedVersion: 2
         x: 74
@@ -732,7 +732,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: demon__33
+      name: demon__death_4
       rect:
         serializedVersion: 2
         x: 107
@@ -860,11 +860,11 @@ TextureImporter:
       demon__24: -447748361
       demon__25: -820005798
       demon__3: -468148244
-      demon__30: 1143737891
-      demon__31: 809982512
-      demon__32: -1195884846
-      demon__33: 1706434811
       demon__4: -627675218
+      demon__death_1: 1143737891
+      demon__death_2: 809982512
+      demon__death_3: -1195884846
+      demon__death_4: 1706434811
       demon__gethit_1: 1035831062
       demon__gethit_2: -203820840
       demon__gethit_3: -1478029631

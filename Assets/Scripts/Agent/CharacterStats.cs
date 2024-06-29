@@ -9,16 +9,16 @@ public class CharacterStats : MonoBehaviour
     public event EventHandler<OnStatChangedEventArgs> OnStatChanged;
     public class OnStatChangedEventArgs : EventArgs
     {
-        public StatsEnum changedStat;
+        public EStats changedStat;
         public float oldValue;
         public float newValue;
     }
 
-    private Dictionary<StatsEnum, Stat> _characterStatDictionary;
+    private Dictionary<EStats, Stat> _characterStatDictionary;
 
     private void Awake()
     {
-        _characterStatDictionary = new Dictionary<StatsEnum, Stat>();
+        _characterStatDictionary = new Dictionary<EStats, Stat>();
 
         InitializeStatDictionary();
     }
@@ -34,7 +34,7 @@ public class CharacterStats : MonoBehaviour
         }
     }
 
-    public bool TryModifyStatCurrentValue(StatsEnum statToModify, float newStatValue)
+    public bool TryModifyStatCurrentValue(EStats statToModify, float newStatValue)
     {
         if (!_characterStatDictionary.ContainsKey(statToModify))
         {
@@ -61,7 +61,7 @@ public class CharacterStats : MonoBehaviour
         return true;
     }
 
-    public float GetCurrentStatValue(StatsEnum stat)
+    public float GetCurrentStatValue(EStats stat)
     {
         if (!_characterStatDictionary.ContainsKey(stat))
             return -1f;
@@ -69,7 +69,7 @@ public class CharacterStats : MonoBehaviour
         return _characterStatDictionary[stat].currentValue;
     }
 
-    public Dictionary<StatsEnum, Stat> GetCharacterStatDictionary() => _characterStatDictionary;
+    public Dictionary<EStats, Stat> GetCharacterStatDictionary() => _characterStatDictionary;
 
     private void InitializeStatDictionary()
     {

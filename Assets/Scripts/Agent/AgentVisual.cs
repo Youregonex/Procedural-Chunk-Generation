@@ -4,17 +4,37 @@ public class AgentVisual : MonoBehaviour
 {
     [SerializeField] private AgentMovement _agentMovement;
     [SerializeField] private AgentInput _agentInput;
+    [SerializeField] private HealthSystem _healthSystem;
 
     private SpriteRenderer _spriteRenderer;
 
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
+
+        _agentMovement = transform.root.GetComponent<AgentMovement>();
+        _agentInput = transform.root.GetComponent<AgentInput>();
+        _healthSystem = transform.root.GetComponent<HealthSystem>();
+    }
+
+    private void Start()
+    {
+        _healthSystem.OnDeath += HealthSystem_OnDeath;
     }
 
     private void Update()
     {
         ManageWeaponSpriteFlip();
+    }
+
+    private void OnDestroy()
+    {
+        _healthSystem.OnDeath -= HealthSystem_OnDeath;
+    }
+
+    private void HealthSystem_OnDeath()
+    {
+        this.enabled = false;
     }
 
     private void ManageWeaponlessSpriteFlip()

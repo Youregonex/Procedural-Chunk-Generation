@@ -1,15 +1,12 @@
 using UnityEngine;
-using System;
 
 public class AgentAnimation : MonoBehaviour
 {
     private const string MOVE = "MOVE";
     private const string GET_HIT = "GET_HIT";
+    private const string DEATH = "DEATH";
 
     private Animator _agentAnimator;
-
-    public event EventHandler OnAgentAttackAnimationStarted;
-    public event EventHandler OnAgentAttackAnimationFinished;
 
     private void Start()
     {
@@ -26,13 +23,8 @@ public class AgentAnimation : MonoBehaviour
         _agentAnimator.SetTrigger(GET_HIT);
     }
 
-    private void AgentAttackAnimationStarted() // Used by Animation Event
+    public void PlayDeathAnimation()
     {
-        OnAgentAttackAnimationStarted?.Invoke(this, EventArgs.Empty);
-    }
-
-    private void AgentAttackAnimationFinished() // Used by Animation Event
-    {
-        OnAgentAttackAnimationFinished?.Invoke(this, EventArgs.Empty);
+        _agentAnimator.SetTrigger(DEATH);
     }
 }

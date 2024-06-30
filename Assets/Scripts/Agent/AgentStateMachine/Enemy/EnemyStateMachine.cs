@@ -39,10 +39,12 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
     [field: SerializeField] public Vector2 AimPosition { get; private set; }
 
     [SerializeField] private bool _showGizmos;
+    [SerializeField] private AgentCore _agentCore;
 
     private void Awake()
     {
         _healthSystem = GetComponent<HealthSystem>();
+        _agentCore = GetComponent<AgentCore>();
 
         InitializeStates();
     }
@@ -53,7 +55,6 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
 
         _targetDetectionZone.SetDetectionRadius(_aggroRange);
 
-        _healthSystem.OnDamageTaken += HealthSystem_OnDamageTaken;
         _healthSystem.OnDeath += HealthSystem_OnDeath;
         _targetDetectionZone.OnTargetEnteredDetectionZone += TargetDetectionZone_OnTargetEnteredDetectionZone;
         _targetDetectionZone.OnTargetLeftDetectionZone += TargetDetectionZone_OnTargetLeftDetectionZone;
@@ -61,7 +62,6 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
 
     private void OnDestroy()
     {
-        _healthSystem.OnDamageTaken -= HealthSystem_OnDamageTaken;
         _targetDetectionZone.OnTargetEnteredDetectionZone -= TargetDetectionZone_OnTargetEnteredDetectionZone;
         _targetDetectionZone.OnTargetLeftDetectionZone -= TargetDetectionZone_OnTargetLeftDetectionZone;
         _healthSystem.OnDeath -= HealthSystem_OnDeath;
@@ -99,11 +99,6 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
         this.enabled = false;
     }
 
-    private void HealthSystem_OnDamageTaken(DamageStruct damageStruct)
-    {
-        //ChangeCurrentTarget(damageStruct.damageSender.transform);
-    }
-
     private void TargetDetectionZone_OnTargetLeftDetectionZone(Collider2D collider)
     {
         if (!_targetTransformList.Contains(collider.transform))
@@ -128,17 +123,20 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
 
     private void TargetDetectionZone_OnTargetEnteredDetectionZone(Collider2D collider)
     {
-        AgentMovement agentMovement = collider.GetComponent<AgentMovement>();
+        AgentCore potentialTargetAgentCore = collider.GetComponent<AgentCore>();
 
-        if (agentMovement == null)
+        if (potentialTargetAgentCore == null)
+            return;
+
+        if (potentialTargetAgentCore.GetAgentFaction() == _agentCore.GetAgentFaction())
             return;
 
         if (_targetTransformList.Count == 0)
         {
-            ChangeCurrentTarget(agentMovement.transform);
+            ChangeCurrentTarget(potentialTargetAgentCore.transform);
         }
 
-        _targetTransformList.Add(agentMovement.transform);
+        _targetTransformList.Add(potentialTargetAgentCore.transform);
     }
 
     private void ChangeCurrentTarget(Transform newTarget)

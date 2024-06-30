@@ -2,7 +2,7 @@ using UnityEngine;
 
 [SelectionBase]
 [RequireComponent(typeof(AgentInput), typeof(Rigidbody2D), typeof(CharacterStats))]
-public class AgentMovement : MonoBehaviour
+public class AgentMovement : MonoBehaviour, IAgentComponent
 {
     [SerializeField] private AgentInput _agentInput;
     [SerializeField] private AgentAnimation _agentAnimation;
@@ -31,6 +31,11 @@ public class AgentMovement : MonoBehaviour
     private void OnDestroy()
     {
         _healthSystem.OnDeath -= HealthSystem_OnDeath;
+    }
+
+    public void DisableComponent()
+    {
+        this.enabled = false;
     }
 
     public Vector2 GetCurrentDirection() => _lastMovementDirection;

@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(menuName = "Tile Config")]
 public class TileConfigSO : ScriptableObject
 {
-    public List<Sprite> groundTiles;
-    public List<Sprite> obstacleTiles;
+    public List<Tile> groundTiles;
+    public List<Tile> obstacleTiles;
 }

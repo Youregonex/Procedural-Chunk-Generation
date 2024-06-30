@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5457928514846347736}
   - component: {fileID: 5014833496742964000}
   - component: {fileID: 7293257920242662528}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: MoveParticleEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}

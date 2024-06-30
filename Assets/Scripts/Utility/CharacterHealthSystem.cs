@@ -5,7 +5,7 @@ public class CharacterHealthSystem : HealthSystem
 {
     private CharacterStats _characterStats;
 
-    [Header("Debug Fields")]
+    [Header("Config")]
     [SerializeField] private float _vitalityToHealthRatio;
     [SerializeField] private float _initialHealth;
 

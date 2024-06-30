@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(AgentInput))]
-public class AgentAttackModule : MonoBehaviour
+public class AgentAttackModule : MonoBehaviour, IAgentComponent
 {
     [Header("Config")]
     [SerializeField] private AgentAnimation _agentAnimation;
@@ -43,6 +43,11 @@ public class AgentAttackModule : MonoBehaviour
             _currentWeapon.OnAttackStarted -= Weapon_OnAttackStarted;
             _currentWeapon.OnAttackFinished -= Weapon_OnAttackFinished;
         }
+    }
+
+    public void DisableComponent()
+    {
+        this.enabled = false;
     }
 
     private void AgentInput_OnAgentAttackTrigger(object sender, System.EventArgs e)

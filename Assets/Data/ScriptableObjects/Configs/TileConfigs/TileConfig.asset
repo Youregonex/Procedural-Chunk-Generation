@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b06fc9a22773482a955ab163e5e5d10, type: 3}
+  m_Name: TileConfig
+  m_EditorClassIdentifier: 
+  groundTiles:
+  - {fileID: 11400000, guid: dcd457eb3fffb41c9bd95821dd1b2fe7, type: 2}
+  - {fileID: 11400000, guid: bfb23360284ab462595e493cbcd2b1a4, type: 2}
+  - {fileID: 11400000, guid: 4df7eb9e0399e4ee2b74b1a23f0f7b20, type: 2}
+  - {fileID: 11400000, guid: 6f5efd66eb5604e058dccd66b2d9c74b, type: 2}
+  - {fileID: 11400000, guid: e35efa6c8d1d24cd9b56695b9e8f1273, type: 2}
+  - {fileID: 11400000, guid: 1d73f73847aec42beb8fadc39805908e, type: 2}
+  - {fileID: 11400000, guid: 0368eb999b65d4e9a8065e8e6636a4a4, type: 2}
+  - {fileID: 11400000, guid: 02a1122913c1b4235ba308799d6a98d8, type: 2}
+  - {fileID: 11400000, guid: a077dfbcba74f43519ce835cf8f91e34, type: 2}
+  obstacleTiles:
+  - {fileID: 11400000, guid: 3cc09f0f490d24a74bf174a4003b8622, type: 2}

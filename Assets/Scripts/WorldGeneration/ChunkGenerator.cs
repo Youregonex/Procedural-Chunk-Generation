@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using System;
+using UnityEngine.Tilemaps;
 
 public class ChunkGenerator : MonoBehaviour
 {
@@ -12,8 +13,6 @@ public class ChunkGenerator : MonoBehaviour
 
     [Header("Tile Setup")]
     [SerializeField] private TileConfigSO _tileConfigSO;
-    [SerializeField] private Transform _tilePrefab;
-    [SerializeField] private Transform _obstacleBasePrefab;
 
     [Header("Chunk Setup")]
     [SerializeField] private Transform _chunkParent;
@@ -30,7 +29,7 @@ public class ChunkGenerator : MonoBehaviour
     [SerializeField] private float _lacunarity;
     [SerializeField] private float _obstacleChance;
     [SerializeField] private int _seed;
-    [SerializeField] Vector2 seamOffset;
+    [SerializeField] Vector2 seamOffset = Vector2.zero;
     [SerializeField] private Noise.NormalizeMode _normalizeMode;
 
     private void Awake()
@@ -52,6 +51,12 @@ public class ChunkGenerator : MonoBehaviour
         Chunk.OnPlayerLeftChunkRange += Chunk_OnPlayerLeftChunkRange;
 
         CreateInitialChunk();
+    }
+
+    private void OnDestroy()
+    {
+        Chunk.OnPlayerEnteredChunkRange -= Chunk_OnPlayerEnteredChunkRange;
+        Chunk.OnPlayerLeftChunkRange -= Chunk_OnPlayerLeftChunkRange;
     }
 
     public Chunk GetChunkAtPosition(Vector2Int chunkPosition)
@@ -194,25 +199,13 @@ public class ChunkGenerator : MonoBehaviour
 
                     float chunkMapValue = parentChunk.GetChunkMapValue(loopIndexX, loopIndexY);
 
-                    Vector3 tilPlacementPosition = new Vector3(x, y, 0);
+                    Vector2Int tilPlacementPosition = new Vector2Int(x, y);
 
-                    Transform tileToCreate;
+                    Tile tile = GetRandomTile(chunkMapValue, out ETileType tileType);
 
-                    if (chunkMapValue >= _obstacleChance)
-                        tileToCreate = _obstacleBasePrefab;
-                    else
-                        tileToCreate = _tilePrefab;
+                    TilePlacer.Instance.SetTileAtPosition(tile, tilPlacementPosition, tileType);
 
-                    Transform tileTransform = Instantiate(tileToCreate, tilPlacementPosition, Quaternion.identity);
-
-                    tileTransform.SetParent(parentChunk.transform);
-
-                    TerrainTile tile = tileTransform.GetComponent<TerrainTile>();
-                    Sprite sprite = GetSpriteForTile(chunkMapValue);
-
-                    tile.SetSprite(sprite);
-
-                    parentChunk.AddTileToChunk(tile);
+                    parentChunk.AddTileToChunk(tile, tilPlacementPosition, tileType);
 
                     loopIndexY++;
                 }
@@ -229,21 +222,18 @@ public class ChunkGenerator : MonoBehaviour
         }
     }
 
-    private Sprite GetSpriteForTile(float tileType)
+    private Tile GetRandomTile(float tileNoise, out ETileType tileType)
     {
-        if (tileType >= _obstacleChance)
+        if (tileNoise >= _obstacleChance)
         {
+            tileType = ETileType.Obstacle;
             return _tileConfigSO.obstacleTiles[0];
         }
         else
         {
-            return _tileConfigSO.groundTiles[0];
+            tileType = ETileType.Ground;
+            int randomTile = UnityEngine.Random.Range(0, _tileConfigSO.groundTiles.Count);
+            return _tileConfigSO.groundTiles[randomTile];
         }
-    }
-
-    private void OnDestroy()
-    {
-        Chunk.OnPlayerEnteredChunkRange -= Chunk_OnPlayerEnteredChunkRange;
-        Chunk.OnPlayerLeftChunkRange -= Chunk_OnPlayerLeftChunkRange;
     }
 }

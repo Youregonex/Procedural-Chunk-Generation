@@ -1,12 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using UnityEngine.Tilemaps;
 
 [Serializable]
 public class Chunk : MonoBehaviour
 {
-    private List<TerrainTile> _chunkTiles;
-
     public static event EventHandler OnPlayerEnteredChunkRange;
     public static event EventHandler OnPlayerLeftChunkRange;
 
@@ -15,8 +14,6 @@ public class Chunk : MonoBehaviour
     {
         public Chunk chunk;
     }
-
-    private int _sideLength;
 
     [Header("Debug Fields")]
     [SerializeField] private List<Vector2Int> _neighbourChunkList;
@@ -28,12 +25,10 @@ public class Chunk : MonoBehaviour
     [SerializeField] private bool _isLoadingTiles = false;
     [SerializeField] private bool _chunkMapFilled;
     [SerializeField] private float[,] _chunkMapArray;
-    [SerializeField] private int _tilesCount = 0;
 
-    private void Awake()
-    {
-        _chunkTiles = new List<TerrainTile>();
-    }
+    private int _sideLength;
+    private List<TileData> _chunkTilesDictionary = new List<TileData>();
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -93,9 +88,9 @@ public class Chunk : MonoBehaviour
     {
         _isLoaded = false;
 
-        foreach(TerrainTile tile in _chunkTiles)
+        foreach(TileData tileData in _chunkTilesDictionary)
         {
-            tile.gameObject.SetActive(false);
+            TilePlacer.Instance.ClearTileAtPosition(tileData.TilePosition, tileData.TileType);
         }
     }
 
@@ -103,18 +98,15 @@ public class Chunk : MonoBehaviour
     {
         _isLoaded = true;
 
-        foreach (TerrainTile tile in _chunkTiles)
+        foreach (TileData tileData in _chunkTilesDictionary)
         {
-            tile.gameObject.SetActive(true);
+            TilePlacer.Instance.SetTileAtPosition(tileData.Tile, tileData.TilePosition, tileData.TileType);
         }
     }
 
-    public void AddTileToChunk(TerrainTile tile)
+    public void AddTileToChunk(Tile tile, Vector2Int tilePosition, ETileType tileType)
     {
-        _chunkTiles.Add(tile);
-        _tilesCount++;
-
-        tile.SetParentChunk(this);
+        _chunkTilesDictionary.Add(new TileData(tile, tilePosition, tileType));
     }
 
     public bool IsFilled() => _isFilled;

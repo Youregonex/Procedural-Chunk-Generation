@@ -45,18 +45,18 @@ public class Weapon : MonoBehaviour, IWeapon
         {
             IDamageable damageable = hit.GetComponent<IDamageable>();
 
-            if (damageable == _weaponHolder.GetComponent<IDamageable>())
+            if (damageable == null)
                 continue;
 
-            if (damageable != null)
+            if (damageable == _weaponHolder.GetComponent<HealthSystem>().GetHitbox())
+                continue;
+
+            damageable.TakeDamage(new DamageStruct
             {
-                damageable.TakeDamage(new DamageStruct
-                {
-                    damageSender = gameObject,
-                    damageAmount = UnityEngine.Random.Range(_attackDamageMin, _attackDamageMax),
-                    knockbackForce = _knockbackForce
-                });
-            }
+                damageSender = gameObject,
+                damageAmount = UnityEngine.Random.Range(_attackDamageMin, _attackDamageMax),
+                knockbackForce = _knockbackForce
+            });
         }
     }
 

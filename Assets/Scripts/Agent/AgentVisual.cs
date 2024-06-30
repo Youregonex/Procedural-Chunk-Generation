@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AgentVisual : MonoBehaviour
+public class AgentVisual : MonoBehaviour, IAgentComponent
 {
     [SerializeField] private AgentMovement _agentMovement;
     [SerializeField] private AgentInput _agentInput;
@@ -30,6 +30,11 @@ public class AgentVisual : MonoBehaviour
     private void OnDestroy()
     {
         _healthSystem.OnDeath -= HealthSystem_OnDeath;
+    }
+
+    public void DisableComponent()
+    {
+        this.enabled = false;
     }
 
     private void HealthSystem_OnDeath()

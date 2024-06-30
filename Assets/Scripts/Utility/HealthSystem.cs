@@ -2,9 +2,10 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-public class HealthSystem : MonoBehaviour, IDamageable
+public class HealthSystem : MonoBehaviour
 {
     public event Action<DamageStruct> OnDamageTaken;
+    public event Action<float, float> OnHealthChanged;
     public event Action OnDeath;
 
     [Header("Config")]
@@ -12,15 +13,14 @@ public class HealthSystem : MonoBehaviour, IDamageable
     [SerializeField] protected float _currentHealth;
     [SerializeField] protected AgentAnimation _agentAnimation;
     [SerializeField] protected float _destructionDelay = 0f;
+    [SerializeField] protected AgentHitbox _hitbox;
 
     [Header("Debug Fields")]
-    [SerializeField] private CapsuleCollider2D _hitCollider;
     [SerializeField] private bool _isDead = false;
 
     protected virtual void Awake()
     {
         _currentHealth = _maxHealth;
-        _hitCollider = GetComponent<CapsuleCollider2D>();
     }
 
     public virtual void TakeDamage(DamageStruct damageStruct)
@@ -33,20 +33,25 @@ public class HealthSystem : MonoBehaviour, IDamageable
 
         OnDamageTaken?.Invoke(damageStruct);
 
-        if (_currentHealth <= 0)
-        {
-            _currentHealth = 0;
+        if (_currentHealth <= 0f)
+            _currentHealth = 0f;
 
+        OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
+
+        if (_currentHealth == 0f)
+        {
             OnDeath?.Invoke();
 
             Die();
         }
     }
 
+    public IDamageable GetHitbox() => _hitbox;
+
     protected virtual void Die()
     {
         _isDead = true;
-        _hitCollider.enabled = false;
+        _hitbox.enabled = false;
 
         _agentAnimation.PlayDeathAnimation();
         StartCoroutine(DestroyWithDelay());

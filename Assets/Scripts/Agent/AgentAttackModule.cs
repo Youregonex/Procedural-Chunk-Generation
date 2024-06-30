@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(AgentInput))]
-public class AgentAttackModule : MonoBehaviour, IAgentComponent
+public class AgentAttackModule : AgentMonobehaviourComponent
 {
     [Header("Config")]
     [SerializeField] private AgentAnimation _agentAnimation;
@@ -24,7 +24,6 @@ public class AgentAttackModule : MonoBehaviour, IAgentComponent
     private void Start()
     {
         _agentInput.OnAgentAttackTriggered += AgentInput_OnAgentAttackTrigger;
-        _healthSystem.OnDeath += HealthSystem_OnDeath;
     }
 
     private void Update()
@@ -36,7 +35,6 @@ public class AgentAttackModule : MonoBehaviour, IAgentComponent
     private void OnDestroy()
     {
         _agentInput.OnAgentAttackTriggered -= AgentInput_OnAgentAttackTrigger;
-        _healthSystem.OnDeath -= HealthSystem_OnDeath;
 
         if (_currentWeapon != null)
         {
@@ -45,7 +43,7 @@ public class AgentAttackModule : MonoBehaviour, IAgentComponent
         }
     }
 
-    public void DisableComponent()
+    public override void DisableComponent()
     {
         this.enabled = false;
     }
@@ -53,11 +51,6 @@ public class AgentAttackModule : MonoBehaviour, IAgentComponent
     private void AgentInput_OnAgentAttackTrigger(object sender, System.EventArgs e)
     {
         Attack();
-    }
-
-    private void HealthSystem_OnDeath()
-    {
-        this.enabled = false;
     }
 
     protected virtual void Attack()

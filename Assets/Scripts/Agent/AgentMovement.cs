@@ -2,11 +2,10 @@ using UnityEngine;
 
 [SelectionBase]
 [RequireComponent(typeof(AgentInput), typeof(Rigidbody2D), typeof(CharacterStats))]
-public class AgentMovement : MonoBehaviour, IAgentComponent
+public class AgentMovement : AgentMonobehaviourComponent
 {
     [SerializeField] private AgentInput _agentInput;
     [SerializeField] private AgentAnimation _agentAnimation;
-    [SerializeField] private HealthSystem _healthSystem;
 
     private CharacterStats _agentStats;
     private Rigidbody2D _rigidBody2D;
@@ -15,36 +14,23 @@ public class AgentMovement : MonoBehaviour, IAgentComponent
     [Header("Debug Fields")]
     [SerializeField] private Vector2 _movementDirection;
     [SerializeField] private Vector2 _lastMovementDirection;
+    [SerializeField] private CapsuleCollider2D _collisionCollider;
 
     private void Awake()
     {
         _rigidBody2D = GetComponent<Rigidbody2D>();
         _agentStats = GetComponent<CharacterStats>();
-        _healthSystem = GetComponent<HealthSystem>();
+        _collisionCollider = GetComponent<CapsuleCollider2D>();
     }
 
-    private void Start()
+    public override void DisableComponent()
     {
-        _healthSystem.OnDeath += HealthSystem_OnDeath;
-    }
-
-    private void OnDestroy()
-    {
-        _healthSystem.OnDeath -= HealthSystem_OnDeath;
-    }
-
-    public void DisableComponent()
-    {
+        _rigidBody2D.velocity = Vector2.zero;
+        _collisionCollider.enabled = false;
         this.enabled = false;
     }
 
     public Vector2 GetCurrentDirection() => _lastMovementDirection;
-
-    private void HealthSystem_OnDeath()
-    {
-        _rigidBody2D.velocity = Vector2.zero;
-        this.enabled = false;
-    }
 
     private void FixedUpdate()
     {

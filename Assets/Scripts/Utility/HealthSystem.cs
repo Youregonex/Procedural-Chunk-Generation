@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-public class HealthSystem : MonoBehaviour
+public class HealthSystem : AgentMonobehaviourComponent
 {
     public event Action<DamageStruct> OnDamageTaken;
     public event Action<float, float> OnHealthChanged;
@@ -21,6 +21,11 @@ public class HealthSystem : MonoBehaviour
     protected virtual void Awake()
     {
         _currentHealth = _maxHealth;
+    }
+
+    public override void DisableComponent()
+    {
+        this.enabled = false;
     }
 
     public virtual void TakeDamage(DamageStruct damageStruct)

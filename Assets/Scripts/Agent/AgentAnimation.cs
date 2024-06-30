@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AgentAnimation : MonoBehaviour, IAgentComponent
+public class AgentAnimation : AgentMonobehaviourComponent
 {
     private const string MOVE = "MOVE";
     private const string GET_HIT = "GET_HIT";
@@ -28,7 +28,7 @@ public class AgentAnimation : MonoBehaviour, IAgentComponent
         _agentAnimator.SetTrigger(DEATH);
     }
 
-    public void DisableComponent()
+    public override void DisableComponent()
     {
         this.enabled = false;
     }

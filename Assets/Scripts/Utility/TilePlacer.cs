@@ -40,7 +40,6 @@ public class TilePlacer : MonoBehaviour
 
     public void ClearTileAtPosition(Vector2 tileWorldPosition, ETileType tileType)
     {
-
         switch (tileType)
         {
             default:

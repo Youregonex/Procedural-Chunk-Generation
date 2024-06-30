@@ -33,7 +33,6 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
 
     [SerializeField] private List<Transform> _targetTransformList = new List<Transform>();
     [SerializeField] private Transform _currentTargetTransform;
-    [SerializeField] private HealthSystem _healthSystem;
 
     [field: SerializeField] public Vector2 MovementDirection { get; private set; }
     [field: SerializeField] public Vector2 AimPosition { get; private set; }
@@ -43,7 +42,6 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
 
     private void Awake()
     {
-        _healthSystem = GetComponent<HealthSystem>();
         _agentCore = GetComponent<AgentCore>();
 
         InitializeStates();
@@ -55,7 +53,6 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
 
         _targetDetectionZone.SetDetectionRadius(_aggroRange);
 
-        _healthSystem.OnDeath += HealthSystem_OnDeath;
         _targetDetectionZone.OnTargetEnteredDetectionZone += TargetDetectionZone_OnTargetEnteredDetectionZone;
         _targetDetectionZone.OnTargetLeftDetectionZone += TargetDetectionZone_OnTargetLeftDetectionZone;
     }
@@ -64,7 +61,6 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
     {
         _targetDetectionZone.OnTargetEnteredDetectionZone -= TargetDetectionZone_OnTargetEnteredDetectionZone;
         _targetDetectionZone.OnTargetLeftDetectionZone -= TargetDetectionZone_OnTargetLeftDetectionZone;
-        _healthSystem.OnDeath -= HealthSystem_OnDeath;
     }
 
     public void SetAimPosition(Vector2 aimPosition) => AimPosition = aimPosition;
@@ -92,11 +88,6 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
         _stateDictionary.Add(EEnemyState.Attack, new EnemyAttackState(EEnemyState.Attack, this, _attackDelayMin, _attackDelayMax, _attackRangeMax, _attackRangeMin));
 
         _currentState = _stateDictionary[EEnemyState.Idle];
-    }
-
-    private void HealthSystem_OnDeath()
-    {
-        this.enabled = false;
     }
 
     private void TargetDetectionZone_OnTargetLeftDetectionZone(Collider2D collider)

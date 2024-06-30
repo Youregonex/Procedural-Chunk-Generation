@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public abstract class AgentInput : MonoBehaviour, IAgentComponent
+public abstract class AgentInput : AgentMonobehaviourComponent
 {
     public event EventHandler OnAgentAttackTriggered;
 
@@ -10,7 +10,7 @@ public abstract class AgentInput : MonoBehaviour, IAgentComponent
 
     public virtual Vector2 GetAimPositionNormalized() => GetAimPosition().normalized;
 
-    public void DisableComponent()
+    public override void DisableComponent()
     {
         this.enabled = false;
     }

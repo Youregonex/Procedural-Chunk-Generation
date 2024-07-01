@@ -16,7 +16,6 @@ public class Chunk : MonoBehaviour
     }
 
     [Header("Debug Fields")]
-    [SerializeField] private List<Vector2Int> _neighbourChunkList;
     [SerializeField] private int _chunkLayerCount;
     [SerializeField] private bool _isLoaded;
     [SerializeField] private bool _isPlayerInRange;
@@ -24,9 +23,11 @@ public class Chunk : MonoBehaviour
     [SerializeField] private bool _isLoadingTiles = false;
     [SerializeField] private bool _chunkMapFilled;
     [SerializeField] private float[,] _chunkMapArray;
+    [SerializeField] private List<Vector2Int> _neighbourChunkList = new List<Vector2Int>();
+    [SerializeField] private List<GameObject> _chunkObjectList = new List<GameObject>();
 
     private int _sideLength;
-    private List<TileData> _chunkTilesDictionary = new List<TileData>();
+    private List<TileData> _chunkTilesList = new List<TileData>();
 
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -83,7 +84,7 @@ public class Chunk : MonoBehaviour
     {
         _isLoaded = false;
 
-        foreach(TileData tileData in _chunkTilesDictionary)
+        foreach(TileData tileData in _chunkTilesList)
         {
             TilePlacer.Instance.ClearTileAtPosition(tileData.TilePosition, tileData.TileType);
         }
@@ -93,7 +94,7 @@ public class Chunk : MonoBehaviour
     {
         _isLoaded = true;
 
-        foreach (TileData tileData in _chunkTilesDictionary)
+        foreach (TileData tileData in _chunkTilesList)
         {
             TilePlacer.Instance.SetTileAtPosition(tileData.Tile, tileData.TilePosition, tileData.TileType);
         }
@@ -101,9 +102,10 @@ public class Chunk : MonoBehaviour
 
     public void AddTileToChunk(TileBase tile, Vector2Int tilePosition, ETileType tileType)
     {
-        _chunkTilesDictionary.Add(new TileData(tile, tilePosition, tileType));
+        _chunkTilesList.Add(new TileData(tile, tilePosition, tileType));
     }
 
+    public List<TileData> GetChunkTileList() => _chunkTilesList;
     public bool IsFilled() => _isFilled;
     public bool IsLoaded() => _isLoaded;
     public void FillChunk() => _isFilled = true;

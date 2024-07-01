@@ -18,6 +18,10 @@ public class ChunkGenerator : MonoBehaviour
     [SerializeField] private Transform _chunkPrefab;
     [SerializeField] private int _chunkLayerCount;
 
+    [Header("Chunk Config")]
+    [SerializeField] private int _resourceNodesPerChunkMax;
+    [SerializeField] private int _resourceNodesPerChunkMin;
+
     [Header("Map Gentration Settings")]
     [SerializeField] private float _noiseScale;
     [SerializeField] private int _octaves;
@@ -43,7 +47,7 @@ public class ChunkGenerator : MonoBehaviour
 
         Instance = this;
 
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -225,7 +229,7 @@ public class ChunkGenerator : MonoBehaviour
 
     private TileBase GetRandomTile(float tileNoise, out ETileType tileType)
     {
-        if (tileNoise >= _obstacleChance)
+        if (tileNoise <= _obstacleChance)
         {
             tileType = ETileType.Obstacle;
             return _tileConfigSO.obstacleTiles[0];
@@ -233,7 +237,14 @@ public class ChunkGenerator : MonoBehaviour
         else
         {
             tileType = ETileType.Ground;
-            int randomTile = UnityEngine.Random.Range(0, _tileConfigSO.groundTiles.Count);
+            float placeDefaultTileChance = UnityEngine.Random.Range(0f, 1f);
+            int randomTile;
+
+            if (placeDefaultTileChance <= .5f)
+                randomTile = 0;
+            else
+                randomTile = UnityEngine.Random.Range(1, _tileConfigSO.groundTiles.Count);
+
             return _tileConfigSO.groundTiles[randomTile];
         }
     }

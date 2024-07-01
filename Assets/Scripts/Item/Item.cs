@@ -3,10 +3,10 @@ using UnityEngine;
 [System.Serializable]
 public class Item : MonoBehaviour
 {
-    [SerializeField] private ItemDataSO _itemDataSO;
+    [SerializeField] protected ItemDataSO _itemDataSO;
     public ItemDataSO ItemDataSO => _itemDataSO;
 
-    [SerializeField] private int _itemQuantity;
+    [SerializeField] protected int _itemQuantity;
     public int ItemQuantity => _itemQuantity;
 
     public void DestroyItem()

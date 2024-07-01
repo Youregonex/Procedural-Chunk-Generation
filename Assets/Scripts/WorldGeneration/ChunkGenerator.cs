@@ -8,8 +8,7 @@ public class ChunkGenerator : MonoBehaviour
 {
     public static ChunkGenerator Instance { get; private set; }
 
-    private Dictionary<Vector2Int, Chunk> _chunkDictionary;
-    [SerializeField] private List<Chunk> _loadingChunks;
+    private Dictionary<Vector2Int, Chunk> _chunkDictionary = new Dictionary<Vector2Int, Chunk>();
 
     [Header("Tile Setup")]
     [SerializeField] private TileConfigSO _tileConfigSO;
@@ -32,6 +31,11 @@ public class ChunkGenerator : MonoBehaviour
     [SerializeField] Vector2 seamOffset = Vector2.zero;
     [SerializeField] private Noise.NormalizeMode _normalizeMode;
 
+    [Header("Debug Fields")]
+    [SerializeField] private bool _showGizmos = false;
+    [SerializeField] private List<Chunk> _loadingChunks = new List<Chunk>();
+
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -40,9 +44,6 @@ public class ChunkGenerator : MonoBehaviour
         Instance = this;
 
         DontDestroyOnLoad(gameObject);
-
-        _chunkDictionary = new Dictionary<Vector2Int, Chunk>();
-        _loadingChunks = new List<Chunk>();
     }
 
     private void Start()
@@ -201,7 +202,7 @@ public class ChunkGenerator : MonoBehaviour
 
                     Vector2Int tilPlacementPosition = new Vector2Int(x, y);
 
-                    Tile tile = GetRandomTile(chunkMapValue, out ETileType tileType);
+                    TileBase tile = GetRandomTile(chunkMapValue, out ETileType tileType);
 
                     TilePlacer.Instance.SetTileAtPosition(tile, tilPlacementPosition, tileType);
 
@@ -222,7 +223,7 @@ public class ChunkGenerator : MonoBehaviour
         }
     }
 
-    private Tile GetRandomTile(float tileNoise, out ETileType tileType)
+    private TileBase GetRandomTile(float tileNoise, out ETileType tileType)
     {
         if (tileNoise >= _obstacleChance)
         {
@@ -234,6 +235,19 @@ public class ChunkGenerator : MonoBehaviour
             tileType = ETileType.Ground;
             int randomTile = UnityEngine.Random.Range(0, _tileConfigSO.groundTiles.Count);
             return _tileConfigSO.groundTiles[randomTile];
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!_showGizmos || _chunkDictionary.Count == 0)
+            return;
+
+        Gizmos.color = Color.red;
+
+        foreach(KeyValuePair<Vector2Int, Chunk> keyValuePair in _chunkDictionary)
+        {
+            Gizmos.DrawSphere((Vector2)keyValuePair.Key, .5f);
         }
     }
 }

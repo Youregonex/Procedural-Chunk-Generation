@@ -30,8 +30,6 @@ public class EnemyAttackState : BaseState<EnemyStateMachine.EEnemyState>
     public override void EnterState()
     {
         base.EnterState();
-
-        _attackDelayCurrent = Random.Range(_attackDelayMin, _attackDelayMax);
     }
 
     public override EnemyStateMachine.EEnemyState GetNextState()

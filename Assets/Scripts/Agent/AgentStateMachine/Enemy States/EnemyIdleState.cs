@@ -31,7 +31,7 @@ public class EnemyIdleState : BaseState<EnemyStateMachine.EEnemyState>
 
     public override EnemyStateMachine.EEnemyState GetNextState()
     {
-        if(_parentStateMachine.GetTargetTransformList().Count != 0)
+        if(_parentStateMachine.TargetTransformList.Count != 0)
             return EnemyStateMachine.EEnemyState.Chase;
 
 

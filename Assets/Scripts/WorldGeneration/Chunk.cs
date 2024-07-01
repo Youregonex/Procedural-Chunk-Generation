@@ -18,7 +18,6 @@ public class Chunk : MonoBehaviour
     [Header("Debug Fields")]
     [SerializeField] private List<Vector2Int> _neighbourChunkList;
     [SerializeField] private int _chunkLayerCount;
-    [SerializeField] private Transform _markerPrefab;
     [SerializeField] private bool _isLoaded;
     [SerializeField] private bool _isPlayerInRange;
     [SerializeField] private bool _isFilled = false;
@@ -64,10 +63,6 @@ public class Chunk : MonoBehaviour
                 Vector2Int neighbourChunkPosition = new Vector2Int(x, y);
 
                 _neighbourChunkList.Add(neighbourChunkPosition);
-
-                // For debug purposes
-                Transform marker = Instantiate(_markerPrefab, new Vector3(x, y), Quaternion.identity);
-                marker.SetParent(gameObject.transform);
             }
         }
     }
@@ -104,7 +99,7 @@ public class Chunk : MonoBehaviour
         }
     }
 
-    public void AddTileToChunk(Tile tile, Vector2Int tilePosition, ETileType tileType)
+    public void AddTileToChunk(TileBase tile, Vector2Int tilePosition, ETileType tileType)
     {
         _chunkTilesDictionary.Add(new TileData(tile, tilePosition, tileType));
     }

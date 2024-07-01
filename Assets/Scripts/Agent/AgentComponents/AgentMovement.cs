@@ -1,26 +1,33 @@
 using UnityEngine;
 
 [SelectionBase]
-[RequireComponent(typeof(AgentInput), typeof(Rigidbody2D), typeof(CharacterStats))]
+[RequireComponent(typeof(AgentInput), typeof(Rigidbody2D), typeof(AgentStats))]
 public class AgentMovement : AgentMonobehaviourComponent
 {
+    [Header("Debug Fields")]
     [SerializeField] private AgentInput _agentInput;
     [SerializeField] private AgentAnimation _agentAnimation;
-
-    private CharacterStats _agentStats;
-    private Rigidbody2D _rigidBody2D;
-    private bool _canMove = true;
-
-    [Header("Debug Fields")]
+    [SerializeField] private AgentCoreBase _agentCore;
     [SerializeField] private Vector2 _movementDirection;
     [SerializeField] private Vector2 _lastMovementDirection;
     [SerializeField] private CapsuleCollider2D _collisionCollider;
+    [SerializeField] private AgentStats _agentStats;
+    [SerializeField] private Rigidbody2D _rigidBody2D;
+    [SerializeField] private bool _canMove = true;
 
     private void Awake()
     {
-        _rigidBody2D = GetComponent<Rigidbody2D>();
-        _agentStats = GetComponent<CharacterStats>();
-        _collisionCollider = GetComponent<CapsuleCollider2D>();
+        _agentCore = GetComponent<AgentCoreBase>();
+    }
+
+    private void Start()
+    {
+        _rigidBody2D = _agentCore.GetAgentRigidBody2D();
+        _agentStats = _agentCore.GetAgentStats();
+        _collisionCollider = _agentCore.GetAgentCollider();
+
+        _agentInput = _agentCore.GetAgentComponent<AgentInput>();
+        _agentAnimation = _agentCore.GetAgentComponent<AgentAnimation>();
     }
 
     public override void DisableComponent()

@@ -4,21 +4,27 @@ using UnityEngine;
 public class EnemyInput : AgentInput
 {
     [Header("Debug Fields")]
-    [SerializeField] private EnemyStateMachine _enemyBehaviour;
+    [SerializeField] private EnemyCore _enemyCore;
+    [SerializeField] private EnemyStateMachine _enemyStateMachine;
+
+
 
     private void Awake()
     {
-        _enemyBehaviour = GetComponent<EnemyStateMachine>();
+        _enemyCore = GetComponent<EnemyCore>();
     }
 
     private void Start()
     {
-        _enemyBehaviour.OnTargetInAttackRange += EnemyBehaviour_OnTargetInAttackRange;
+        _enemyStateMachine = _enemyCore.GetEnemyStateMachine();
+
+        _enemyStateMachine.OnTargetInAttackRange += EnemyBehaviour_OnTargetInAttackRange;
+        _enemyStateMachine = _enemyCore.GetEnemyStateMachine();
     }
 
     private void OnDestroy()
     {
-        _enemyBehaviour.OnTargetInAttackRange -= EnemyBehaviour_OnTargetInAttackRange;
+        _enemyStateMachine.OnTargetInAttackRange -= EnemyBehaviour_OnTargetInAttackRange;
     }
 
     private void EnemyBehaviour_OnTargetInAttackRange()
@@ -28,11 +34,11 @@ public class EnemyInput : AgentInput
 
     public override Vector2 GetAimPosition()
     {
-        return _enemyBehaviour.AimPosition;
+        return _enemyStateMachine.AimPosition;
     }
 
     public override Vector2 GetMovementVectorNormalized()
     {
-        return _enemyBehaviour.MovementDirection.normalized;
+        return _enemyStateMachine.MovementDirection.normalized;
     }
 }

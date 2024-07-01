@@ -2,14 +2,20 @@ using UnityEngine;
 
 public class AgentVisual : AgentMonobehaviourComponent
 {
+    [Header("Debug Fields")]
+    [SerializeField] private AgentCoreBase _agentCore;
     [SerializeField] private AgentInput _agentInput;
-
-    private SpriteRenderer _spriteRenderer;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
 
     private void Awake()
     {
+        _agentCore = transform.root.GetComponent<AgentCoreBase>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _agentInput = transform.root.GetComponent<AgentInput>();
+    }
+
+    private void Start()
+    {
+        _agentInput = _agentCore.GetAgentComponent<AgentInput>();
     }
 
     private void Update()

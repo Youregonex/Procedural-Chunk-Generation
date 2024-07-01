@@ -6,5 +6,5 @@ using UnityEngine.Tilemaps;
 public class TileConfigSO : ScriptableObject
 {
     public List<Tile> groundTiles;
-    public List<Tile> obstacleTiles;
+    public List<TileBase> obstacleTiles;
 }

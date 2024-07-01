@@ -23,4 +23,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 02a1122913c1b4235ba308799d6a98d8, type: 2}
   - {fileID: 11400000, guid: a077dfbcba74f43519ce835cf8f91e34, type: 2}
   obstacleTiles:
-  - {fileID: 11400000, guid: 3cc09f0f490d24a74bf174a4003b8622, type: 2}
+  - {fileID: 11400000, guid: bca38cda360ab4e60a159b955b5ea264, type: 2}

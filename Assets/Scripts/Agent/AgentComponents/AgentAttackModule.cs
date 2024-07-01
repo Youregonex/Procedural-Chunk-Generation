@@ -4,25 +4,24 @@ using UnityEngine;
 public class AgentAttackModule : AgentMonobehaviourComponent
 {
     [Header("Config")]
-    [SerializeField] private AgentAnimation _agentAnimation;
-
-    private AgentInput _agentInput;
-    protected bool _canAttack = true;
+    [SerializeField] protected float _attackCooldownMax = 1f;
 
     [Header("Debug Fields")]
-    [SerializeField] protected Weapon _currentWeapon;
-    [SerializeField] protected float _attackCooldownMax = 1f;
     [SerializeField] protected float _attackCooldownCurrent;
-    [SerializeField] private HealthSystem _healthSystem;
+    [SerializeField] protected bool _canAttack = true;
+    [SerializeField] protected Weapon _currentWeapon;
+    [SerializeField] protected AgentInput _agentInput;
+    [SerializeField] protected AgentCoreBase _agentCore;
 
     private void Awake()
     {
-        _agentInput = GetComponent<AgentInput>();
-        _healthSystem = GetComponent<HealthSystem>();
+        _agentCore = GetComponent<AgentCoreBase>();
     }
 
     private void Start()
     {
+        _agentInput = _agentCore.GetAgentComponent<AgentInput>();
+
         _agentInput.OnAgentAttackTriggered += AgentInput_OnAgentAttackTrigger;
     }
 
@@ -34,7 +33,8 @@ public class AgentAttackModule : AgentMonobehaviourComponent
 
     private void OnDestroy()
     {
-        _agentInput.OnAgentAttackTriggered -= AgentInput_OnAgentAttackTrigger;
+        if(_agentInput != null)
+            _agentInput.OnAgentAttackTriggered -= AgentInput_OnAgentAttackTrigger;
 
         if (_currentWeapon != null)
         {

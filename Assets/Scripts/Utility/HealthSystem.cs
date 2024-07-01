@@ -11,16 +11,26 @@ public class HealthSystem : AgentMonobehaviourComponent
     [Header("Config")]
     [SerializeField] protected float _maxHealth;
     [SerializeField] protected float _currentHealth;
-    [SerializeField] protected AgentAnimation _agentAnimation;
     [SerializeField] protected float _destructionDelay = 0f;
-    [SerializeField] protected AgentHitbox _hitbox;
 
     [Header("Debug Fields")]
-    [SerializeField] private bool _isDead = false;
+    [SerializeField] protected bool _isDead = false;
+    [SerializeField] protected AgentCoreBase _agentCore;
+    [SerializeField] protected AgentAnimation _agentAnimation;
+    [SerializeField] protected AgentHitbox _hitbox;
+
 
     protected virtual void Awake()
     {
         _currentHealth = _maxHealth;
+
+        _agentCore = GetComponent<AgentCoreBase>();
+    }
+
+    protected virtual void Start()
+    {
+        _agentAnimation = _agentCore.GetAgentComponent<AgentAnimation>();
+        _hitbox = _agentCore.GetAgentComponent<AgentHitbox>();
     }
 
     public override void DisableComponent()

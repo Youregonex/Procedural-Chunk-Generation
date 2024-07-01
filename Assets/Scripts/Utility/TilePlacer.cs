@@ -17,9 +17,12 @@ public class TilePlacer : MonoBehaviour
         Instance = this;
     }
 
-    public void SetTileAtPosition(Tile tile, Vector2 tileWorldPosition, ETileType tileType)
+    public void SetTileAtPosition(TileBase tile, Vector2 tileWorldPosition, ETileType tileType)
     {
-        switch(tileType)
+        if (_groundTilemap == null || _obstacleTilemap == null)
+            return;
+
+        switch (tileType)
         {
             default:
             case ETileType.Ground:
@@ -40,6 +43,9 @@ public class TilePlacer : MonoBehaviour
 
     public void ClearTileAtPosition(Vector2 tileWorldPosition, ETileType tileType)
     {
+        if (_groundTilemap == null || _obstacleTilemap == null)
+            return;
+
         switch (tileType)
         {
             default:

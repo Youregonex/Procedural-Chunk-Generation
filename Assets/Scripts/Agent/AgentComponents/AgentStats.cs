@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class CharacterStats : MonoBehaviour
+public class AgentStats : AgentMonobehaviourComponent
 {
     [SerializeField] private StatConfigSO _initialStatConfigSO;
 
@@ -23,6 +23,11 @@ public class CharacterStats : MonoBehaviour
         InitializeStatDictionary();
     }
 
+    public override void DisableComponent()
+    {
+        throw new NotImplementedException();
+    }
+
     public void LogStats()
     {
         foreach (Stat stat in _characterStatDictionary.Values)
@@ -33,6 +38,8 @@ public class CharacterStats : MonoBehaviour
           $"Min Value : {stat.minValue}\n");
         }
     }
+
+    public Dictionary<EStats, Stat> GetCharacterStatDictionary() => _characterStatDictionary;
 
     public bool TryModifyStatCurrentValue(EStats statToModify, float newStatValue)
     {
@@ -47,9 +54,10 @@ public class CharacterStats : MonoBehaviour
 
         float oldStatValue = stat.currentValue;
 
-        _characterStatDictionary[statToModify].currentValue = Mathf.Clamp(newStatValue,
-                                                              stat.minValue,
-                                                              stat.maxValue);
+        _characterStatDictionary[statToModify].currentValue = Mathf.Clamp(
+                                                                        newStatValue,
+                                                                        stat.minValue,
+                                                                        stat.maxValue);
 
         OnStatChanged?.Invoke(this, new OnStatChangedEventArgs
         {
@@ -68,8 +76,6 @@ public class CharacterStats : MonoBehaviour
 
         return _characterStatDictionary[stat].currentValue;
     }
-
-    public Dictionary<EStats, Stat> GetCharacterStatDictionary() => _characterStatDictionary;
 
     private void InitializeStatDictionary()
     {

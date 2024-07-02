@@ -1,11 +1,11 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CapsuleCollider2D))]
-public class AgentHitbox : AgentMonobehaviourComponent, IDamageable
+public class AgentHitbox : AgentMonobehaviourComponent, IDamegeable
 {
     [Header("Debug Fields")]
     [SerializeField] private AgentCoreBase _agentCore;
-    [SerializeField] private HealthSystem _healthSystem;
+    [SerializeField] private AgentHealthSystem _healthSystem;
     [SerializeField] private CapsuleCollider2D _hitboxCollider;
 
     private void Awake()
@@ -17,10 +17,10 @@ public class AgentHitbox : AgentMonobehaviourComponent, IDamageable
 
     private void Start()
     {
-        _healthSystem = _agentCore.GetAgentComponent<HealthSystem>();
+        _healthSystem = _agentCore.GetAgentComponent<AgentHealthSystem>();
     }
 
-    public bool IsDead() => _healthSystem.IsDead();
+    public bool IsDead() => _healthSystem.IsDead;
 
     public void TakeDamage(DamageStruct damageStruct) => _healthSystem.TakeDamage(damageStruct);
 

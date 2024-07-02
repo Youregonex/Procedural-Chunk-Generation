@@ -8,7 +8,7 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
     [SerializeField] protected EFactions _faction;
 
     [Header("Agent Components")]
-    [SerializeField] protected HealthSystem _healthSystem;
+    [SerializeField] protected AgentHealthSystem _healthSystem;
     [SerializeField] protected AgentAttackModule _agentAttackModule;
     [SerializeField] protected AgentMovement _agentMovement;
     [SerializeField] protected AgentAnimation _agentAnimation;

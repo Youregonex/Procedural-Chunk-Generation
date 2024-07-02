@@ -43,12 +43,12 @@ public class Weapon : MonoBehaviour, IWeapon
 
         foreach(Collider2D hit in targetsHit)
         {
-            IDamageable damageable = hit.GetComponent<IDamageable>();
+            IDamegeable damageable = hit.GetComponent<IDamegeable>();
 
             if (damageable == null)
                 continue;
 
-            if (damageable == _weaponHolder.GetComponent<HealthSystem>().GetHitbox())
+            if (damageable == _weaponHolder.GetComponent<AgentHealthSystem>().GetHitbox())
                 continue;
 
             damageable.TakeDamage(new DamageStruct

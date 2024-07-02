@@ -1,19 +1,19 @@
 using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(HealthSystem), typeof(Rigidbody2D), typeof(AgentMovement))]
+[RequireComponent(typeof(AgentHealthSystem), typeof(Rigidbody2D), typeof(AgentMovement))]
 public class KnockbackOnHitEffect : MonoBehaviour
 {
     [SerializeField] private float _knockbackDuration;
 
     private Rigidbody2D _rigidBody2D;
-    private HealthSystem _healthSystem;
+    private AgentHealthSystem _healthSystem;
     private AgentMovement _agentMovement;
 
     private void Awake()
     {
         _rigidBody2D = GetComponent<Rigidbody2D>();
-        _healthSystem = GetComponent<HealthSystem>();
+        _healthSystem = GetComponent<AgentHealthSystem>();
         _agentMovement = GetComponent<AgentMovement>();
     }
 

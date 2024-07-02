@@ -8,11 +8,11 @@ public class Healthbar : MonoBehaviour
     [SerializeField] private Image _healthbarFill;
 
     [Header("DebugFields")]
-    [SerializeField] private HealthSystem _healthSystem;
+    [SerializeField] private AgentHealthSystem _healthSystem;
 
     private void Awake()
     {
-        _healthSystem = transform.root.GetComponent<HealthSystem>();
+        _healthSystem = transform.root.GetComponent<AgentHealthSystem>();
     }
 
     private void Start()

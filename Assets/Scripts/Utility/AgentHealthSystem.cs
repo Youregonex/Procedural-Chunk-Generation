@@ -1,28 +1,82 @@
 using UnityEngine;
+using System;
+using System.Collections;
 
-[RequireComponent(typeof(HealthSystem))]
-public class AgentHealthSystem : HealthSystem
+public class AgentHealthSystem : AgentMonobehaviourComponent
 {
+    public event Action<DamageStruct> OnDamageTaken;
+    public event Action<float, float> OnHealthChanged;
+    public event Action OnDeath;
+
     [Header("Config")]
-    [SerializeField] private float _vitalityToHealthRatio;
-    [SerializeField] private float _initialHealth;
+    [SerializeField] protected float _maxHealth;
+    [SerializeField] protected float _currentHealth;
+    [SerializeField] protected float _destructionDelay = 0f;
 
     [Header("Debug Fields")]
-    [SerializeField] private AgentStats _agentStats;
+    [SerializeField] protected bool _isDead = false;
+    [SerializeField] protected AgentCoreBase _agentCore;
+    [SerializeField] protected AgentAnimation _agentAnimation;
+    [SerializeField] protected AgentHitbox _hitbox;
 
-    protected override void Awake()
+    public bool IsDead => _isDead;
+
+    protected virtual void Awake()
     {
+        _currentHealth = _maxHealth;
+
         _agentCore = GetComponent<AgentCoreBase>();
     }
 
-    protected override void Start()
+    protected virtual void Start()
     {
-        base.Start();
+        _agentAnimation = _agentCore.GetAgentComponent<AgentAnimation>();
+        _hitbox = _agentCore.GetAgentComponent<AgentHitbox>();
+    }
 
-        _agentStats = _agentCore.GetAgentComponent<AgentStats>();
+    public override void DisableComponent()
+    {
+        this.enabled = false;
+    }
 
-        float vitalityValue = _agentStats.GetCurrentStatValue(EStats.Vitality);
-        _maxHealth = _initialHealth + (vitalityValue * _vitalityToHealthRatio);
-        _currentHealth = _maxHealth;
+    public virtual void TakeDamage(DamageStruct damageStruct)
+    {
+        if (_isDead)
+            return;
+
+        _agentAnimation.ManageGetHitAnimation();
+        _currentHealth -= damageStruct.damageAmount;
+
+        OnDamageTaken?.Invoke(damageStruct);
+
+        if (_currentHealth <= 0f)
+            _currentHealth = 0f;
+
+        OnHealthChanged?.Invoke(_currentHealth, _maxHealth);
+
+        if (_currentHealth == 0f)
+        {
+            OnDeath?.Invoke();
+
+            Die();
+        }
+    }
+
+    public IDamegeable GetHitbox() => _hitbox;
+
+    protected virtual void Die()
+    {
+        _isDead = true;
+        _hitbox.enabled = false;
+
+        _agentAnimation.PlayDeathAnimation();
+        StartCoroutine(DestroyWithDelay());
+    }
+
+    protected IEnumerator DestroyWithDelay()
+    {
+        yield return new WaitForSeconds(_destructionDelay);
+
+        Destroy(gameObject);
     }
 }

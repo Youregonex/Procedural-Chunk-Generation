@@ -96,7 +96,7 @@ public class EnemyStateMachine : BaseStateMachine<EnemyStateMachine.EEnemyState>
 
     private void PickCurrentTarget()
     {
-        if(_currentTargetTransform == null || _currentTargetTransform.GetComponent<HealthSystem>().IsDead())
+        if(_currentTargetTransform == null || _currentTargetTransform.GetComponent<AgentHealthSystem>().IsDead)
             _currentTargetTransform = TargetTransformList.Count == 0 ? null : TargetTransformList[0];
 
         if (_currentTargetTransform != null && Vector2.Distance(transform.position, _currentTargetTransform.position) > _chaseRange)

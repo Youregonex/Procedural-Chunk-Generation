@@ -19,8 +19,7 @@ public class ChunkGenerator : MonoBehaviour
     [SerializeField] private int _chunkLayerCount;
 
     [Header("Chunk Config")]
-    [SerializeField] private int _resourceNodesPerChunkMax;
-    [SerializeField] private int _resourceNodesPerChunkMin;
+    [SerializeField] private NodeResourceSpawnConfigSO _nodeResourceSpawnConfigSO;
 
     [Header("Map Gentration Settings")]
     [SerializeField] private float _noiseScale;
@@ -74,14 +73,14 @@ public class ChunkGenerator : MonoBehaviour
         return _chunkDictionary[chunkPosition];
     }
 
-    public float[,] GetChunkMapArrayWithPosition(Vector2Int chunkPosition)
+    public float[,] GetChunkNoiseMapArrayWithPosition(Vector2Int chunkPosition)
     {
         if (!ChunkExistsAtPosition(chunkPosition))
         {
             return null;
         }
 
-        return _chunkDictionary[chunkPosition].GetChunkMapArray();
+        return _chunkDictionary[chunkPosition].ChunkNoiseMapArray;
     }
 
     public bool ChunkExistsAtPosition(Vector2Int chunkPosition) => _chunkDictionary.ContainsKey(chunkPosition);
@@ -102,7 +101,7 @@ public class ChunkGenerator : MonoBehaviour
 
         LoadChunk(enteredChunk);
 
-        List<Vector2Int> enteredChunkNeighbourPositionList = enteredChunk.GetNeighbourChunkList();
+        List<Vector2Int> enteredChunkNeighbourPositionList = enteredChunk.NeighbourChunkList;
 
         foreach(Vector2Int chunkNeighbourPosition in enteredChunkNeighbourPositionList)
         {
@@ -117,18 +116,16 @@ public class ChunkGenerator : MonoBehaviour
     {
         Chunk exitChunk = sender as Chunk;
 
-        if(exitChunk.IsLoadingTiles())
+
+        if (!_loadingChunks.Contains(exitChunk) && exitChunk.IsLoadingTiles())
         {
-            if(!_loadingChunks.Contains(exitChunk))
-            {
-                _loadingChunks.Add(exitChunk);
-                exitChunk.OnFinishTileLoading += ExitChunk_OnFinishTileLoading;
-            }
+            _loadingChunks.Add(exitChunk);
+            exitChunk.OnFinishTileLoading += ExitChunk_OnFinishTileLoading;
+
+            return;
         }
-        else
-        {
-            UnLoadChunk(exitChunk);
-        }
+
+        UnloadChunk(exitChunk);
     }
 
     private void LoadChunk(Chunk chunk)
@@ -136,7 +133,7 @@ public class ChunkGenerator : MonoBehaviour
         chunk.LoadChunk();
     }
 
-    private void UnLoadChunk(Chunk chunk)
+    private void UnloadChunk(Chunk chunk)
     {
         chunk.UnloadChunk();
     }
@@ -146,7 +143,7 @@ public class ChunkGenerator : MonoBehaviour
         Chunk chunk = e.chunk;
 
         if (!chunk.IsPlayerInRange())
-            UnLoadChunk(chunk);
+            UnloadChunk(chunk);
 
         chunk.OnFinishTileLoading -= ExitChunk_OnFinishTileLoading;
         _loadingChunks.Remove(chunk);
@@ -180,13 +177,100 @@ public class ChunkGenerator : MonoBehaviour
 
         chunk.GenerateChunkMap(_seed, _noiseScale, _octaves, _persistance, _lacunarity, chunkCenter + seamOffset, _normalizeMode);
 
+        GenerateNodePositionMap(chunk);
         return chunk;
+    }
+
+    private void GenerateNodePositionMap(Chunk parentChunk)
+    {
+        List<Vector2Int> nodeValidPositions = GetNodeValidPositions(parentChunk);
+
+        Dictionary<ResourceNodeSpawnStruct, int>  nodesToSpawnDictionary = GetNodesToSpawn(_nodeResourceSpawnConfigSO, out int nodeAmount);
+
+        if (nodeAmount > nodeValidPositions.Count)
+        {
+            Debug.LogError("Too much nodes for chunk!");
+            return;
+        }
+
+        foreach(KeyValuePair<ResourceNodeSpawnStruct, int> keyValuePair in nodesToSpawnDictionary)
+        {
+            for (int i = 0; i < keyValuePair.Value; i++)
+            {
+                int randomNodePosition = UnityEngine.Random.Range(0, nodeValidPositions.Count);
+
+                parentChunk.AddNodeOnMap(nodeValidPositions[randomNodePosition], keyValuePair.Key.resourceNodePrefab);
+                nodeValidPositions.RemoveAt(randomNodePosition);
+            }
+        }
+    }
+
+    private Dictionary<ResourceNodeSpawnStruct, int> GetNodesToSpawn(NodeResourceSpawnConfigSO nodeResourceSpawnConfigSO, out int nodeAmount)
+    {
+        Dictionary<ResourceNodeSpawnStruct, int> nodesToSpawnDictionary = new Dictionary<ResourceNodeSpawnStruct, int>();
+        nodeAmount = 0;
+
+        foreach (ResourceNodeSpawnStruct nodeSpawnStruct in nodeResourceSpawnConfigSO.nodeResourceSpawn)
+        {
+            if (UnityEngine.Random.Range(0f, 1f) > nodeSpawnStruct.spawnChance)
+                continue;
+
+            int nodeAmountForChunk = UnityEngine.Random.Range(nodeSpawnStruct.minPerChunk, nodeSpawnStruct.maxPerChunk + 1);
+
+            nodesToSpawnDictionary.Add(nodeSpawnStruct, nodeAmountForChunk);
+            nodeAmount += nodeAmountForChunk;
+        }
+
+        return nodesToSpawnDictionary;
+    }
+
+    private List<Vector2Int> GetNodeValidPositions(Chunk parentChunk)
+    {
+        if (!parentChunk.ChunkMapFilled())
+        {
+            Debug.LogError($"{parentChunk.name}'s noise map  wasn't filled!");
+            return null;
+        }
+
+        Vector2Int chunkCenter = parentChunk.GetChunkPositionVector2Int();
+        List<Vector2Int> validNodePositionsList = new List<Vector2Int>();
+
+        int loopIndexX = 0;
+        int loopIndexY = 0;
+
+        for (int x = chunkCenter.x - _chunkLayerCount; x <= chunkCenter.x + _chunkLayerCount; x++)
+        {
+            for (int y = chunkCenter.y - _chunkLayerCount; y <= chunkCenter.y + _chunkLayerCount; y++)
+            {
+                float chunkNoiseMapValue = parentChunk.GetChunkMapValue(loopIndexX, loopIndexY);
+                ETileType tileType = GetTileTypeWithNoise(chunkNoiseMapValue);
+
+                if (tileType == ETileType.Ground)
+                {
+                    Vector2Int nodePlacementPosition = new Vector2Int(x, y);
+                    validNodePositionsList.Add(nodePlacementPosition);
+                }
+
+                loopIndexY++;
+            }
+
+            loopIndexX++;
+            loopIndexY = 0;
+        }
+
+        return validNodePositionsList;
     }
 
     private IEnumerator FillChunkWithTilesCoroutine(Chunk parentChunk)
     {
         if (parentChunk.IsLoadingTiles())
             yield break;
+
+        if (!parentChunk.ChunkMapFilled())
+        {
+            Debug.LogError($"{parentChunk.name}'s noise map  wasn't filled!");
+            yield break;
+        }
 
         parentChunk.StartLoadingTiles();
 
@@ -195,48 +279,74 @@ public class ChunkGenerator : MonoBehaviour
         int loopIndexX = 0;
         int loopIndexY = 0;
 
-        if (parentChunk.ChunkMapFilled())
+
+        for (int x = chunkCenter.x - _chunkLayerCount; x <= chunkCenter.x + _chunkLayerCount; x++)
         {
-            for (int x = chunkCenter.x - _chunkLayerCount; x <= chunkCenter.x + _chunkLayerCount; x++)
+            for (int y = chunkCenter.y - _chunkLayerCount; y <= chunkCenter.y + _chunkLayerCount; y++)
             {
-                for (int y = chunkCenter.y - _chunkLayerCount; y <= chunkCenter.y + _chunkLayerCount; y++)
-                {
 
-                    float chunkMapValue = parentChunk.GetChunkMapValue(loopIndexX, loopIndexY);
+                float chunkNoiseMapValue = parentChunk.GetChunkMapValue(loopIndexX, loopIndexY);
 
-                    Vector2Int tilPlacementPosition = new Vector2Int(x, y);
+                Vector2Int tilPlacementPosition = new Vector2Int(x, y);
 
-                    TileBase tile = GetRandomTile(chunkMapValue, out ETileType tileType);
+                TileBase tile = GetRandomTile(chunkNoiseMapValue, out ETileType tileType);
 
-                    TilePlacer.Instance.SetTileAtPosition(tile, tilPlacementPosition, tileType);
+                TilePlacer.Instance.SetTileAtPosition(tile, tilPlacementPosition, tileType);
 
-                    parentChunk.AddTileToChunk(tile, tilPlacementPosition, tileType);
+                parentChunk.AddTileToChunk(tile, tilPlacementPosition, tileType);
 
-                    loopIndexY++;
-                }
-
-                loopIndexX++;
-                loopIndexY = 0;
-
-                yield return new WaitForEndOfFrame();
+                loopIndexY++;
             }
-            
-            parentChunk.FillChunk();
 
-            parentChunk.FinishLoadingTiles();
+            loopIndexX++;
+            loopIndexY = 0;
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        parentChunk.FillChunk();
+
+        yield return PlaceResourceNodes(parentChunk);
+
+        parentChunk.FinishLoadingTiles();
+
+    }
+
+    private IEnumerator PlaceResourceNodes(Chunk parentChunk)
+    {
+        foreach(KeyValuePair<Vector2Int, ResourceNode> keyValuePair in parentChunk.NodePositionMapDictionary)
+        {
+            ResourceNode resourceNode = Instantiate(keyValuePair.Value, new Vector3(keyValuePair.Key.x, keyValuePair.Key.y, 0f), Quaternion.identity);
+            parentChunk.AddObjectToChunk(keyValuePair.Key, resourceNode.gameObject);
+            resourceNode.transform.SetParent(parentChunk.transform);
+
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    private ETileType GetTileTypeWithNoise(float tileNoise)
+    {
+        if (tileNoise <= _obstacleChance)
+        {
+            return ETileType.Obstacle;
+        }
+        else
+        {
+            return ETileType.Ground;
         }
     }
 
     private TileBase GetRandomTile(float tileNoise, out ETileType tileType)
     {
-        if (tileNoise <= _obstacleChance)
+        tileType = GetTileTypeWithNoise(tileNoise);
+
+        if(tileType == ETileType.Obstacle)
         {
-            tileType = ETileType.Obstacle;
             return _tileConfigSO.obstacleTiles[0];
         }
-        else
+
+        if(tileType == ETileType.Ground)
         {
-            tileType = ETileType.Ground;
             float placeDefaultTileChance = UnityEngine.Random.Range(0f, 1f);
             int randomTile;
 
@@ -247,6 +357,8 @@ public class ChunkGenerator : MonoBehaviour
 
             return _tileConfigSO.groundTiles[randomTile];
         }
+
+        return null;
     }
 
     private void OnDrawGizmos()

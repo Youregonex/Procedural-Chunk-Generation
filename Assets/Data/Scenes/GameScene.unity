@@ -2253,7 +2253,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -2.523, y: -0.32, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2604,10 +2604,9 @@ GameObject:
   - component: {fileID: 601507630}
   - component: {fileID: 601507629}
   - component: {fileID: 601507637}
-  - component: {fileID: 601507638}
-  - component: {fileID: 601507640}
   - component: {fileID: 601507641}
   - component: {fileID: 601507642}
+  - component: {fileID: 601507643}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -2782,42 +2781,6 @@ MonoBehaviour:
   _currentWeapon: {fileID: 1819038673}
   _agentInput: {fileID: 0}
   _agentCore: {fileID: 0}
---- !u!114 &601507638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 601507627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5eebf1986a98545bb9b1fe48feaf2a4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _knockbackDuration: 0.1
---- !u!114 &601507640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 601507627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d253be73e866242e7aeebae36ea27326, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 0
-  _maxHealth: 0
-  _currentHealth: 0
-  _destructionDelay: 2
-  _isDead: 0
-  _agentCore: {fileID: 0}
-  _agentAnimation: {fileID: 1851116009}
-  _hitbox: {fileID: 963974057}
-  _vitalityToHealthRatio: 5
-  _initialHealth: 5
-  _agentStats: {fileID: 0}
 --- !u!114 &601507641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2832,7 +2795,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 0
   _faction: 3
-  _healthSystem: {fileID: 601507640}
+  _healthSystem: {fileID: 601507643}
   _agentAttackModule: {fileID: 601507637}
   _agentMovement: {fileID: 601507629}
   _agentAnimation: {fileID: 1851116009}
@@ -2860,6 +2823,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 0
   _initialStatConfigSO: {fileID: 11400000, guid: 82b0f3b42f44d4549b4e23f571400fa2, type: 2}
+--- !u!114 &601507643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601507627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c6d68fb48074208a1d204d46e380df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <DisableOnDeath>k__BackingField: 0
+  _maxHealth: 0
+  _currentHealth: 0
+  _destructionDelay: 0
+  _isDead: 0
+  _agentCore: {fileID: 0}
+  _agentAnimation: {fileID: 0}
+  _hitbox: {fileID: 0}
+  _vitalityToHealthRatio: 5
+  _initialHealth: 5
+  _agentStats: {fileID: 0}
 --- !u!1001 &617365623
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6999,7 +6985,7 @@ Transform:
   m_GameObject: {fileID: 1726477554}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -2.523, y: -0.32, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7635,9 +7621,9 @@ GameObject:
   - component: {fileID: 1854188137}
   - component: {fileID: 1854188140}
   - component: {fileID: 1854188139}
-  - component: {fileID: 1854188142}
   - component: {fileID: 1854188144}
   - component: {fileID: 1854188143}
+  - component: {fileID: 1854188145}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -7654,7 +7640,7 @@ Transform:
   m_GameObject: {fileID: 1854188128}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.523, y: -0.32, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7820,29 +7806,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &1854188142
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1854188128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d253be73e866242e7aeebae36ea27326, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 0
-  _maxHealth: 0
-  _currentHealth: 0
-  _destructionDelay: 0
-  _isDead: 0
-  _agentCore: {fileID: 0}
-  _agentAnimation: {fileID: 623641776}
-  _hitbox: {fileID: 1712025734}
-  _vitalityToHealthRatio: 5
-  _initialHealth: 100000
-  _agentStats: {fileID: 0}
 --- !u!114 &1854188143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7857,7 +7820,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 0
   _faction: 1
-  _healthSystem: {fileID: 1854188142}
+  _healthSystem: {fileID: 1854188145}
   _agentAttackModule: {fileID: 1854188135}
   _agentMovement: {fileID: 1854188139}
   _agentAnimation: {fileID: 623641776}
@@ -7883,6 +7846,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 0
   _initialStatConfigSO: {fileID: 11400000, guid: 8441f2ed4cece486988b97a874241246, type: 2}
+--- !u!114 &1854188145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854188128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c6d68fb48074208a1d204d46e380df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <DisableOnDeath>k__BackingField: 0
+  _maxHealth: 0
+  _currentHealth: 0
+  _destructionDelay: 0
+  _isDead: 0
+  _agentCore: {fileID: 0}
+  _agentAnimation: {fileID: 0}
+  _hitbox: {fileID: 0}
+  _vitalityToHealthRatio: 5
+  _initialHealth: 1000
+  _agentStats: {fileID: 0}
 --- !u!1001 &1978190746
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8543,6 +8529,7 @@ MonoBehaviour:
   _chunkParent: {fileID: 1135924300}
   _chunkPrefab: {fileID: 8187302419217306237, guid: 3869156d3cb594c878510c213c972227, type: 3}
   _chunkLayerCount: 11
+  _nodeResourceSpawnConfigSO: {fileID: 11400000, guid: 78f0de98279464d08899394bdcba08ef, type: 2}
   _noiseScale: 10
   _octaves: 10
   _persistance: 0.5

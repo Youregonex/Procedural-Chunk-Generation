@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c403f9d29f804f2b96b3ed56e644aac, type: 3}
+  m_Name: DesertNodeSpawn
+  m_EditorClassIdentifier: 
+  nodeResourceSpawn:
+  - resourceNode: {fileID: 8742400329207296500, guid: e4aeb438437a34a789d6fe69e8b66333, type: 3}
+    spawnChance: 1
+    maxPerChunk: 2
+    minPerChunk: 1
+  - resourceNode: {fileID: 8742400329207296500, guid: ea79cc85e58bb49b587ba57d5c1d6689, type: 3}
+    spawnChance: 1
+    maxPerChunk: 2
+    minPerChunk: 1
+  - resourceNode: {fileID: 8742400329207296500, guid: a9c55efd8d51b4fabb702a7dcb9fdde0, type: 3}
+    spawnChance: 1
+    maxPerChunk: 2
+    minPerChunk: 1

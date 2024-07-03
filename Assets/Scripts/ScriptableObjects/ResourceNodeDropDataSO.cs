@@ -4,5 +4,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Resource Node Drop List")]
 public class ResourceNodeDropDataSO : ScriptableObject
 {
-    public List<NodeResourceDataStruct> nodeResourceDataList;
+    public List<NodeResourceDropDataStruct> nodeResourceDropDataList;
 }

@@ -45,12 +45,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 141831226f0a0447c8fb14f274bfd7dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponItemDataSO: {fileID: 11400000, guid: 24a878881cd3044a2bf39ef9b73dd736, type: 2}
   _weaponAnimation: {fileID: 5475347275811682380}
   _attackOrigin: {fileID: 6196943772299055142}
   _attackRadius: 0
   _attackDamageMax: 0
   _attackDamageMin: 0
   _knockbackForce: 0
+  _attackCooldownMax: 0
+  _attackCooldownCurrent: 0
   _weaponHolder: {fileID: 0}
   _showGizmos: 1
 --- !u!1 &5126940036593304015
@@ -78,7 +81,7 @@ Transform:
   m_GameObject: {fileID: 5126940036593304015}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.415, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -96,6 +99,8 @@ GameObject:
   - component: {fileID: 2604460098103190061}
   - component: {fileID: 7395012392896445261}
   - component: {fileID: 5475347275811682380}
+  - component: {fileID: 7103971467397756756}
+  - component: {fileID: 1139002993746046954}
   m_Layer: 0
   m_Name: WeaponVisual
   m_TagString: Untagged
@@ -112,7 +117,7 @@ Transform:
   m_GameObject: {fileID: 7621699904942355805}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -165,7 +170,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.15625, y: 0.625}
+  m_Size: {x: 0.20833333, y: 0.8333333}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -181,7 +186,7 @@ Animator:
   m_GameObject: {fileID: 7621699904942355805}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8ecd4335a60ad4428929e83ac66b5cca, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -205,3 +210,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponAnimator: {fileID: 0}
+--- !u!114 &7103971467397756756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7621699904942355805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c29cff538c195c249b69c6f2236de67b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Library: []
+  m_SpriteLibraryAsset: {fileID: 0}
+--- !u!114 &1139002993746046954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7621699904942355805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CategoryHash: 0
+  m_labelHash: 0
+  m_SpriteKey: 0
+  m_SpriteHash: 0

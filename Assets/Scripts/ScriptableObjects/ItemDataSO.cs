@@ -8,6 +8,7 @@ public class ItemDataSO : ScriptableObject
     [TextArea(5, 50)]
     public string Description;
     [field: SerializeField] public Sprite Icon { get; private set; }
-    [field: SerializeField] public Transform Prefab { get; private set; }
+    [field: SerializeField] public Transform ItemPrefab { get; private set; }
     [field: SerializeField] public int MaxStackSize { get; private set; }
+    [field: SerializeField] public EItemType ItemType { get; private set; }
 }

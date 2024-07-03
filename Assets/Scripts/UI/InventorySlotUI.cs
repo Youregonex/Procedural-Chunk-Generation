@@ -10,15 +10,16 @@ public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public event EventHandler OnPointerEnterUISlot;
     public event EventHandler OnPointerExitUISlot;
 
+    [Header("Config")]
+    [SerializeField] protected Image _itemImage;
+    [SerializeField] protected RectTransform _quantityTextBackground;
+    [SerializeField] protected TextMeshProUGUI _itemQuantityText;
 
-    [SerializeField] private Image _itemImage;
-    [SerializeField] private RectTransform _quantityTextBackground;
-    [SerializeField] private TextMeshProUGUI _itemQuantityText;
+    [Header("Debug Fields")]
+    [SerializeField] protected InventoryDisplay _parentDisplay;
 
-    [SerializeField] private InventoryDisplay _parentDisplay;
-
-    private Button _button;
-    private InventorySlot _assignedInventorySlot;
+    protected Button _button;
+    protected InventorySlot _assignedInventorySlot;
 
 
     public InventorySlot AssignedInventorySlot => _assignedInventorySlot;

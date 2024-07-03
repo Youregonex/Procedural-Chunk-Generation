@@ -3,6 +3,7 @@ using TMPro;
 
 public class ItemDescriptionWindow : MonoBehaviour
 {
+    [Header("Config")]
     [SerializeField] private RectTransform _itemDescriptionUIPanel;
     [SerializeField] private TextMeshProUGUI _itemNameText;
     [SerializeField] private TextMeshProUGUI _itemDescriptionText;
@@ -21,11 +22,8 @@ public class ItemDescriptionWindow : MonoBehaviour
     public void DisplayItemDescription(InventorySlotUI currentItem)
     {
         ItemDataSO itemDataSO = currentItem.AssignedInventorySlot.ItemDataSO;
-
         SetItemDescriptionData(itemDataSO);
-
         transform.position = currentItem.transform.position;
-
         RectTransform panelRect = _itemDescriptionUIPanel.GetComponent<RectTransform>();
 
         if (_selfRectTransform.anchoredPosition.y >= 0 && _selfRectTransform.anchoredPosition.x <= 0) // Upper left part of screen
@@ -57,6 +55,7 @@ public class ItemDescriptionWindow : MonoBehaviour
             panelRect.anchorMax = bottomLeftAnchor;
 
             panelRect.pivot = topRightPivot;
+
         }
         else if (_selfRectTransform.anchoredPosition.y < 0 && _selfRectTransform.anchoredPosition.x > 0) // Bottom right part of screen
         {
@@ -72,6 +71,7 @@ public class ItemDescriptionWindow : MonoBehaviour
         panelRect.sizeDelta = Vector2.zero;
 
         _itemDescriptionUIPanel.gameObject.SetActive(true);
+
     }
 
     private void SetItemDescriptionData(ItemDataSO itemData)

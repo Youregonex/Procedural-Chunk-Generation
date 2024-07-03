@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class DynamicInventoryDisplay : InventoryDisplay
 {
-    [SerializeField] protected RectTransform _inventoryBackground;
+    [SerializeField] private RectTransform _inventoryBackground;
 
-    protected void Start()
+    private void Start()
     {
         HideInventory();
     }

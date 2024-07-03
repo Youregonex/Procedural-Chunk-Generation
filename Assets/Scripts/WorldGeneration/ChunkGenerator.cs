@@ -317,7 +317,7 @@ public class ChunkGenerator : MonoBehaviour
         foreach(KeyValuePair<Vector2Int, ResourceNode> keyValuePair in parentChunk.NodePositionMapDictionary)
         {
             ResourceNode resourceNode = Instantiate(keyValuePair.Value, new Vector3(keyValuePair.Key.x, keyValuePair.Key.y, 0f), Quaternion.identity);
-            parentChunk.AddObjectToChunk(keyValuePair.Key, resourceNode.gameObject);
+            parentChunk.AddNodeToChunk(keyValuePair.Key, resourceNode);
             resourceNode.transform.SetParent(parentChunk.transform);
 
             yield return new WaitForEndOfFrame();

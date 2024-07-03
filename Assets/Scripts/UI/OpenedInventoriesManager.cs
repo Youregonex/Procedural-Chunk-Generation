@@ -33,9 +33,9 @@ public class OpenedInventoriesManager : MonoBehaviour
 
         foreach(InventoryDisplay inventoryDisplay in _inventoriesDisplayList)
         {
-            if(inventoryDisplay.IsInventoryOpened())
+            if(inventoryDisplay.IsOpened)
             {
-                openedInventories.Add(inventoryDisplay.GetCurrentInventory());
+                openedInventories.Add(inventoryDisplay.CurrentInventory);
             }
         }
 

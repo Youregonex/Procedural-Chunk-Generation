@@ -13,15 +13,47 @@ MonoBehaviour:
   m_Name: DesertNodeSpawn
   m_EditorClassIdentifier: 
   nodeResourceSpawn:
-  - resourceNode: {fileID: 8742400329207296500, guid: e4aeb438437a34a789d6fe69e8b66333, type: 3}
+  - resourceNodePrefab: {fileID: 8742400329207296500, guid: e4aeb438437a34a789d6fe69e8b66333, type: 3}
     spawnChance: 1
     maxPerChunk: 2
     minPerChunk: 1
-  - resourceNode: {fileID: 8742400329207296500, guid: ea79cc85e58bb49b587ba57d5c1d6689, type: 3}
+  - resourceNodePrefab: {fileID: 8742400329207296500, guid: ea79cc85e58bb49b587ba57d5c1d6689, type: 3}
     spawnChance: 1
     maxPerChunk: 2
     minPerChunk: 1
-  - resourceNode: {fileID: 8742400329207296500, guid: a9c55efd8d51b4fabb702a7dcb9fdde0, type: 3}
+  - resourceNodePrefab: {fileID: 8742400329207296500, guid: a9c55efd8d51b4fabb702a7dcb9fdde0, type: 3}
     spawnChance: 1
+    maxPerChunk: 2
+    minPerChunk: 1
+  - resourceNodePrefab: {fileID: 771815391333750610, guid: 12e24bb6ed5a44068af5239649d4d3df, type: 3}
+    spawnChance: 0.7
+    maxPerChunk: 5
+    minPerChunk: 1
+  - resourceNodePrefab: {fileID: 771815391333750610, guid: 41f6a5791fa234dbca00cb8bcc5e44a8, type: 3}
+    spawnChance: 0.3
+    maxPerChunk: 4
+    minPerChunk: 1
+  - resourceNodePrefab: {fileID: 7625682271633044396, guid: 9634fede3b72c43ef8325607c3e23cd2, type: 3}
+    spawnChance: 0.6
+    maxPerChunk: 2
+    minPerChunk: 1
+  - resourceNodePrefab: {fileID: 425944499168397759, guid: f719ef0066e5a4a0f97e546b0b443e37, type: 3}
+    spawnChance: 0.4
+    maxPerChunk: 1
+    minPerChunk: 1
+  - resourceNodePrefab: {fileID: 771815391333750610, guid: 92baff9b5d64d4ae187a08e37bb7c41a, type: 3}
+    spawnChance: 0.5
+    maxPerChunk: 2
+    minPerChunk: 1
+  - resourceNodePrefab: {fileID: 771815391333750610, guid: 894bd5f79ffec4b36a330a3a29fc88cc, type: 3}
+    spawnChance: 0.3
+    maxPerChunk: 2
+    minPerChunk: 1
+  - resourceNodePrefab: {fileID: 771815391333750610, guid: cd0245e6e2d094c398048b146dea43b1, type: 3}
+    spawnChance: 0.3
+    maxPerChunk: 2
+    minPerChunk: 1
+  - resourceNodePrefab: {fileID: 771815391333750610, guid: ba5cc3a49a0254034b0170208f93f791, type: 3}
+    spawnChance: 0.3
     maxPerChunk: 2
     minPerChunk: 1

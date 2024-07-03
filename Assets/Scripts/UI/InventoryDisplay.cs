@@ -9,21 +9,14 @@ public class InventoryDisplay : MonoBehaviour
     [SerializeField] protected MouseItemSlot _mouseItemSlot;
     [SerializeField] protected ItemDescriptionWindow _itemDescriptionWindow;
 
-    protected Dictionary<InventorySlot, InventorySlotUI> _inventorySlotsDictionary;
-    protected List<InventorySlotUI> _inventorySlotsUIList;
+    protected Dictionary<InventorySlot, InventorySlotUI> _inventorySlotsDictionary = new Dictionary<InventorySlot, InventorySlotUI>();
+    protected List<InventorySlotUI> _inventorySlotsUIList = new List<InventorySlotUI>();
     protected bool _isOpened = false;
     protected Inventory _currentInventory;
 
+    public bool IsOpened => _isOpened;
+    public Inventory CurrentInventory => _currentInventory;
 
-    protected virtual void Awake()
-    {
-        _inventorySlotsUIList = new List<InventorySlotUI>();
-        _inventorySlotsDictionary = new Dictionary<InventorySlot, InventorySlotUI>();
-    }
-
-    public bool IsInventoryOpened() => _isOpened;
-
-    public Inventory GetCurrentInventory() => _currentInventory;
 
     public void InventorySlotUIClicked(InventorySlotUI clickedUISlot)
     {
@@ -211,9 +204,9 @@ public class InventoryDisplay : MonoBehaviour
 
     protected void InventorySlotUI_OnPointerEnterUISlot(object sender, System.EventArgs e)
     {
-        InventorySlotUI pointerOverSlot = sender as InventorySlotUI;
+        InventorySlotUI inventorySlotUI = sender as InventorySlotUI;
 
-        _itemDescriptionWindow.DisplayItemDescription(pointerOverSlot);
+        _itemDescriptionWindow.DisplayItemDescription(inventorySlotUI);
     }
 
     protected void InventorySlotUI_OnUISlotClicked(object sender, System.EventArgs e)

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3632647951205641331}
   - component: {fileID: 3928874102087209802}
+  - component: {fileID: 5589142115832083634}
   m_Layer: 0
   m_Name: ResourceNodeVisual
   m_TagString: Untagged
@@ -84,6 +85,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5589142115832083634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4848721785312746206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37c1e03edf6b64c58baeec839a68955a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _flashMaterial: {fileID: 2100000, guid: 2fedc2e11a5aa46de8453438af8501af, type: 2}
+  _flashDuration: 0.125
+  _spriteRenderer: {fileID: 0}
+  _initialMaterial: {fileID: 0}
+  _nodeHealthSystem: {fileID: 8556013764576524049}
 --- !u!1 &6380216576354921717
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,6 +187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nodeResourceDrop: {fileID: 0}
   _appropriateTool: 0
+  _nodeHealthSystem: {fileID: 0}
 --- !u!114 &8556013764576524049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,7 +213,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1573030516107882136}
-  - component: {fileID: 4636693183955264727}
   - component: {fileID: 4896212854544511022}
   - component: {fileID: 4801237647853621047}
   m_Layer: 0
@@ -219,22 +237,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5609432274460777379}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4636693183955264727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8801978555782404575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1283695fb098413294d3ab80babab48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxTicks: 0
-  _destructionDelay: 0
-  _currentTicks: 0
-  _isDepleted: 0
 --- !u!114 &4896212854544511022
 MonoBehaviour:
   m_ObjectHideFlags: 0

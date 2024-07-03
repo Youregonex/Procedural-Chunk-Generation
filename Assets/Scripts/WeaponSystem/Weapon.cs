@@ -1,42 +1,47 @@
 using UnityEngine;
-using System;
 
-public class Weapon : MonoBehaviour, IWeapon
+public class Weapon : MonoBehaviour
 {
-    public event Action OnAttackStarted;
-    public event Action OnAttackFinished;
-
     [Header("Config")]
-    [SerializeField] private float _attackRadius;
-    [SerializeField] private float _attackDamageMax;
-    [SerializeField] private float _attackDamageMin;
-    [SerializeField] private float _knockbackForce;
+    [SerializeField] private WeaponItemDataSO _weaponItemDataSO;
     [SerializeField] private WeaponAnimation _weaponAnimation;
     [SerializeField] private Transform _attackOrigin;
 
     [Header("Debug Fields")]
+    [SerializeField] private float _attackRadius;
+    [SerializeField] private float _attackDamageMax;
+    [SerializeField] private float _attackDamageMin;
+    [SerializeField] private float _knockbackForce;
+    [SerializeField] private float _attackCooldownMax;
+    [SerializeField] private float _attackCooldownCurrent;
     [SerializeField] private AgentAttackModule _weaponHolder;
     [SerializeField] private bool _showGizmos;
 
+    public bool CanSwing => _attackCooldownCurrent <= 0;
+
     private void Awake()
     {
+        SetupWeapon();
+    }
+
+    private void Update()
+    {
+        if(_attackCooldownCurrent > 0)
+            _attackCooldownCurrent -= Time.deltaTime;
+    }
+
+    public void SetupWeapon()
+    {
         _weaponHolder = transform.root.GetComponent<AgentAttackModule>();
-    }
 
-    private void Start()
-    {
-        _weaponAnimation.OnAttackAnimationStarted += WeaponAnimation_OnAttackAnimationStarted;
-        _weaponAnimation.OnAttackAnimationFinished += WeaponAnimation_OnAttackAnimationFinished;
-    }
-
-    private void OnDestroy()
-    {
-        _weaponAnimation.OnAttackAnimationStarted -= WeaponAnimation_OnAttackAnimationStarted;
-        _weaponAnimation.OnAttackAnimationFinished -= WeaponAnimation_OnAttackAnimationFinished;
+        SetupWeaponStats();
     }
 
     public void Attack()
     {
+        if (_attackCooldownCurrent > 0)
+            return;
+
         _weaponAnimation.PlayWeaponAttackAnimation();
 
         Collider2D[] targetsHit = Physics2D.OverlapCircleAll(_attackOrigin.position, _attackRadius);
@@ -58,16 +63,18 @@ public class Weapon : MonoBehaviour, IWeapon
                 knockbackForce = _knockbackForce
             });
         }
+
+        _attackCooldownCurrent = _attackCooldownMax;
     }
 
-    private void WeaponAnimation_OnAttackAnimationFinished()
+    private void SetupWeaponStats()
     {
-        OnAttackFinished?.Invoke();
-    }
-
-    private void WeaponAnimation_OnAttackAnimationStarted()
-    {
-        OnAttackStarted?.Invoke();
+        _attackRadius = _weaponItemDataSO.AttackRadius;
+        _attackDamageMin = _weaponItemDataSO.AttackDamageMin;
+        _attackDamageMax = _weaponItemDataSO.AttackDamageMax;
+        _knockbackForce = _weaponItemDataSO.KnockbackForce;
+        _attackCooldownMax = _weaponItemDataSO.AttackCooldown;
+        _attackCooldownCurrent = _attackCooldownMax;
     }
 
     private void OnDrawGizmos()

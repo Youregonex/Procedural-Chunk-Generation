@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2774371809012989045}
   - component: {fileID: 9084461483748007689}
+  - component: {fileID: 6237007836514084999}
   m_Layer: 0
   m_Name: ItemVisual
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1880136954007694656}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -78,12 +79,33 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.875, y: 0.9375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &6237007836514084999
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3796679662891799352}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d1d5a7d54276e4cefb1c3569ae301248, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7502192802761773642
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,8 +115,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1880136954007694656}
-  - component: {fileID: 2958422064065557400}
   - component: {fileID: 5101384681233496930}
+  - component: {fileID: 3099858894347960298}
+  - component: {fileID: 2534845292633890082}
   m_Layer: 8
   m_Name: _BaseResourceItem
   m_TagString: Untagged
@@ -118,8 +141,56 @@ Transform:
   - {fileID: 2774371809012989045}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &2958422064065557400
-CircleCollider2D:
+--- !u!114 &5101384681233496930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7502192802761773642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35c18b6b350b14a749c12ee12dc67922, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nodeDropMoveSpeed: 3
+  _nodeDropMoveTime: 0.2
+  _agentDropMoveSpeed: 5
+  _agentDropMoveTime: 0.3
+  _dropColliderDisableTime: 0.3
+  _rigidBody: {fileID: 0}
+  _itemDataSO: {fileID: 0}
+  _itemQuantity: 0
+  _capsuleCollider: {fileID: 0}
+--- !u!50 &3099858894347960298
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7502192802761773642}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!70 &2534845292633890082
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -151,19 +222,5 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.2
---- !u!114 &5101384681233496930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7502192802761773642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35c18b6b350b14a749c12ee12dc67922, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _itemDataSO: {fileID: 0}
-  _itemQuantity: 0
+  m_Size: {x: 0.5, y: 0.5}
+  m_Direction: 0

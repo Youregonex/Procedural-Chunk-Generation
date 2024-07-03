@@ -25,13 +25,13 @@ public class Chunk : MonoBehaviour
     [SerializeField] private float[,] _chunkNoiseMapArray;
 
     [SerializeField] private Dictionary<Vector2Int, ResourceNode> _nodePositionMapDictionary = new Dictionary<Vector2Int, ResourceNode>();
-    [SerializeField] private Dictionary<Vector2Int, GameObject> _chunkObjectDictionary = new Dictionary<Vector2Int, GameObject>();
+    [SerializeField] private Dictionary<Vector2Int, ResourceNode> _chunkNodeDictionary = new Dictionary<Vector2Int, ResourceNode>();
     [SerializeField] private List<Vector2Int> _neighbourChunkList = new List<Vector2Int>();
     [SerializeField] private List<TileData> _chunkTilesList = new List<TileData>();
 
     public Dictionary<Vector2Int, ResourceNode> NodePositionMapDictionary => _nodePositionMapDictionary;
     public List<Vector2Int> NeighbourChunkList => _neighbourChunkList;
-    public Dictionary<Vector2Int, GameObject> ChunkObjectDictionary => _chunkObjectDictionary;
+    public Dictionary<Vector2Int, ResourceNode> ChunkObjectDictionary => _chunkNodeDictionary;
     public List<TileData> ChunkTilesList => _chunkTilesList;
     public float[,] ChunkNoiseMapArray => _chunkNoiseMapArray;
 
@@ -92,35 +92,22 @@ public class Chunk : MonoBehaviour
     {
         _isLoaded = false;
 
-        foreach(TileData tileData in _chunkTilesList)
-        {
-            TilePlacer.Instance.ClearTileAtPosition(tileData.TilePosition, tileData.TileType);
-        }
-
-        foreach(KeyValuePair<Vector2Int, GameObject> keyValuePair in _chunkObjectDictionary)
-        {
-            keyValuePair.Value.SetActive(false);
-        }
+        UnloadTiles();
+        UnloadNodes();
     }
 
     public void LoadChunk()
     {
         _isLoaded = true;
 
-        foreach (TileData tileData in _chunkTilesList)
-        {
-            TilePlacer.Instance.SetTileAtPosition(tileData.Tile, tileData.TilePosition, tileData.TileType);
-        }
-
-        foreach (KeyValuePair<Vector2Int, GameObject> keyValuePair in _chunkObjectDictionary)
-        {
-            keyValuePair.Value.SetActive(true);
-        }
+        LoadTiles();
+        LoadNodes();
     }
 
-    public void AddObjectToChunk(Vector2Int objectPosition, GameObject newObject)
+    public void AddNodeToChunk(Vector2Int objectPosition, ResourceNode node)
     {
-        _chunkObjectDictionary.Add(objectPosition, newObject);
+        _chunkNodeDictionary.Add(objectPosition, node);
+        node.OnDepletion += Node_OnDepletion;
     }
 
     public void AddNodeOnMap(Vector2Int nodePosition, ResourceNode resourceNodePrefab)
@@ -156,4 +143,44 @@ public class Chunk : MonoBehaviour
             chunk = this
         });
     }
+
+    private void Node_OnDepletion(Vector2Int nodePosition)
+    {
+        _chunkNodeDictionary[nodePosition].OnDepletion -= Node_OnDepletion;
+
+        _chunkNodeDictionary.Remove(nodePosition);
+    }
+
+    private void UnloadTiles()
+    {
+        foreach (TileData tileData in _chunkTilesList)
+        {
+            TilePlacer.Instance.ClearTileAtPosition(tileData.TilePosition, tileData.TileType);
+        }
+    }
+
+    private void UnloadNodes()
+    {
+        foreach (KeyValuePair<Vector2Int, ResourceNode> keyValuePair in _chunkNodeDictionary)
+        {
+            keyValuePair.Value.gameObject.SetActive(false);
+        }
+    }
+
+    private void LoadTiles()
+    {
+        foreach (TileData tileData in _chunkTilesList)
+        {
+            TilePlacer.Instance.SetTileAtPosition(tileData.Tile, tileData.TilePosition, tileData.TileType);
+        }
+    }
+
+    private void LoadNodes()
+    {
+        foreach (KeyValuePair<Vector2Int, ResourceNode> keyValuePair in _chunkNodeDictionary)
+        {
+            keyValuePair.Value.gameObject.SetActive(true);
+        }
+    }
+
 }

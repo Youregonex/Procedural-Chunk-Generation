@@ -17,9 +17,11 @@ public class MouseItemSlot : MonoBehaviour
     [SerializeField] private ItemDataSO _itemDataSO;
     [SerializeField] private int _itemQuantity;
 
-
     public int ItemQuantity => _itemQuantity;
     public ItemDataSO ItemdDataSO => _itemDataSO;
+
+    private ItemFactory _itemFactory = new ItemFactory();
+
 
     private void Start()
     {
@@ -35,12 +37,12 @@ public class MouseItemSlot : MonoBehaviour
 
         if (Mouse.current.leftButton.wasPressedThisFrame && !IsPointerOverUIObject())
         {
-            ItemFactory itemFactory = new ItemFactory();
+            Item item = _itemFactory.CreateItem(_itemDataSO, _itemQuantity);
 
-            Item item = itemFactory.CreateItem(_itemDataSO, _itemQuantity);
+            item.transform.position = _playerMovement.transform.position;
 
-            item.transform.position = _playerMovement.transform.position + new Vector3(_playerMovement.GetCurrentDirection().x, _playerMovement.GetCurrentDirection().y, 0);
-
+            Vector2 mouseMoveDirectionNormalized = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            item.MoveInDirection(mouseMoveDirectionNormalized);
             ClearSlot();
         }
     }

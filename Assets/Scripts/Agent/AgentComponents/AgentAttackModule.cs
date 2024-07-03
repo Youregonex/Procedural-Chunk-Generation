@@ -4,43 +4,49 @@ using UnityEngine;
 public class AgentAttackModule : AgentMonobehaviourComponent
 {
     [Header("Config")]
-    [SerializeField] protected float _attackCooldownMax = 1f;
+    [SerializeField] protected ItemHoldPoint _itemHoldPoint;
 
     [Header("Debug Fields")]
-    [SerializeField] protected float _attackCooldownCurrent;
-    [SerializeField] protected bool _canAttack = true;
     [SerializeField] protected Weapon _currentWeapon;
+    [SerializeField] protected WeaponItemDataSO _currentWeaponItemDataSO;
+
+    [SerializeField] protected Tool _currentTool;
+    [SerializeField] protected ToolItemDataSO _currentToolItemDataSO;
+
     [SerializeField] protected AgentInput _agentInput;
     [SerializeField] protected AgentCoreBase _agentCore;
 
-    private void Awake()
+    public bool CanAttack
+    {
+        get
+        {
+            if (_currentWeapon != null)
+                return _currentWeapon.CanSwing;
+            if (_currentTool != null)
+                return _currentTool.CanSwing;
+
+            return false;
+        }
+    }
+
+    protected WeaponFactory _weaponFactory = new WeaponFactory();
+
+    protected virtual void Awake()
     {
         _agentCore = GetComponent<AgentCoreBase>();
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         _agentInput = _agentCore.GetAgentComponent<AgentInput>();
 
         _agentInput.OnAgentAttackTriggered += AgentInput_OnAgentAttackTrigger;
     }
 
-    private void Update()
-    {
-        if (_attackCooldownCurrent > 0)
-            _attackCooldownCurrent -= Time.deltaTime;
-    }
-
-    private void OnDestroy()
+    protected void OnDestroy()
     {
         if(_agentInput != null)
             _agentInput.OnAgentAttackTriggered -= AgentInput_OnAgentAttackTrigger;
-
-        if (_currentWeapon != null)
-        {
-            _currentWeapon.OnAttackStarted -= Weapon_OnAttackStarted;
-            _currentWeapon.OnAttackFinished -= Weapon_OnAttackFinished;
-        }
     }
 
     public override void DisableComponent()
@@ -55,35 +61,77 @@ public class AgentAttackModule : AgentMonobehaviourComponent
 
     protected virtual void Attack()
     {
-        if (_attackCooldownCurrent > 0 || !_canAttack)
+        if (_currentWeapon == null || !CanAttack)
             return;
 
-        _attackCooldownCurrent = _attackCooldownMax;
+        if (_currentWeapon != null)
+            _currentWeapon.Attack();
 
-        _currentWeapon.Attack();
+        if (_currentTool != null)
+            _currentTool.Attack();
     }
 
-    private void GetNewWeapon(Weapon newWeapon)
+    protected void ChangeWeapon(WeaponItemDataSO newWeaponItemDataSO)
     {
-        if(_currentWeapon != null)
-        {
-            _currentWeapon.OnAttackStarted -= Weapon_OnAttackStarted;
-            _currentWeapon.OnAttackFinished -= Weapon_OnAttackFinished;
-        }
+        if (newWeaponItemDataSO == _currentWeaponItemDataSO)
+            return;
 
-        _currentWeapon = newWeapon;
+        HideCurrentWeapon();
+        HideCurrentTool();
 
-        _currentWeapon.OnAttackStarted += Weapon_OnAttackStarted;
-        _currentWeapon.OnAttackFinished += Weapon_OnAttackFinished;
+        _currentWeaponItemDataSO = newWeaponItemDataSO;
+
+        _currentWeapon = _weaponFactory.CreateWeapon(newWeaponItemDataSO);
+        _currentWeapon.transform.SetParent(_itemHoldPoint.transform);
+
+        _currentWeapon.transform.localPosition = Vector3.zero;
+        _currentWeapon.transform.localRotation = Quaternion.identity;
+        _currentWeapon.transform.localScale = Vector3.one;
+
+        _currentWeapon.SetupWeapon();
     }
 
-    private void Weapon_OnAttackFinished()
+    protected void ChangeTool(ToolItemDataSO newToolItemDataSO)
     {
-        _canAttack = true;
+        if (newToolItemDataSO == _currentToolItemDataSO)
+            return;
+
+        HideCurrentWeapon();
+        HideCurrentTool();
+
+        _currentToolItemDataSO = newToolItemDataSO;
+
+        _currentTool = _weaponFactory.CreateTool(newToolItemDataSO);
+        _currentTool.transform.SetParent(_itemHoldPoint.transform);
+
+        _currentTool.transform.localPosition = Vector3.zero;
+        _currentTool.transform.localRotation = Quaternion.identity;
+        _currentTool.transform.localScale = Vector3.one;
+
+        _currentTool.SetUpTool();
     }
 
-    private void Weapon_OnAttackStarted()
+    protected void HideCurrentWeapon()
     {
-        _canAttack = false;
+        if (_currentWeapon == null)
+            return;
+
+        Destroy(_currentWeapon.gameObject);
+
+        _currentWeapon = null;
+        _currentWeaponItemDataSO = null;
+
     }
+
+    protected void HideCurrentTool()
+    {
+        if (_currentTool == null)
+            return;
+
+        Destroy(_currentTool.gameObject);
+
+        _currentTool = null;
+        _currentToolItemDataSO = null;
+    }
+
 }

@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2774371809012989045, guid: 1ad3ff5bbb4f948008d0f7423dda951c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.27
+      objectReference: {fileID: 0}
     - target: {fileID: 2958422064065557400, guid: 1ad3ff5bbb4f948008d0f7423dda951c, type: 3}
       propertyPath: m_Offset.y
       value: 0.16
@@ -78,7 +82,7 @@ PrefabInstance:
       objectReference: {fileID: 21300066, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
     - target: {fileID: 9084461483748007689, guid: 1ad3ff5bbb4f948008d0f7423dda951c, type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9084461483748007689, guid: 1ad3ff5bbb4f948008d0f7423dda951c, type: 3}
       propertyPath: m_WasSpriteAssigned

@@ -1,38 +1,23 @@
 using UnityEngine;
 using System.Collections;
 
-public class FlashOnHit : MonoBehaviour
+public abstract class FlashOnHit : MonoBehaviour
 {
     [Header("Config")]
-    [SerializeField] private Material _flashMaterial;
-    [SerializeField] private float _flashDuration = .125f;
+    [SerializeField] protected Material _flashMaterial;
+    [SerializeField] protected float _flashDuration = .125f;
 
     [Header("Debug Fields")]
-    [SerializeField] private SpriteRenderer _spriteRenderer;
-    [SerializeField] private Material _initialMaterial;
-    [SerializeField] private AgentHealthSystem _healthSystem;
+    [SerializeField] protected SpriteRenderer _spriteRenderer;
+    [SerializeField] protected Material _initialMaterial;
 
-    private void Awake()
+    protected void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _initialMaterial = _spriteRenderer.material;
-        _healthSystem = transform.root.GetComponent<AgentHealthSystem>();
     }
 
-    private void Start()
-    {
-        _healthSystem.OnDamageTaken += HealthSystem_OnDamageTaken;
-    }
-
-    private void HealthSystem_OnDamageTaken(DamageStruct obj)
-    {
-        StopAllCoroutines();
-
-        StartCoroutine(FlashSprite());
-    }
-
-
-    private IEnumerator FlashSprite()
+    protected IEnumerator FlashSprite()
     {
         _spriteRenderer.material = _flashMaterial;
 

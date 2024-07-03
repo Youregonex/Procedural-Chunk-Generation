@@ -1,37 +1,20 @@
 using UnityEngine;
 
-public class EnemyChaseState : BaseState<EnemyStateMachine.EEnemyState>
+public class EnemyChaseState : BaseState<BaseEnemyBehaviour.EBaseEnemyStates>
 {
     public EnemyChaseState(
-        EnemyStateMachine.EEnemyState key,
-        EnemyStateMachine parentStateMachine,
-        float attackRangeMax
+        BaseEnemyBehaviour.EBaseEnemyStates key,
+        BaseEnemyBehaviour enemyBehaviour,
+        BaseEnemyChaseStateDataSO baseEnemyChaseStateDataSO
         ) : base(key)
     {
-        _parentStateMachine = parentStateMachine;
-        _attackRangeMax = attackRangeMax;
+        _enemyBehaviour = enemyBehaviour;
+        _baseEnemyChaseStateDataSO = baseEnemyChaseStateDataSO;
     }
 
-    private EnemyStateMachine _parentStateMachine;
-    private float _attackRangeMax;
+    private BaseEnemyBehaviour _enemyBehaviour;
+    private BaseEnemyChaseStateDataSO _baseEnemyChaseStateDataSO;
 
-    public override EnemyStateMachine.EEnemyState GetNextState()
-    {
-        if (_parentStateMachine.GetCurrentTargetTransform() == null)
-            return EnemyStateMachine.EEnemyState.Idle;
 
-        if (Vector2.Distance(_parentStateMachine.GetPosition(), _parentStateMachine.GetCurrentTargetTransform().position) <= _attackRangeMax)
-            return EnemyStateMachine.EEnemyState.Attack;
 
-        return StateKey;
-    }
-
-    public override void UpdateState()
-    {
-        if (_parentStateMachine.GetCurrentTargetTransform() == null)
-            return;
-
-        _parentStateMachine.SetMovementDirection((Vector2)_parentStateMachine.GetCurrentTargetTransform().position - _parentStateMachine.GetPosition());
-        _parentStateMachine.SetAimPosition(_parentStateMachine.GetCurrentTargetTransform().position);
-    }
 }

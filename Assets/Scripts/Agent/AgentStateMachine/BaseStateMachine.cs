@@ -2,19 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public abstract class BaseStateMachine<EState> : MonoBehaviour where EState : Enum
+public class BaseStateMachine<EState> where EState : Enum
 {
     protected Dictionary<EState, BaseState<EState>> _stateDictionary = new Dictionary<EState, BaseState<EState>>();
 
     protected BaseState<EState> _currentState;
     protected bool _isTransitioningState = false;
 
-    protected virtual void Start()
-    {
-        _currentState.EnterState();
-    }
-
-    protected virtual void Update()
+    public void Update()
     {
         EState nextStateKey = _currentState.GetNextState();
 
@@ -28,6 +23,11 @@ public abstract class BaseStateMachine<EState> : MonoBehaviour where EState : En
         }
     }
 
+    public void SetStartingState(EState stateKey)
+    {
+        _currentState = _stateDictionary[stateKey];
+    }
+
     protected virtual void TransitionState(EState stateKey)
     {
         _isTransitioningState = true;
@@ -37,19 +37,22 @@ public abstract class BaseStateMachine<EState> : MonoBehaviour where EState : En
         _isTransitioningState = false;
     }
 
-    protected abstract void InitializeStates();
+    public void InitializeState(EState stateKey, BaseState<EState> baseState)
+    {
+        _stateDictionary.Add(stateKey, baseState);
+    }
 
-    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    public virtual void OnTriggerEnter2D(Collider2D collision)
     {
         _currentState.OnTriggerEnter2D(collision);
     }
 
-    protected virtual void OnTriggerStay2D(Collider2D collision)
+    public virtual void OnTriggerStay2D(Collider2D collision)
     {
         _currentState.OnTriggerStay2D(collision);
     }
 
-    protected virtual void OnTriggerExit2D(Collider2D collision)
+    public virtual void OnTriggerExit2D(Collider2D collision)
     {
         _currentState.OnTriggerExit2D(collision);
     }

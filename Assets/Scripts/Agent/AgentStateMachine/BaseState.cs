@@ -18,8 +18,8 @@ public abstract class BaseState<EState> where EState : Enum
     }
 
     public virtual void ExitState() { }
-    public abstract void UpdateState();
-    public abstract EState GetNextState();
+    public virtual void UpdateState() { }
+    public virtual EState GetNextState() => StateKey;
     public virtual void OnTriggerEnter2D(Collider2D collision) { }
     public virtual void OnTriggerStay2D(Collider2D collision) { }
     public virtual void OnTriggerExit2D(Collider2D collision) { }

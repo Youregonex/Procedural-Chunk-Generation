@@ -431,7 +431,6 @@ GameObject:
   - component: {fileID: 5356794587930822775}
   - component: {fileID: 5377017722661951448}
   - component: {fileID: 4420488798518187336}
-  - component: {fileID: 856120747571616763}
   - component: {fileID: 5449381109984830550}
   - component: {fileID: 6760722830329849626}
   - component: {fileID: 7925725251620483298}
@@ -439,6 +438,7 @@ GameObject:
   - component: {fileID: 6080998798823923710}
   - component: {fileID: 4260473591153406566}
   - component: {fileID: 120365283125399470}
+  - component: {fileID: 6343699516036772660}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -529,34 +529,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &856120747571616763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5033722652824955456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b9f01dc722d847b8aeb70a5d48e8508, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _attackRangeMax: 1.33
-  _attackRangeMin: 1.09
-  _aggroRange: 4
-  _chaseRange: 6.13
-  _attackDelayMin: 0.1
-  _attackDelayMax: 0.2
-  _timeToStartRoamMax: 3
-  _roamPositionOffsetMax: {x: 2, y: 2}
-  <DisableOnDeath>k__BackingField: 1
-  _currentRoamPosition: {x: 0, y: 0}
-  _currentTargetTransform: {fileID: 0}
-  <MovementDirection>k__BackingField: {x: 0, y: 0}
-  <AimPosition>k__BackingField: {x: 0, y: 0}
-  _targetDetectionZone: {fileID: 0}
-  _agentCore: {fileID: 0}
-  _showGizmos: 0
 --- !u!114 &5449381109984830550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -571,7 +543,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 1
   _enemyCore: {fileID: 0}
-  _enemyStateMachine: {fileID: 0}
+  _enemyBehaviour: {fileID: 0}
 --- !u!114 &6760722830329849626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -640,8 +612,8 @@ MonoBehaviour:
   _rigidBody2D: {fileID: 4420488798518187336}
   _agentComponents: []
   _disableOnDeathComponents: []
-  _enemyStateMachine: {fileID: 856120747571616763}
   _agentTargetDetectionZone: {fileID: 2404169415236441877}
+  _enemyBehaviour: {fileID: 0}
 --- !u!114 &6080998798823923710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -692,6 +664,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _knockbackDuration: 0.1
+--- !u!114 &6343699516036772660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5033722652824955456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 124e0b45bcb8f4e74a393c0a6d0318d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <DisableOnDeath>k__BackingField: 0
+  _enemyBehaviourDataSO: {fileID: 0}
+  _idleStateDataSO: {fileID: 0}
+  _chaseStateDataSO: {fileID: 0}
+  _combatStateDataSO: {fileID: 0}
+  _roamStateDataSO: {fileID: 0}
+  _attackStateDataSO: {fileID: 0}
+  _agentCore: {fileID: 0}
+  _currentRoamPosition: {x: 0, y: 0}
+  _currentTargetTransform: {fileID: 0}
+  <MovementDirection>k__BackingField: {x: 0, y: 0}
+  <AimPosition>k__BackingField: {x: 0, y: 0}
+  _targetDetectionZone: {fileID: 0}
+  _showGizmos: 0
 --- !u!1 &7229786136422076042
 GameObject:
   m_ObjectHideFlags: 0

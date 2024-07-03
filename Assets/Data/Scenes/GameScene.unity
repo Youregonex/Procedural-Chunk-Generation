@@ -7925,9 +7925,13 @@ PrefabInstance:
       objectReference: {fileID: 2119560719}
     m_RemovedComponents:
     - {fileID: 2273696525787513277, guid: 86143036028944a7fbdedbe9fc163863, type: 3}
+    - {fileID: 856120747571616763, guid: 86143036028944a7fbdedbe9fc163863, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5033722652824955456, guid: 86143036028944a7fbdedbe9fc163863, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7292062756084238942}
     - targetCorrespondingSourceObject: {fileID: 4281120031306152639, guid: 86143036028944a7fbdedbe9fc163863, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2119560719}
@@ -7938,6 +7942,37 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 588875442}
   m_SourcePrefab: {fileID: 100100000, guid: 86143036028944a7fbdedbe9fc163863, type: 3}
+--- !u!1 &7292062756084238941 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5033722652824955456, guid: 86143036028944a7fbdedbe9fc163863, type: 3}
+  m_PrefabInstance: {fileID: 7292062756084238940}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7292062756084238942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7292062756084238941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 124e0b45bcb8f4e74a393c0a6d0318d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <DisableOnDeath>k__BackingField: 0
+  _enemyBehaviourDataSO: {fileID: 0}
+  _idleStateDataSO: {fileID: 0}
+  _chaseStateDataSO: {fileID: 0}
+  _combatStateDataSO: {fileID: 0}
+  _roamStateDataSO: {fileID: 0}
+  _attackStateDataSO: {fileID: 0}
+  _agentCore: {fileID: 0}
+  _currentRoamPosition: {x: 0, y: 0}
+  _currentTargetTransform: {fileID: 0}
+  <MovementDirection>k__BackingField: {x: 0, y: 0}
+  <AimPosition>k__BackingField: {x: 0, y: 0}
+  _targetDetectionZone: {fileID: 0}
+  _showGizmos: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -2,36 +2,35 @@ using UnityEngine;
 
 public class IdleNode : Node
 {
-    public IdleNode(BaseEnemyBehaviour enemyBehaviour, float timeBetweenRoamMax, Vector2 roamPositionOffsetMax, int nodePriority = 0) : base(nodePriority)
+    public IdleNode(BaseEnemyBehaviour enemyBehaviour, float timeBetweenRoamMin, float timeBetweenRoamMax, Vector2 roamPositionOffsetMax, int nodePriority = 0) : base(nodePriority)
     {
         _enemyBehaviour = enemyBehaviour;
-        _timeBetweenRoamMax = timeBetweenRoamMax;
-        _timeBetweenRoamCurrent = _timeBetweenRoamMax;
+        _timeToStartRoamMin = timeBetweenRoamMin;
+        _timeToStartRoamMax = timeBetweenRoamMax;
         _roamPositionOffsetMax = roamPositionOffsetMax;
+
+        _timeToStartRoamCurrent = Random.Range(_timeToStartRoamMin, _timeToStartRoamMax);
     }
 
     private BaseEnemyBehaviour _enemyBehaviour;
 
     private Vector2 _roamPositionOffsetMax;
-    private float _timeBetweenRoamMax;
-    private float _timeBetweenRoamCurrent;
-    private bool _isWaiting = true;
+    private float _timeToStartRoamMax;
+    private float _timeToStartRoamMin;
+    private float _timeToStartRoamCurrent;
 
     public override ENodeState Evaluate()
     {
         Debug.Log($"{this} node active");
+
         _enemyBehaviour.SetMovementDirection(Vector2.zero);
 
-        if(_isWaiting)
-        {
-            _timeBetweenRoamCurrent -= Time.deltaTime;
+        _timeToStartRoamCurrent -= Time.deltaTime;
 
-            if(_timeBetweenRoamCurrent <= 0)
-            {
-                _isWaiting = false;
-                _timeBetweenRoamCurrent = _timeBetweenRoamMax;
-                _enemyBehaviour.SetRoamPosition(GetRandomRoamPosition());
-            }
+        if (_timeToStartRoamCurrent <= 0)
+        {
+            _timeToStartRoamCurrent = Random.Range(_timeToStartRoamMin, _timeToStartRoamMax);
+            _enemyBehaviour.SetRoamPosition(GetRandomRoamPosition());
         }
 
         _nodeState = ENodeState.Running;

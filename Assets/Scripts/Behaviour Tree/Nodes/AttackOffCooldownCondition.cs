@@ -10,6 +10,8 @@ public class AttackOffCooldownCondition : Node
 
     public override ENodeState Evaluate()
     {
-        return _enemyBehaviour.GetAttackCooldown() <= 0 ? ENodeState.Success : ENodeState.Failure;
+        _nodeState = _enemyBehaviour.GetAttackCooldown() <= 0 ? ENodeState.Success : ENodeState.Failure;
+
+        return _nodeState;
     }
 }

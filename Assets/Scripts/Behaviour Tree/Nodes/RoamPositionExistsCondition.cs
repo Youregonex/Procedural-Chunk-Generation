@@ -11,6 +11,8 @@ public class RoamPositionExistsCondition : Node
 
     public override ENodeState Evaluate()
     {
-        return _enemyBehaviour.CurrentRoamPosition != Vector2.zero ? ENodeState.Success : ENodeState.Failure;
+        _nodeState = _enemyBehaviour.CurrentRoamPosition != Vector2.zero ? ENodeState.Success : ENodeState.Failure;
+
+        return _nodeState;
     }
 }

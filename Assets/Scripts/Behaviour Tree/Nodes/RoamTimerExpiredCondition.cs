@@ -19,7 +19,7 @@ public class RoamTimerExpiredCondition : Node
         if (_timerCurrent >= _timerMax)
         {
             _timerCurrent = 0;
-            _enemyBehaviour.SetMovementDirection(Vector2.zero);
+            _enemyBehaviour.SetRoamPosition(Vector2.zero);
             _nodeState = ENodeState.Success;
         }
         else

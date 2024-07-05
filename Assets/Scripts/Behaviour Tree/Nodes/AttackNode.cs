@@ -11,9 +11,13 @@ public class AttackNode : Node
 
     public override ENodeState Evaluate()
     {
+        Debug.Log($"{this} node active");
+
         _enemyBehaviour.SetMovementDirection(Vector2.zero);
         _enemyBehaviour.SetAimPosition(_enemyBehaviour.GetCurrentTargetTransform().position);
+        _enemyBehaviour.TriggerAttack();
 
-        return ENodeState.Running;
+        _nodeState = ENodeState.Running;
+        return _nodeState;
     }
 }

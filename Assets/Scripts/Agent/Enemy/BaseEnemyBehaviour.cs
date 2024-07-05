@@ -45,7 +45,7 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
     {
         _agentCore = GetComponent<AgentCoreBase>();
 
-        SetupTree();
+        SetupBehaviourTree();
     }
 
     protected virtual void Start()
@@ -96,18 +96,30 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
             _currentTargetTransform = null;
     }
 
-    private void SetupTree()
+    private void SetupBehaviourTree()
     {
         RoamPositionExistsCondition roamPositionExistsCondition = new RoamPositionExistsCondition(this);
         RoamTimerExpiredCondition roamTimerExpiredCondition = new RoamTimerExpiredCondition(this, RoamTimeMax);
-        MoveToRoamPositionNode moveToRoamPositionNode = new MoveToRoamPositionNode(this);
         Inverter roamTimerExpiredConditionInverter = new Inverter(roamTimerExpiredCondition);
-
+        MoveToRoamPositionNode moveToRoamPositionNode = new MoveToRoamPositionNode(this);
         Sequence roamSequence = new Sequence(new List<Node> { roamPositionExistsCondition, roamTimerExpiredConditionInverter, moveToRoamPositionNode });
 
-        IdleNode idleNode = new IdleNode(this, TimeToStartRoamMax, RoamPositionOffsetMax);
+        IdleNode idleNode = new IdleNode(this, TimeToStartRoamMin, TimeToStartRoamMax, RoamPositionOffsetMax);
 
-        Selector treeRoot = new Selector(new List<Node> { roamSequence, idleNode });
+        TargetInAttackRangeCondition targetInAttackRangeCondition = new TargetInAttackRangeCondition(this, AttackRangeMax);
+        AttackOffCooldownCondition attackOffCooldownCondition = new AttackOffCooldownCondition(this);
+        AttackNode attackNode = new AttackNode(this);
+        Sequence attackSequnce = new Sequence(new List<Node> { targetInAttackRangeCondition, attackOffCooldownCondition, attackNode });
+
+        TargetInChaseRangeCondition targetInChaseRangeCondition = new TargetInChaseRangeCondition(this, ChaseRange);
+        ChaseNode chaseNode = new ChaseNode(this, AttackRangeMin, AttackRangeMax);
+        Sequence chaseSequence = new Sequence(new List<Node> { targetInChaseRangeCondition, chaseNode });
+
+        TargetExistsCondition targetExistsCondition = new TargetExistsCondition(this);
+        Selector combatSelector = new Selector(new List<Node> { attackSequnce, chaseSequence });
+        Sequence combatSequence = new Sequence(new List<Node> { targetExistsCondition, combatSelector });
+
+        Selector treeRoot = new Selector(new List<Node> { combatSequence, roamSequence, idleNode });
 
         _behaviourTree = treeRoot;
     }

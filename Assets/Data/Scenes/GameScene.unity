@@ -7979,7 +7979,7 @@ MonoBehaviour:
   <TimeToStartRoamMin>k__BackingField: 2
   <TimeToStartRoamMax>k__BackingField: 3
   <RoamTimeMax>k__BackingField: 3
-  <RoamPositionOffsetMax>k__BackingField: {x: 2, y: 2}
+  <RoamPositionOffsetMax>k__BackingField: {x: 4, y: 4}
   _currentTargetTransform: {fileID: 0}
   <CurrentRoamPosition>k__BackingField: {x: 0, y: 0}
   <MovementDirection>k__BackingField: {x: 0, y: 0}

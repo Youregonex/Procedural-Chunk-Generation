@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Base Enemy Behaviour Data", menuName = "Enemy Data/Behaviour")]
+[CreateAssetMenu(menuName = "Enemy Data/Behaviour")]
 public class BaseEnemyBehaviourDataSO : ScriptableObject
 {
     [field: SerializeField] public float AttackRangeMax { get; private set; }
@@ -13,5 +13,7 @@ public class BaseEnemyBehaviourDataSO : ScriptableObject
     [field: SerializeField] public float AttackDelayMax { get; private set; }
 
     [field: SerializeField] public float TimeToStartRoamMax { get; private set; }
+    [field: SerializeField] public float TimeToStartRoamMin { get; private set; }
     [field: SerializeField] public Vector2 RoamPositionOffsetMax { get; private set; }
+    [field: SerializeField] public float RoamTimeMax { get; private set; }
 }

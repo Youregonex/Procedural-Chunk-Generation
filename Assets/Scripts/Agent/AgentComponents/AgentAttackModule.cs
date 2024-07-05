@@ -49,6 +49,14 @@ public class AgentAttackModule : AgentMonobehaviourComponent
             _agentInput.OnAgentAttackTriggered -= AgentInput_OnAgentAttackTrigger;
     }
 
+    public float GetAttackCooldown()
+    {
+        if(_currentWeapon != null)
+            return _currentWeapon.AttackCooldownCurrent;
+
+        return _currentTool.AttackCooldownCurrent;
+    }
+
     public override void DisableComponent()
     {
         this.enabled = false;

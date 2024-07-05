@@ -13,11 +13,12 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float _attackDamageMin;
     [SerializeField] private float _knockbackForce;
     [SerializeField] private float _attackCooldownMax;
-    [SerializeField] private float _attackCooldownCurrent;
+    [SerializeField] private float _attackCooldownCurrent = 0f;
     [SerializeField] private AgentAttackModule _weaponHolder;
     [SerializeField] private bool _showGizmos;
 
     public bool CanSwing => _attackCooldownCurrent <= 0;
+    public float AttackCooldownCurrent => _attackCooldownCurrent;
 
     private void Awake()
     {

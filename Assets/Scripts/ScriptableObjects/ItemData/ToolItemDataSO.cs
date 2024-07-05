@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Tool Data")]
+[CreateAssetMenu(menuName = "Item Data/Tool Item Data")]
 public class ToolItemDataSO : ItemDataSO
 {
     [field: SerializeField] public Tool ToolPrefab { get; private set; }

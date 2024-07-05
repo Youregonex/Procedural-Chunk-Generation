@@ -7863,6 +7863,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 610834880283180788, guid: 86143036028944a7fbdedbe9fc163863, type: 3}
+      propertyPath: _enemyBehaviour
+      value: 
+      objectReference: {fileID: 7292062756084238942}
     - target: {fileID: 1801415573348153383, guid: 86143036028944a7fbdedbe9fc163863, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -7881,11 +7885,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5356794587930822775, guid: 86143036028944a7fbdedbe9fc163863, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.71
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5356794587930822775, guid: 86143036028944a7fbdedbe9fc163863, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -10.8
+      value: -1.1
       objectReference: {fileID: 0}
     - target: {fileID: 5356794587930822775, guid: 86143036028944a7fbdedbe9fc163863, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7919,6 +7923,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6164590941692280204, guid: 86143036028944a7fbdedbe9fc163863, type: 3}
+      propertyPath: _showGizmos
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7925725251620483298, guid: 86143036028944a7fbdedbe9fc163863, type: 3}
       propertyPath: _itemHoldPoint
       value: 
@@ -7926,6 +7934,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 2273696525787513277, guid: 86143036028944a7fbdedbe9fc163863, type: 3}
     - {fileID: 856120747571616763, guid: 86143036028944a7fbdedbe9fc163863, type: 3}
+    - {fileID: 6343699516036772660, guid: 86143036028944a7fbdedbe9fc163863, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -7959,19 +7968,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 124e0b45bcb8f4e74a393c0a6d0318d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 0
-  _enemyBehaviourDataSO: {fileID: 0}
-  _idleStateDataSO: {fileID: 0}
-  _chaseStateDataSO: {fileID: 0}
-  _combatStateDataSO: {fileID: 0}
-  _roamStateDataSO: {fileID: 0}
-  _attackStateDataSO: {fileID: 0}
-  _agentCore: {fileID: 0}
-  _currentRoamPosition: {x: 0, y: 0}
+  <DisableOnDeath>k__BackingField: 1
+  <AttackRangeMax>k__BackingField: 1.35
+  <AttackRangeMin>k__BackingField: 1
+  <AggroRange>k__BackingField: 5.64
+  <ChaseRange>k__BackingField: 7.89
+  <CombatRange>k__BackingField: 6.71
+  <AttackDelayMin>k__BackingField: 0.2
+  <AttackDelayMax>k__BackingField: 0.4
+  <TimeToStartRoamMin>k__BackingField: 2
+  <TimeToStartRoamMax>k__BackingField: 3
+  <RoamTimeMax>k__BackingField: 3
+  <RoamPositionOffsetMax>k__BackingField: {x: 2, y: 2}
   _currentTargetTransform: {fileID: 0}
+  <CurrentRoamPosition>k__BackingField: {x: 0, y: 0}
   <MovementDirection>k__BackingField: {x: 0, y: 0}
   <AimPosition>k__BackingField: {x: 0, y: 0}
   _targetDetectionZone: {fileID: 0}
+  _agentAttackModule: {fileID: 0}
+  _agentCore: {fileID: 0}
   _showGizmos: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -21,6 +21,7 @@ public class Tool : MonoBehaviour
     [SerializeField] private int _ticksPerAttackMax;
     [SerializeField] private int _toolTier;
 
+    public float AttackCooldownCurrent => _attackCooldownCurrent;
     public bool CanSwing => _attackCooldownCurrent <= 0;
 
     private void Awake()

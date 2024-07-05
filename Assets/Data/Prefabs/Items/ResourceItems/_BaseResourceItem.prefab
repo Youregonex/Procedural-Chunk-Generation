@@ -158,8 +158,8 @@ MonoBehaviour:
   _agentDropMoveSpeed: 5
   _agentDropMoveTime: 0.3
   _dropColliderDisableTime: 0.3
-  _rigidBody: {fileID: 0}
   _itemDataSO: {fileID: 0}
+  _rigidBody: {fileID: 0}
   _itemQuantity: 0
   _capsuleCollider: {fileID: 0}
 --- !u!50 &3099858894347960298
@@ -187,7 +187,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &2534845292633890082
 CapsuleCollider2D:

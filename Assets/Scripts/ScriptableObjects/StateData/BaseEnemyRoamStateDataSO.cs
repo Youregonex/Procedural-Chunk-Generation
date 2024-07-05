@@ -1,18 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseEnemyRoamStateDataSO : MonoBehaviour
+[CreateAssetMenu(menuName = "State Data/Roam State Data")]
+public class BaseEnemyRoamStateDataSO : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [field: SerializeField] public float RoamTimeMax { get; private set; }
 }

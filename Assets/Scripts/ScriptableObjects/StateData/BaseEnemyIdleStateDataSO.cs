@@ -1,18 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseEnemyIdleStateDataSO : MonoBehaviour
+[CreateAssetMenu(menuName = "State Data/Idle State Data")]
+public class BaseEnemyIdleStateDataSO : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [field: SerializeField] public float TimeToStartRoamMin { get; private set; }
+    [field: SerializeField] public float TimeToStartRoamMax { get; private set; }
+    [field: SerializeField] public Vector2 RoamPositionOffsetMax { get; private set; }
 }

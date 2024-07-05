@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-[CreateAssetMenu(menuName = "Stat Config")]
+[CreateAssetMenu(menuName = "Config/Stat Config")]
 public class StatConfigSO : ScriptableObject
 {
     public List<Stat> stats;

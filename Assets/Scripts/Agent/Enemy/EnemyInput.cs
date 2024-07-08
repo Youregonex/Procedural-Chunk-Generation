@@ -31,6 +31,9 @@ public class EnemyInput : AgentInput
 
     public override Vector2 GetAimPosition()
     {
+        if (_enemyBehaviour == null)
+            return Vector2.zero;
+
         return _enemyBehaviour.AimPosition;
     }
 

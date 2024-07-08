@@ -4,7 +4,7 @@ using System;
 
 public class HotbarDisplay : InventoryDisplay
 {
-    public static event Action<ItemDataSO> OnHotbarSlotSelected;
+    public static event Action<InventorySlot> OnHotbarSlotSelected;
 
     [Header("Config")]
     [SerializeField] private PlayerInventorySystem _playerInventory;
@@ -69,7 +69,7 @@ public class HotbarDisplay : InventoryDisplay
 
     private void RefreshSelectedSlot()
     {
-        OnHotbarSlotSelected(_currentHotbarSlotUI.AssignedInventorySlot.ItemDataSO);
+        OnHotbarSlotSelected(_currentHotbarSlotUI.AssignedInventorySlot);
     }
 
     private void InitializeHotbar()
@@ -100,6 +100,6 @@ public class HotbarDisplay : InventoryDisplay
         hotbarSlotUI.SelectSlot();
         _currentHotbarSlotUI = hotbarSlotUI;
 
-        OnHotbarSlotSelected(_currentHotbarSlotUI.AssignedInventorySlot.ItemDataSO);
+        OnHotbarSlotSelected(_currentHotbarSlotUI.AssignedInventorySlot);
     }
 }

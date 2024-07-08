@@ -1,0 +1,204 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5e6fedc2472449cead18ef23b5cb30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Library:
+  - m_Name: Idle
+    m_Hash: 1008081451
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: demon__idle_1
+      m_Hash: 385991772
+      m_Sprite: {fileID: -1590236166, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1590236166, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon__idle_2
+      m_Hash: 235443686
+      m_Sprite: {fileID: 1934122805, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1934122805, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon__idle_3
+      m_Hash: 957326704
+      m_Sprite: {fileID: -936210161, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -936210161, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon__idle_4
+      m_Hash: 661336275
+      m_Sprite: {fileID: -2010513171, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -2010513171, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 4
+  - m_Name: Run
+    m_Hash: 675013152
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: demon__run_1
+      m_Hash: 178438056
+      m_Sprite: {fileID: -865595691, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -865595691, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon__run_2
+      m_Hash: 330034706
+      m_Sprite: {fileID: -1089416240, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1089416240, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon__run_3
+      m_Hash: 615308932
+      m_Sprite: {fileID: 281922572, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 281922572, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon__run_4
+      m_Hash: 986204967
+      m_Sprite: {fileID: 953710455, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 953710455, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon__run_5
+      m_Hash: 231701425
+      m_Sprite: {fileID: 1929339387, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1929339387, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon__run_6
+      m_Hash: 348531211
+      m_Sprite: {fileID: -941144332, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -941144332, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon__run_7
+      m_Hash: 599857821
+      m_Sprite: {fileID: -744106275, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -744106275, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon__run_8
+      m_Hash: 863897356
+      m_Sprite: {fileID: 172270933, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 172270933, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 8
+  - m_Name: GetHit
+    m_Hash: 198110514
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: demon__gethit_1
+      m_Hash: 551216441
+      m_Sprite: {fileID: 1035831062, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1035831062, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon__gethit_2
+      m_Hash: 970175619
+      m_Sprite: {fileID: -203820840, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -203820840, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon__gethit_3
+      m_Hash: 248808469
+      m_Sprite: {fileID: -1478029631, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1478029631, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon__gethit_4
+      m_Hash: 279974326
+      m_Sprite: {fileID: -1937454335, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1937454335, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 4
+  - m_Name: Death
+    m_Hash: 646380074
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: demon__death_1
+      m_Hash: 32637118
+      m_Sprite: {fileID: 1143737891, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1143737891, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon__death_2
+      m_Hash: 419123460
+      m_Sprite: {fileID: 809982512, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 809982512, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon__death_3
+      m_Hash: 805069202
+      m_Sprite: {fileID: -1195884846, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1195884846, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon__death_4
+      m_Hash: 832107569
+      m_Sprite: {fileID: 1706434811, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 1706434811, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 4
+  - m_Name: Dash
+    m_Hash: 995914302
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: demon__0
+      m_Hash: 551974648
+      m_Sprite: {fileID: -1590236166, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1590236166, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 1
+  - m_Name: Spawn
+    m_Hash: 298836195
+    m_CategoryList: []
+    m_OverrideEntries:
+    - m_Name: demon_spawn_1
+      m_Hash: 946369768
+      m_Sprite: {fileID: -831689839, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -831689839, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon_spawn_2
+      m_Hash: 560014674
+      m_Sprite: {fileID: -152019004, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -152019004, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon_spawn_3
+      m_Hash: 375788996
+      m_Sprite: {fileID: -689781130, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -689781130, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon_spawn_4
+      m_Hash: 134381671
+      m_Sprite: {fileID: 699156914, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 699156914, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon_spawn_5
+      m_Hash: 1057337585
+      m_Sprite: {fileID: 2049833960, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: 2049833960, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon_spawn_6
+      m_Hash: 638378315
+      m_Sprite: {fileID: -83197772, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -83197772, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon_spawn_7
+      m_Hash: 285987293
+      m_Sprite: {fileID: -468148244, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -468148244, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon_spawn_8
+      m_Hash: 28625996
+      m_Sprite: {fileID: -627675218, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -627675218, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    - m_Name: demon__idle_1
+      m_Hash: 385991772
+      m_Sprite: {fileID: -1590236166, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+      m_FromMain: 0
+      m_SpriteOverride: {fileID: -1590236166, guid: 1b9d1a907f4bd48158f0805fd5af1734, type: 3}
+    m_FromMain: 0
+    m_EntryOverrideCount: 9
+  m_PrimaryLibraryGUID: 
+  m_ModificationHash: 638559644313827450
+  m_Version: 1

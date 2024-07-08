@@ -4,6 +4,8 @@ public class PlayerCore : AgentCoreBase
 {
     [Header("Config")]
     [SerializeField] private PlayerItemSelection _playerItemSelection;
+    [SerializeField] private PlayerBuildingSystem _playerBuildingSystem;
+    [SerializeField] private PlayerInteraction _playerInteraction;
 
     protected override void InitializeComponentList()
     {
@@ -16,6 +18,8 @@ public class PlayerCore : AgentCoreBase
         _agentComponents.Add(_agentInput);
         _agentComponents.Add(_agentStats);
         _agentComponents.Add(_playerItemSelection);
+        _agentComponents.Add(_playerBuildingSystem);
+        _agentComponents.Add(_playerInteraction);
 
         InitializeDisableOnDeathList();
     }

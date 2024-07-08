@@ -30,7 +30,7 @@ public class Healthbar : MonoBehaviour
         _healthSystem.OnDeath -= HealthSystem_OnDeath;
     }
 
-    private void HealthSystem_OnDeath()
+    private void HealthSystem_OnDeath(AgentHealthSystem agentHealthSystem)
     {
         _healthbarFill.fillAmount = 0f;
 

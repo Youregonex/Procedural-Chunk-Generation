@@ -23,6 +23,7 @@ public class OpenedInventoriesManager : MonoBehaviour
 
         _inventoriesDisplayList = new List<InventoryDisplay>();
 
+        _inventoriesDisplayList.Add(_customContainerInventoryDisplay);
         _inventoriesDisplayList.Add(_playerHotbarDisplay);
         _inventoriesDisplayList.Add(_playerInventoryDisplay);
     }

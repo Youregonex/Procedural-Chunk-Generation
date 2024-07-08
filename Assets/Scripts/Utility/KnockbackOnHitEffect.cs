@@ -29,7 +29,7 @@ public class KnockbackOnHitEffect : MonoBehaviour
         _healthSystem.OnDeath -= HealthSystem_OnDeath;
     }
 
-    private void HealthSystem_OnDeath()
+    private void HealthSystem_OnDeath(AgentHealthSystem agentHealthSystem)
     {
         StopKnockBack();
     }

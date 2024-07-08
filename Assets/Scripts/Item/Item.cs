@@ -18,7 +18,7 @@ public class Item : MonoBehaviour
     [Header("Debug Fields")]
     [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private int _itemQuantity;
-    [SerializeField] private CapsuleCollider2D _capsuleCollider;
+    [SerializeField] private BoxCollider2D _capsuleCollider;
 
     public ItemDataSO ItemDataSO => _itemDataSO;
     public int ItemQuantity => _itemQuantity;
@@ -26,7 +26,7 @@ public class Item : MonoBehaviour
     private void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
-        _capsuleCollider = GetComponent<CapsuleCollider2D>();
+        _capsuleCollider = GetComponent<BoxCollider2D>();
     }
 
     private void OnEnable()
@@ -87,12 +87,7 @@ public class Item : MonoBehaviour
 
     private Vector2 GetRandomMovementVector()
     {
-        float randomX = transform.position.x + UnityEngine.Random.Range(-1f, 1f);
-        float randomY = transform.position.y + UnityEngine.Random.Range(-1f, 1f);
-
-        Vector2 RandomMovementVectorNormalized = (new Vector2(randomX, randomY) - (Vector2)transform.position).normalized;
-
-        return RandomMovementVectorNormalized;
+        return Random.insideUnitCircle;
     }
 
 }

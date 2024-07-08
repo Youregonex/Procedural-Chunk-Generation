@@ -11,8 +11,6 @@ public class MoveToRoamPositionNode : Node
 
     public override ENodeState Evaluate()
     {
-        Debug.Log($"{this} node active");
-
         if (Vector2.Distance(_enemyBehaviour.transform.position, _enemyBehaviour.CurrentRoamPosition) >= .1f)
         {
             _enemyBehaviour.SetMovementDirection(_enemyBehaviour.CurrentRoamPosition - (Vector2)_enemyBehaviour.transform.position);

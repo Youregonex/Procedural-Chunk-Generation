@@ -3,15 +3,18 @@ using UnityEngine;
 public class ItemHoldPoint : MonoBehaviour
 {
     [Header("Debug Fields")]
-    [SerializeField] private AgentCoreBase _agentCore;
+    [SerializeField] protected AgentCoreBase _agentCore;
     [SerializeField] private AgentInput _agentInput;
 
-    private void Awake()
+    private Vector2 _aimPosition;
+    private Vector2 _aimDirection;
+
+    protected virtual void Awake()
     {
         _agentCore = transform.root.GetComponent<AgentCoreBase>();
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         _agentInput = _agentCore.GetAgentComponent<AgentInput>();
     }
@@ -23,20 +26,24 @@ public class ItemHoldPoint : MonoBehaviour
 
     private void ManageItemHoldPointPosition()
     {
-        Vector2 aimPosition = _agentInput.GetAimPosition();
+        _aimPosition = _agentInput.GetAimPosition();
 
-        Vector2 aimDirection = (aimPosition - (Vector2)transform.position).normalized;
-        transform.right = aimDirection;
+        _aimDirection = (_aimPosition - (Vector2)transform.position).normalized;
+        transform.right = _aimDirection;
 
         Vector3 localScale = transform.localScale;
-        if (aimDirection.x < 0)
+
+        if (_aimDirection.x <= 0)
         {
             localScale.y = -1;
         }
-        else if (aimDirection.x > 0)
+        else if (_aimDirection.x > 0)
         {
             localScale.y = 1;
         }
+
+        if (_aimDirection.y == 0)
+            localScale.y = 1;
 
         transform.localScale = localScale;
     }

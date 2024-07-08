@@ -14,8 +14,6 @@ public class RoamTimerExpiredCondition : Node
 
     public override ENodeState Evaluate()
     {
-        Debug.Log($"Current Timer : {_timerCurrent}");
-
         if (_timerCurrent >= _timerMax)
         {
             _timerCurrent = 0;

@@ -41,6 +41,13 @@ public class TilePlacer : MonoBehaviour
         }
     }
 
+    public bool HasObstaclAtPosition(Vector2 position)
+    {
+        Vector3Int tilemapPosition = _obstacleTilemap.WorldToCell(position);
+
+        return _obstacleTilemap.HasTile(tilemapPosition) ? true : false;
+    }
+
     public void ClearTileAtPosition(Vector2 tileWorldPosition, ETileType tileType)
     {
         if (_groundTilemap == null || _obstacleTilemap == null)

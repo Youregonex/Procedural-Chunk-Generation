@@ -15,8 +15,6 @@ public class ChaseNode : Node
 
     public override ENodeState Evaluate()
     {
-        Debug.Log($"{this} node active");
-
         float distance = Vector2.Distance(_enemyBehaviour.transform.position, _enemyBehaviour.GetCurrentTargetTransform().position);
 
         if (distance > _maxAttackRange)

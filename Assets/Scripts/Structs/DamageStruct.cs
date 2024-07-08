@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public struct DamageStruct
+public struct DamageStruct : IImpactStruct
 {
     public GameObject damageSender;
     public float damageAmount;

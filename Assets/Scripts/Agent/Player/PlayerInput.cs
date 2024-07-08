@@ -6,7 +6,8 @@ public class PlayerInput : AgentInput
 {
     private PlayerInputActions _playerInputActions;
 
-    public event EventHandler OnInventoryKeyPressed;
+    public event Action OnInventoryKeyPressed;
+    public event Action OnInteractKeyPressed;
 
     private void Awake()
     {
@@ -18,6 +19,12 @@ public class PlayerInput : AgentInput
     {
         _playerInputActions.Player.Attack.performed += PlayerInputActions_Attack_performed;
         _playerInputActions.Player.Inventory.performed += PlayerInputActions_Inventory_performed;
+        _playerInputActions.Player.Interact.performed += PlayerInputActions_Interact_performed;
+    }
+
+    private void PlayerInputActions_Interact_performed(InputAction.CallbackContext obj)
+    {
+        OnInteractKeyPressed?.Invoke();
     }
 
     public override Vector2 GetMovementVectorNormalized()
@@ -32,7 +39,7 @@ public class PlayerInput : AgentInput
 
     private void PlayerInputActions_Inventory_performed(InputAction.CallbackContext obj)
     {
-        OnInventoryKeyPressed?.Invoke(this, EventArgs.Empty);
+        OnInventoryKeyPressed?.Invoke();
     }
 
     private void PlayerInputActions_Attack_performed(InputAction.CallbackContext obj)

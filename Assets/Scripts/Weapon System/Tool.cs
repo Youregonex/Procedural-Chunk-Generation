@@ -24,10 +24,6 @@ public class Tool : MonoBehaviour
     public float AttackCooldownCurrent => _attackCooldownCurrent;
     public bool CanSwing => _attackCooldownCurrent <= 0;
 
-    private void Awake()
-    {
-        SetUpTool();
-    }
 
     private void Update()
     {
@@ -35,9 +31,9 @@ public class Tool : MonoBehaviour
             _attackCooldownCurrent -= Time.deltaTime;
     }
 
-    public void SetUpTool()
+    public void SetUpTool(AgentAttackModule agentAttackModue)
     {
-        _weaponHolder = transform.root.GetComponent<AgentAttackModule>();
+        _weaponHolder = agentAttackModue;
 
         SetupToolStats();
     }

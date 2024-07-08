@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ItemHoldPoint : MonoBehaviour
+public class ItemHoldPoint : AgentMonobehaviourComponent
 {
     [Header("Debug Fields")]
     [SerializeField] protected AgentCoreBase _agentCore;
@@ -22,6 +22,11 @@ public class ItemHoldPoint : MonoBehaviour
     private void Update()
     {
         ManageItemHoldPointPosition();
+    }
+
+    public override void DisableComponent()
+    {
+        this.enabled = false;
     }
 
     private void ManageItemHoldPointPosition()

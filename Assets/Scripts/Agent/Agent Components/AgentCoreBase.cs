@@ -16,6 +16,7 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
     [SerializeField] protected AgentHitbox _agentHitbox;
     [SerializeField] protected AgentInput _agentInput;
     [SerializeField] protected AgentStats _agentStats;
+    [SerializeField] protected ItemHoldPoint _agentItemHoldPoint;
 
     [Header("Agent Colliders")]
     [SerializeField] private CapsuleCollider2D _collisionCollider;
@@ -67,6 +68,7 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
         _agentComponents.Add(_agentHitbox);
         _agentComponents.Add(_agentInput);
         _agentComponents.Add(_agentStats);
+        _agentComponents.Add(_agentItemHoldPoint);
 
         InitializeDisableOnDeathList();
     }

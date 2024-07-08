@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 835edd55c77d44fd5b3998602ae4a23a, type: 3}
+  m_Name: BowWeaponItemData
+  m_EditorClassIdentifier: 
+  <Id>k__BackingField: 0
+  <Name>k__BackingField: Bow
+  Description: Bow
+  <Icon>k__BackingField: {fileID: 21300000, guid: c48203a372956492782461d8effaf2c2, type: 3}
+  <ItemPrefab>k__BackingField: {fileID: 1750307036268059749, guid: cae7b705eedcb439ea17e2d71685d57e, type: 3}
+  <MaxStackSize>k__BackingField: 1
+  <ItemType>k__BackingField: 2
+  <WeaponPrefab>k__BackingField: {fileID: 430820383454170577, guid: 31ff2f06b41454dd480a26e9ad424e42, type: 3}
+  <AttackDamageMin>k__BackingField: 2
+  <AttackDamageMax>k__BackingField: 5
+  <KnockbackForce>k__BackingField: 5
+  <AttackCooldown>k__BackingField: 2
+  <ProjectilePrefab>k__BackingField: {fileID: 2108598023972442185, guid: 20b8f22c206654d4f9dc89f1b630ba09, type: 3}
+  <ProjectileSpeed>k__BackingField: 30
+  <ProjectileRange>k__BackingField: 10

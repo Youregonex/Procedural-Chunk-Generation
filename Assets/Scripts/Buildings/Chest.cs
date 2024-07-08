@@ -7,7 +7,7 @@ public class Chest : InteractableBuilding
 
     [Header("Debug Fields")]
     [SerializeField] private Inventory _containerInventory;
-    [SerializeField] private DynamicInventoryDisplay _customContaineerDisplay;
+    [SerializeField] private DynamicInventoryDisplay _customContainerDisplay;
 
     protected override void Awake()
     {
@@ -19,7 +19,7 @@ public class Chest : InteractableBuilding
 
     private void Start()
     {
-        _customContaineerDisplay = UIComponentProvider.Instance.CustomContainerDisplay;
+        _customContainerDisplay = UIComponentProvider.Instance.CustomContainerDisplay;
     }
 
     public override void Interact(GameObject initiator)
@@ -31,14 +31,14 @@ public class Chest : InteractableBuilding
         }
 
         IsInteracting = true;
-        _customContaineerDisplay.ShowInventory(_containerInventory);
+        _customContainerDisplay.ShowInventory(_containerInventory);
         _spriteRenderer.sprite = _interactedSprite;
     }
 
     public override void StopInteraction()
     {
         IsInteracting = false;
-        _customContaineerDisplay.HideInventory();
+        _customContainerDisplay.HideInventory();
         _spriteRenderer.sprite = _uninteractedSprite;
     }
 }

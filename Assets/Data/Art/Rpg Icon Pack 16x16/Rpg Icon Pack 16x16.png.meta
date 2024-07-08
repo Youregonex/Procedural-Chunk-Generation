@@ -501,7 +501,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_18
+      name: Ore_Resource_Yellow
       rect:
         serializedVersion: 2
         x: 96
@@ -627,7 +627,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_24
+      name: Ore_Resource_Red
       rect:
         serializedVersion: 2
         x: 0
@@ -690,7 +690,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_27
+      name: Ore_Resource_Blue
       rect:
         serializedVersion: 2
         x: 48
@@ -1236,7 +1236,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_53
+      name: Ore
       rect:
         serializedVersion: 2
         x: 80
@@ -1404,7 +1404,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_61
+      name: Stone_Resource
       rect:
         serializedVersion: 2
         x: 16
@@ -1509,7 +1509,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Wood
+      name: Wood_Resource
       rect:
         serializedVersion: 2
         x: 96
@@ -3031,6 +3031,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      Ore: 2140729878
+      Ore_Resource_Blue: -985267769
+      Ore_Resource_Red: 1811094204
+      Ore_Resource_Yellow: -367902558
       Rpg Icon Pack 16x16_0: -463663341
       Rpg Icon Pack 16x16_1: 493336628
       Rpg Icon Pack 16x16_10: -53624574
@@ -3079,17 +3083,14 @@ TextureImporter:
       Rpg Icon Pack 16x16_15: 1129404405
       Rpg Icon Pack 16x16_16: -1560987710
       Rpg Icon Pack 16x16_17: -1169078964
-      Rpg Icon Pack 16x16_18: -367902558
       Rpg Icon Pack 16x16_19: 708064209
       Rpg Icon Pack 16x16_2: -588466656
       Rpg Icon Pack 16x16_20: -910990433
       Rpg Icon Pack 16x16_21: 711219299
       Rpg Icon Pack 16x16_22: 1578626106
       Rpg Icon Pack 16x16_23: -507547076
-      Rpg Icon Pack 16x16_24: 1811094204
       Rpg Icon Pack 16x16_25: -1830065186
       Rpg Icon Pack 16x16_26: 1833446519
-      Rpg Icon Pack 16x16_27: -985267769
       Rpg Icon Pack 16x16_28: -760304036
       Rpg Icon Pack 16x16_29: 1716641846
       Rpg Icon Pack 16x16_3: 1413055943
@@ -3118,7 +3119,6 @@ TextureImporter:
       Rpg Icon Pack 16x16_50: -1252846223
       Rpg Icon Pack 16x16_51: 680142853
       Rpg Icon Pack 16x16_52: -453947482
-      Rpg Icon Pack 16x16_53: 2140729878
       Rpg Icon Pack 16x16_54: -167936844
       Rpg Icon Pack 16x16_55: -1071817498
       Rpg Icon Pack 16x16_56: 1347610298
@@ -3127,7 +3127,6 @@ TextureImporter:
       Rpg Icon Pack 16x16_59: 2095107079
       Rpg Icon Pack 16x16_6: -1026311187
       Rpg Icon Pack 16x16_60: 2115035674
-      Rpg Icon Pack 16x16_61: -1455981689
       Rpg Icon Pack 16x16_62: -801426787
       Rpg Icon Pack 16x16_63: 744226450
       Rpg Icon Pack 16x16_64: 1597209327
@@ -3168,7 +3167,8 @@ TextureImporter:
       Rpg Icon Pack 16x16_97: 1110090584
       Rpg Icon Pack 16x16_98: -1146699312
       Rpg Icon Pack 16x16_99: -1580544838
-      Wood: -1622323422
+      Stone_Resource: -1455981689
+      Wood_Resource: -1622323422
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

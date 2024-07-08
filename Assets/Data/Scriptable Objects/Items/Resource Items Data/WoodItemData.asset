@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: WoodItemData
   m_EditorClassIdentifier: 
   <Id>k__BackingField: 0
-  <Name>k__BackingField: Wood
-  Description: WoodWoodWoodWoodWoodWoodWoodWoodWoodWoodWoodWoodWoodWoodWoodWoodWoodWoodWoodWoodWoodWoodWoo
+  <Name>k__BackingField: WoodItemData
+  Description: WoodItemDataWoodItemDataWoodItemDataWoodItemDataWoodItemDataWoodItemDataWoodItemDataWoodItemDataWoodItemData
   <Icon>k__BackingField: {fileID: -1622323422, guid: 5f178c4820cdd44a3bd5f1162b7516ce, type: 3}
   <ItemPrefab>k__BackingField: {fileID: 5920647730692348748, guid: cbe5c1f5c1515461e8c13c5b54d6cf1b, type: 3}
   <MaxStackSize>k__BackingField: 99

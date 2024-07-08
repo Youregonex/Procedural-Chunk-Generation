@@ -201,12 +201,15 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 3851714972855143086}
   _interactColor: {r: 0, g: 0, b: 0, a: 0}
   _uninteractColor: {r: 0, g: 0, b: 0, a: 0}
-  _enemyPrefab: {fileID: 5033722652824955456, guid: 86143036028944a7fbdedbe9fc163863, type: 3}
+  _enemyPrefab: {fileID: 5033722652824955456, guid: 988d23e46c24348a19c8917524e1b63a, type: 3}
   _numberOfWaves: 2
   _numberOfEnemiesPerWaveMin: 2
   _numberOfEnemiesPerWaveMax: 4
   _enemySpawnArea: {x: 5, y: 5}
+  _addExtraEnemiesEveryWave: 0
   _aliveEnemies: []
   _currentWave: 1
+  _currentTarget: {fileID: 0}
   _isActive: 0
+  _wavesComplited: 0
   _animator: {fileID: 0}

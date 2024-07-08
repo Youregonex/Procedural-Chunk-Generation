@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[CreateAssetMenu(menuName = "Config/Tile Config")]
+[CreateAssetMenu(menuName = "Configs/Tile Config")]
 public class TileConfigSO : ScriptableObject
 {
     public List<Tile> groundTiles;

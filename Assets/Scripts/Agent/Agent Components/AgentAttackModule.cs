@@ -21,7 +21,7 @@ public class AgentAttackModule : AgentMonobehaviourComponent
         get
         {
             if (_currentWeapon != null)
-                return _currentWeapon.CanSwing;
+                return _currentWeapon.ReadyToAttack;
             if (_currentTool != null)
                 return _currentTool.CanSwing;
 
@@ -96,7 +96,7 @@ public class AgentAttackModule : AgentMonobehaviourComponent
         _currentWeapon.transform.localRotation = Quaternion.identity;
         _currentWeapon.transform.localScale = Vector3.one;
 
-        _currentWeapon.SetupWeapon();
+        _currentWeapon.SetupWeapon(_agentCore, this, _itemHoldPoint);
     }
 
     protected void ChangeTool(ToolItemDataSO newToolItemDataSO)
@@ -116,7 +116,7 @@ public class AgentAttackModule : AgentMonobehaviourComponent
         _currentTool.transform.localRotation = Quaternion.identity;
         _currentTool.transform.localScale = Vector3.one;
 
-        _currentTool.SetUpTool();
+        _currentTool.SetUpTool(this);
     }
 
     protected void HideCurrentWeapon()

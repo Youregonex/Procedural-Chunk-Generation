@@ -49,8 +49,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2774371809012989045, guid: 1ad3ff5bbb4f948008d0f7423dda951c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2774371809012989045, guid: 1ad3ff5bbb4f948008d0f7423dda951c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2774371809012989045, guid: 1ad3ff5bbb4f948008d0f7423dda951c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2774371809012989045, guid: 1ad3ff5bbb4f948008d0f7423dda951c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.208
+      value: -0.021
+      objectReference: {fileID: 0}
+    - target: {fileID: 2774371809012989045, guid: 1ad3ff5bbb4f948008d0f7423dda951c, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2958422064065557400, guid: 1ad3ff5bbb4f948008d0f7423dda951c, type: 3}
       propertyPath: m_Offset.y
@@ -90,7 +106,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7502192802761773642, guid: 1ad3ff5bbb4f948008d0f7423dda951c, type: 3}
       propertyPath: m_Name
-      value: StoneItem
+      value: Stone_Item
       objectReference: {fileID: 0}
     - target: {fileID: 9084461483748007689, guid: 1ad3ff5bbb4f948008d0f7423dda951c, type: 3}
       propertyPath: m_Size.x
@@ -103,7 +119,7 @@ PrefabInstance:
     - target: {fileID: 9084461483748007689, guid: 1ad3ff5bbb4f948008d0f7423dda951c, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300104, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
+      objectReference: {fileID: -1455981689, guid: 5f178c4820cdd44a3bd5f1162b7516ce, type: 3}
     - target: {fileID: 9084461483748007689, guid: 1ad3ff5bbb4f948008d0f7423dda951c, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1

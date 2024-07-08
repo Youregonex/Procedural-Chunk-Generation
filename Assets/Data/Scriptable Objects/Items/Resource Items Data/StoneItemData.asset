@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: StoneItemData
   m_EditorClassIdentifier: 
   <Id>k__BackingField: 0
-  <Name>k__BackingField: Stone
-  Description: Stone
-  <Icon>k__BackingField: {fileID: 21300104, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
+  <Name>k__BackingField: StoneItemData
+  Description: StoneItemData
+  <Icon>k__BackingField: {fileID: -1455981689, guid: 5f178c4820cdd44a3bd5f1162b7516ce, type: 3}
   <ItemPrefab>k__BackingField: {fileID: 7751994548152071265, guid: 140dd409c796e43b6829be8ac6c9ca6c, type: 3}
   <MaxStackSize>k__BackingField: 99
   <ItemType>k__BackingField: 1

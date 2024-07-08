@@ -128,6 +128,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1680932731369957642, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3901001061215652619}
+    - targetCorrespondingSourceObject: {fileID: 1680932731369957642, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8113888878834280675}
   m_SourcePrefab: {fileID: 100100000, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
 --- !u!1 &1159491139431337164 stripped
 GameObject:
@@ -154,7 +157,21 @@ MonoBehaviour:
   _containerSize: 10
   _containerInventory:
     _inventoryContentList: []
-  _customContaineerDisplay: {fileID: 0}
+  _customContainerDisplay: {fileID: 0}
+--- !u!114 &8113888878834280675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1159491139431337164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ca9609aad52f4b9c98e19d8a78cf4af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nodeResourceDrop: {fileID: 11400000, guid: b312d32caf62d4a1a8c7090cfc28a92c, type: 2}
+  _lootList: []
 --- !u!212 &9153287247243758829 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 8665921998799857963, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}

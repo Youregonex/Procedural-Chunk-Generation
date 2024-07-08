@@ -114,6 +114,7 @@ GameObject:
   - component: {fileID: 9113828938588491295}
   - component: {fileID: 7262521358162469387}
   - component: {fileID: 8556013764576524049}
+  - component: {fileID: 4533658348334105699}
   m_Layer: 0
   m_Name: _BaseResourceNode
   m_TagString: Untagged
@@ -185,7 +186,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85e27de9d830e4a3db4f5c8195b1e3b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeResourceDrop: {fileID: 0}
   _appropriateTool: 0
   _nodeHealthSystem: {fileID: 0}
 --- !u!114 &8556013764576524049
@@ -204,6 +204,20 @@ MonoBehaviour:
   _destructionDelay: 0
   _currentTicks: 0
   _isDepleted: 0
+--- !u!114 &4533658348334105699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6380216576354921717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ca9609aad52f4b9c98e19d8a78cf4af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nodeResourceDrop: {fileID: 0}
+  _lootList: []
 --- !u!1 &8801978555782404575
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,8 +263,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b8fb3b94f8064992b5be98b9690886c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _resourceNodeHealthSystem: {fileID: 8556013764576524049}
   _resourceNode: {fileID: 0}
+  _resourceNodeHealthSystem: {fileID: 8556013764576524049}
 --- !u!70 &4801237647853621047
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

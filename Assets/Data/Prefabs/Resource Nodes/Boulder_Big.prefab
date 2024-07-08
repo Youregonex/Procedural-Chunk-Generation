@@ -28,6 +28,10 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4533658348334105699, guid: b8a2b4335fe394c939e52183be66285e, type: 3}
+      propertyPath: _nodeResourceDrop
+      value: 
+      objectReference: {fileID: 11400000, guid: 81b51252c616b454d9500d0594e73345, type: 2}
     - target: {fileID: 4801237647853621047, guid: b8a2b4335fe394c939e52183be66285e, type: 3}
       propertyPath: m_Size.x
       value: 1.2235234

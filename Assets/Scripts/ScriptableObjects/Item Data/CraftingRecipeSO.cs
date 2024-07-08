@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Item Data/Crafting Recipe")]
+[CreateAssetMenu(menuName = "Crafting/Crafting Recipe")]
 public class CraftingRecipeSO : ScriptableObject
 {
     [field: SerializeField] public List<CraftingComponentStruct> RecipeComponentsList { get; private set; }

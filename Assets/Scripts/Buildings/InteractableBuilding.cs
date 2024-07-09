@@ -27,13 +27,11 @@ public abstract class InteractableBuilding : Building, IInteractable
 
     public void HighlightInteractable()
     {
-        Debug.Log($"Highlight {gameObject.name}");
         _spriteRenderer.color = _interactColor;
     }
 
     public void UnhighlightInteractable()
     {
-        Debug.Log($"Unhighlight {gameObject.name}");
         _spriteRenderer.color = _uninteractColor;
     }
 }

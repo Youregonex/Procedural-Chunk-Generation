@@ -34,7 +34,6 @@ public class PlayerInteraction : AgentMonobehaviourComponent
     private void OnTriggerEnter2D(Collider2D collision)
     {
         _currentInteractable = collision.transform.root.GetComponent<IInteractable>();
-        Debug.Log($"Current Interactable {_currentInteractable}");
         _currentInteractable.HighlightInteractable();
 
     }

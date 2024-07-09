@@ -3,6 +3,7 @@ using UnityEngine;
 public class AgentVisual : AgentMonobehaviourComponent
 {
     [Header("Debug Fields")]
+    [SerializeField] private TrailRenderer _trailRenderer;
     [SerializeField] private AgentCoreBase _agentCore;
     [SerializeField] private AgentInput _agentInput;
     [SerializeField] private SpriteRenderer _spriteRenderer;
@@ -11,6 +12,7 @@ public class AgentVisual : AgentMonobehaviourComponent
     {
         _agentCore = transform.root.GetComponent<AgentCoreBase>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _trailRenderer = GetComponent<TrailRenderer>();
     }
 
     private void Start()
@@ -21,6 +23,16 @@ public class AgentVisual : AgentMonobehaviourComponent
     private void Update()
     {
         ManageSpriteFlip();
+    }
+
+    public void DisableTrailRenderer()
+    {
+        _trailRenderer.emitting = false;
+    }
+
+    public void EnableTrailRenderer()
+    {
+        _trailRenderer.emitting = true;
     }
 
     public override void DisableComponent()

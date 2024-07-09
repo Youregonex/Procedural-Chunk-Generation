@@ -26,4 +26,4 @@ MonoBehaviour:
   <AttackCooldown>k__BackingField: 2
   <ProjectilePrefab>k__BackingField: {fileID: 2108598023972442185, guid: 20b8f22c206654d4f9dc89f1b630ba09, type: 3}
   <ProjectileSpeed>k__BackingField: 30
-  <ProjectileRange>k__BackingField: 10
+  <ProjectileRange>k__BackingField: 20

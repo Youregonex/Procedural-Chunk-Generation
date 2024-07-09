@@ -49,7 +49,11 @@ public class PlayerInput : AgentInput
 
     private void OnDestroy()
     {
+        if (_playerInputActions == null)
+            return;
+
         _playerInputActions.Player.Attack.performed -= PlayerInputActions_Attack_performed;
         _playerInputActions.Player.Inventory.performed -= PlayerInputActions_Inventory_performed;
+        _playerInputActions.Player.Interact.performed -= PlayerInputActions_Interact_performed;
     }
 }

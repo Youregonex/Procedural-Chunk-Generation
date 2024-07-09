@@ -15,7 +15,7 @@ public abstract class Ability
 
     protected AgentAnimation _casterAnimator;
 
-    public bool OnCooldown => CurrentCooldown >= 0;
+    public bool OnCooldown => CurrentCooldown > 0;
 
     public Ability(AgentCoreBase caster, AgentAnimation casterAnimator, string name, EAbilityType abilityType, float cooldown)
     {
@@ -31,11 +31,10 @@ public abstract class Ability
 
     public virtual void Tick() {}
 
-    public virtual void CooldownTick()
+    public void CooldownTick()
     {
         if (CurrentCooldown > 0 && !IsCasting)
         {
-            Debug.Log($"{Name} CooldownTick");
             CurrentCooldown -= Time.deltaTime;
         }
     }

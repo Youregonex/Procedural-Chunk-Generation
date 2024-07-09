@@ -23,9 +23,9 @@ MonoBehaviour:
   <AttackRadius>k__BackingField: 0.6
   <AttackDamageMin>k__BackingField: 2
   <AttackDamageMax>k__BackingField: 4
-  <KnockbackForce>k__BackingField: 5
+  <KnockbackForce>k__BackingField: 10
   <AttackCooldown>k__BackingField: 1
   <ToolType>k__BackingField: 2
   <ToolTier>k__BackingField: 2
   <TicksPerHitMin>k__BackingField: 1
-  <TicksPerHitMax>k__BackingField: 3
+  <TicksPerHitMax>k__BackingField: 2

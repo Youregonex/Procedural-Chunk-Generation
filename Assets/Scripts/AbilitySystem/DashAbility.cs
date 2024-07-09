@@ -9,6 +9,7 @@ public class DashAbility : Ability
     private Vector2 _targetPosition;
     private float _currentDashTime;
     private AgentMovement _casterMovementModule;
+    private AgentVisual _agentVisual;
     private Rigidbody2D _casterRigidBody;
 
     public DashAbility(AgentCoreBase caster,
@@ -23,7 +24,8 @@ public class DashAbility : Ability
         _dashSpeed = dashSpeed;
 
         _currentDashTime = _maxDashTime;
-        Debug.Log($"MaxDashTime: {_maxDashTime}");
+
+        InitializeComponents();
     }
 
     public override void StartCast(Vector2 targetPosition)
@@ -31,25 +33,21 @@ public class DashAbility : Ability
         if (OnCooldown || IsCasting)
             return;
 
-        Debug.Log($"{Name} StartCast");
         PutOnCooldown();
         IsCasting = true;
 
         _currentDashTime = _maxDashTime;
         _targetPosition = targetPosition;
-        _casterMovementModule = Caster.GetAgentComponent<AgentMovement>();
-        _casterRigidBody = Caster.GetComponent<Rigidbody2D>();
 
+        _agentVisual.EnableTrailRenderer();
         _casterMovementModule.DisableComponent();
         _casterAnimator.PlayAbilityAnimation(Name);
-
-        Vector2 movementDirection = (targetPosition - (Vector2)Caster.transform.position).normalized;
-        _casterRigidBody.velocity = movementDirection * _dashSpeed;
+        
+        _casterRigidBody.velocity = targetPosition.normalized * _dashSpeed;
     }
 
     public override void Tick()
     {
-        Debug.Log($"{Name} DashTime: {_currentDashTime} | Tick");
         if (_currentDashTime <= 0)
         {
             StopCast();
@@ -67,7 +65,15 @@ public class DashAbility : Ability
         Caster.GetComponent<Rigidbody2D>().velocity = Vector2.zero; 
         CastCompleted();
 
+        _agentVisual.DisableTrailRenderer();
         _currentDashTime = _maxDashTime;
         IsCasting = false;
+    }
+
+    private void InitializeComponents()
+    {
+        _casterMovementModule = Caster.GetAgentComponent<AgentMovement>();
+        _casterRigidBody = Caster.GetAgentRigidBody2D();
+        _agentVisual = Caster.GetAgentComponent<AgentVisual>();
     }
 }

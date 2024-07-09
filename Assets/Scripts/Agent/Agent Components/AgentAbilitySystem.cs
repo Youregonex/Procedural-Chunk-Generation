@@ -30,27 +30,16 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
 
     public void CastAbility(Ability ability, Vector2 targetPosition)
     {
-        if (ability.CurrentCooldown > 0)
+        if (_currentAbility != null || ability.CurrentCooldown > 0)
             return;
-
-        Debug.Log($"Casting {ability.Name}");
-
-        if (_currentAbility != null)
-        {
-            Debug.LogError("Current cast not null!");
-            return;
-        }
-
 
         _currentAbility = ability;
-        Debug.Log($"Current Ability : {_currentAbility.Name}");
         _currentAbility.OnCastCompleted += Ability_OnCastCompleted;
         _currentAbility.StartCast(targetPosition);
     }
 
     protected void Ability_OnCastCompleted()
     {
-        Debug.Log($"{_currentAbility.Name} completed");
         _currentAbility.OnCastCompleted -= Ability_OnCastCompleted;
         _currentAbility = null;
     }

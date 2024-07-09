@@ -13,14 +13,14 @@ public class AgentTargetDetectionZone : AgentMonobehaviourComponent
     [SerializeField] private float _detectionRadius;
     [SerializeField] private float _detectionCooldown = 0f;
     [SerializeField] private EFactions _faction;
-    [SerializeField] private AgentCoreBase _agentCore;
+    [SerializeField] private EnemyCore _agentCore;
     [field: SerializeField] public List<Transform> TargetList { get; private set; } = new List<Transform>();
 
 
     private void Awake()
     {
         _detectionZone = GetComponent<CircleCollider2D>();
-        _agentCore = transform.root.GetComponent<AgentCoreBase>();
+        _agentCore = transform.root.GetComponent<EnemyCore>();
         _detectionZone.isTrigger = true;
     }
 
@@ -48,7 +48,7 @@ public class AgentTargetDetectionZone : AgentMonobehaviourComponent
 
         foreach(Collider2D collider in colliders)
         {
-            AgentCoreBase agentCore = collider.GetComponent<AgentCoreBase>();
+            EnemyCore agentCore = collider.GetComponent<EnemyCore>();
 
             if (agentCore != null && agentCore.GetAgentFaction() != _agentCore.GetAgentFaction())
                 validTargets.Add(collider.transform);

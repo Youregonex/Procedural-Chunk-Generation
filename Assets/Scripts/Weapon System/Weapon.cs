@@ -13,7 +13,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] protected float _knockbackForce;
     [SerializeField] protected float _attackCooldownMax;
     [SerializeField] protected float _attackCooldownCurrent = 0f;
-    [SerializeField] protected AgentCoreBase _agentCore;
+    [SerializeField] protected EnemyCore _agentCore;
     [SerializeField] protected AgentAttackModule _agentAttackModule;
     [SerializeField] protected ItemHoldPoint _itemHoldPoint;
     [SerializeField] protected bool _showGizmos;
@@ -28,7 +28,7 @@ public class Weapon : MonoBehaviour
             _attackCooldownCurrent -= Time.deltaTime;
     }
 
-    public void SetupWeapon(AgentCoreBase agentCore, AgentAttackModule agentAttackModule, ItemHoldPoint itemHoldPoint)
+    public void SetupWeapon(EnemyCore agentCore, AgentAttackModule agentAttackModule, ItemHoldPoint itemHoldPoint)
     {
         _agentCore = agentCore;
         _agentAttackModule = agentAttackModule;

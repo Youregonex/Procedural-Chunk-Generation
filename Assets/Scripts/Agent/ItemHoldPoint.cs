@@ -3,7 +3,7 @@ using UnityEngine;
 public class ItemHoldPoint : AgentMonobehaviourComponent
 {
     [Header("Debug Fields")]
-    [SerializeField] protected AgentCoreBase _agentCore;
+    [SerializeField] protected EnemyCore _agentCore;
     [SerializeField] private AgentInput _agentInput;
 
     private Vector2 _aimPosition;
@@ -11,7 +11,7 @@ public class ItemHoldPoint : AgentMonobehaviourComponent
 
     protected virtual void Awake()
     {
-        _agentCore = transform.root.GetComponent<AgentCoreBase>();
+        _agentCore = transform.root.GetComponent<EnemyCore>();
     }
 
     protected virtual void Start()

@@ -831,7 +831,7 @@ GameObject:
   - component: {fileID: 120365283125399470}
   - component: {fileID: 6026792574137319198}
   - component: {fileID: 3070404559598899648}
-  - component: {fileID: 825834949696469198}
+  - component: {fileID: 4395136075213514214}
   m_Layer: 0
   m_Name: Demon_Archer
   m_TagString: Untagged
@@ -1002,7 +1002,7 @@ MonoBehaviour:
   _agentInput: {fileID: 5449381109984830550}
   _agentStats: {fileID: 6080998798823923710}
   _agentItemHoldPoint: {fileID: 6014377181258707996}
-  _agentAbilitySystem: {fileID: 825834949696469198}
+  _agentAbilitySystem: {fileID: 4395136075213514214}
   _collisionCollider: {fileID: 5377017722661951448}
   _rigidBody2D: {fileID: 4420488798518187336}
   _agentComponents: []
@@ -1081,6 +1081,7 @@ MonoBehaviour:
   <TimeToStartRoamMax>k__BackingField: 3
   <RoamTimeMax>k__BackingField: 3
   <RoamPositionOffsetMax>k__BackingField: {x: 4, y: 4}
+  _agentAbilitySystem: {fileID: 4395136075213514214}
   _currentTargetTransform: {fileID: 0}
   <IsSpawned>k__BackingField: 0
   <CurrentRoamPosition>k__BackingField: {x: 0, y: 0}
@@ -1088,7 +1089,7 @@ MonoBehaviour:
   <AimPosition>k__BackingField: {x: 0, y: 0}
   _targetDetectionZone: {fileID: 0}
   _agentAttackModule: {fileID: 0}
-  _agentCore: {fileID: 0}
+  _enemyCore: {fileID: 0}
   _showGizmos: 0
 --- !u!114 &3070404559598899648
 MonoBehaviour:
@@ -1104,7 +1105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nodeResourceDrop: {fileID: 11400000, guid: 296d8f77ad0274d9ba4c1596d2b72ead, type: 2}
   _lootList: []
---- !u!114 &825834949696469198
+--- !u!114 &4395136075213514214
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1113,7 +1114,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5033722652824955456}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15a78df0df3c9480498488321f46fd2e, type: 3}
+  m_Script: {fileID: 11500000, guid: 312c6b1bed97f43a3a20619b0011bd05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 0

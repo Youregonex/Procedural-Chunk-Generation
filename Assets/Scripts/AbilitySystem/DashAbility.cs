@@ -12,7 +12,7 @@ public class DashAbility : Ability
     private AgentVisual _agentVisual;
     private Rigidbody2D _casterRigidBody;
 
-    public DashAbility(AgentCoreBase caster,
+    public DashAbility(EnemyCore caster,
                        AgentAnimation casterAnimator,
                        string name,
                        EAbilityType abilityType,

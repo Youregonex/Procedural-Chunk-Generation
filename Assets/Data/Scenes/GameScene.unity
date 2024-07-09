@@ -3205,11 +3205,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5356794587930822775, guid: 988d23e46c24348a19c8917524e1b63a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.93
+      value: 1.31
       objectReference: {fileID: 0}
     - target: {fileID: 5356794587930822775, guid: 988d23e46c24348a19c8917524e1b63a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.21
+      value: -5.3
       objectReference: {fileID: 0}
     - target: {fileID: 5356794587930822775, guid: 988d23e46c24348a19c8917524e1b63a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7936,6 +7936,8 @@ MonoBehaviour:
   _rigidBody2D: {fileID: 1854188140}
   _agentComponents: []
   _disableOnDeathComponents: []
+  _agentTargetDetectionZone: {fileID: 0}
+  _enemyBehaviour: {fileID: 0}
   _playerItemSelection: {fileID: 1854188146}
   _playerBuildingSystem: {fileID: 1854188147}
   _playerInteraction: {fileID: 1597828785}
@@ -8867,11 +8869,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8156719173824069833, guid: 7cdb84ae099dc4651865e215aaec9dd7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.49
+      value: -0.82
       objectReference: {fileID: 0}
     - target: {fileID: 8156719173824069833, guid: 7cdb84ae099dc4651865e215aaec9dd7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.18
+      value: -5.44
       objectReference: {fileID: 0}
     - target: {fileID: 8156719173824069833, guid: 7cdb84ae099dc4651865e215aaec9dd7, type: 3}
       propertyPath: m_LocalPosition.z

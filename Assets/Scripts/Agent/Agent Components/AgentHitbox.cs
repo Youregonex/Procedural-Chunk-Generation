@@ -4,7 +4,7 @@ using UnityEngine;
 public class AgentHitbox : AgentMonobehaviourComponent, IDamegeable
 {
     [Header("Debug Fields")]
-    [SerializeField] private AgentCoreBase _agentCore;
+    [SerializeField] private EnemyCore _agentCore;
     [SerializeField] private AgentHealthSystem _healthSystem;
     [SerializeField] private CapsuleCollider2D _hitboxCollider;
 
@@ -12,7 +12,7 @@ public class AgentHitbox : AgentMonobehaviourComponent, IDamegeable
     {
         _hitboxCollider = GetComponent<CapsuleCollider2D>();
 
-        _agentCore = transform.root.GetComponent<AgentCoreBase>();
+        _agentCore = transform.root.GetComponent<EnemyCore>();
     }
 
     private void Start()

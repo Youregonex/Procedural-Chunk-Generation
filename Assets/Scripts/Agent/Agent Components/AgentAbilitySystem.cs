@@ -4,17 +4,17 @@ using System.Collections.Generic;
 public class AgentAbilitySystem : AgentMonobehaviourComponent
 {
     [Header("Config")]
-    [SerializeField] protected List<Ability> _abilityList = new List<Ability>();
+    [SerializeField] protected Dictionary<string, Ability> _abilityDictionary = new Dictionary<string, Ability>();
 
     [Header("Debug Fields")]
-    [SerializeField] protected AgentCoreBase _agentCore;
+    [SerializeField] protected EnemyCore _agentCore;
     [SerializeField] protected Ability _currentAbility;
 
     public bool CastingAbility => _currentAbility != null;
 
     protected virtual void Awake()
     {
-        _agentCore = GetComponent<AgentCoreBase>();
+        _agentCore = GetComponent<EnemyCore>();
     }
 
     protected virtual void Update()
@@ -22,26 +22,19 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
         if (_currentAbility != null)
             _currentAbility.Tick();
 
-        foreach(Ability ability in _abilityList)
+        foreach(KeyValuePair<string, Ability> keyValuePair in _abilityDictionary)
         {
-            ability.CooldownTick();
+            if (keyValuePair.Value.OnCooldown)
+                keyValuePair.Value.CooldownTick();
         }
     }
 
-    public void CastAbility(Ability ability, Vector2 targetPosition)
+    public bool IsOnCooldown(string abilityName)
     {
-        if (_currentAbility != null || ability.CurrentCooldown > 0)
-            return;
+        if (!_abilityDictionary.ContainsKey(abilityName))
+            return true;
 
-        _currentAbility = ability;
-        _currentAbility.OnCastCompleted += Ability_OnCastCompleted;
-        _currentAbility.StartCast(targetPosition);
-    }
-
-    protected void Ability_OnCastCompleted()
-    {
-        _currentAbility.OnCastCompleted -= Ability_OnCastCompleted;
-        _currentAbility = null;
+        return _abilityDictionary[abilityName].OnCooldown;
     }
 
     public override void DisableComponent()
@@ -52,5 +45,31 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
     public override void EnableComponent()
     {
         this.enabled = true;
+    }
+
+    public void CastAbility(Ability ability, Vector2 targetPosition)
+    {
+        if (_currentAbility != null || IsOnCooldown(ability.Name))
+            return;
+
+        _currentAbility = ability;
+        _currentAbility.OnCastCompleted += Ability_OnCastCompleted;
+        _currentAbility.StartCast(targetPosition);
+    }
+
+    public void CastAbility(string abilityName, Vector2 targetPosition)
+    {
+        if (_currentAbility != null || IsOnCooldown(abilityName))
+            return;
+
+        _currentAbility = _abilityDictionary[abilityName];
+        _currentAbility.OnCastCompleted += Ability_OnCastCompleted;
+        _currentAbility.StartCast(targetPosition);
+    }
+
+    protected void Ability_OnCastCompleted()
+    {
+        _currentAbility.OnCastCompleted -= Ability_OnCastCompleted;
+        _currentAbility = null;
     }
 }

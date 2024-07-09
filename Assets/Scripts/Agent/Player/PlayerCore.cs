@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerCore : AgentCoreBase
+public class PlayerCore : EnemyCore
 {
     [Header("Config")]
     [SerializeField] private PlayerItemSelection _playerItemSelection;

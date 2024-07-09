@@ -6,6 +6,8 @@ public class EnemyCore : AgentCoreBase
     [SerializeField] protected AgentTargetDetectionZone _agentTargetDetectionZone;
     [SerializeField] private BaseEnemyBehaviour _enemyBehaviour;
 
+    public BaseEnemyBehaviour GetEnemyBehaviour() => _enemyBehaviour;
+
     protected override void InitializeComponentList()
     {
         _agentComponents.Add(_agentTargetDetectionZone);

@@ -4,13 +4,13 @@ public class AgentVisual : AgentMonobehaviourComponent
 {
     [Header("Debug Fields")]
     [SerializeField] private TrailRenderer _trailRenderer;
-    [SerializeField] private AgentCoreBase _agentCore;
+    [SerializeField] private EnemyCore _agentCore;
     [SerializeField] private AgentInput _agentInput;
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
     private void Awake()
     {
-        _agentCore = transform.root.GetComponent<AgentCoreBase>();
+        _agentCore = transform.root.GetComponent<EnemyCore>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _trailRenderer = GetComponent<TrailRenderer>();
     }

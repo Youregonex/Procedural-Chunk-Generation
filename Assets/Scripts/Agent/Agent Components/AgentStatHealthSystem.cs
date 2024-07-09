@@ -12,7 +12,7 @@ public class AgentStatHealthSystem : AgentHealthSystem
 
     protected override void Awake()
     {
-        _agentCore = GetComponent<AgentCoreBase>();
+        _agentCore = GetComponent<EnemyCore>();
     }
 
     protected override void Start()

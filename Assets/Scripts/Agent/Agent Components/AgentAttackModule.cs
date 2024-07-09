@@ -14,7 +14,7 @@ public class AgentAttackModule : AgentMonobehaviourComponent
     [SerializeField] protected ToolItemDataSO _currentToolItemDataSO;
 
     [SerializeField] protected AgentInput _agentInput;
-    [SerializeField] protected AgentCoreBase _agentCore;
+    [SerializeField] protected EnemyCore _agentCore;
 
     public bool CanAttack
     {
@@ -33,7 +33,7 @@ public class AgentAttackModule : AgentMonobehaviourComponent
 
     protected virtual void Awake()
     {
-        _agentCore = GetComponent<AgentCoreBase>();
+        _agentCore = GetComponent<EnemyCore>();
     }
 
     protected virtual void Start()

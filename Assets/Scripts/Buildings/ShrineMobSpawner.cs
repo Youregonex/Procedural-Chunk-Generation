@@ -113,7 +113,7 @@ public class ShrineMobSpawner : InteractableBuilding
             }
 
             GameObject enemyGameObject = Instantiate(_enemyPrefab, randomPositionAroundShrine, Quaternion.identity);
-            AgentCoreBase agentCore = enemyGameObject.GetComponent<AgentCoreBase>();
+            EnemyCore agentCore = enemyGameObject.GetComponent<EnemyCore>();
             AgentHealthSystem agentHealthSystem = agentCore.GetAgentComponent<AgentHealthSystem>();
             BaseEnemyBehaviour baseEnemyBehaviour = agentCore.GetAgentComponent<BaseEnemyBehaviour>();
             baseEnemyBehaviour.SetCurrentTarget(enemyTarget);

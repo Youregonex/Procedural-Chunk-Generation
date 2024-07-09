@@ -6,7 +6,7 @@ public abstract class Ability
 {
     public event Action OnCastCompleted;
 
-    public AgentCoreBase Caster { get; protected set; }
+    public EnemyCore Caster { get; protected set; }
     public string Name { get; protected set; }
     public EAbilityType AbilityType { get; protected set; }
     public float Cooldown { get; protected set; } = 0;
@@ -17,7 +17,7 @@ public abstract class Ability
 
     public bool OnCooldown => CurrentCooldown > 0;
 
-    public Ability(AgentCoreBase caster, AgentAnimation casterAnimator, string name, EAbilityType abilityType, float cooldown)
+    public Ability(EnemyCore caster, AgentAnimation casterAnimator, string name, EAbilityType abilityType, float cooldown)
     {
         Caster = caster;
         _casterAnimator = casterAnimator;

@@ -18,6 +18,7 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
     [field: SerializeField] public float TimeToStartRoamMax { get; private set; }
     [field: SerializeField] public float RoamTimeMax { get; private set; }
     [field: SerializeField] public Vector2 RoamPositionOffsetMax { get; private set; }
+    [SerializeField] private DemonAbilitySystem _agentAbilitySystem;
 
     [Header("Debug Fields")]
     [SerializeField] private Node _behaviourTree;
@@ -28,7 +29,7 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
     [field: SerializeField] public Vector2 AimPosition { get; private set; }
     [SerializeField] private AgentTargetDetectionZone _targetDetectionZone;
     [SerializeField] private AgentAttackModule _agentAttackModule;
-    [SerializeField] protected AgentCoreBase _agentCore;
+    [SerializeField] protected EnemyCore _enemyCore;
     [SerializeField] private bool _showGizmos;
 
 
@@ -36,15 +37,15 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
 
     protected virtual void Awake()
     {
-        _agentCore = GetComponent<AgentCoreBase>();
+        _enemyCore = GetComponent<EnemyCore>();
 
         ConstructBehaviourTree();
     }
 
     protected virtual void Start()
     {
-        _agentAttackModule = _agentCore.GetAgentComponent<AgentAttackModule>();
-        _agentCore.GetAgentComponent<AgentAnimation>().OnAgentSpawned += AgentAnimation_OnAgentSpawned;
+        _agentAttackModule = _enemyCore.GetAgentComponent<AgentAttackModule>();
+        _enemyCore.GetAgentComponent<AgentAnimation>().OnAgentSpawned += AgentAnimation_OnAgentSpawned;
         InitializeAgentTargetDetectionZone();
     }
 
@@ -57,7 +58,7 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
 
     protected void OnDestroy()
     {
-        _agentCore.GetAgentComponent<AgentAnimation>().OnAgentSpawned -= AgentAnimation_OnAgentSpawned;
+        _enemyCore.GetAgentComponent<AgentAnimation>().OnAgentSpawned -= AgentAnimation_OnAgentSpawned;
     }
 
     public void SetAimPosition(Vector2 aimPosition) => AimPosition = aimPosition;
@@ -125,8 +126,13 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
         ChaseNode chaseNode = new ChaseNode(this, AttackRangeMin, AttackRangeMax);
         Sequence chaseSequence = new Sequence(new List<Node> { targetInChaseRangeCondition, chaseNode });
 
+        Inverter targetInAttackRangeInvertor = new Inverter(targetInAttackRangeCondition);
+        AbilityOffCooldownCondition abilityOffCooldownCondition = new AbilityOffCooldownCondition(_agentAbilitySystem, "DASH");
+        CastDashNode castDashNode = new CastDashNode(this, "DASH", _agentAbilitySystem);
+        Sequence dashSequence = new Sequence(new List<Node>() { targetInAttackRangeInvertor, abilityOffCooldownCondition, castDashNode });
+
         TargetExistsCondition targetExistsCondition = new TargetExistsCondition(this);
-        Selector combatSelector = new Selector(new List<Node> { attackSequnce, chaseSequence });
+        Selector combatSelector = new Selector(new List<Node> { dashSequence, attackSequnce, chaseSequence });
         Sequence combatSequence = new Sequence(new List<Node> { targetExistsCondition, combatSelector });
 
         AgentSpawnedCondition agentSpawnedCondition = new AgentSpawnedCondition(this);
@@ -140,7 +146,7 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
 
     private void InitializeAgentTargetDetectionZone()
     {
-        _targetDetectionZone = _agentCore.GetAgentComponent<AgentTargetDetectionZone>();
+        _targetDetectionZone = _enemyCore.GetAgentComponent<AgentTargetDetectionZone>();
         _targetDetectionZone.SetDetectionRadius(AggroRange);
     }
 

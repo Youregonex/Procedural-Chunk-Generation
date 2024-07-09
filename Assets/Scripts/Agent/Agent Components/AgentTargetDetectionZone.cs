@@ -68,4 +68,10 @@ public class AgentTargetDetectionZone : AgentMonobehaviourComponent
         _detectionZone.enabled = false;
         this.enabled = false;
     }
+
+    public override void EnableComponent()
+    {
+        _detectionZone.enabled = true;
+        this.enabled = true;
+    }
 }

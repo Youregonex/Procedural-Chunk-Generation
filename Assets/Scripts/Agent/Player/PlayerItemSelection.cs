@@ -23,6 +23,11 @@ public class PlayerItemSelection : AgentMonobehaviourComponent
         this.enabled = false;
     }
 
+    public override void EnableComponent()
+    {
+        this.enabled = true;
+    }
+
     private void HotbarDisplay_OnHotbarSlotSelected(InventorySlot inventorySlot)
     {
         if (_currentInventorySlot != null)

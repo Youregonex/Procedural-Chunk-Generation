@@ -54,6 +54,11 @@ public class PlayerInteraction : AgentMonobehaviourComponent
         this.enabled = false;
     }
 
+    public override void EnableComponent()
+    {
+        this.enabled = true;
+    }
+
     private void PlayerInput_OnInteractKeyPressed()
     {
         if(_currentInteractable != null)

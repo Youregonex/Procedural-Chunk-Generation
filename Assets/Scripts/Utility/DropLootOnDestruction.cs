@@ -57,6 +57,9 @@ public class DropLootOnDestruction : MonoBehaviour
 
     private void DropLoot()
     {
+        if (_lootList.Count == 0)
+            return;
+
         foreach (Item item in _lootList)
         {
             item.transform.SetParent(null);

@@ -26,6 +26,13 @@ public class AgentAnimation : AgentMonobehaviourComponent
         _agentAnimator.SetTrigger(GET_HIT);
     }
 
+    public void PlayAbilityAnimation(string abilityName)
+    {
+        abilityName = abilityName.ToUpper();
+
+        _agentAnimator.SetTrigger(abilityName);
+    }
+
     public void PlayDeathAnimation()
     {
         _agentAnimator.SetTrigger(DEATH);
@@ -34,6 +41,11 @@ public class AgentAnimation : AgentMonobehaviourComponent
     public override void DisableComponent()
     {
         this.enabled = false;
+    }
+
+    public override void EnableComponent()
+    {
+        this.enabled = true;
     }
 
     public void AgentSpawned() => OnAgentSpawned?.Invoke(); // Used by animation event

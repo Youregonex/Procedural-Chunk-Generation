@@ -62,6 +62,11 @@ public class AgentAttackModule : AgentMonobehaviourComponent
         this.enabled = false;
     }
 
+    public override void EnableComponent()
+    {
+        this.enabled = true;
+    }
+
     private void AgentInput_OnAgentAttackTrigger(object sender, System.EventArgs e)
     {
         Attack();

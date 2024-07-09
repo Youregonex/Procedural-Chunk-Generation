@@ -44,6 +44,11 @@ public class PlayerBuildingSystem : AgentMonobehaviourComponent
         this.enabled = false;
     }
 
+    public override void EnableComponent()
+    {
+        this.enabled = true;
+    }
+
     private void PlayerItemSelection_OnCurrentItemChanged(ItemDataSO itemDataSO)
     {
         BuildingItemDataSO buildingItemDataSO = itemDataSO as BuildingItemDataSO;

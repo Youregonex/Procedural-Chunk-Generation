@@ -38,6 +38,12 @@ public class AgentMovement : AgentMonobehaviourComponent
         this.enabled = false;
     }
 
+    public override void EnableComponent()
+    {
+        _collisionCollider.enabled = true;
+        this.enabled = true;
+    }
+
     public Vector2 GetCurrentDirection() => LastMovementDirection;
 
     private void FixedUpdate()

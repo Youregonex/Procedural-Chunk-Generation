@@ -85,6 +85,11 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
         this.enabled = false;
     }
 
+    public override void EnableComponent()
+    {
+        this.enabled = true;
+    }
+
     public void TriggerAttack() => OnTargetInAttackRange?.Invoke();
 
     private void AgentAnimation_OnAgentSpawned()

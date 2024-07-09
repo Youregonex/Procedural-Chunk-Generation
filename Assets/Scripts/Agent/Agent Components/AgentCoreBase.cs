@@ -17,6 +17,7 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
     [SerializeField] protected AgentInput _agentInput;
     [SerializeField] protected AgentStats _agentStats;
     [SerializeField] protected ItemHoldPoint _agentItemHoldPoint;
+    [SerializeField] protected AgentAbilitySystem _agentAbilitySystem;
 
     [Header("Agent Colliders")]
     [SerializeField] private CapsuleCollider2D _collisionCollider;
@@ -58,6 +59,11 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
         this.enabled = false;
     }
 
+    public override void EnableComponent()
+    {
+        this.enabled = true;
+    }
+
     protected virtual void InitializeComponentList()
     {
         _agentComponents.Add(_healthSystem);
@@ -69,6 +75,7 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
         _agentComponents.Add(_agentInput);
         _agentComponents.Add(_agentStats);
         _agentComponents.Add(_agentItemHoldPoint);
+        _agentComponents.Add(_agentAbilitySystem);
 
         InitializeDisableOnDeathList();
     }

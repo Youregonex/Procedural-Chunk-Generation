@@ -25,7 +25,12 @@ public class AgentStats : AgentMonobehaviourComponent
 
     public override void DisableComponent()
     {
-        throw new NotImplementedException();
+        this.enabled = false;
+    }
+
+    public override void EnableComponent()
+    {
+        this.enabled = true;
     }
 
     public void LogStats()

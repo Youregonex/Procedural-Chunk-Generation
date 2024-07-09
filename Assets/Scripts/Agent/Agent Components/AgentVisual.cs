@@ -28,6 +28,11 @@ public class AgentVisual : AgentMonobehaviourComponent
         this.enabled = false;
     }
 
+    public override void EnableComponent()
+    {
+        this.enabled = true;
+    }
+
     private void ManageSpriteFlip()
     {
         Vector2 aimPosition = _agentInput.GetAimPosition();

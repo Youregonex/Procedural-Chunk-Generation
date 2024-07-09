@@ -29,6 +29,11 @@ public class ItemHoldPoint : AgentMonobehaviourComponent
         this.enabled = false;
     }
 
+    public override void EnableComponent()
+    {
+        this.enabled = true;
+    }
+
     private void ManageItemHoldPointPosition()
     {
         _aimPosition = _agentInput.GetAimPosition();

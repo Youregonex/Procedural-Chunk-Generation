@@ -39,6 +39,11 @@ public class AgentHealthSystem : AgentMonobehaviourComponent
         this.enabled = false;
     }
 
+    public override void EnableComponent()
+    {
+        this.enabled = true;
+    }
+
     public virtual void TakeDamage(DamageStruct damageStruct)
     {
         if (_isDead)

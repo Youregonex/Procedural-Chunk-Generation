@@ -15,6 +15,11 @@ public abstract class AgentInput : AgentMonobehaviourComponent
         this.enabled = false;
     }
 
+    public override void EnableComponent()
+    {
+        this.enabled = true;
+    }
+
     protected virtual void Invoke_OnAgentAttackTriggered()
     {
         OnAgentAttackTriggered?.Invoke(this, EventArgs.Empty);

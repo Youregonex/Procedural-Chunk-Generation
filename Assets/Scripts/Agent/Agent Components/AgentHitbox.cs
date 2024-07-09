@@ -29,4 +29,11 @@ public class AgentHitbox : AgentMonobehaviourComponent, IDamegeable
         _hitboxCollider.enabled = false;
         this.enabled = false;
     }
+
+    public override void EnableComponent()
+    {
+        _hitboxCollider.enabled = true;
+        this.enabled = true;
+    }
+
 }

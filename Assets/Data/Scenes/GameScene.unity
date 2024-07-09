@@ -3084,6 +3084,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 610834880283180788, guid: 988d23e46c24348a19c8917524e1b63a, type: 3}
+      propertyPath: _agentAbilitySystem
+      value: 
+      objectReference: {fileID: 1778196929}
     - target: {fileID: 5033722652824955456, guid: 988d23e46c24348a19c8917524e1b63a, type: 3}
       propertyPath: m_Name
       value: Demon_Archer
@@ -3135,6 +3139,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5033722652824955456, guid: 988d23e46c24348a19c8917524e1b63a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1778196917}
+    - targetCorrespondingSourceObject: {fileID: 5033722652824955456, guid: 988d23e46c24348a19c8917524e1b63a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1778196929}
   m_SourcePrefab: {fileID: 100100000, guid: 988d23e46c24348a19c8917524e1b63a, type: 3}
 --- !u!4 &710848851 stripped
 Transform:
@@ -7478,6 +7485,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nodeResourceDrop: {fileID: 11400000, guid: 296d8f77ad0274d9ba4c1596d2b72ead, type: 2}
   _lootList: []
+--- !u!114 &1778196929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1778196907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15a78df0df3c9480498488321f46fd2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <DisableOnDeath>k__BackingField: 0
 --- !u!1 &1818271212
 GameObject:
   m_ObjectHideFlags: 0
@@ -7633,6 +7653,7 @@ GameObject:
   - component: {fileID: 1854188145}
   - component: {fileID: 1854188146}
   - component: {fileID: 1854188147}
+  - component: {fileID: 1854188148}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -7837,6 +7858,7 @@ MonoBehaviour:
   _agentInput: {fileID: 1854188132}
   _agentStats: {fileID: 1854188144}
   _agentItemHoldPoint: {fileID: 530127898}
+  _agentAbilitySystem: {fileID: 1854188148}
   _collisionCollider: {fileID: 1854188130}
   _rigidBody2D: {fileID: 1854188140}
   _agentComponents: []
@@ -7913,6 +7935,19 @@ MonoBehaviour:
   _playerCore: {fileID: 0}
   _playerItemSelection: {fileID: 0}
   _currentBuildingItemDataSO: {fileID: 0}
+--- !u!114 &1854188148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1854188128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17b08ffb64e8144098bb7542ab9c2a55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <DisableOnDeath>k__BackingField: 0
 --- !u!4 &1905095857 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7751994548152071265, guid: 140dd409c796e43b6829be8ac6c9ca6c, type: 3}
@@ -8756,6 +8791,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2661416382915046786, guid: 7cdb84ae099dc4651865e215aaec9dd7, type: 3}
+      propertyPath: _agentAbilitySystem
+      value: 
+      objectReference: {fileID: 7874688428069336245}
     - target: {fileID: 5381880085549425518, guid: 7cdb84ae099dc4651865e215aaec9dd7, type: 3}
       propertyPath: m_Name
       value: Demon_Melee
@@ -8807,6 +8846,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5381880085549425518, guid: 7cdb84ae099dc4651865e215aaec9dd7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7874688428069336233}
+    - targetCorrespondingSourceObject: {fileID: 5381880085549425518, guid: 7cdb84ae099dc4651865e215aaec9dd7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7874688428069336245}
   m_SourcePrefab: {fileID: 100100000, guid: 7cdb84ae099dc4651865e215aaec9dd7, type: 3}
 --- !u!1001 &6247692578566708274
 PrefabInstance:
@@ -8883,6 +8925,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nodeResourceDrop: {fileID: 11400000, guid: 296d8f77ad0274d9ba4c1596d2b72ead, type: 2}
   _lootList: []
+--- !u!114 &7874688428069336245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2371704185939173404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15a78df0df3c9480498488321f46fd2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <DisableOnDeath>k__BackingField: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

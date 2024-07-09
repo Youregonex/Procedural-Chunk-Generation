@@ -373,7 +373,7 @@ GameObject:
   - component: {fileID: 196267375202465916}
   - component: {fileID: 6306110026824130139}
   m_Layer: 0
-  m_Name: Demon_Machete
+  m_Name: Demon_Melee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -3205,11 +3205,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5356794587930822775, guid: 988d23e46c24348a19c8917524e1b63a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.31
+      value: 0.68
       objectReference: {fileID: 0}
     - target: {fileID: 5356794587930822775, guid: 988d23e46c24348a19c8917524e1b63a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.3
+      value: -4.72
       objectReference: {fileID: 0}
     - target: {fileID: 5356794587930822775, guid: 988d23e46c24348a19c8917524e1b63a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7972,6 +7972,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 0
+  <MaxHealth>k__BackingField: 0
+  <CurrentHealth>k__BackingField: 0
   _destructionDelay: 0
   _isDead: 0
   _agentCore: {fileID: 0}
@@ -9005,11 +9007,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8156719173824069833, guid: 7cdb84ae099dc4651865e215aaec9dd7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.82
+      value: -1.24
       objectReference: {fileID: 0}
     - target: {fileID: 8156719173824069833, guid: 7cdb84ae099dc4651865e215aaec9dd7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.44
+      value: -4.81
       objectReference: {fileID: 0}
     - target: {fileID: 8156719173824069833, guid: 7cdb84ae099dc4651865e215aaec9dd7, type: 3}
       propertyPath: m_LocalPosition.z

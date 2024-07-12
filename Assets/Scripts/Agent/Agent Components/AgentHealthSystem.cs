@@ -9,8 +9,8 @@ public class AgentHealthSystem : AgentMonobehaviourComponent
     public event Action<AgentHealthSystem> OnDeath;
 
     [field: Header("Config")]
-    [SerializeField] public float MaxHealth { get; protected set; }
-    [SerializeField] public float CurrentHealth { get; protected set; }
+    [field: SerializeField] public float MaxHealth { get; protected set; }
+    [field: SerializeField] public float CurrentHealth { get; protected set; }
     [SerializeField] protected float _destructionDelay = 0f;
 
     [Header("Debug Fields")]

@@ -6,13 +6,12 @@ public class DashAbility : Ability
     private float _maxDashTime;
     private float _dashSpeed;
 
-    private Vector2 _targetPosition;
     private float _currentDashTime;
     private AgentMovement _casterMovementModule;
     private AgentVisual _agentVisual;
     private Rigidbody2D _casterRigidBody;
 
-    public DashAbility(EnemyCore caster,
+    public DashAbility(AgentCoreBase caster,
                        AgentAnimation casterAnimator,
                        string name,
                        EAbilityType abilityType,
@@ -37,7 +36,6 @@ public class DashAbility : Ability
         IsCasting = true;
 
         _currentDashTime = _maxDashTime;
-        _targetPosition = targetPosition;
 
         _agentVisual.EnableTrailRenderer();
         _casterMovementModule.DisableComponent();
@@ -70,7 +68,7 @@ public class DashAbility : Ability
         IsCasting = false;
     }
 
-    private void InitializeComponents()
+    protected void InitializeComponents()
     {
         _casterMovementModule = Caster.GetAgentComponent<AgentMovement>();
         _casterRigidBody = Caster.GetAgentRigidBody2D();

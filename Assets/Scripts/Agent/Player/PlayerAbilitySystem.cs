@@ -1,25 +1,10 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerAbilitySystem : AgentAbilitySystem
 {
+    [Header("Config")]
     [SerializeField] private AgentMovement _agentMovement;
-
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-
-    protected void Start()
-    {
-        _agentMovement = _agentCore.GetAgentComponent<AgentMovement>();
-
-        float cooldown = 2f;
-        float duration = .05f;
-        float speed = 20f;
-        DashAbility ability = new DashAbility(_agentCore, _agentCore.GetAgentComponent<AgentAnimation>(), "DASH", EAbilityType.Movement, cooldown, duration, speed);
-
-        _abilityDictionary.Add(ability.Name, ability);
-    }
 
     protected override void Update()
     {
@@ -28,6 +13,11 @@ public class PlayerAbilitySystem : AgentAbilitySystem
         if(Input.GetKeyDown(KeyCode.Space))
         {
             CastAbility(_abilityDictionary["DASH"], _agentMovement.LastMovementDirection);
+
+            foreach(KeyValuePair<string, Ability> keyValuePair in _abilityDictionary)
+            {
+                Debug.Log($"Spell {keyValuePair.Key} {keyValuePair.Value.Name}");
+            }
         }
     }
 }

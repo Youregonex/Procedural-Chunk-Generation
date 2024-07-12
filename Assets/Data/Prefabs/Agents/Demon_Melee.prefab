@@ -486,9 +486,9 @@ GameObject:
   - component: {fileID: 6574197401010401464}
   - component: {fileID: 4338122548514521856}
   - component: {fileID: 196267375202465916}
-  - component: {fileID: 6306110026824130139}
+  - component: {fileID: 9053081296606032166}
   - component: {fileID: 5856640250284299649}
-  - component: {fileID: 7240105631838595035}
+  - component: {fileID: 4976930262205395369}
   m_Layer: 0
   m_Name: Demon_Melee
   m_TagString: Untagged
@@ -659,13 +659,13 @@ MonoBehaviour:
   _agentInput: {fileID: 2651345362178689480}
   _agentStats: {fileID: 6574197401010401464}
   _agentItemHoldPoint: {fileID: 3400551932913166067}
-  _agentAbilitySystem: {fileID: 7240105631838595035}
+  _agentAbilitySystem: {fileID: 4976930262205395369}
   _collisionCollider: {fileID: 1163449940808159671}
   _rigidBody2D: {fileID: 8171662324015916539}
   _agentComponents: []
   _disableOnDeathComponents: []
   _agentTargetDetectionZone: {fileID: 2503065282677261909}
-  _enemyBehaviour: {fileID: 6306110026824130139}
+  _enemyBehaviour: {fileID: 9053081296606032166}
 --- !u!114 &6574197401010401464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -693,7 +693,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 0
-  _destructionDelay: 30
+  _destructionDelay: 2
   _isDead: 0
   _agentCore: {fileID: 0}
   _agentAnimation: {fileID: 0}
@@ -714,7 +714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _knockbackDuration: 0.15
---- !u!114 &6306110026824130139
+--- !u!114 &9053081296606032166
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -723,31 +723,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 5381880085549425518}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 124e0b45bcb8f4e74a393c0a6d0318d6, type: 3}
+  m_Script: {fileID: 11500000, guid: 132e1167a11bf4a7f87ea7fe4d744c1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 1
-  <AttackRangeMax>k__BackingField: 1.35
-  <AttackRangeMin>k__BackingField: 1
-  <AggroRange>k__BackingField: 5.64
-  <ChaseRange>k__BackingField: 7.89
-  <CombatRange>k__BackingField: 6.71
+  <AttackRangeMax>k__BackingField: 0.9
+  <AttackRangeMin>k__BackingField: 0.6
+  <AggroRange>k__BackingField: 7.46
+  <ChaseRange>k__BackingField: 11.41
+  <CombatRange>k__BackingField: 8.27
   <AttackDelayMin>k__BackingField: 0.2
-  <AttackDelayMax>k__BackingField: 0.4
+  <AttackDelayMax>k__BackingField: 0.3
   <TimeToStartRoamMin>k__BackingField: 2
   <TimeToStartRoamMax>k__BackingField: 3
-  <RoamTimeMax>k__BackingField: 3
-  <RoamPositionOffsetMax>k__BackingField: {x: 4, y: 4}
-  _agentAbilitySystem: {fileID: 7240105631838595035}
-  _currentTargetTransform: {fileID: 0}
+  <RoamTimeMax>k__BackingField: 5
+  <RoamPositionOffsetMax>k__BackingField: {x: 5, y: 5}
   <IsSpawned>k__BackingField: 0
   <CurrentRoamPosition>k__BackingField: {x: 0, y: 0}
   <MovementDirection>k__BackingField: {x: 0, y: 0}
   <AimPosition>k__BackingField: {x: 0, y: 0}
+  _currentTargetTransform: {fileID: 0}
   _targetDetectionZone: {fileID: 0}
   _agentAttackModule: {fileID: 0}
   _enemyCore: {fileID: 0}
   _showGizmos: 0
+  _demonAbilitySystem: {fileID: 0}
 --- !u!114 &5856640250284299649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -762,7 +762,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nodeResourceDrop: {fileID: 11400000, guid: 296d8f77ad0274d9ba4c1596d2b72ead, type: 2}
   _lootList: []
---- !u!114 &7240105631838595035
+--- !u!114 &4976930262205395369
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -771,10 +771,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5381880085549425518}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 312c6b1bed97f43a3a20619b0011bd05, type: 3}
+  m_Script: {fileID: 11500000, guid: 15a78df0df3c9480498488321f46fd2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 0
+  _abilityDataSOList:
+  - {fileID: 11400000, guid: 5d5528d0536c8449997cf234276b30fe, type: 2}
   _agentCore: {fileID: 0}
 --- !u!1 &5402588083258500150
 GameObject:
@@ -856,7 +858,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65ffbb7095bd04ac5a937d2752f45c40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 0
+  <DisableOnDeath>k__BackingField: 1
   _agentCore: {fileID: 0}
   _healthSystem: {fileID: 0}
   _hitboxCollider: {fileID: 0}

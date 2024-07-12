@@ -8023,8 +8023,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 0
+  _abilityDataSOList:
+  - {fileID: 11400000, guid: ffe2a87a8a282467ba0c5c2145a5ef0a, type: 2}
   _agentCore: {fileID: 0}
-  _agentMovement: {fileID: 0}
+  _agentMovement: {fileID: 1854188139}
 --- !u!4 &1905095857 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7751994548152071265, guid: 140dd409c796e43b6829be8ac6c9ca6c, type: 3}

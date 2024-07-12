@@ -743,7 +743,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65ffbb7095bd04ac5a937d2752f45c40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 0
+  <DisableOnDeath>k__BackingField: 1
   _agentCore: {fileID: 0}
   _healthSystem: {fileID: 0}
   _hitboxCollider: {fileID: 0}
@@ -829,9 +829,9 @@ GameObject:
   - component: {fileID: 6080998798823923710}
   - component: {fileID: 4260473591153406566}
   - component: {fileID: 120365283125399470}
-  - component: {fileID: 6026792574137319198}
+  - component: {fileID: 6875701314312080764}
   - component: {fileID: 3070404559598899648}
-  - component: {fileID: 4395136075213514214}
+  - component: {fileID: 6212104787442394642}
   m_Layer: 0
   m_Name: Demon_Archer
   m_TagString: Untagged
@@ -1002,13 +1002,13 @@ MonoBehaviour:
   _agentInput: {fileID: 5449381109984830550}
   _agentStats: {fileID: 6080998798823923710}
   _agentItemHoldPoint: {fileID: 6014377181258707996}
-  _agentAbilitySystem: {fileID: 4395136075213514214}
+  _agentAbilitySystem: {fileID: 6212104787442394642}
   _collisionCollider: {fileID: 5377017722661951448}
   _rigidBody2D: {fileID: 4420488798518187336}
   _agentComponents: []
   _disableOnDeathComponents: []
   _agentTargetDetectionZone: {fileID: 2404169415236441877}
-  _enemyBehaviour: {fileID: 6026792574137319198}
+  _enemyBehaviour: {fileID: 6875701314312080764}
 --- !u!114 &6080998798823923710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1057,7 +1057,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _knockbackDuration: 0.15
---- !u!114 &6026792574137319198
+--- !u!114 &6875701314312080764
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1066,31 +1066,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 5033722652824955456}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 124e0b45bcb8f4e74a393c0a6d0318d6, type: 3}
+  m_Script: {fileID: 11500000, guid: bcd1e101c46d4428c8c033c1e053c50a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 1
-  <AttackRangeMax>k__BackingField: 6.42
-  <AttackRangeMin>k__BackingField: 2.23
-  <AggroRange>k__BackingField: 6.74
-  <ChaseRange>k__BackingField: 8.74
-  <CombatRange>k__BackingField: 6.87
+  <AttackRangeMax>k__BackingField: 7.87
+  <AttackRangeMin>k__BackingField: 4.29
+  <AggroRange>k__BackingField: 8.01
+  <ChaseRange>k__BackingField: 12.84
+  <CombatRange>k__BackingField: 10.26
   <AttackDelayMin>k__BackingField: 0.2
-  <AttackDelayMax>k__BackingField: 0.4
+  <AttackDelayMax>k__BackingField: 0.3
   <TimeToStartRoamMin>k__BackingField: 2
   <TimeToStartRoamMax>k__BackingField: 3
-  <RoamTimeMax>k__BackingField: 3
-  <RoamPositionOffsetMax>k__BackingField: {x: 4, y: 4}
-  _agentAbilitySystem: {fileID: 4395136075213514214}
-  _currentTargetTransform: {fileID: 0}
+  <RoamTimeMax>k__BackingField: 5
+  <RoamPositionOffsetMax>k__BackingField: {x: 5, y: 5}
   <IsSpawned>k__BackingField: 0
   <CurrentRoamPosition>k__BackingField: {x: 0, y: 0}
   <MovementDirection>k__BackingField: {x: 0, y: 0}
   <AimPosition>k__BackingField: {x: 0, y: 0}
+  _currentTargetTransform: {fileID: 0}
   _targetDetectionZone: {fileID: 0}
   _agentAttackModule: {fileID: 0}
   _enemyCore: {fileID: 0}
-  _showGizmos: 0
+  _showGizmos: 1
+  _demonAbilitySystem: {fileID: 0}
 --- !u!114 &3070404559598899648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1105,7 +1105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nodeResourceDrop: {fileID: 11400000, guid: 296d8f77ad0274d9ba4c1596d2b72ead, type: 2}
   _lootList: []
---- !u!114 &4395136075213514214
+--- !u!114 &6212104787442394642
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1114,10 +1114,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5033722652824955456}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 312c6b1bed97f43a3a20619b0011bd05, type: 3}
+  m_Script: {fileID: 11500000, guid: 15a78df0df3c9480498488321f46fd2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 0
+  _abilityDataSOList:
+  - {fileID: 11400000, guid: 5d5528d0536c8449997cf234276b30fe, type: 2}
   _agentCore: {fileID: 0}
 --- !u!1 &5116930576836441465
 GameObject:

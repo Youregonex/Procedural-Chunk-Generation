@@ -4,17 +4,23 @@ using System.Collections.Generic;
 public class AgentAbilitySystem : AgentMonobehaviourComponent
 {
     [Header("Config")]
-    [SerializeField] protected Dictionary<string, Ability> _abilityDictionary = new Dictionary<string, Ability>();
+    [SerializeField] protected List<AbilityDataSO> _abilityDataSOList;
 
     [Header("Debug Fields")]
-    [SerializeField] protected EnemyCore _agentCore;
+    [SerializeField] protected AgentCoreBase _agentCore;
     [SerializeField] protected Ability _currentAbility;
+    [SerializeField] protected Dictionary<string, Ability> _abilityDictionary = new Dictionary<string, Ability>();
 
     public bool CastingAbility => _currentAbility != null;
 
     protected virtual void Awake()
     {
-        _agentCore = GetComponent<EnemyCore>();
+        _agentCore = GetComponent<AgentCoreBase>();
+    }
+
+    protected void Start()
+    {
+        BuildAbilities();
     }
 
     protected virtual void Update()
@@ -31,9 +37,6 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
 
     public bool IsOnCooldown(string abilityName)
     {
-        if (!_abilityDictionary.ContainsKey(abilityName))
-            return true;
-
         return _abilityDictionary[abilityName].OnCooldown;
     }
 
@@ -49,9 +52,6 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
 
     public void CastAbility(Ability ability, Vector2 targetPosition)
     {
-        if (_currentAbility != null || IsOnCooldown(ability.Name))
-            return;
-
         _currentAbility = ability;
         _currentAbility.OnCastCompleted += Ability_OnCastCompleted;
         _currentAbility.StartCast(targetPosition);
@@ -59,12 +59,18 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
 
     public void CastAbility(string abilityName, Vector2 targetPosition)
     {
-        if (_currentAbility != null || IsOnCooldown(abilityName))
-            return;
-
         _currentAbility = _abilityDictionary[abilityName];
         _currentAbility.OnCastCompleted += Ability_OnCastCompleted;
         _currentAbility.StartCast(targetPosition);
+    }
+
+    protected void BuildAbilities()
+    {
+        foreach(AbilityDataSO abilityDataSO in _abilityDataSOList)
+        {
+            Ability ability = abilityDataSO.BuildAbility(_agentCore, _agentCore.GetAgentComponent<AgentAnimation>());
+            _abilityDictionary.Add(ability.Name.ToUpper(), ability);
+        }
     }
 
     protected void Ability_OnCastCompleted()

@@ -18,28 +18,25 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
     [field: SerializeField] public float TimeToStartRoamMax { get; private set; }
     [field: SerializeField] public float RoamTimeMax { get; private set; }
     [field: SerializeField] public Vector2 RoamPositionOffsetMax { get; private set; }
-    [SerializeField] private DemonAbilitySystem _agentAbilitySystem;
 
-    [Header("Debug Fields")]
-    [SerializeField] private Node _behaviourTree;
-    [SerializeField] private Transform _currentTargetTransform;
+    [field: Header("Debug Fields")]
     [field: SerializeField] public bool IsSpawned { get; private set; }
     [field: SerializeField] public Vector2 CurrentRoamPosition { get; private set; }
     [field: SerializeField] public Vector2 MovementDirection { get; private set; }
     [field: SerializeField] public Vector2 AimPosition { get; private set; }
-    [SerializeField] private AgentTargetDetectionZone _targetDetectionZone;
-    [SerializeField] private AgentAttackModule _agentAttackModule;
+    [SerializeField] protected Transform _currentTargetTransform;
+    [SerializeField] protected AgentTargetDetectionZone _targetDetectionZone;
+    [SerializeField] protected AgentAttackModule _agentAttackModule;
     [SerializeField] protected EnemyCore _enemyCore;
-    [SerializeField] private bool _showGizmos;
+    [SerializeField] protected bool _showGizmos;
 
+    protected Node _behaviourTree;
 
     public List<Transform> TargetTransformList => _targetDetectionZone.TargetList;
 
     protected virtual void Awake()
     {
         _enemyCore = GetComponent<EnemyCore>();
-
-        ConstructBehaviourTree();
     }
 
     protected virtual void Start()
@@ -47,6 +44,8 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
         _agentAttackModule = _enemyCore.GetAgentComponent<AgentAttackModule>();
         _enemyCore.GetAgentComponent<AgentAnimation>().OnAgentSpawned += AgentAnimation_OnAgentSpawned;
         InitializeAgentTargetDetectionZone();
+
+        ConstructBehaviourTree();
     }
 
     protected virtual void Update()
@@ -93,12 +92,12 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
 
     public void TriggerAttack() => OnTargetInAttackRange?.Invoke();
 
-    private void AgentAnimation_OnAgentSpawned()
+    protected virtual void AgentAnimation_OnAgentSpawned()
     {
         IsSpawned = true;
     }
 
-    private void PickCurrentTarget()
+    protected virtual void PickCurrentTarget()
     {
         if (_currentTargetTransform == null || _currentTargetTransform.GetComponent<AgentHealthSystem>().IsDead)
             _currentTargetTransform = TargetTransformList.Count == 0 ? null : TargetTransformList[0];
@@ -107,7 +106,7 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
             _currentTargetTransform = null;
     }
 
-    private void ConstructBehaviourTree()
+    protected virtual void ConstructBehaviourTree()
     {
         RoamPositionExistsCondition roamPositionExistsCondition = new RoamPositionExistsCondition(this);
         RoamTimerExpiredCondition roamTimerExpiredCondition = new RoamTimerExpiredCondition(this, RoamTimeMax);
@@ -126,13 +125,8 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
         ChaseNode chaseNode = new ChaseNode(this, AttackRangeMin, AttackRangeMax);
         Sequence chaseSequence = new Sequence(new List<Node> { targetInChaseRangeCondition, chaseNode });
 
-        Inverter targetInAttackRangeInvertor = new Inverter(targetInAttackRangeCondition);
-        AbilityOffCooldownCondition abilityOffCooldownCondition = new AbilityOffCooldownCondition(_agentAbilitySystem, "DASH");
-        CastDashNode castDashNode = new CastDashNode(this, "DASH", _agentAbilitySystem);
-        Sequence dashSequence = new Sequence(new List<Node>() { targetInAttackRangeInvertor, abilityOffCooldownCondition, castDashNode });
-
         TargetExistsCondition targetExistsCondition = new TargetExistsCondition(this);
-        Selector combatSelector = new Selector(new List<Node> { dashSequence, attackSequnce, chaseSequence });
+        Selector combatSelector = new Selector(new List<Node> { attackSequnce, chaseSequence });
         Sequence combatSequence = new Sequence(new List<Node> { targetExistsCondition, combatSelector });
 
         AgentSpawnedCondition agentSpawnedCondition = new AgentSpawnedCondition(this);
@@ -144,13 +138,13 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
         _behaviourTree = treeRoot;
     }
 
-    private void InitializeAgentTargetDetectionZone()
+    protected virtual void InitializeAgentTargetDetectionZone()
     {
         _targetDetectionZone = _enemyCore.GetAgentComponent<AgentTargetDetectionZone>();
         _targetDetectionZone.SetDetectionRadius(AggroRange);
     }
 
-    private void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
         if (!_showGizmos)
             return;

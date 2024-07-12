@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class PlayerAbilitySystem : AgentAbilitySystem
 {
@@ -13,11 +12,6 @@ public class PlayerAbilitySystem : AgentAbilitySystem
         if(Input.GetKeyDown(KeyCode.Space))
         {
             CastAbility(_abilityDictionary["DASH"], _agentMovement.LastMovementDirection);
-
-            foreach(KeyValuePair<string, Ability> keyValuePair in _abilityDictionary)
-            {
-                Debug.Log($"Spell {keyValuePair.Key} {keyValuePair.Value.Name}");
-            }
         }
     }
 }

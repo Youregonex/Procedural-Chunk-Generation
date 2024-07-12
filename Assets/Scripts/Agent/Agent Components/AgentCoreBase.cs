@@ -84,7 +84,7 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
     {
         foreach(AgentMonobehaviourComponent component in _agentComponents)
         {
-            if (component.DisableOnDeath)
+            if (component != null && component.DisableOnDeath)
                 _disableOnDeathComponents.Add(component);
         }
     }

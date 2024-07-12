@@ -27,12 +27,14 @@ public class AgentVisual : AgentMonobehaviourComponent
 
     public void DisableTrailRenderer()
     {
-        _trailRenderer.emitting = false;
+        if(_trailRenderer != null)
+            _trailRenderer.emitting = false;
     }
 
     public void EnableTrailRenderer()
     {
-        _trailRenderer.emitting = true;
+        if (_trailRenderer != null)
+            _trailRenderer.emitting = true;
     }
 
     public override void DisableComponent()
@@ -48,7 +50,6 @@ public class AgentVisual : AgentMonobehaviourComponent
     private void ManageSpriteFlip()
     {
         Vector2 aimPosition = _agentInput.GetAimPosition();
-
         Vector2 aimDirection = (aimPosition - (Vector2)transform.position).normalized;
 
         if (aimDirection.x < 0)

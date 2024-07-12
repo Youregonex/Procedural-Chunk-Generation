@@ -4,12 +4,12 @@ using UnityEngine;
 public class DemonMeleeBehaviour : BaseEnemyBehaviour
 {
     [Header("Debug Fields")]
-    [SerializeField] private AgentAbilitySystem _demonAbilitySystem;
+    [SerializeField] private AgentAbilitySystem _agentAbilitySystem;
 
 
     protected override void Start()
     {
-        _demonAbilitySystem = _enemyCore.GetAgentComponent<AgentAbilitySystem>();
+        _agentAbilitySystem = _enemyCore.GetAgentComponent<AgentAbilitySystem>();
 
         base.Start();
     }
@@ -34,8 +34,8 @@ public class DemonMeleeBehaviour : BaseEnemyBehaviour
         Sequence chaseSequence = new Sequence(new List<Node> { targetInChaseRangeCondition, chaseNode });
 
         Inverter targetInAttackRangeInvertor = new Inverter(targetInAttackRangeCondition);
-        AbilityOffCooldownCondition abilityOffCooldownCondition = new AbilityOffCooldownCondition(_demonAbilitySystem, "DASH");
-        CastDashToTargetNode castDashToTargetNode = new CastDashToTargetNode(this, "DASH", _demonAbilitySystem);
+        AbilityOffCooldownCondition abilityOffCooldownCondition = new AbilityOffCooldownCondition(_agentAbilitySystem, "DASH");
+        CastDashToTargetNode castDashToTargetNode = new CastDashToTargetNode(this, "DASH", _agentAbilitySystem);
         Sequence dashSequence = new Sequence(new List<Node>() { targetInAttackRangeInvertor, abilityOffCooldownCondition, castDashToTargetNode });
 
         TargetExistsCondition targetExistsCondition = new TargetExistsCondition(this);

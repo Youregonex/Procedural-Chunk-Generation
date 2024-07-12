@@ -62,7 +62,6 @@ public class AgentHealthSystem : AgentMonobehaviourComponent
         if (CurrentHealth == 0f)
         {
             OnDeath?.Invoke(this);
-
             Die();
         }
     }

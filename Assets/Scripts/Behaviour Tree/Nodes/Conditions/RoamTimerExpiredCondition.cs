@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class RoamTimerExpiredCondition : Node
 {
-    public RoamTimerExpiredCondition(BaseEnemyBehaviour enemyBehaviour, float timer, int nodePriority = 0) : base(nodePriority)
+    public RoamTimerExpiredCondition(BaseEnemyBehaviour enemyBehaviour, float roamTimer, int nodePriority = 0) : base(nodePriority)
     {
         _enemyBehaviour = enemyBehaviour;
-        _timerMax = timer;
+        _timerMax = roamTimer;
     }
 
     private BaseEnemyBehaviour _enemyBehaviour;

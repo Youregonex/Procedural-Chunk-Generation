@@ -65,12 +65,11 @@ GameObject:
   - component: {fileID: 787065315744638245}
   - component: {fileID: 465963116688875511}
   - component: {fileID: 798849663924346243}
-  - component: {fileID: 5916355612472270982}
   - component: {fileID: 7912135818131328804}
+  - component: {fileID: 98385478952016499}
   - component: {fileID: 4340788672296164125}
   - component: {fileID: 639650765066315052}
   - component: {fileID: 638039547507060707}
-  - component: {fileID: 1032324904535094820}
   - component: {fileID: 2716491587730172374}
   - component: {fileID: 5426810442813838147}
   m_Layer: 0
@@ -88,7 +87,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 618886201950957018}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -12.28, y: -2.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -98,7 +97,6 @@ Transform:
   - {fileID: 5336671720563769972}
   - {fileID: 8293439931727362481}
   - {fileID: 8954128586578603165}
-  - {fileID: 6580076757853919112}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &6524151457122161689
@@ -133,8 +131,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.12632191, y: -0.83125633}
-  m_Size: {x: 1.2947829, y: 0.51553255}
+  m_Offset: {x: -0.12632188, y: -0.5764068}
+  m_Size: {x: 1.2947832, y: 1.025232}
   m_Direction: 1
 --- !u!50 &787065315744638245
 Rigidbody2D:
@@ -200,26 +198,6 @@ MonoBehaviour:
   _canMove: 1
   <MovementDirection>k__BackingField: {x: 0, y: 0}
   <LastMovementDirection>k__BackingField: {x: 0, y: 0}
---- !u!114 &5916355612472270982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 618886201950957018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5a46cecb395c42459f6e5bbc4d3d235, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 1
-  _itemHoldPoint: {fileID: 6316488941480416666}
-  _currentWeapon: {fileID: 0}
-  _currentWeaponItemDataSO: {fileID: 0}
-  _currentTool: {fileID: 0}
-  _currentToolItemDataSO: {fileID: 0}
-  _agentInput: {fileID: 0}
-  _agentCore: {fileID: 0}
 --- !u!114 &7912135818131328804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,7 +213,7 @@ MonoBehaviour:
   <DisableOnDeath>k__BackingField: 0
   _faction: 3
   _healthSystem: {fileID: 639650765066315052}
-  _agentAttackModule: {fileID: 5916355612472270982}
+  _agentAttackModule: {fileID: 0}
   _agentMovement: {fileID: 798849663924346243}
   _agentAnimation: {fileID: 4704289380383340896}
   _agentVisual: {fileID: 5658447150834246533}
@@ -249,7 +227,41 @@ MonoBehaviour:
   _agentComponents: []
   _disableOnDeathComponents: []
   _agentTargetDetectionZone: {fileID: 8833813773217938654}
-  _enemyBehaviour: {fileID: 1032324904535094820}
+  _enemyBehaviour: {fileID: 98385478952016499}
+--- !u!114 &98385478952016499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618886201950957018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81985bc42d096488aaf4ded3d2fd0af7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <DisableOnDeath>k__BackingField: 0
+  <AttackRangeMax>k__BackingField: 3.12
+  <AttackRangeMin>k__BackingField: 1.84
+  <AggroRange>k__BackingField: 8.19
+  <ChaseRange>k__BackingField: 12.53
+  <CombatRange>k__BackingField: 9.47
+  <AttackDelayMin>k__BackingField: 0
+  <AttackDelayMax>k__BackingField: 0
+  <TimeToStartRoamMin>k__BackingField: 2
+  <TimeToStartRoamMax>k__BackingField: 3
+  <RoamTimeMax>k__BackingField: 2
+  <RoamPositionOffsetMax>k__BackingField: {x: 5, y: 5}
+  <IsSpawned>k__BackingField: 0
+  <CurrentRoamPosition>k__BackingField: {x: 0, y: 0}
+  <MovementDirection>k__BackingField: {x: 0, y: 0}
+  <AimPosition>k__BackingField: {x: 0, y: 0}
+  _currentTargetTransform: {fileID: 0}
+  _targetDetectionZone: {fileID: 0}
+  _agentAttackModule: {fileID: 0}
+  _enemyCore: {fileID: 0}
+  _showGizmos: 0
+  _agentAbilitySystem: {fileID: 0}
 --- !u!114 &4340788672296164125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,13 +289,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 0
+  <MaxHealth>k__BackingField: 0
+  <CurrentHealth>k__BackingField: 0
   _destructionDelay: 2
   _isDead: 0
   _agentCore: {fileID: 0}
   _agentAnimation: {fileID: 0}
   _hitbox: {fileID: 0}
   _vitalityToHealthRatio: 5
-  _initialHealth: 5
+  _initialHealth: 20
   _agentStats: {fileID: 0}
 --- !u!114 &638039547507060707
 MonoBehaviour:
@@ -298,40 +312,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _knockbackDuration: 0.15
---- !u!114 &1032324904535094820
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 618886201950957018}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 132e1167a11bf4a7f87ea7fe4d744c1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 1
-  <AttackRangeMax>k__BackingField: 0.9
-  <AttackRangeMin>k__BackingField: 0.6
-  <AggroRange>k__BackingField: 7.46
-  <ChaseRange>k__BackingField: 11.41
-  <CombatRange>k__BackingField: 8.27
-  <AttackDelayMin>k__BackingField: 0.2
-  <AttackDelayMax>k__BackingField: 0.3
-  <TimeToStartRoamMin>k__BackingField: 2
-  <TimeToStartRoamMax>k__BackingField: 3
-  <RoamTimeMax>k__BackingField: 5
-  <RoamPositionOffsetMax>k__BackingField: {x: 5, y: 5}
-  <IsSpawned>k__BackingField: 0
-  <CurrentRoamPosition>k__BackingField: {x: 0, y: 0}
-  <MovementDirection>k__BackingField: {x: 0, y: 0}
-  <AimPosition>k__BackingField: {x: 0, y: 0}
-  _currentTargetTransform: {fileID: 0}
-  _targetDetectionZone: {fileID: 0}
-  _agentAttackModule: {fileID: 0}
-  _enemyCore: {fileID: 0}
-  _showGizmos: 0
-  _agentAbilitySystem: {fileID: 0}
 --- !u!114 &2716491587730172374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,8 +339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 0
-  _abilityDataSOList:
-  - {fileID: 11400000, guid: 5d5528d0536c8449997cf234276b30fe, type: 2}
+  _abilityDataSOList: []
   _agentCore: {fileID: 0}
 --- !u!1 &713282732801586978
 GameObject:
@@ -503,8 +482,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.036001325, y: 0.05400157}
-  m_Size: {x: 1.4720309, y: 2.1700368}
+  m_Offset: {x: -0.027552605, y: 0.03857398}
+  m_Size: {x: 1.4808788, y: 2.219293}
   m_Direction: 0
 --- !u!114 &6779826811798766347
 MonoBehaviour:
@@ -642,7 +621,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4462478916718686253}
-  m_Father: {fileID: 4758298892790681363}
+  m_Father: {fileID: 5747170332831336647}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -739,9 +718,9 @@ Transform:
   m_GameObject: {fileID: 4141862565131487227}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.007, y: -0.466, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0.007, y: -1.16, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4758298892790681363}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
@@ -5556,7 +5535,6 @@ GameObject:
   - component: {fileID: 5658447150834246533}
   - component: {fileID: 4704289380383340896}
   - component: {fileID: 2900107220073948810}
-  - component: {fileID: 5552554526380062368}
   m_Layer: 0
   m_Name: EnemyVisual
   m_TagString: Untagged
@@ -5576,7 +5554,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 6580076757853919112}
   m_Father: {fileID: 4758298892790681363}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7609232034521207737
@@ -5619,7 +5598,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: -137506747, guid: 2d1ddaa95a8a54222bfa4bc53d41a77c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -5699,119 +5678,6 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 0}
   _initialMaterial: {fileID: 0}
   _agentHealthSystem: {fileID: 639650765066315052}
---- !u!96 &5552554526380062368
-TrailRenderer:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5843757881824068088}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 0
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 9
-  m_Time: 0.4
-  m_PreviewTimeScale: 1
-  m_Parameters:
-    serializedVersion: 3
-    widthMultiplier: 1
-    widthCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0.53956795
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 1
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    colorGradient:
-      serializedVersion: 2
-      key0: {r: 0.990566, g: 0.6481796, b: 0.1541919, a: 1}
-      key1: {r: 0.9150943, g: 0.24373381, b: 0.056114297, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_ColorSpace: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-    numCornerVertices: 0
-    numCapVertices: 0
-    alignment: 0
-    textureMode: 0
-    textureScale: {x: 1, y: 1}
-    shadowBias: 0
-    generateLightingData: 0
-  m_MinVertexDistance: 0.1
-  m_MaskInteraction: 0
-  m_Autodestruct: 0
-  m_Emitting: 0
-  m_ApplyActiveColorSpace: 1
 --- !u!1 &7129358991972083952
 GameObject:
   m_ObjectHideFlags: 0

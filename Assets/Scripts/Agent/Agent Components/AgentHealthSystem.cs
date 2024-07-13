@@ -66,7 +66,7 @@ public class AgentHealthSystem : AgentMonobehaviourComponent
         }
     }
 
-    public IDamegeable GetHitbox() => _hitbox;
+    public IDamageable GetHitbox() => _hitbox;
 
     protected virtual void Die()
     {

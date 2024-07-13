@@ -35,7 +35,7 @@ public class DemonRangedBehaviour : BaseEnemyBehaviour
 
         TargetTooCloseCondition targetTooCloseCondition = new TargetTooCloseCondition(this, AttackRangeMin);
         AbilityOffCooldownCondition abilityOffCooldownCondition = new AbilityOffCooldownCondition(_demonAbilitySystem, "DASH");
-        CastDashFromTarget castDashFromTargetNode = new CastDashFromTarget(this, "DASH", _demonAbilitySystem);
+        CastDashFromTargetNode castDashFromTargetNode = new CastDashFromTargetNode(this, "DASH", _demonAbilitySystem);
         Sequence dashSequence = new Sequence(new List<Node>() { targetTooCloseCondition, abilityOffCooldownCondition, castDashFromTargetNode });
 
         TargetExistsCondition targetExistsCondition = new TargetExistsCondition(this);

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CapsuleCollider2D))]
-public class AgentHitbox : AgentMonobehaviourComponent, IDamegeable
+public class AgentHitbox : AgentMonobehaviourComponent, IDamageable
 {
     [Header("Debug Fields")]
     [SerializeField] private EnemyCore _agentCore;

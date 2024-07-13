@@ -2231,7 +2231,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.02, y: 7.38, z: -10}
+  m_LocalPosition: {x: 0.14, y: 3.68, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3202,6 +3202,10 @@ PrefabInstance:
     - target: {fileID: 5033722652824955456, guid: 988d23e46c24348a19c8917524e1b63a, type: 3}
       propertyPath: m_Name
       value: Demon_Archer
+      objectReference: {fileID: 0}
+    - target: {fileID: 5033722652824955456, guid: 988d23e46c24348a19c8917524e1b63a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5356794587930822775, guid: 988d23e46c24348a19c8917524e1b63a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7304,7 +7308,7 @@ Transform:
   m_GameObject: {fileID: 1726477554}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.02, y: 7.38, z: -10}
+  m_LocalPosition: {x: 0.14, y: 3.68, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7747,7 +7751,7 @@ Transform:
   m_GameObject: {fileID: 1854188128}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.02, y: 7.38, z: 0}
+  m_LocalPosition: {x: 0.14, y: 3.68, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7879,7 +7883,6 @@ MonoBehaviour:
   _agentInput: {fileID: 1854188132}
   _agentAnimation: {fileID: 623641776}
   _agentCore: {fileID: 0}
-  _collisionCollider: {fileID: 0}
   _agentStats: {fileID: 0}
   _rigidBody2D: {fileID: 0}
   _canMove: 1
@@ -8023,7 +8026,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1854188128}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17b08ffb64e8144098bb7542ab9c2a55, type: 3}
   m_Name: 
@@ -8871,17 +8874,37 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 98385478952016499, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
+      propertyPath: _showGizmos
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 98385478952016499, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
+      propertyPath: _jumpAttackRange
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 98385478952016499, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
+      propertyPath: <AggroRange>k__BackingField
+      value: 8.76
+      objectReference: {fileID: 0}
+    - target: {fileID: 98385478952016499, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
+      propertyPath: <AttackRangeMax>k__BackingField
+      value: 8.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 98385478952016499, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
+      propertyPath: <AttackRangeMin>k__BackingField
+      value: 1.18
+      objectReference: {fileID: 0}
     - target: {fileID: 618886201950957018, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
       propertyPath: m_Name
       value: Devil_Boss
       objectReference: {fileID: 0}
     - target: {fileID: 4758298892790681363, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.93
+      value: -3.08
       objectReference: {fileID: 0}
     - target: {fileID: 4758298892790681363, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.59
+      value: 12.06
       objectReference: {fileID: 0}
     - target: {fileID: 4758298892790681363, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
       propertyPath: m_LocalPosition.z
@@ -8917,78 +8940,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5426810442813838147, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
       propertyPath: _abilityDataSOList.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5916355612472270982, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5916355612472270982, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
-      propertyPath: _currentWeapon
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341743741507095636, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
-      propertyPath: m_Size.x
-      value: 1.4808788
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341743741507095636, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
-      propertyPath: m_Size.y
-      value: 2.219293
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341743741507095636, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
-      propertyPath: m_Offset.x
-      value: -0.027552605
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341743741507095636, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
-      propertyPath: m_Offset.y
-      value: 0.03857398
-      objectReference: {fileID: 0}
-    - target: {fileID: 6524151457122161689, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
-      propertyPath: m_Size.x
-      value: 1.2947832
-      objectReference: {fileID: 0}
-    - target: {fileID: 6524151457122161689, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
-      propertyPath: m_Size.y
-      value: 1.025232
-      objectReference: {fileID: 0}
-    - target: {fileID: 6524151457122161689, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
-      propertyPath: m_Offset.x
-      value: -0.12632188
-      objectReference: {fileID: 0}
-    - target: {fileID: 6524151457122161689, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
-      propertyPath: m_Offset.y
-      value: -0.5764068
-      objectReference: {fileID: 0}
-    - target: {fileID: 7609232034521207737, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
-      propertyPath: m_SortingOrder
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7912135818131328804, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
-      propertyPath: _agentAttackModule
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8293439931727362481, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8293439931727362481, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8293439931727362481, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8293439931727362481, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.16
-      objectReference: {fileID: 0}
-    - target: {fileID: 8293439931727362481, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
-      propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5916355612472270982, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
+    - target: {fileID: 5426810442813838147, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
+      propertyPath: _abilityDataSOList.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 96e7f5fdc01b14fea8f9dc0050dc4c76, type: 2}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -9004,6 +8962,10 @@ PrefabInstance:
     - target: {fileID: 5381880085549425518, guid: 7cdb84ae099dc4651865e215aaec9dd7, type: 3}
       propertyPath: m_Name
       value: Demon_Melee
+      objectReference: {fileID: 0}
+    - target: {fileID: 5381880085549425518, guid: 7cdb84ae099dc4651865e215aaec9dd7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8156719173824069833, guid: 7cdb84ae099dc4651865e215aaec9dd7, type: 3}
       propertyPath: m_LocalPosition.x

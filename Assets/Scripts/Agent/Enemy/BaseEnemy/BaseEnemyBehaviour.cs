@@ -30,7 +30,7 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
     [SerializeField] protected EnemyCore _enemyCore;
     [SerializeField] protected bool _showGizmos;
 
-    protected Node _behaviourTree;
+    protected Selector _behaviourTree;
 
     public List<Transform> TargetTransformList => _targetDetectionZone.TargetList;
 
@@ -133,9 +133,7 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
         Inverter agentSpawnedInverter = new Inverter(agentSpawnedCondition);
         Sequence enemySpawnSequence = new Sequence(new List<Node> { agentSpawnedInverter, idleNode });
 
-        Selector treeRoot = new Selector(new List<Node> { enemySpawnSequence, combatSequence, roamSequence, idleNode });
-
-        _behaviourTree = treeRoot;
+        _behaviourTree = new Selector(new List<Node> { enemySpawnSequence, combatSequence, roamSequence, idleNode });
     }
 
     protected virtual void InitializeAgentTargetDetectionZone()

@@ -8,7 +8,6 @@ public class AgentMovement : AgentMonobehaviourComponent
     [SerializeField] private AgentInput _agentInput;
     [SerializeField] private AgentAnimation _agentAnimation;
     [SerializeField] private EnemyCore _agentCore;
-    [SerializeField] private CapsuleCollider2D _collisionCollider;
     [SerializeField] private AgentStats _agentStats;
     [SerializeField] private Rigidbody2D _rigidBody2D;
     [SerializeField] private bool _canMove = true;
@@ -25,7 +24,6 @@ public class AgentMovement : AgentMonobehaviourComponent
     {
         _rigidBody2D = _agentCore.GetAgentRigidBody2D();
         _agentStats = _agentCore.GetAgentStats();
-        _collisionCollider = _agentCore.GetAgentCollider();
 
         _agentInput = _agentCore.GetAgentComponent<AgentInput>();
         _agentAnimation = _agentCore.GetAgentComponent<AgentAnimation>();
@@ -34,13 +32,11 @@ public class AgentMovement : AgentMonobehaviourComponent
     public override void DisableComponent()
     {
         _rigidBody2D.velocity = Vector2.zero;
-        _collisionCollider.enabled = false;
         this.enabled = false;
     }
 
     public override void EnableComponent()
     {
-        _collisionCollider.enabled = true;
         this.enabled = true;
     }
 

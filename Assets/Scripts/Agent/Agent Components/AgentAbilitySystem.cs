@@ -11,11 +11,13 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
     [SerializeField] protected Ability _currentAbility;
     [SerializeField] protected Dictionary<string, Ability> _abilityDictionary = new Dictionary<string, Ability>();
 
-    public bool CastingAbility => _currentAbility != null;
+    public Dictionary<string, Ability> AbilityDictionary => _abilityDictionary;
+    public bool IsCastingAbility => _currentAbility != null;
 
     protected virtual void Awake()
     {
         _agentCore = GetComponent<AgentCoreBase>();
+        _currentAbility = null;
     }
 
     protected void Start()

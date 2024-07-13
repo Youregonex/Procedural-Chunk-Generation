@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class Ability
+public abstract class Ability
 {
     public event Action OnCastCompleted;
 

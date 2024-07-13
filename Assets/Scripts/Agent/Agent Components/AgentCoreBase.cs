@@ -54,6 +54,17 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
         return _agentComponents.OfType<T>().FirstOrDefault();
     }
 
+    public void DisableCollider()
+    {
+        _collisionCollider.enabled = false;
+    }
+
+    public void EnableCollider()
+    {
+        _collisionCollider.enabled = true;
+    }
+
+
     public override void DisableComponent()
     {
         this.enabled = false;

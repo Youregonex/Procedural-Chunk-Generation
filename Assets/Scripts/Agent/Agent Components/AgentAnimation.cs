@@ -4,6 +4,7 @@ using System;
 public class AgentAnimation : AgentMonobehaviourComponent
 {
     public event Action OnAgentSpawned;
+    public event Action OnAnimationEnded;
 
     private const string MOVE = "MOVE";
     private const string GET_HIT = "GET_HIT";
@@ -47,6 +48,8 @@ public class AgentAnimation : AgentMonobehaviourComponent
     {
         this.enabled = true;
     }
+
+    public void AnimationEnded() => OnAnimationEnded?.Invoke(); // Used by animation event
 
     public void AgentSpawned() => OnAgentSpawned?.Invoke(); // Used by animation event
 }

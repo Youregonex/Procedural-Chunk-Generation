@@ -49,7 +49,7 @@ public class Tool : MonoBehaviour
 
         foreach (Collider2D hit in targetsHit)
         {
-            IDamegeable damageable = hit.GetComponent<IDamegeable>();
+            IDamageable damageable = hit.GetComponent<IDamageable>();
 
             if (damageable == null)
                 continue;

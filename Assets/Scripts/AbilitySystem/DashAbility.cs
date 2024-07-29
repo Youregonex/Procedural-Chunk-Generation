@@ -16,8 +16,9 @@ public class DashAbility : Ability
                        string name,
                        EAbilityType abilityType,
                        float cooldown,
+                       GameObject abilityParticles,
                        float maxDashTime,
-                       float dashSpeed) : base(caster, casterAnimator, name, abilityType, cooldown)
+                       float dashSpeed) : base(caster, casterAnimator, name, abilityType, cooldown, abilityParticles)
     {
         _maxDashTime = maxDashTime;
         _dashSpeed = dashSpeed;

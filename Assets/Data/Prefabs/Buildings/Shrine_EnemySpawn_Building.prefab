@@ -210,7 +210,7 @@ MonoBehaviour:
   _numberOfEnemiesPerWaveMax: 4
   _enemySpawnArea: {x: 5, y: 5}
   _addExtraEnemiesEveryWave: 0
-  _spawnBoss: 0
+  _spawnBoss: 1
   _aliveEnemies: []
   _currentWave: 1
   _currentTarget: {fileID: 0}

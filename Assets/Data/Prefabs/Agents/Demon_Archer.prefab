@@ -955,7 +955,7 @@ MonoBehaviour:
   _agentAnimation: {fileID: 7087340038465061318}
   _agentCore: {fileID: 0}
   _agentStats: {fileID: 0}
-  _rigidBody2D: {fileID: 0}
+  _rigidBody: {fileID: 0}
   _canMove: 1
   <MovementDirection>k__BackingField: {x: 0, y: 0}
   <LastMovementDirection>k__BackingField: {x: 0, y: 0}

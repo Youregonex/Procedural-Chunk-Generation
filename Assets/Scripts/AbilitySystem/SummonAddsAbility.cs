@@ -14,9 +14,10 @@ public class SummonAddsAbility : Ability
                              string name,
                              EAbilityType abilityType,
                              float cooldown,
+                             GameObject abilityParticles,
                              int addsSummonPerCast,
                              int maxAddsCount,
-                             List<AgentCoreBase> addsPrefabList) : base(caster, casterAnimator, name, abilityType, cooldown)
+                             List<AgentCoreBase> addsPrefabList) : base(caster, casterAnimator, name, abilityType, cooldown, abilityParticles)
     {
         _maxAddsCount = maxAddsCount;
         _addsSummonPerCast = addsSummonPerCast;

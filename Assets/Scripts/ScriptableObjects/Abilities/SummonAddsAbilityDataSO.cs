@@ -11,13 +11,14 @@ public class SummonAddsAbilityDataSO : AbilityDataSO
     public override Ability BuildAbility(AgentCoreBase caster, AgentAnimation casterAnimation)
     {
         SummonAddsAbility summonAddsAbility = new SummonAddsAbility(caster,
-                                                                   casterAnimation,
-                                                                   Name,
-                                                                   AbilityType,
-                                                                   Cooldown,
-                                                                   AddsSummonPerCast,
-                                                                   MaxAddsCount,
-                                                                   AddsPrefabList);
+                                                                    casterAnimation,
+                                                                    Name,
+                                                                    AbilityType,
+                                                                    Cooldown,
+                                                                    AbilityParticles,
+                                                                    AddsSummonPerCast,
+                                                                    MaxAddsCount,
+                                                                    AddsPrefabList);
         return summonAddsAbility;
     }
 }

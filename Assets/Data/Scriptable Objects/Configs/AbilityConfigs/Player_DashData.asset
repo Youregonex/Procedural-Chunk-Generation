@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: DASH
   <AbilityType>k__BackingField: 0
-  <Cooldown>k__BackingField: 4
+  <Cooldown>k__BackingField: 3
+  <AbilityParticles>k__BackingField: {fileID: 0}
   <MaxDashTime>k__BackingField: 0.1
   <DashSpeed>k__BackingField: 20

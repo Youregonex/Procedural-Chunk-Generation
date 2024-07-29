@@ -6,5 +6,6 @@ public enum EAbilityType
     SingleTargetDamage,
     Movement,
     Buff,
-    Debuff
+    Debuff,
+    Summon
 }

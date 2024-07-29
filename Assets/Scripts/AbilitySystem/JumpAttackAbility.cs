@@ -10,9 +10,6 @@ public class JumpAttackAbility : Ability
     private float _impactRange;
     private float _airborneSpeed;
 
-    private float _currentTimeInAir;
-    private float _proximityThreshold;
-
     private AgentMovement _casterMovementModule;
     private Rigidbody2D _casterRigidBody;
     private AgentHitbox _agentHitbox;
@@ -22,6 +19,8 @@ public class JumpAttackAbility : Ability
 
     private bool _inAir;
     private bool _landing;
+    private float _currentTimeInAir;
+    private float _proximityThreshold;
     private float _baseSpeed;
 
 
@@ -30,11 +29,12 @@ public class JumpAttackAbility : Ability
                              string name,
                              EAbilityType abilityType,
                              float cooldown,
+                             GameObject abilityParticles,
                              float maxTimeInAir,
                              float impactDamage,
                              float impactRange,
                              float proximityThreshold,
-                             float airborneSpeed) : base(caster, casterAnimator, name, abilityType, cooldown)
+                             float airborneSpeed) : base(caster, casterAnimator, name, abilityType, cooldown, abilityParticles)
     {
         _maxTimeInAir = maxTimeInAir;
         _impactDamage = impactDamage;
@@ -86,6 +86,9 @@ public class JumpAttackAbility : Ability
         if(_landing)
         {
             Caster.EnableCollider();
+
+            _agentVisual.DisableShadow();
+            GameObject.Instantiate(AbilityParticles, Caster.transform.position, Quaternion.identity);
 
             Collider2D[] colliders = Physics2D.OverlapCircleAll(Caster.transform.position, _impactRange);
 
@@ -147,7 +150,6 @@ public class JumpAttackAbility : Ability
         _inAir = false;
         _casterRigidBody.velocity = Vector2.zero;
 
-        _agentVisual.DisableShadow();
         _casterMovementModule.DisableComponent();
         _agentHitbox.EnableComponent();
 

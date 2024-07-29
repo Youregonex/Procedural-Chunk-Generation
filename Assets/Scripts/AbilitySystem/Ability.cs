@@ -10,6 +10,7 @@ public abstract class Ability
     public string Name { get; protected set; }
     public EAbilityType AbilityType { get; protected set; }
     public float Cooldown { get; protected set; }
+    public GameObject AbilityParticles { get; private set; }
 
     public float CurrentCooldown { get; protected set; }
     public bool IsCasting { get; protected set; }
@@ -19,13 +20,14 @@ public abstract class Ability
     public bool OnCooldown => CurrentCooldown > 0;
 
 
-    public Ability(AgentCoreBase caster, AgentAnimation casterAnimator, string name, EAbilityType abilityType, float cooldown)
+    public Ability(AgentCoreBase caster, AgentAnimation casterAnimator, string name, EAbilityType abilityType, float cooldown, GameObject abilityParticles)
     {
         Caster = caster;
         _casterAnimator = casterAnimator;
         Name = name;
         AbilityType = abilityType;
         Cooldown = cooldown;
+        AbilityParticles = abilityParticles;
 
         CurrentCooldown = 0;
         IsCasting = false;

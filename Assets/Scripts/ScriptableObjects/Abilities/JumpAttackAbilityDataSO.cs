@@ -17,6 +17,7 @@ public class JumpAttackAbilityDataSO : AbilityDataSO
                                                                     Name,
                                                                     AbilityType,
                                                                     Cooldown,
+                                                                    AbilityParticles,
                                                                     MaxTimeInAir,
                                                                     ImpactDamage,
                                                                     ImpactRange,

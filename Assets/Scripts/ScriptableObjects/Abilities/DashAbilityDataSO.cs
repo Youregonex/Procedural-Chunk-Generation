@@ -8,7 +8,14 @@ public class DashAbilityDataSO : AbilityDataSO
 
     public override Ability BuildAbility(AgentCoreBase caster, AgentAnimation casterAnimation)
     {
-        DashAbility dashAbility = new DashAbility(caster, casterAnimation, Name, AbilityType, Cooldown, MaxDashTime, DashSpeed);
+        DashAbility dashAbility = new DashAbility(caster,
+                                                  casterAnimation,
+                                                  Name,
+                                                  AbilityType,
+                                                  Cooldown,
+                                                  AbilityParticles,
+                                                  MaxDashTime,
+                                                  DashSpeed);
 
         return dashAbility;
     }

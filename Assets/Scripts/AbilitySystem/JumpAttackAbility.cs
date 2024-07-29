@@ -49,8 +49,6 @@ public class JumpAttackAbility : Ability
     public override void StartCast(Vector2 targetPosition)
     {
         base.StartCast(targetPosition);
-
-        Debug.Log("Cast Started");
         StartJumpingAttack();
     }
 
@@ -58,8 +56,6 @@ public class JumpAttackAbility : Ability
     {
         if(_inAir)
         {
-            Debug.Log($"Current Air Time: {_currentTimeInAir}");
-
             Vector2 movementDirection = (_enemyBehaviour.GetCurrentTargetTransform().position - Caster.transform.position).normalized;
             _enemyBehaviour.SetMovementDirection(movementDirection);
 
@@ -94,13 +90,11 @@ public class JumpAttackAbility : Ability
 
             foreach(Collider2D collider in colliders)
             {
-                IDamageable damageable = collider.GetComponent<IDamageable>();
-
-                if (_agentHitbox == damageable)
-                    continue;
-
-                if(damageable != null)
+                if(collider.TryGetComponent(out IDamageable damageable))
                 {
+                    if (ReferenceEquals(_agentHitbox, damageable))
+                        continue;
+
                     DamageStruct damageStruct = new DamageStruct
                     {
                         damageSender = Caster.gameObject,
@@ -117,7 +111,6 @@ public class JumpAttackAbility : Ability
             return;
         }
 
-        Debug.Log("In Air");
         _inAir = true;
         _agentVisual.EnableShadow();
         _casterMovementModule.EnableComponent();
@@ -126,8 +119,6 @@ public class JumpAttackAbility : Ability
 
     private void StartJumpingAttack()
     {
-        Debug.Log("Jump Started");
-
         _casterMovementModule.DisableComponent();
         _agentHitbox.DisableComponent();
         Caster.DisableCollider();
@@ -144,8 +135,6 @@ public class JumpAttackAbility : Ability
 
     private void StartLanding()
     {
-        Debug.Log("Landed");
-
         _landing = true;
         _inAir = false;
         _casterRigidBody.velocity = Vector2.zero;

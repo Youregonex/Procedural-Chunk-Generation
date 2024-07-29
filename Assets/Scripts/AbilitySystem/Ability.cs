@@ -34,7 +34,7 @@ public abstract class Ability
     }
 
 
-    public virtual void StartCast(Vector2 targetPosition) // Call base method from child abilities for proper work
+    public virtual void StartCast(Vector2 targetPosition) // Call base method from overrided methods for proper work
     {
         if (OnCooldown || IsCasting)
             return;
@@ -43,7 +43,7 @@ public abstract class Ability
         IsCasting = true;
     }
 
-    public virtual void StopCast() // Call base method from child abilities for proper work
+    public virtual void StopCast() // Call base method from overrided methods for proper work
     {
         IsCasting = false;
         CastCompleted();

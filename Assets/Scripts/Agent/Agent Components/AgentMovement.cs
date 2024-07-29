@@ -9,7 +9,7 @@ public class AgentMovement : AgentMonobehaviourComponent
     [SerializeField] private AgentAnimation _agentAnimation;
     [SerializeField] private EnemyCore _agentCore;
     [SerializeField] private AgentStats _agentStats;
-    [SerializeField] private Rigidbody2D _rigidBody2D;
+    [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private bool _canMove = true;
 
     [field: SerializeField] public Vector2 MovementDirection { get; private set; }
@@ -22,16 +22,15 @@ public class AgentMovement : AgentMonobehaviourComponent
 
     private void Start()
     {
-        _rigidBody2D = _agentCore.GetAgentRigidBody2D();
-        _agentStats = _agentCore.GetAgentStats();
-
+        _rigidBody = _agentCore.GetAgentRigidBody();
+        _agentStats = _agentCore.GetAgentComponent<AgentStats>();
         _agentInput = _agentCore.GetAgentComponent<AgentInput>();
         _agentAnimation = _agentCore.GetAgentComponent<AgentAnimation>();
     }
 
     public override void DisableComponent()
     {
-        _rigidBody2D.velocity = Vector2.zero;
+        _rigidBody.velocity = Vector2.zero;
         this.enabled = false;
     }
 
@@ -51,7 +50,7 @@ public class AgentMovement : AgentMonobehaviourComponent
     {
         if (!_canMove)
         {
-            _rigidBody2D.velocity = Vector2.zero;
+            _rigidBody.velocity = Vector2.zero;
 
             return;
         }
@@ -63,7 +62,7 @@ public class AgentMovement : AgentMonobehaviourComponent
 
         EStats moveSpeedStat = EStats.MoveSpeed;
 
-        _rigidBody2D.velocity = new Vector3(MovementDirection.x, MovementDirection.y, 0f) * _agentStats.GetCurrentStatValue(moveSpeedStat);
+        _rigidBody.velocity = new Vector3(MovementDirection.x, MovementDirection.y, 0f) * _agentStats.GetCurrentStatValue(moveSpeedStat);
 
         _agentAnimation.ManageMoveAnimation(MovementDirection);
     }

@@ -116,7 +116,7 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
 
         IdleNode idleNode = new IdleNode(this, TimeToStartRoamMin, TimeToStartRoamMax, RoamPositionOffsetMax);
 
-        TargetInAttackRangeCondition targetInAttackRangeCondition = new TargetInAttackRangeCondition(this, AttackRangeMax);
+        TargetInRangeCondition targetInAttackRangeCondition = new TargetInRangeCondition(this, AttackRangeMax);
         AttackOffCooldownCondition attackOffCooldownCondition = new AttackOffCooldownCondition(this);
         AttackNode attackNode = new AttackNode(this, AttackDelayMin, AttackDelayMax);
         Sequence attackSequnce = new Sequence(new List<Node> { targetInAttackRangeCondition, attackOffCooldownCondition, attackNode });

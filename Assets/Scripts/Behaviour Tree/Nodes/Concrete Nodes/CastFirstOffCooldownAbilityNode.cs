@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CastAbilityNode : Node
+public class CastFirstOffCooldownAbilityNode : Node
 {
     private AgentAbilitySystem _agentAbilitySystem;
 
-    public CastAbilityNode(AgentAbilitySystem agentAbilitySystem, int nodePriority = 0) : base(nodePriority)
+    public CastFirstOffCooldownAbilityNode(AgentAbilitySystem agentAbilitySystem, int nodePriority = 0) : base(nodePriority)
     {
         _agentAbilitySystem = agentAbilitySystem;
     }

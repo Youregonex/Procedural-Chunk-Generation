@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class AgentVisual : AgentMonobehaviourComponent
 {
+    [Header("Config")]
+    [SerializeField] private GameObject _shadowGameObject;
+
     [Header("Debug Fields")]
     [SerializeField] private TrailRenderer _trailRenderer;
     [SerializeField] private EnemyCore _agentCore;
@@ -13,6 +16,9 @@ public class AgentVisual : AgentMonobehaviourComponent
         _agentCore = transform.root.GetComponent<EnemyCore>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _trailRenderer = GetComponent<TrailRenderer>();
+
+        if(_shadowGameObject != null)
+            _shadowGameObject.SetActive(false);
     }
 
     private void Start()
@@ -23,6 +29,17 @@ public class AgentVisual : AgentMonobehaviourComponent
     private void Update()
     {
         ManageSpriteFlip();
+    }
+
+    public void EnableShadow()
+    {
+        if (_shadowGameObject != null)
+            _shadowGameObject.SetActive(true);
+    }
+    public void DisableShadow()
+    {
+        if (_shadowGameObject != null)
+            _shadowGameObject.SetActive(false);
     }
 
     public void DisableTrailRenderer()

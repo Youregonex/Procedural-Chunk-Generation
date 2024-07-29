@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bda9de9e5f224f3b892e62c52333715, type: 3}
+  m_Script: {fileID: 11500000, guid: 948cb857b5ce648259144d6a5aad96a1, type: 3}
   m_Name: Devil_Boss_JumpAttackData
   m_EditorClassIdentifier: 
   <Name>k__BackingField: JUMP_ATTACK
@@ -18,3 +18,5 @@ MonoBehaviour:
   <MaxTimeInAir>k__BackingField: 5
   <ImpactDamage>k__BackingField: 10
   <ImpactRange>k__BackingField: 3
+  <ProximityThreshold>k__BackingField: 1
+  <AirborneSpeed>k__BackingField: 5

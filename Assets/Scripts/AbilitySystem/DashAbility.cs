@@ -29,11 +29,7 @@ public class DashAbility : Ability
 
     public override void StartCast(Vector2 targetPosition)
     {
-        if (OnCooldown || IsCasting)
-            return;
-
-        PutOnCooldown();
-        IsCasting = true;
+        base.StartCast(targetPosition);
 
         _currentDashTime = _maxDashTime;
 
@@ -57,21 +53,21 @@ public class DashAbility : Ability
 
     public override void StopCast()
     {
+        base.StopCast();
+
         AgentMovement agentMovement = Caster.GetAgentComponent<AgentMovement>();
         agentMovement.EnableComponent();
 
         Caster.GetComponent<Rigidbody2D>().velocity = Vector2.zero; 
-        CastCompleted();
 
         _agentVisual.DisableTrailRenderer();
         _currentDashTime = _maxDashTime;
-        IsCasting = false;
     }
 
     protected void InitializeComponents()
     {
         _casterMovementModule = Caster.GetAgentComponent<AgentMovement>();
-        _casterRigidBody = Caster.GetAgentRigidBody2D();
+        _casterRigidBody = Caster.GetAgentRigidBody();
         _agentVisual = Caster.GetAgentComponent<AgentVisual>();
     }
 }

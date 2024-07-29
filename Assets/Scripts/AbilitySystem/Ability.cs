@@ -7,16 +7,17 @@ public abstract class Ability
     public event Action OnCastCompleted;
 
     public AgentCoreBase Caster { get; protected set; }
-    protected AgentAnimation _casterAnimator;
     public string Name { get; protected set; }
     public EAbilityType AbilityType { get; protected set; }
-    public float Cooldown { get; protected set; } = 0;
+    public float Cooldown { get; protected set; }
 
     public float CurrentCooldown { get; protected set; }
     public bool IsCasting { get; protected set; }
 
+    protected AgentAnimation _casterAnimator;
 
     public bool OnCooldown => CurrentCooldown > 0;
+
 
     public Ability(AgentCoreBase caster, AgentAnimation casterAnimator, string name, EAbilityType abilityType, float cooldown)
     {
@@ -30,8 +31,21 @@ public abstract class Ability
         IsCasting = false;
     }
 
-    public virtual void StartCast(Vector2 targetPosition) { }
-    public virtual void StopCast() { }
+
+    public virtual void StartCast(Vector2 targetPosition) // Call base method from child abilities for proper work
+    {
+        if (OnCooldown || IsCasting)
+            return;
+
+        PutOnCooldown();
+        IsCasting = true;
+    }
+
+    public virtual void StopCast() // Call base method from child abilities for proper work
+    {
+        IsCasting = false;
+        CastCompleted();
+    }
 
     public virtual void Tick() {}
 

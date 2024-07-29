@@ -1,4 +1,3 @@
-using UnityEngine;
 
 public class IsCastingCondition : Node
 {
@@ -11,6 +10,8 @@ public class IsCastingCondition : Node
 
     public override ENodeState Evaluate()
     {
-        return _agentAbilitySystem.IsCastingAbility ? ENodeState.Success : ENodeState.Failure;
+        _nodeState = _agentAbilitySystem.IsCastingAbility ? ENodeState.Success : ENodeState.Failure;
+
+        return _nodeState;
     }
 }

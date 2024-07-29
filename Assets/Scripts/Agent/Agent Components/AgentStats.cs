@@ -38,15 +38,15 @@ public class AgentStats : AgentMonobehaviourComponent
         foreach (Stat stat in _characterStatDictionary.Values)
         {
             Debug.Log($"Stat {stat.statName}\n" +
-          $"Max Value : {stat.maxValue}\n" +
-          $"Current Value : {stat.currentValue}\n" +
-          $"Min Value : {stat.minValue}\n");
+                      $"Max Value : {stat.maxValue}\n" +
+                      $"Current Value : {stat.currentValue}\n" +
+                      $"Min Value : {stat.minValue}\n");
         }
     }
 
     public Dictionary<EStats, Stat> GetCharacterStatDictionary() => _characterStatDictionary;
 
-    public bool TryModifyStatCurrentValue(EStats statToModify, float newStatValue)
+    public bool ModifyStatCurrentValue(EStats statToModify, float newStatValue)
     {
         if (!_characterStatDictionary.ContainsKey(statToModify))
         {
@@ -60,9 +60,9 @@ public class AgentStats : AgentMonobehaviourComponent
         float oldStatValue = stat.currentValue;
 
         _characterStatDictionary[statToModify].currentValue = Mathf.Clamp(
-                                                                        newStatValue,
-                                                                        stat.minValue,
-                                                                        stat.maxValue);
+                                                                          newStatValue,
+                                                                          stat.minValue,
+                                                                          stat.maxValue);
 
         OnStatChanged?.Invoke(this, new OnStatChangedEventArgs
         {

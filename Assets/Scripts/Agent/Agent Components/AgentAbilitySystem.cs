@@ -11,7 +11,7 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
     [SerializeField] protected Ability _currentAbility;
     [SerializeField] protected Dictionary<string, Ability> _abilityDictionary = new Dictionary<string, Ability>();
 
-    public Dictionary<string, Ability> AbilityDictionary => _abilityDictionary;
+    public Dictionary<string, Ability> AbilityDictionary => _abilityDictionary; // All ability names in upper-case
     public bool IsCastingAbility => _currentAbility != null;
 
     protected virtual void Awake()
@@ -27,6 +27,9 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
 
     protected virtual void Update()
     {
+        if (_currentAbility != null)
+            Debug.Log(_currentAbility.Name);
+
         if (_currentAbility != null)
             _currentAbility.Tick();
 
@@ -54,14 +57,26 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
 
     public void CastAbility(Ability ability, Vector2 targetPosition)
     {
-        _currentAbility = ability;
-        _currentAbility.OnCastCompleted += Ability_OnCastCompleted;
-        _currentAbility.StartCast(targetPosition);
+        StartCast(ability.Name.ToUpper(), targetPosition);
     }
 
     public void CastAbility(string abilityName, Vector2 targetPosition)
     {
-        _currentAbility = _abilityDictionary[abilityName];
+        StartCast(abilityName, targetPosition);
+    }
+
+    private void StartCast(string abilityName, Vector2 targetPosition)
+    {
+        if (!_abilityDictionary.ContainsKey(abilityName.ToUpper()))
+        {
+            Debug.LogError($"{gameObject.name} does not have {abilityName} ability!");
+            return;
+        }
+
+        if (_abilityDictionary[abilityName.ToUpper()].OnCooldown || IsCastingAbility)
+            return;
+
+        _currentAbility = _abilityDictionary[abilityName.ToUpper()];
         _currentAbility.OnCastCompleted += Ability_OnCastCompleted;
         _currentAbility.StartCast(targetPosition);
     }

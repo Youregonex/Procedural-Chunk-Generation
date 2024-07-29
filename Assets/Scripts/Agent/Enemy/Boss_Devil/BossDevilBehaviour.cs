@@ -22,17 +22,18 @@ public class BossDevilBehaviour : BaseEnemyBehaviour
         IdleNode idleNode = new IdleNode(this, TimeToStartRoamMin, TimeToStartRoamMax, RoamPositionOffsetMax);
         Sequence spawnSequence = new Sequence(new List<Node> { agentSpawnedConditionInverter, idleNode });
 
-        TargetInAttackRangeCondition targetInAttackRangeCondition = new TargetInAttackRangeCondition(this, AttackRangeMax);
+        TargetInRangeCondition targetInAttackRangeCondition = new TargetInRangeCondition(this, AttackRangeMax);
         AnyAbilityOffCooldownCondition anyAbilityOffCooldownCondition = new AnyAbilityOffCooldownCondition(_agentAbilitySystem);
-        CastAbilityNode castAbilityNode = new CastAbilityNode(_agentAbilitySystem);
-        Sequence attackSequence = new Sequence(new List<Node> { targetInAttackRangeCondition, anyAbilityOffCooldownCondition, castAbilityNode });
+        CastFirstOffCooldownAbilityNode castFirstOffCooldownAbilityNode = new CastFirstOffCooldownAbilityNode(_agentAbilitySystem);
+        Sequence attackSequence = new Sequence(new List<Node> { targetInAttackRangeCondition, anyAbilityOffCooldownCondition, castFirstOffCooldownAbilityNode });
 
         TargetInChaseRangeCondition targetInChaseRangeCondition = new TargetInChaseRangeCondition(this, ChaseRange);
         ChaseNode chaseNode = new ChaseNode(this, AttackRangeMin, AttackRangeMax);
         Sequence chaseSequence = new Sequence(new List<Node> { targetInChaseRangeCondition, chaseNode });
 
+        IsCastingCondition isCastingCondition = new IsCastingCondition(_agentAbilitySystem);
         TargetExistsCondition targetExistsCondition = new TargetExistsCondition(this);
-        Selector combatSelector = new Selector(new List<Node> { attackSequence, chaseSequence });
+        Selector combatSelector = new Selector(new List<Node> { isCastingCondition, attackSequence, chaseSequence });
         Sequence combatSequence = new Sequence(new List<Node> { targetExistsCondition, combatSelector });
 
         RoamPositionExistsCondition roamPositionExistsCondition = new RoamPositionExistsCondition(this);
@@ -41,7 +42,6 @@ public class BossDevilBehaviour : BaseEnemyBehaviour
         MoveToRoamPositionNode moveToRoamPositionNode = new MoveToRoamPositionNode(this);
         Sequence roamSequence = new Sequence(new List<Node> { roamPositionExistsCondition, roamTimerExpiredConditionInverter, moveToRoamPositionNode });
 
-        IsCastingCondition isCastingCondition = new IsCastingCondition(_agentAbilitySystem);
         Inverter isCastingConditionInverter = new Inverter(isCastingCondition);
         Sequence idleSequence = new Sequence(new List<Node> { isCastingConditionInverter, idleNode });
 

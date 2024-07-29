@@ -9,10 +9,16 @@ public class PlayerInput : AgentInput
     public event Action OnInventoryKeyPressed;
     public event Action OnInteractKeyPressed;
 
+    private Camera _mainCamera;
+
     private void Awake()
     {
-        _playerInputActions = new PlayerInputActions();
+        if(_playerInputActions == null)
+            _playerInputActions = new PlayerInputActions();
+
         _playerInputActions.Player.Enable();
+
+        _mainCamera = Camera.main;
     }
 
     private void Start()
@@ -20,11 +26,6 @@ public class PlayerInput : AgentInput
         _playerInputActions.Player.Attack.performed += PlayerInputActions_Attack_performed;
         _playerInputActions.Player.Inventory.performed += PlayerInputActions_Inventory_performed;
         _playerInputActions.Player.Interact.performed += PlayerInputActions_Interact_performed;
-    }
-
-    private void PlayerInputActions_Interact_performed(InputAction.CallbackContext obj)
-    {
-        OnInteractKeyPressed?.Invoke();
     }
 
     public override Vector2 GetMovementVectorNormalized()
@@ -35,7 +36,7 @@ public class PlayerInput : AgentInput
 
     public Vector2 GetMouseScreenPosition() => Mouse.current.position.ReadValue();
     public Vector2 GetMouseScreenPositionNormalized() => GetMouseScreenPosition().normalized;
-    public override Vector2 GetAimPosition() => Camera.main.ScreenToWorldPoint(GetMouseScreenPosition());
+    public override Vector2 GetAimPosition() => _mainCamera.ScreenToWorldPoint(GetMouseScreenPosition());
 
     private void PlayerInputActions_Inventory_performed(InputAction.CallbackContext obj)
     {
@@ -45,6 +46,11 @@ public class PlayerInput : AgentInput
     private void PlayerInputActions_Attack_performed(InputAction.CallbackContext obj)
     {
         Invoke_OnAgentAttackTriggered();
+    }
+
+    private void PlayerInputActions_Interact_performed(InputAction.CallbackContext obj)
+    {
+        OnInteractKeyPressed?.Invoke();
     }
 
     private void OnDestroy()

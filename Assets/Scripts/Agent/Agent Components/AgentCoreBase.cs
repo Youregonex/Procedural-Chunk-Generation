@@ -20,7 +20,7 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
     [SerializeField] protected AgentAbilitySystem _agentAbilitySystem;
 
     [Header("Agent Colliders")]
-    [SerializeField] private CapsuleCollider2D _collisionCollider;
+    [SerializeField] private CapsuleCollider2D _agentCollider;
 
     [Header("Agent RigidBody2D")]
     [SerializeField] private Rigidbody2D _rigidBody2D;
@@ -44,10 +44,9 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
         _healthSystem.OnDeath -= HealthSystem_OnDeath;
     }
 
-    public Rigidbody2D GetAgentRigidBody2D() => _rigidBody2D;
-    public CapsuleCollider2D GetAgentCollider() => _collisionCollider;
+    public Rigidbody2D GetAgentRigidBody() => _rigidBody2D;
+    public CapsuleCollider2D GetAgentCollider() => _agentCollider;
     public EFactions GetAgentFaction() => _faction;
-    public AgentStats GetAgentStats() => _agentStats;
 
     public T GetAgentComponent<T>() where T : AgentMonobehaviourComponent
     {
@@ -56,12 +55,12 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
 
     public void DisableCollider()
     {
-        _collisionCollider.enabled = false;
+        _agentCollider.enabled = false;
     }
 
     public void EnableCollider()
     {
-        _collisionCollider.enabled = true;
+        _agentCollider.enabled = true;
     }
 
 
@@ -102,6 +101,8 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
 
     protected virtual void HealthSystem_OnDeath(AgentHealthSystem agentHealthSystem)
     {
+        _agentCollider.enabled = false;
+
         foreach(AgentMonobehaviourComponent agentComponent in _disableOnDeathComponents)
         {
             agentComponent.DisableComponent();

@@ -70,6 +70,8 @@ public class AgentHealthSystem : AgentMonobehaviourComponent
 
     protected virtual void Die()
     {
+        CurrentHealth = 0f;
+
         _isDead = true;
         _hitbox.enabled = false;
 

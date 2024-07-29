@@ -125,6 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 0
+  _shadowGameObject: {fileID: 0}
   _trailRenderer: {fileID: 0}
   _agentCore: {fileID: 0}
   _agentInput: {fileID: 0}
@@ -610,7 +611,6 @@ MonoBehaviour:
   _agentInput: {fileID: 2651345362178689480}
   _agentAnimation: {fileID: 4983421441216623548}
   _agentCore: {fileID: 0}
-  _collisionCollider: {fileID: 0}
   _agentStats: {fileID: 0}
   _rigidBody2D: {fileID: 0}
   _canMove: 1
@@ -660,7 +660,7 @@ MonoBehaviour:
   _agentStats: {fileID: 6574197401010401464}
   _agentItemHoldPoint: {fileID: 3400551932913166067}
   _agentAbilitySystem: {fileID: 4976930262205395369}
-  _collisionCollider: {fileID: 1163449940808159671}
+  _agentCollider: {fileID: 1163449940808159671}
   _rigidBody2D: {fileID: 8171662324015916539}
   _agentComponents: []
   _disableOnDeathComponents: []
@@ -693,6 +693,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 0
+  <MaxHealth>k__BackingField: 0
+  <CurrentHealth>k__BackingField: 0
   _destructionDelay: 2
   _isDead: 0
   _agentCore: {fileID: 0}
@@ -747,7 +749,7 @@ MonoBehaviour:
   _agentAttackModule: {fileID: 0}
   _enemyCore: {fileID: 0}
   _showGizmos: 0
-  _demonAbilitySystem: {fileID: 0}
+  _agentAbilitySystem: {fileID: 0}
 --- !u!114 &5856640250284299649
 MonoBehaviour:
   m_ObjectHideFlags: 0

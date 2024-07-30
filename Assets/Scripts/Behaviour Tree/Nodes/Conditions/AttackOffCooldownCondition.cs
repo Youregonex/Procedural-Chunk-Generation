@@ -1,17 +1,21 @@
 
-public class AttackOffCooldownCondition : Node
+namespace Youregone.BehaviourTrees
 {
-    public AttackOffCooldownCondition(BaseEnemyBehaviour enemyBehaviour, int nodePriority = 0) : base(nodePriority)
+    public class AttackOffCooldownCondition : Node
     {
-        _enemyBehaviour = enemyBehaviour;
+        public AttackOffCooldownCondition(BaseEnemyBehaviour enemyBehaviour, int nodePriority = 0) : base(nodePriority)
+        {
+            _enemyBehaviour = enemyBehaviour;
+        }
+
+        private BaseEnemyBehaviour _enemyBehaviour;
+
+        public override ENodeState Evaluate()
+        {
+            _nodeState = _enemyBehaviour.GetAttackCooldown() <= 0 ? ENodeState.Success : ENodeState.Failure;
+
+            return _nodeState;
+        }
     }
 
-    private BaseEnemyBehaviour _enemyBehaviour;
-
-    public override ENodeState Evaluate()
-    {
-        _nodeState = _enemyBehaviour.GetAttackCooldown() <= 0 ? ENodeState.Success : ENodeState.Failure;
-
-        return _nodeState;
-    }
 }

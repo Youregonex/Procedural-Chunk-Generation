@@ -1,17 +1,21 @@
 
-public class IsCastingCondition : Node
+namespace Youregone.BehaviourTrees
 {
-    private AgentAbilitySystem _agentAbilitySystem;
-
-    public IsCastingCondition(AgentAbilitySystem agentAbilitySystem, int nodePriority = 0) : base(nodePriority)
+    public class IsCastingCondition : Node
     {
-        _agentAbilitySystem = agentAbilitySystem;
+        private AgentAbilitySystem _agentAbilitySystem;
+
+        public IsCastingCondition(AgentAbilitySystem agentAbilitySystem, int nodePriority = 0) : base(nodePriority)
+        {
+            _agentAbilitySystem = agentAbilitySystem;
+        }
+
+        public override ENodeState Evaluate()
+        {
+            _nodeState = _agentAbilitySystem.IsCastingAbility ? ENodeState.Success : ENodeState.Failure;
+
+            return _nodeState;
+        }
     }
 
-    public override ENodeState Evaluate()
-    {
-        _nodeState = _agentAbilitySystem.IsCastingAbility ? ENodeState.Success : ENodeState.Failure;
-
-        return _nodeState;
-    }
 }

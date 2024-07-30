@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using Youregone.BehaviourTrees;
 
 public class BaseEnemyBehaviour : AgentMonobehaviourComponent
 {
@@ -114,7 +115,7 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
         MoveToRoamPositionNode moveToRoamPositionNode = new MoveToRoamPositionNode(this);
         Sequence roamSequence = new Sequence(new List<Node> { roamPositionExistsCondition, roamTimerExpiredConditionInverter, moveToRoamPositionNode });
 
-        IdleNode idleNode = new IdleNode(this, TimeToStartRoamMin, TimeToStartRoamMax, RoamPositionOffsetMax);
+        IdleToRoamNode idleToRoamNode = new IdleToRoamNode(this, TimeToStartRoamMin, TimeToStartRoamMax, RoamPositionOffsetMax);
 
         TargetInRangeCondition targetInAttackRangeCondition = new TargetInRangeCondition(this, AttackRangeMax);
         AttackOffCooldownCondition attackOffCooldownCondition = new AttackOffCooldownCondition(this);
@@ -131,9 +132,9 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
 
         AgentSpawnedCondition agentSpawnedCondition = new AgentSpawnedCondition(this);
         Inverter agentSpawnedInverter = new Inverter(agentSpawnedCondition);
-        Sequence enemySpawnSequence = new Sequence(new List<Node> { agentSpawnedInverter, idleNode });
+        Sequence enemySpawnSequence = new Sequence(new List<Node> { agentSpawnedInverter, idleToRoamNode });
 
-        _behaviourTree = new Selector(new List<Node> { enemySpawnSequence, combatSequence, roamSequence, idleNode });
+        _behaviourTree = new Selector(new List<Node> { enemySpawnSequence, combatSequence, roamSequence, idleToRoamNode });
     }
 
     protected virtual void InitializeAgentTargetDetectionZone()

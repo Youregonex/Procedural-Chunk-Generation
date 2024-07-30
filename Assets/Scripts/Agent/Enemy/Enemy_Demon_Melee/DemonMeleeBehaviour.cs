@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Youregone.BehaviourTrees;
 
 public class DemonMeleeBehaviour : BaseEnemyBehaviour
 {
@@ -22,7 +23,7 @@ public class DemonMeleeBehaviour : BaseEnemyBehaviour
         MoveToRoamPositionNode moveToRoamPositionNode = new MoveToRoamPositionNode(this);
         Sequence roamSequence = new Sequence(new List<Node> { roamPositionExistsCondition, roamTimerExpiredConditionInverter, moveToRoamPositionNode });
 
-        IdleNode idleNode = new IdleNode(this, TimeToStartRoamMin, TimeToStartRoamMax, RoamPositionOffsetMax);
+        IdleToRoamNode idleToRoamNode = new IdleToRoamNode(this, TimeToStartRoamMin, TimeToStartRoamMax, RoamPositionOffsetMax);
 
         TargetInRangeCondition targetInAttackRangeCondition = new TargetInRangeCondition(this, AttackRangeMax);
         AttackOffCooldownCondition attackOffCooldownCondition = new AttackOffCooldownCondition(this);
@@ -44,9 +45,9 @@ public class DemonMeleeBehaviour : BaseEnemyBehaviour
 
         AgentSpawnedCondition agentSpawnedCondition = new AgentSpawnedCondition(this);
         Inverter agentSpawnedInverter = new Inverter(agentSpawnedCondition);
-        Sequence enemySpawnSequence = new Sequence(new List<Node> { agentSpawnedInverter, idleNode });
+        Sequence enemySpawnSequence = new Sequence(new List<Node> { agentSpawnedInverter, idleToRoamNode });
 
-        Selector treeRoot = new Selector(new List<Node> { enemySpawnSequence, combatSequence, roamSequence, idleNode });
+        Selector treeRoot = new Selector(new List<Node> { enemySpawnSequence, combatSequence, roamSequence, idleToRoamNode });
 
         _behaviourTree = treeRoot;
     }

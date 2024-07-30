@@ -1,31 +1,35 @@
 using UnityEngine;
 
-public class RoamTimerExpiredCondition : Node
+namespace Youregone.BehaviourTrees
 {
-    public RoamTimerExpiredCondition(BaseEnemyBehaviour enemyBehaviour, float roamTimer, int nodePriority = 0) : base(nodePriority)
+    public class RoamTimerExpiredCondition : Node
     {
-        _enemyBehaviour = enemyBehaviour;
-        _timerMax = roamTimer;
-    }
-
-    private BaseEnemyBehaviour _enemyBehaviour;
-    private float _timerMax;
-    private float _timerCurrent = 0;
-
-    public override ENodeState Evaluate()
-    {
-        if (_timerCurrent >= _timerMax)
+        public RoamTimerExpiredCondition(BaseEnemyBehaviour enemyBehaviour, float roamTimer, int nodePriority = 0) : base(nodePriority)
         {
-            _timerCurrent = 0;
-            _enemyBehaviour.SetRoamPosition(Vector2.zero);
-            _nodeState = ENodeState.Success;
-        }
-        else
-        {
-            _timerCurrent += Time.deltaTime;
-            _nodeState = ENodeState.Failure;
+            _enemyBehaviour = enemyBehaviour;
+            _timerMax = roamTimer;
         }
 
-        return _nodeState;
+        private BaseEnemyBehaviour _enemyBehaviour;
+        private float _timerMax;
+        private float _timerCurrent = 0;
+
+        public override ENodeState Evaluate()
+        {
+            if (_timerCurrent >= _timerMax)
+            {
+                _timerCurrent = 0;
+                _enemyBehaviour.SetRoamPosition(Vector2.zero);
+                _nodeState = ENodeState.Success;
+            }
+            else
+            {
+                _timerCurrent += Time.deltaTime;
+                _nodeState = ENodeState.Failure;
+            }
+
+            return _nodeState;
+        }
     }
+
 }

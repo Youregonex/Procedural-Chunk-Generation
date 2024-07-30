@@ -1,37 +1,40 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class PrioritySelector : Selector
+namespace Youregone.BehaviourTrees
 {
-    public PrioritySelector(List<Node> childNodes, int nodePriority = 0) : base(childNodes, nodePriority) { }
-
-    public override ENodeState Evaluate()
+    public class PrioritySelector : Selector
     {
-        _childNodes = _childNodes.OrderByDescending(node => node.NodePriority).ToList();
+        public PrioritySelector(List<Node> childNodes, int nodePriority = 0) : base(childNodes, nodePriority) { }
 
-        foreach (Node node in _childNodes)
+        public override ENodeState Evaluate()
         {
-            switch (node.Evaluate())
+            _childNodes = _childNodes.OrderByDescending(node => node.NodePriority).ToList();
+
+            foreach (Node node in _childNodes)
             {
-                case ENodeState.Running:
+                switch (node.Evaluate())
+                {
+                    case ENodeState.Running:
 
-                    _nodeState = ENodeState.Running;
-                    return _nodeState;
+                        _nodeState = ENodeState.Running;
+                        return _nodeState;
 
-                case ENodeState.Success:
+                    case ENodeState.Success:
 
-                    _nodeState = ENodeState.Success;
-                    return _nodeState;
+                        _nodeState = ENodeState.Success;
+                        return _nodeState;
 
-                case ENodeState.Failure:
-                    break;
+                    case ENodeState.Failure:
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
+                }
             }
-        }
 
-        _nodeState = ENodeState.Failure;
-        return _nodeState;
+            _nodeState = ENodeState.Failure;
+            return _nodeState;
+        }
     }
 }

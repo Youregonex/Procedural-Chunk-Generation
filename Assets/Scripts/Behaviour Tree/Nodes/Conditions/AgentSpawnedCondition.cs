@@ -1,16 +1,18 @@
-using UnityEngine;
 
-public class AgentSpawnedCondition : Node
+namespace Youregone.BehaviourTrees
 {
-    public AgentSpawnedCondition(BaseEnemyBehaviour enemyBehaviour, int nodePriority = 0) : base(nodePriority)
+    public class AgentSpawnedCondition : Node
     {
-        _enemyBehaviour = enemyBehaviour;
-    }
+        public AgentSpawnedCondition(BaseEnemyBehaviour enemyBehaviour, int nodePriority = 0) : base(nodePriority)
+        {
+            _enemyBehaviour = enemyBehaviour;
+        }
 
-    private BaseEnemyBehaviour _enemyBehaviour;
+        private BaseEnemyBehaviour _enemyBehaviour;
 
-    public override ENodeState Evaluate()
-    {
-        return _enemyBehaviour.IsSpawned ? ENodeState.Success : ENodeState.Failure;
+        public override ENodeState Evaluate()
+        {
+            return _enemyBehaviour.IsSpawned ? ENodeState.Success : ENodeState.Failure;
+        }
     }
 }

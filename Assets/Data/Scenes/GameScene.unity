@@ -989,6 +989,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Devil_Boss
       objectReference: {fileID: 0}
+    - target: {fileID: 618886201950957018, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4758298892790681363, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.7217546
@@ -1604,6 +1608,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 272936281}
   m_CullTransparentMesh: 1
+--- !u!1 &280467313
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 280467314}
+  - component: {fileID: 280467315}
+  m_Layer: 0
+  m_Name: WorldTextDisplay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &280467314
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 280467313}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1547803817}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &280467315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 280467313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7cc618e280da40b2882d2f5cc1fca79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damagePopupPrefab: {fileID: 8371838374113737073, guid: cf50ca1a5755042fcb230199630723f1, type: 3}
 --- !u!4 &312105468 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7751994548152071265, guid: 140dd409c796e43b6829be8ac6c9ca6c, type: 3}
@@ -6152,7 +6201,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 35
+  m_Radius: 100
 --- !u!114 &1475274999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6551,6 +6600,7 @@ Transform:
   m_Children:
   - {fileID: 906993707}
   - {fileID: 1415620399}
+  - {fileID: 280467314}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1548043211 stripped

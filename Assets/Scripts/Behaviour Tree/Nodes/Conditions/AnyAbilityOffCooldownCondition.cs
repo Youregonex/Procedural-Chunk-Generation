@@ -1,23 +1,26 @@
 using System.Collections.Generic;
-using UnityEngine;
 
-public class AnyAbilityOffCooldownCondition : Node
+namespace Youregone.BehaviourTrees
 {
-    private AgentAbilitySystem _agentAbilitySystem;
-
-    public AnyAbilityOffCooldownCondition(AgentAbilitySystem agentAbilitySystem, int nodePriority = 0) : base(nodePriority)
+    public class AnyAbilityOffCooldownCondition : Node
     {
-        _agentAbilitySystem = agentAbilitySystem;
-    }
+        private AgentAbilitySystem _agentAbilitySystem;
 
-    public override ENodeState Evaluate()
-    {
-        foreach(KeyValuePair<string, Ability> keyValuePair in _agentAbilitySystem.AbilityDictionary)
+        public AnyAbilityOffCooldownCondition(AgentAbilitySystem agentAbilitySystem, int nodePriority = 0) : base(nodePriority)
         {
-            if (!keyValuePair.Value.OnCooldown)
-                return ENodeState.Success;
+            _agentAbilitySystem = agentAbilitySystem;
         }
 
-        return ENodeState.Failure;
+        public override ENodeState Evaluate()
+        {
+            foreach (KeyValuePair<string, Ability> keyValuePair in _agentAbilitySystem.AbilityDictionary)
+            {
+                if (!keyValuePair.Value.OnCooldown)
+                    return ENodeState.Success;
+            }
+
+            return ENodeState.Failure;
+        }
     }
+
 }

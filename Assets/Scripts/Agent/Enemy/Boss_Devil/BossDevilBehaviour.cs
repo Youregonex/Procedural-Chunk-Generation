@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Youregone.BehaviourTrees;
 
 public class BossDevilBehaviour : BaseEnemyBehaviour
 {
@@ -19,8 +20,8 @@ public class BossDevilBehaviour : BaseEnemyBehaviour
     {
         AgentSpawnedCondition agentSpawnedCondition = new AgentSpawnedCondition(this);
         Inverter agentSpawnedConditionInverter = new Inverter(agentSpawnedCondition);
-        IdleNode idleNode = new IdleNode(this, TimeToStartRoamMin, TimeToStartRoamMax, RoamPositionOffsetMax);
-        Sequence spawnSequence = new Sequence(new List<Node> { agentSpawnedConditionInverter, idleNode });
+        IdleToRoamNode idleToRoamNode = new IdleToRoamNode(this, TimeToStartRoamMin, TimeToStartRoamMax, RoamPositionOffsetMax);
+        Sequence spawnSequence = new Sequence(new List<Node> { agentSpawnedConditionInverter, idleToRoamNode });
 
         TargetInRangeCondition targetInAttackRangeCondition = new TargetInRangeCondition(this, AttackRangeMax);
         AnyAbilityOffCooldownCondition anyAbilityOffCooldownCondition = new AnyAbilityOffCooldownCondition(_agentAbilitySystem);
@@ -43,7 +44,7 @@ public class BossDevilBehaviour : BaseEnemyBehaviour
         Sequence roamSequence = new Sequence(new List<Node> { roamPositionExistsCondition, roamTimerExpiredConditionInverter, moveToRoamPositionNode });
 
         Inverter isCastingConditionInverter = new Inverter(isCastingCondition);
-        Sequence idleSequence = new Sequence(new List<Node> { isCastingConditionInverter, idleNode });
+        Sequence idleSequence = new Sequence(new List<Node> { isCastingConditionInverter, idleToRoamNode });
 
         _behaviourTree = new Selector(new List<Node> {spawnSequence, combatSequence, roamSequence, idleSequence });
     }

@@ -1,39 +1,41 @@
-using UnityEngine;
 
-public class Inverter : Node
+namespace Youregone.BehaviourTrees
 {
-    public Inverter(Node node, int nodePriority = 0) : base(nodePriority)
+    public class Inverter : Node
     {
-        _node = node;
-    }
-
-    protected Node _node;
-
-    public override ENodeState Evaluate()
-    {
-        switch(_node.Evaluate())
+        public Inverter(Node node, int nodePriority = 0) : base(nodePriority)
         {
-            case ENodeState.Running:
-
-                _nodeState = ENodeState.Running;
-
-                break;
-
-            case ENodeState.Success:
-
-                _nodeState = ENodeState.Failure;
-
-                break;
-
-            case ENodeState.Failure:
-
-                _nodeState = ENodeState.Success;
-
-                break;
-            default:
-                break;
+            _node = node;
         }
 
-        return _nodeState;
+        protected Node _node;
+
+        public override ENodeState Evaluate()
+        {
+            switch (_node.Evaluate())
+            {
+                case ENodeState.Running:
+
+                    _nodeState = ENodeState.Running;
+
+                    break;
+
+                case ENodeState.Success:
+
+                    _nodeState = ENodeState.Failure;
+
+                    break;
+
+                case ENodeState.Failure:
+
+                    _nodeState = ENodeState.Success;
+
+                    break;
+                default:
+                    break;
+            }
+
+            return _nodeState;
+        }
     }
 }

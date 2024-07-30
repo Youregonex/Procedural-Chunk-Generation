@@ -1,26 +1,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CastFirstOffCooldownAbilityNode : Node
+namespace Youregone.BehaviourTrees
 {
-    private AgentAbilitySystem _agentAbilitySystem;
-
-    public CastFirstOffCooldownAbilityNode(AgentAbilitySystem agentAbilitySystem, int nodePriority = 0) : base(nodePriority)
+    public class CastFirstOffCooldownAbilityNode : Node
     {
-        _agentAbilitySystem = agentAbilitySystem;
-    }
+        private AgentAbilitySystem _agentAbilitySystem;
 
-    public override ENodeState Evaluate()
-    {
-        foreach (KeyValuePair<string, Ability> keyValuePair in _agentAbilitySystem.AbilityDictionary)
+        public CastFirstOffCooldownAbilityNode(AgentAbilitySystem agentAbilitySystem, int nodePriority = 0) : base(nodePriority)
         {
-            if (!keyValuePair.Value.OnCooldown)
-            {
-                _agentAbilitySystem.CastAbility(keyValuePair.Value.Name.ToUpper(), Vector2.zero);
-                break;
-            }
+            _agentAbilitySystem = agentAbilitySystem;
         }
 
-        return ENodeState.Running;
+        public override ENodeState Evaluate()
+        {
+            foreach (KeyValuePair<string, Ability> keyValuePair in _agentAbilitySystem.AbilityDictionary)
+            {
+                if (!keyValuePair.Value.OnCooldown)
+                {
+                    _agentAbilitySystem.CastAbility(keyValuePair.Value.Name.ToUpper(), Vector2.zero);
+                    break;
+                }
+            }
+
+            return ENodeState.Running;
+        }
     }
+
 }

@@ -1,22 +1,26 @@
 using UnityEngine;
 
-public class TargetInRangeCondition : Node
+namespace Youregone.BehaviourTrees
 {
-    private BaseEnemyBehaviour _enemyBehaviour;
-    private float _range;
-
-    public TargetInRangeCondition(BaseEnemyBehaviour enemyBehaviour, float range, int nodePriority = 0) : base(nodePriority)
+    public class TargetInRangeCondition : Node
     {
-        _enemyBehaviour = enemyBehaviour;
-        _range = range;
+        private BaseEnemyBehaviour _enemyBehaviour;
+        private float _range;
+
+        public TargetInRangeCondition(BaseEnemyBehaviour enemyBehaviour, float range, int nodePriority = 0) : base(nodePriority)
+        {
+            _enemyBehaviour = enemyBehaviour;
+            _range = range;
+        }
+
+        public override ENodeState Evaluate()
+        {
+            _nodeState = Vector2.Distance(_enemyBehaviour.transform.position,
+                                          _enemyBehaviour.GetCurrentTargetTransform().position) <= _range ?
+                                                                                                           ENodeState.Success :
+                                                                                                           ENodeState.Failure;
+            return _nodeState;
+        }
     }
 
-    public override ENodeState Evaluate()
-    {
-        _nodeState = Vector2.Distance(_enemyBehaviour.transform.position,
-                                      _enemyBehaviour.GetCurrentTargetTransform().position) <= _range ?
-                                                                                                       ENodeState.Success :
-                                                                                                       ENodeState.Failure;
-        return _nodeState;
-    }
 }

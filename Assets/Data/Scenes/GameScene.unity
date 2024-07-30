@@ -981,6 +981,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 98385478952016499, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
+      propertyPath: <DisableOnDeath>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 618886201950957018, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
       propertyPath: m_Name
       value: Devil_Boss
@@ -8927,6 +8931,7 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 1854188129}
+  - {fileID: 183144701}
   - {fileID: 1135924300}
   - {fileID: 2103127306}
   - {fileID: 1547803817}
@@ -8935,4 +8940,3 @@ SceneRoots:
   - {fileID: 2069161263}
   - {fileID: 1697300113}
   - {fileID: 106279577}
-  - {fileID: 183144701}

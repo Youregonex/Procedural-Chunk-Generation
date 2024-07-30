@@ -42,6 +42,8 @@ public class AgentVisual : AgentMonobehaviourComponent
             _shadowGameObject.SetActive(false);
     }
 
+    public GameObject GetShadowGameObject() => _shadowGameObject;
+
     public void DisableTrailRenderer()
     {
         if(_trailRenderer != null)

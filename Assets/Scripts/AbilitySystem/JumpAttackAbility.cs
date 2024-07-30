@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class JumpAttackAbility : Ability
 {
@@ -17,12 +18,16 @@ public class JumpAttackAbility : Ability
     private AgentVisual _agentVisual;
     private AgentStats _agentStats;
 
+    private Transform _shadowTransform;
     private bool _inAir;
     private bool _landing;
     private float _currentTimeInAir;
     private float _proximityThreshold;
     private float _baseSpeed;
 
+    private float _shadowGrowthTime = 1f;
+    private Vector2 _shadowZeroScale = Vector2.zero;
+    private Vector2 _shadowInitialScale;
 
     public JumpAttackAbility(AgentCoreBase caster,
                              AgentAnimation casterAnimator,
@@ -44,6 +49,8 @@ public class JumpAttackAbility : Ability
         _airborneSpeed = airborneSpeed;
 
         InitializeComponents();
+        _shadowTransform = _agentVisual.GetShadowGameObject().transform;
+        _shadowInitialScale = _shadowTransform.transform.localScale;
     }
 
     public override void StartCast(Vector2 targetPosition)
@@ -83,7 +90,6 @@ public class JumpAttackAbility : Ability
         {
             Caster.EnableCollider();
 
-            _agentVisual.DisableShadow();
             GameObject.Instantiate(AbilityParticles, Caster.transform.position, Quaternion.identity);
 
             Collider2D[] colliders = Physics2D.OverlapCircleAll(Caster.transform.position, _impactRange);
@@ -112,7 +118,6 @@ public class JumpAttackAbility : Ability
         }
 
         _inAir = true;
-        _agentVisual.EnableShadow();
         _casterMovementModule.EnableComponent();
 
     }
@@ -129,6 +134,11 @@ public class JumpAttackAbility : Ability
         _casterAnimator.OnAnimationEnded += CasterAnimator_OnAnimationEnded;
         _casterAnimator.PlayAbilityAnimation(JUMP_ATTACK_START);
 
+        _shadowTransform.localScale = Vector2.zero;
+        _agentVisual.EnableShadow();
+        float _shadowGrowthDelay = .7f;
+        _shadowTransform.DOScale(_shadowInitialScale, _shadowGrowthTime).SetDelay(_shadowGrowthDelay);
+
         _baseSpeed = _agentStats.GetCurrentStatValue(EStats.MoveSpeed);
         _agentStats.ModifyStatCurrentValue(EStats.MoveSpeed, _airborneSpeed);
     }
@@ -143,6 +153,11 @@ public class JumpAttackAbility : Ability
         _agentHitbox.EnableComponent();
 
         _casterAnimator.PlayAbilityAnimation(JUMP_ATTACK_LAND);
+
+        _shadowTransform.DOScale(_shadowZeroScale, _shadowGrowthTime).OnComplete(() =>
+        {
+            _agentVisual.DisableShadow();
+        });
 
         _agentStats.ModifyStatCurrentValue(EStats.MoveSpeed, _baseSpeed);
     }

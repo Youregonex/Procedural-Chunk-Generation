@@ -991,7 +991,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 618886201950957018, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4758298892790681363, guid: db880399fd1764f5aab77d9f03b2d169, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7760,6 +7760,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1818271212}
   m_CullTransparentMesh: 1
+--- !u!1 &1822093236
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1822093237}
+  m_Layer: 10
+  m_Name: DamagePopupPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1822093237
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822093236}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.53, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1854188129}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1854188128
 GameObject:
   m_ObjectHideFlags: 0
@@ -7802,6 +7833,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1822093237}
   - {fileID: 623641771}
   - {fileID: 1475274997}
   - {fileID: 831370745}
@@ -8025,6 +8057,7 @@ MonoBehaviour:
   <MaxHealth>k__BackingField: 0
   <CurrentHealth>k__BackingField: 0
   _destructionDelay: 0
+  _damagePopupPosition: {fileID: 1822093237}
   _isDead: 0
   _agentCore: {fileID: 0}
   _agentAnimation: {fileID: 0}

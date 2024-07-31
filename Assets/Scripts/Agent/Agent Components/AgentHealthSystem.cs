@@ -12,6 +12,7 @@ public class AgentHealthSystem : AgentMonobehaviourComponent
     [field: SerializeField] public float MaxHealth { get; protected set; }
     [field: SerializeField] public float CurrentHealth { get; protected set; }
     [SerializeField] protected float _destructionDelay = 0f;
+    [SerializeField] protected Transform _damagePopupPosition;
 
     [Header("Debug Fields")]
     [SerializeField] protected bool _isDead = false;
@@ -49,8 +50,12 @@ public class AgentHealthSystem : AgentMonobehaviourComponent
         if (_isDead)
             return;
 
+        int damageTaken = CalculateDamage(damageStruct);
+
         _agentAnimation.ManageGetHitAnimation();
-        CurrentHealth -= damageStruct.damageAmount;
+        CurrentHealth -= damageTaken;
+
+        WorldTextDisplay.Instance.DisplayDamagePopup(_damagePopupPosition.position, damageTaken);
 
         OnDamageTaken?.Invoke(damageStruct);
 
@@ -67,6 +72,13 @@ public class AgentHealthSystem : AgentMonobehaviourComponent
     }
 
     public IDamageable GetHitbox() => _hitbox;
+
+    protected int CalculateDamage(DamageStruct damageStruct)
+    {
+        int damageTaken = Mathf.RoundToInt(damageStruct.damageAmount);
+
+        return damageTaken;
+    }
 
     protected virtual void Die()
     {

@@ -28,9 +28,6 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
     protected virtual void Update()
     {
         if (_currentAbility != null)
-            Debug.Log(_currentAbility.Name);
-
-        if (_currentAbility != null)
             _currentAbility.Tick();
 
         foreach(KeyValuePair<string, Ability> keyValuePair in _abilityDictionary)

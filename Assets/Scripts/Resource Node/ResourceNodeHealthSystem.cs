@@ -11,7 +11,6 @@ public class ResourceNodeHealthSystem : MonoBehaviour
     [Header("Config")]
     [SerializeField] private int _maxTicks;
     [SerializeField] private float _destructionDelay = 0;
-    
 
     [Header("Debug Fields")]
     [SerializeField] private int _currentTicks;

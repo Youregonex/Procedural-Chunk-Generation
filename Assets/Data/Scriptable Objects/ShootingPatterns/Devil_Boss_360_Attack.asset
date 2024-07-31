@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a39763e33a8a64a64a75f4f89b2a74d6, type: 3}
+  m_Name: Devil_Boss_360_Attack
+  m_EditorClassIdentifier: 
+  <ProjectilePrefab>k__BackingField: {fileID: 212406522109142870, guid: 46dc3011f7eb5458da370fa8d902cb74, type: 3}
+  <ProjectileRange>k__BackingField: 10
+  <ProjectileDamage>k__BackingField: 5
+  <ProjectileSpeed>k__BackingField: 5
+  <StartingDistance>k__BackingField: 0.1
+  <BurstCount>k__BackingField: 5
+  <ProjectilesPerBurst>k__BackingField: 18
+  <TimeBetweenShots>k__BackingField: 0
+  <BurstAngleSpread>k__BackingField: 359
+  <TimeBetweenBursts>k__BackingField: 0.3
+  <RestTime>k__BackingField: 1
+  <UpdateTargetPositionEveryBurst>k__BackingField: 0

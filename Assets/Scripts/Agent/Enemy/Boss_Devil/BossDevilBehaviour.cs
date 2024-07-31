@@ -4,10 +4,23 @@ using Youregone.BehaviourTrees;
 
 public class BossDevilBehaviour : BaseEnemyBehaviour
 {
+    [Header("Config")]
+    [SerializeField] private ShootPatternDataSO _radial360AttackDataSO;
+
     [Header("Debug Fields")]
-    [SerializeField] private float _jumpAttackRange;
+    [SerializeField] private float _jumpAttackRangeGizmos;
     [SerializeField] private AgentAbilitySystem _agentAbilitySystem;
 
+    private BulletShooter _bulletShooter;
+
+    public BulletShooter BulletShooter => _bulletShooter;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        _bulletShooter = new BulletShooter(_radial360AttackDataSO, transform, this);
+    }
 
     protected override void Start()
     {
@@ -57,6 +70,6 @@ public class BossDevilBehaviour : BaseEnemyBehaviour
             return;
 
         Gizmos.color = Color.magenta;
-        Gizmos.DrawWireSphere(transform.position, _jumpAttackRange);
+        Gizmos.DrawWireSphere(transform.position, _jumpAttackRangeGizmos);
     }
 }

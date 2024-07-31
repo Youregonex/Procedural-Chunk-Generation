@@ -200,10 +200,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85e27de9d830e4a3db4f5c8195b1e3b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeResourceDrop: {fileID: 0}
   _appropriateTool: 2
   _nodeHealthSystem: {fileID: 0}
-  _nodeResourcesList: []
 --- !u!1 &3190450892598903097
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,7 +213,7 @@ GameObject:
   - component: {fileID: 5714087010949158888}
   - component: {fileID: 6342963243273576016}
   - component: {fileID: 2962631095274787808}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: BuildingHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}

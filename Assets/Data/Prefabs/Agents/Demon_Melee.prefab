@@ -521,7 +521,7 @@ GameObject:
   - component: {fileID: 9053081296606032166}
   - component: {fileID: 5856640250284299649}
   - component: {fileID: 4976930262205395369}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Demon_Melee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -537,7 +537,7 @@ Transform:
   m_GameObject: {fileID: 5381880085549425518}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.42, y: -8.18, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -824,7 +824,7 @@ GameObject:
   - component: {fileID: 7395233078690364011}
   - component: {fileID: 3042927841632450522}
   - component: {fileID: 1891845469068821423}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: AgentHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -16,11 +16,18 @@ public abstract class Ability
     public bool IsCasting { get; protected set; }
 
     protected AgentAnimation _casterAnimator;
+    protected Action<Transform> _callbackAction;
 
     public bool OnCooldown => CurrentCooldown > 0;
 
 
-    public Ability(AgentCoreBase caster, AgentAnimation casterAnimator, string name, EAbilityType abilityType, float cooldown, GameObject abilityParticles)
+    public Ability(AgentCoreBase caster,
+                   AgentAnimation casterAnimator,
+                   string name,
+                   EAbilityType abilityType,
+                   float cooldown,
+                   GameObject abilityParticles,
+                   Action<Transform> callbackAction)
     {
         Caster = caster;
         _casterAnimator = casterAnimator;
@@ -28,6 +35,7 @@ public abstract class Ability
         AbilityType = abilityType;
         Cooldown = cooldown;
         AbilityParticles = abilityParticles;
+        _callbackAction = callbackAction;
 
         CurrentCooldown = 0;
         IsCasting = false;

@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c6d8883938d48b8820c69f57e2622f, type: 3}
   m_Name: Demon_DashData
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: DASH
+  <AbilityName>k__BackingField: DASH
   <AbilityType>k__BackingField: 0
   <Cooldown>k__BackingField: 6
+  <AbilityParticles>k__BackingField: {fileID: 0}
+  <HasCallback>k__BackingField: 0
   <MaxDashTime>k__BackingField: 0.1
   <DashSpeed>k__BackingField: 20

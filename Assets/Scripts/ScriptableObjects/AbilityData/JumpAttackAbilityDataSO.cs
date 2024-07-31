@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 [CreateAssetMenu(menuName = "Abilities/JumpAttack Ability Data")]
 public class JumpAttackAbilityDataSO : AbilityDataSO
@@ -9,12 +10,11 @@ public class JumpAttackAbilityDataSO : AbilityDataSO
     [field: SerializeField] public float ProximityThreshold { get; private set; }
     [field: SerializeField] public float AirborneSpeed { get; private set; }
 
-
-    public override Ability BuildAbility(AgentCoreBase caster, AgentAnimation casterAnimation)
+    public override Ability BuildAbility(AgentCoreBase caster, AgentAnimation casterAnimation, Action<Transform> callbackAction = null)
     {
         JumpAttackAbility jumpAttackAbility = new JumpAttackAbility(caster,
                                                                     casterAnimation,
-                                                                    Name,
+                                                                    AbilityName,
                                                                     AbilityType,
                                                                     Cooldown,
                                                                     AbilityParticles,
@@ -22,7 +22,8 @@ public class JumpAttackAbilityDataSO : AbilityDataSO
                                                                     ImpactDamage,
                                                                     ImpactRange,
                                                                     ProximityThreshold,
-                                                                    AirborneSpeed);
+                                                                    AirborneSpeed,
+                                                                    callbackAction);
         return jumpAttackAbility;
     }
 }

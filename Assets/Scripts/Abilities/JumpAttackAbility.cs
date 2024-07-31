@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class JumpAttackAbility : Ability
 {
@@ -39,7 +40,8 @@ public class JumpAttackAbility : Ability
                              float impactDamage,
                              float impactRange,
                              float proximityThreshold,
-                             float airborneSpeed) : base(caster, casterAnimator, name, abilityType, cooldown, abilityParticles)
+                             float airborneSpeed,
+                             Action<Transform> callbackAction) : base(caster, casterAnimator, name, abilityType, cooldown, abilityParticles, callbackAction)
     {
         _maxTimeInAir = maxTimeInAir;
         _impactDamage = impactDamage;
@@ -90,27 +92,7 @@ public class JumpAttackAbility : Ability
         {
             Caster.EnableCollider();
 
-            GameObject.Instantiate(AbilityParticles, Caster.transform.position, Quaternion.identity);
-
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(Caster.transform.position, _impactRange);
-
-            foreach(Collider2D collider in colliders)
-            {
-                if(collider.TryGetComponent(out IDamageable damageable))
-                {
-                    if (ReferenceEquals(_agentHitbox, damageable))
-                        continue;
-
-                    DamageStruct damageStruct = new DamageStruct
-                    {
-                        damageSender = Caster.gameObject,
-                        damageAmount = _impactDamage,
-                        knockbackForce = 0f
-                    };
-
-                    damageable.TakeDamage(damageStruct);
-                }
-            }
+            _callbackAction?.Invoke(_enemyBehaviour.GetCurrentTargetTransform());
 
             StopCast();
             _casterAnimator.OnAnimationEnded -= CasterAnimator_OnAnimationEnded;

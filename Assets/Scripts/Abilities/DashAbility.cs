@@ -1,6 +1,6 @@
 using UnityEngine;
+using System;
 
-[System.Serializable]
 public class DashAbility : Ability
 {
     private float _maxDashTime;
@@ -18,7 +18,8 @@ public class DashAbility : Ability
                        float cooldown,
                        GameObject abilityParticles,
                        float maxDashTime,
-                       float dashSpeed) : base(caster, casterAnimator, name, abilityType, cooldown, abilityParticles)
+                       float dashSpeed,
+                       Action<Transform> callbackAction) : base(caster, casterAnimator, name, abilityType, cooldown, abilityParticles, callbackAction)
     {
         _maxDashTime = maxDashTime;
         _dashSpeed = dashSpeed;

@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 1573030516107882136}
   - component: {fileID: 4896212854544511022}
   - component: {fileID: 4801237647853621047}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: GatherHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}

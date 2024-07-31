@@ -10,7 +10,6 @@ public class Projectile : MonoBehaviour
     [SerializeField] private Vector2 _startPosition;
     [SerializeField] private Rigidbody2D _rigidBody;
 
-
     private void Update()
     {
         if (Vector2.Distance(transform.position, _startPosition) > _projectileRange)
@@ -19,8 +18,14 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent<AgentHitbox>(out AgentHitbox agentHitbox))
+        if(collision.TryGetComponent(out AgentHitbox agentHitbox))
         {
+            AgentHitbox senderHitbox = _projectileDamage.damageSender.GetComponent<AgentCoreBase>().GetAgentComponent<AgentHitbox>();
+            Collider2D senderCollider = _projectileDamage.damageSender.GetComponent<AgentCoreBase>().GetAgentCollider();
+
+            if(ReferenceEquals(senderHitbox, agentHitbox) || ReferenceEquals(senderCollider, collision))
+                return;
+                
             agentHitbox.TakeDamage(_projectileDamage);
         }
 

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class AgentAbilitySystem : AgentMonobehaviourComponent
 {
@@ -11,8 +12,11 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
     [SerializeField] protected Ability _currentAbility;
     [SerializeField] protected Dictionary<string, Ability> _abilityDictionary = new Dictionary<string, Ability>();
 
+    protected Dictionary<string, Action<Transform>> _abilityCallbacksDictionary = new Dictionary<string, Action<Transform>>();
+
     public Dictionary<string, Ability> AbilityDictionary => _abilityDictionary; // All ability names in upper-case
     public bool IsCastingAbility => _currentAbility != null;
+
 
     protected virtual void Awake()
     {
@@ -22,19 +26,14 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
 
     protected void Start()
     {
+        BuildAbilityCallbacks();
         BuildAbilities();
     }
 
     protected virtual void Update()
     {
-        if (_currentAbility != null)
-            _currentAbility.Tick();
-
-        foreach(KeyValuePair<string, Ability> keyValuePair in _abilityDictionary)
-        {
-            if (keyValuePair.Value.OnCooldown)
-                keyValuePair.Value.CooldownTick();
-        }
+        AbilityTick();
+        AbilityCooldownTick();
     }
 
     public bool IsOnCooldown(string abilityName)
@@ -78,11 +77,44 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
         _currentAbility.StartCast(targetPosition);
     }
 
+    protected void AbilityTick()
+    {
+        if (_currentAbility != null)
+            _currentAbility.Tick();
+    }
+
+    protected void AbilityCooldownTick()
+    {
+        foreach (KeyValuePair<string, Ability> keyValuePair in _abilityDictionary)
+        {
+            if (keyValuePair.Value.OnCooldown)
+                keyValuePair.Value.CooldownTick();
+        }
+    }
+
+    protected virtual void BuildAbilityCallbacks() { } // Override in children to add Ability callbacks
+
+    protected void AddAbilityCallback(string abilityName, Action<Transform> callback) // Used to add callbacks to Abilities
+    {
+        _abilityCallbacksDictionary.Add(abilityName, callback);
+    }
+
     protected void BuildAbilities()
     {
         foreach(AbilityDataSO abilityDataSO in _abilityDataSOList)
         {
-            Ability ability = abilityDataSO.BuildAbility(_agentCore, _agentCore.GetAgentComponent<AgentAnimation>());
+            Ability ability = null;
+
+            if(abilityDataSO.HasCallback)
+            {
+                Action<Transform> abilityCallback = _abilityCallbacksDictionary[abilityDataSO.AbilityName.ToUpper()];
+
+                ability = abilityDataSO.BuildAbility(_agentCore, _agentCore.GetAgentComponent<AgentAnimation>(), abilityCallback);
+            }
+            else
+                ability = abilityDataSO.BuildAbility(_agentCore, _agentCore.GetAgentComponent<AgentAnimation>());
+            
+
             _abilityDictionary.Add(ability.Name.ToUpper(), ability);
         }
     }

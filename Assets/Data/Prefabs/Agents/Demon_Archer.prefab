@@ -675,7 +675,7 @@ GameObject:
   - component: {fileID: 8889648747908537359}
   - component: {fileID: 5399112026884352515}
   - component: {fileID: 7507046942529187717}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: AgentHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -864,7 +864,7 @@ GameObject:
   - component: {fileID: 6875701314312080764}
   - component: {fileID: 3070404559598899648}
   - component: {fileID: 6212104787442394642}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Demon_Archer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -880,7 +880,7 @@ Transform:
   m_GameObject: {fileID: 5033722652824955456}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.93, y: -8.21, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

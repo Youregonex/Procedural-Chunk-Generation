@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 639650765066315052}
   - component: {fileID: 2716491587730172374}
   - component: {fileID: 5426810442813838147}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Devil_Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ Transform:
   m_GameObject: {fileID: 618886201950957018}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.28, y: -2.08, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -261,7 +261,8 @@ MonoBehaviour:
   _agentAttackModule: {fileID: 0}
   _enemyCore: {fileID: 0}
   _showGizmos: 1
-  _jumpAttackRange: 3
+  _radial360AttackDataSO: {fileID: 0}
+  _jumpAttackRangeGizmos: 0
   _agentAbilitySystem: {fileID: 0}
 --- !u!114 &4340788672296164125
 MonoBehaviour:
@@ -419,7 +420,7 @@ GameObject:
   - component: {fileID: 8954128586578603165}
   - component: {fileID: 6341743741507095636}
   - component: {fileID: 6779826811798766347}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: AgentHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}

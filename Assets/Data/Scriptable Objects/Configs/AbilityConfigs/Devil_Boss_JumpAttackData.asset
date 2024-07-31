@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 948cb857b5ce648259144d6a5aad96a1, type: 3}
   m_Name: Devil_Boss_JumpAttackData
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: JUMP_ATTACK
+  <AbilityName>k__BackingField: JUMP_ATTACK
   <AbilityType>k__BackingField: 0
   <Cooldown>k__BackingField: 5
   <AbilityParticles>k__BackingField: {fileID: 1732744568594319920, guid: 0a76484dd95a94bfea0b0a29b1bf3af6, type: 3}
+  <HasCallback>k__BackingField: 1
   <MaxTimeInAir>k__BackingField: 5
   <ImpactDamage>k__BackingField: 10
   <ImpactRange>k__BackingField: 3

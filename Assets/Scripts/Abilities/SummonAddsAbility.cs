@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class SummonAddsAbility : Ability
 {
@@ -17,7 +18,8 @@ public class SummonAddsAbility : Ability
                              GameObject abilityParticles,
                              int addsSummonPerCast,
                              int maxAddsCount,
-                             List<AgentCoreBase> addsPrefabList) : base(caster, casterAnimator, name, abilityType, cooldown, abilityParticles)
+                             List<AgentCoreBase> addsPrefabList,
+                             Action<Transform> callbackAction) : base(caster, casterAnimator, name, abilityType, cooldown, abilityParticles, callbackAction)
     {
         _maxAddsCount = maxAddsCount;
         _addsSummonPerCast = addsSummonPerCast;
@@ -54,8 +56,8 @@ public class SummonAddsAbility : Ability
                 pickPositionTries++;
 
                 Vector2 enemySpawnArea = new Vector2(3f, 3f);
-                Vector2 randomOffset = new Vector2(Random.Range(-enemySpawnArea.x, enemySpawnArea.x),
-                                                   Random.Range(-enemySpawnArea.y, enemySpawnArea.y));
+                Vector2 randomOffset = new Vector2(UnityEngine.Random.Range(-enemySpawnArea.x, enemySpawnArea.x),
+                                                   UnityEngine.Random.Range(-enemySpawnArea.y, enemySpawnArea.y));
 
                 randomPositionAroundCaster = (Vector2)Caster.transform.position + randomOffset;
 
@@ -67,12 +69,12 @@ public class SummonAddsAbility : Ability
                 if (pickPositionTries > maxPositionPickTries)
                 {
                     Debug.LogError($"Couldn't find new valid position for enemy {i}");
-                    randomPositionAroundCaster = validPositions[Random.Range(0, validPositions.Count)];
+                    randomPositionAroundCaster = validPositions[UnityEngine.Random.Range(0, validPositions.Count)];
                     break;
                 }
             }
 
-            int randomAddIndex = Random.Range(0, _addsPrefabList.Count);
+            int randomAddIndex = UnityEngine.Random.Range(0, _addsPrefabList.Count);
             AgentHealthSystem addHealthSystem = GameObject.Instantiate(_addsPrefabList[randomAddIndex],
                                                                      randomPositionAroundCaster,
                                                                      Quaternion.identity).

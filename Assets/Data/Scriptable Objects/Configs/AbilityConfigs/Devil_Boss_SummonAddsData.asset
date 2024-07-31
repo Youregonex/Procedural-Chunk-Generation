@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6997ff66a1b1f4bcc856d6d4a0c465ac, type: 3}
   m_Name: Devil_Boss_SummonAddsData
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: SUMMON_ADDS
+  <AbilityName>k__BackingField: SUMMON_ADDS
   <AbilityType>k__BackingField: 6
   <Cooldown>k__BackingField: 15
   <AbilityParticles>k__BackingField: {fileID: 0}
+  <HasCallback>k__BackingField: 0
   <MaxAddsCount>k__BackingField: 4
   <AddsSummonPerCast>k__BackingField: 2
   <AddsPrefabList>k__BackingField:

@@ -33,9 +33,11 @@ public class PlayerInteraction : AgentMonobehaviourComponent
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        _currentInteractable = collision.transform.root.GetComponent<IInteractable>();
-        _currentInteractable.HighlightInteractable();
-
+        if(collision.TryGetComponent(out IInteractable interactable))
+        {
+            _currentInteractable = interactable;
+            _currentInteractable.HighlightInteractable();
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -43,9 +45,12 @@ public class PlayerInteraction : AgentMonobehaviourComponent
         if (_currentInteractable == null)
             return;
 
-        _currentInteractable.UnhighlightInteractable();
-        _currentInteractable.StopInteraction();
-        _currentInteractable = null;
+        if (collision.TryGetComponent(out IInteractable interactable))
+        {
+            _currentInteractable.UnhighlightInteractable();
+            _currentInteractable.StopInteraction();
+            _currentInteractable = null;
+        }
     }
 
     public override void DisableComponent()

@@ -16,6 +16,7 @@ public class PlayerItemSelection : AgentMonobehaviourComponent
     private void OnDestroy()
     {
         DeselectCurrentSlot();
+        HotbarDisplay.OnHotbarSlotSelected -= HotbarDisplay_OnHotbarSlotSelected;
     }
 
     public override void DisableComponent()

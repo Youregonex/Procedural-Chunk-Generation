@@ -20,7 +20,7 @@ public abstract class AgentInput : AgentMonobehaviourComponent
         this.enabled = true;
     }
 
-    protected virtual void Invoke_OnAgentAttackTriggered()
+    protected void Invoke_AgentInput_OnAgentAttackTriggered()
     {
         OnAgentAttackTriggered?.Invoke(this, EventArgs.Empty);
     }

@@ -45,7 +45,7 @@ public class PlayerInput : AgentInput
 
     private void PlayerInputActions_Attack_performed(InputAction.CallbackContext obj)
     {
-        Invoke_OnAgentAttackTriggered();
+        Invoke_AgentInput_OnAgentAttackTriggered();
     }
 
     private void PlayerInputActions_Interact_performed(InputAction.CallbackContext obj)

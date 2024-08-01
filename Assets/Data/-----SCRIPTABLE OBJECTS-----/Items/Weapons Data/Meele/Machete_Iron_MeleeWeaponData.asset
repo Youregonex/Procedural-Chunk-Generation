@@ -22,6 +22,6 @@ MonoBehaviour:
   <WeaponPrefab>k__BackingField: {fileID: 5377014887262697560, guid: bc1fb9825e6a04571830cfd1d69f830c, type: 3}
   <AttackDamageMin>k__BackingField: 2
   <AttackDamageMax>k__BackingField: 5
-  <KnockbackForce>k__BackingField: 0.2
+  <KnockbackForce>k__BackingField: 2
   <AttackCooldown>k__BackingField: 0.75
   <AttackRadius>k__BackingField: 0.6

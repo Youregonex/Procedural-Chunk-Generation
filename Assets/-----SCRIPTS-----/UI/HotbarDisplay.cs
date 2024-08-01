@@ -7,31 +7,11 @@ public class HotbarDisplay : InventoryDisplay
     public static event Action<InventorySlot> OnHotbarSlotSelected;
 
     [Header("Config")]
-    [SerializeField] private PlayerInventorySystem _playerInventory;
     [SerializeField] private float _inventorySlotUISize = 75f;
 
     [Header("Debug Fields")]
     [SerializeField] private HotbarSlotUI _currentHotbarSlotUI;
-
-    private void Awake()
-    {
-        _isOpened = true;
-        InitializeHotbar();
-    }
-
-    private void Start()
-    {
-        _currentInventory = _playerInventory.GetHotbarInventory();
-        _currentInventory.Inventory_OnInventorySlotChanged += Inventory_OnInventorySlotChanged;
-
-        foreach (InventorySlotUI inventorySlotUI in _inventorySlotsUIList)
-        {
-            HotbarSlotUI hotbarSlotUI = (HotbarSlotUI)inventorySlotUI;
-            hotbarSlotUI.DeselectSlot();
-        }
-
-        SelectSlot(0);
-    }
+    [SerializeField] private PlayerInventorySystem _playerInventorySystem;
 
     private void Update()
     {
@@ -62,21 +42,24 @@ public class HotbarDisplay : InventoryDisplay
         _currentInventory.Inventory_OnInventorySlotChanged -= Inventory_OnInventorySlotChanged;
     }
 
-    private void Inventory_OnInventorySlotChanged(object sender, EventArgs e)
+    public void InitializeHotbar(PlayerInventorySystem playerInventorySystem)
     {
-        RefreshSelectedSlot();
+        _isOpened = true;
+
+        _currentInventory = playerInventorySystem.GetHotbarInventory();
+        _playerInventorySystem = playerInventorySystem;
+        _currentInventory.Inventory_OnInventorySlotChanged += Inventory_OnInventorySlotChanged;
+
+        InitializeHotbarSlots();
+        SelectDefaultSlot();
     }
 
-    private void RefreshSelectedSlot()
+    private void InitializeHotbarSlots()
     {
-        OnHotbarSlotSelected(_currentHotbarSlotUI.AssignedInventorySlot);
-    }
 
-    private void InitializeHotbar()
-    {
-        List<InventorySlot> hotbarInventoryContent = _playerInventory.GetHotbarInventory().InventoryContentList;
+        List<InventorySlot> hotbarInventoryContent = _playerInventorySystem.GetHotbarInventory().InventoryContentList;
 
-        for (int i = 0; i < _playerInventory.GetHotbarSize(); i++)
+        for (int i = 0; i < _playerInventorySystem.GetHotbarSize(); i++)
         {
             InventorySlotUI slotUI = CreateInventorySlotUI();
 
@@ -85,6 +68,27 @@ public class HotbarDisplay : InventoryDisplay
 
             slotUI.GetComponent<RectTransform>().sizeDelta = new Vector2(_inventorySlotUISize, _inventorySlotUISize);
         }
+    }
+
+    private void SelectDefaultSlot()
+    {
+        foreach (InventorySlotUI inventorySlotUI in _inventorySlotsUIList)
+        {
+            HotbarSlotUI hotbarSlotUI = (HotbarSlotUI)inventorySlotUI;
+            hotbarSlotUI.DeselectSlot();
+        }
+
+        SelectSlot(0);
+    }
+
+    private void Inventory_OnInventorySlotChanged(object sender, EventArgs e)
+    {
+        RefreshSelectedSlot();
+    }
+
+    private void RefreshSelectedSlot()
+    {
+        OnHotbarSlotSelected?.Invoke(_currentHotbarSlotUI.AssignedInventorySlot);
     }
 
     private void SelectSlot(int slotNumber)
@@ -100,6 +104,6 @@ public class HotbarDisplay : InventoryDisplay
         hotbarSlotUI.SelectSlot();
         _currentHotbarSlotUI = hotbarSlotUI;
 
-        OnHotbarSlotSelected(_currentHotbarSlotUI.AssignedInventorySlot);
+        OnHotbarSlotSelected?.Invoke(_currentHotbarSlotUI.AssignedInventorySlot);
     }
 }

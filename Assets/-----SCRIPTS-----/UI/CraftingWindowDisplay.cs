@@ -3,19 +3,13 @@ using UnityEngine.UI;
 
 public class CraftingWindowDisplay : MonoBehaviour
 {
+    [Header("Debug Fields")]
+    [SerializeField] private PlayerCraftingSystem _playerCraftingSystem;
+    [SerializeField] private PlayerInventorySystem _playerInventorySystem;
     [SerializeField] private CraftingDetailsDisplay _craftingDetailsDisplay;
     [SerializeField] private CraftingListDisplay _craftingListDisplay;
     [SerializeField] private Image _craftingWindowBackground;
 
-    [SerializeField] private PlayerCraftingSystem _playerCraftingSystem;
-    [SerializeField] private PlayerInventorySystem _playerInventorySystem;
-
-
-    private void Start()
-    {
-        _craftingListDisplay.OnCraftRecipeDetailsDisplayRequested += CraftListDisplay_OnCraftRecipeDetailsDisplayRequested;
-        _playerInventorySystem.OnInventoryContentChanged += PlayerInventorySystem_OnInventoryContentChanged;
-    }
 
     private void OnDestroy()
     {
@@ -23,9 +17,13 @@ public class CraftingWindowDisplay : MonoBehaviour
         _playerInventorySystem.OnInventoryContentChanged -= PlayerInventorySystem_OnInventoryContentChanged;
     }
 
-    private void CraftListDisplay_OnCraftRecipeDetailsDisplayRequested(object sender, CraftingListDisplay.OnCraftRecipeDetailsDisplayRequestedEventArgs e)
+    public void InitializeCraftingWindowDisplay(PlayerCraftingSystem playerCraftingSystem, PlayerInventorySystem playerInventorySystem)
     {
-        _craftingDetailsDisplay.SetCraftingDetailsData(e.currentCraftingRecipeSO, _playerInventorySystem);
+        _playerCraftingSystem = playerCraftingSystem;
+        _playerInventorySystem = playerInventorySystem;
+
+        _craftingListDisplay.OnCraftRecipeDetailsDisplayRequested += CraftListDisplay_OnCraftRecipeDetailsDisplayRequested;
+        _playerInventorySystem.OnInventoryContentChanged += PlayerInventorySystem_OnInventoryContentChanged;
     }
 
     public void DisplayCraftingWindow()
@@ -48,6 +46,11 @@ public class CraftingWindowDisplay : MonoBehaviour
 
         _craftingDetailsDisplay.HideCraftingDisplayWindow();
         _craftingDetailsDisplay.gameObject.SetActive(false);
+    }
+
+    private void CraftListDisplay_OnCraftRecipeDetailsDisplayRequested(object sender, CraftingListDisplay.OnCraftRecipeDetailsDisplayRequestedEventArgs e)
+    {
+        _craftingDetailsDisplay.SetCraftingDetailsData(e.currentCraftingRecipeSO, _playerInventorySystem);
     }
 
     private void PlayerInventorySystem_OnInventoryContentChanged(object sender, System.EventArgs e)

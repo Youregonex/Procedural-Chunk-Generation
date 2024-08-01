@@ -7,12 +7,13 @@ public class AgentAttackModule : AgentMonobehaviourComponent
     [SerializeField] protected ItemHoldPoint _itemHoldPoint;
 
     [Header("Debug Fields")]
-    [SerializeField] protected Weapon _currentWeapon;
-    [SerializeField] protected WeaponItemDataSO _currentWeaponItemDataSO;
-    [SerializeField] protected Tool _currentTool;
-    [SerializeField] protected ToolItemDataSO _currentToolItemDataSO;
-    [SerializeField] protected AgentInput _agentInput;
-    [SerializeField] protected EnemyCore _agentCore;
+    [SerializeField, HideInInspector] protected Weapon _currentWeapon;
+    [SerializeField, HideInInspector] protected WeaponItemDataSO _currentWeaponItemDataSO;
+    [SerializeField, HideInInspector] protected Tool _currentTool;
+    [SerializeField, HideInInspector] protected ToolItemDataSO _currentToolItemDataSO;
+    [SerializeField, HideInInspector] protected AgentInput _agentInput;
+    [SerializeField, HideInInspector] protected EnemyCore _agentCore;
+
 
     public bool CanAttack
     {

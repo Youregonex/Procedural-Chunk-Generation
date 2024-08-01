@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca23b32ab694946a0a20c9b9e7af984f, type: 3}
+  m_Name: TreeNode_ Small_DropList
+  m_EditorClassIdentifier: 
+  <ItemDropList>k__BackingField:
+  - dropResource: {fileID: 11400000, guid: 92d5434fd2a4143aeb7685e854ec411f, type: 2}
+    dropResourceAmountMin: 3
+    dropResourceAmountMax: 4
+    dropChance: 1

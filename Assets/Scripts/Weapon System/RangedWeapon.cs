@@ -51,7 +51,8 @@ public class RangedWeapon : Weapon
         {
             damageAmount = Random.Range(_attackDamageMin, _attackDamageMax),
             knockbackForce = _knockbackForce,
-            damageSender = _agentAttackModule.gameObject
+            damageSender = _agentAttackModule.gameObject,
+            senderFaction = _agentCore.GetFaction()
         };
 
         projectile.SetupProjectile(_projectileSpeed, _projectileRange, damageStruct);

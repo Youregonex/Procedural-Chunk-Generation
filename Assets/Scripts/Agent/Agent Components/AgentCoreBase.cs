@@ -46,7 +46,7 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
 
     public Rigidbody2D GetAgentRigidBody() => _rigidBody2D;
     public CapsuleCollider2D GetAgentCollider() => _agentCollider;
-    public EFactions GetAgentFaction() => _faction;
+    public EFactions GetFaction() => _faction;
 
     public T GetAgentComponent<T>() where T : AgentMonobehaviourComponent
     {

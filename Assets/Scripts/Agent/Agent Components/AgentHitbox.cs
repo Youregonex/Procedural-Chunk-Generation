@@ -36,4 +36,5 @@ public class AgentHitbox : AgentMonobehaviourComponent, IDamageable
         this.enabled = true;
     }
 
+    public EFactions GetFaction() => _agentCore.GetFaction();
 }

@@ -4,9 +4,6 @@ using System.Collections;
 
 public class ShrineMobSpawner : InteractableBuilding
 {
-    private const string SPAWN = "SPAWN";
-    private const string DESTROY = "DESTROY";
-
     [Header("Config")]
     [SerializeField] private List<EnemyCore> _enemyPrefabList;
     [SerializeField] private EnemyCore _bossPrefab; 
@@ -24,14 +21,7 @@ public class ShrineMobSpawner : InteractableBuilding
     [SerializeField] private bool _isActive = false;
     [SerializeField] private bool _wavesComplited = false;
     [SerializeField] private bool _bossSpawned = false;
-    [SerializeField] private Animator _animator;
 
-    protected override void Awake()
-    {
-        base.Awake();
-
-        _animator = _spriteRenderer.GetComponent<Animator>();
-    }
 
     public override void Interact(GameObject initiator)
     {
@@ -55,8 +45,6 @@ public class ShrineMobSpawner : InteractableBuilding
 
     private IEnumerator DestroyShrine(float destructionDelay)
     {
-        _animator.SetTrigger(DESTROY);
-
         yield return new WaitForSeconds(destructionDelay);
 
         Destroy(gameObject);
@@ -77,7 +65,6 @@ public class ShrineMobSpawner : InteractableBuilding
 
     private IEnumerator SpawnEnemies(Transform enemyTarget = null)
     {
-        _animator.SetTrigger(SPAWN);
 
         int enemiesPerWave = Random.Range(_numberOfEnemiesPerWaveMin, _numberOfEnemiesPerWaveMax);
 

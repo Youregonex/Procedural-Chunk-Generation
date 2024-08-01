@@ -15,7 +15,7 @@ MonoBehaviour:
   <AbilityName>k__BackingField: JUMP_ATTACK
   <AbilityType>k__BackingField: 0
   <Cooldown>k__BackingField: 5
-  <AbilityParticles>k__BackingField: {fileID: 1732744568594319920, guid: 0a76484dd95a94bfea0b0a29b1bf3af6, type: 3}
+  <AbilityParticles>k__BackingField: {fileID: 0}
   <HasCallback>k__BackingField: 1
   <MaxTimeInAir>k__BackingField: 5
   <ImpactDamage>k__BackingField: 10

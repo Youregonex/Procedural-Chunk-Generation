@@ -66,7 +66,7 @@ public class PlayerItemSelection : AgentMonobehaviourComponent
     {
         _currentInventorySlot = inventorySlot;
 
-        OnCurrentItemChanged(inventorySlot.ItemDataSO);
+        OnCurrentItemChanged?.Invoke(inventorySlot.ItemDataSO);
 
         if (inventorySlot.ItemDataSO == null)
             return;

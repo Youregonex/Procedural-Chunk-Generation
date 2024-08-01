@@ -33,7 +33,7 @@ public class PendingBuildingItem : MonoBehaviour
 
         transform.position = GetMouseGridPosition();
 
-        if (CheckForCollisions() && CheckForRange())
+        if (CheckForCollisions() && InRange(_buildingRange, _playerTransform.position, GetMouseGridPosition()))
         {
             CanPlaceBuilding = true;
             ChangeColor(true);
@@ -88,12 +88,12 @@ public class PendingBuildingItem : MonoBehaviour
         return false;
     }
 
-    private bool CheckForRange()
+    bool InRange(float range, Vector2 v1, Vector2 v2)
     {
-        if (Vector2.Distance(GetMouseGridPosition(), _playerTransform.position) > _buildingRange)
-            return false;
+        var dx = v1.x - v2.x;
+        var dy = v1.y - v2.y;
 
-        return true;
+        return dx * dx + dy * dy < range * range;
     }
 
     private void ChangeColor(bool canBuild)

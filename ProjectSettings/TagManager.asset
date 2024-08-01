@@ -17,12 +17,12 @@ TagManager:
   - Obstacle
   - Player
   - AgentDetection
-  - Interaction
+  - PlayerObjectInteraction
   - Projectile
   - HitBox
   - AgentCollider
-  - 
-  - 
+  - PlayerItemInteraction
+  - Interactable
   - 
   - 
   - 

@@ -6,9 +6,7 @@ public class PlayerItemInteraction : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Item item = collision.GetComponent<Item>();
-
-        if (item != null)
+        if(collision.TryGetComponent(out Item item))
         {
             int amountDidntFit = _playerInventory.AddItemToInventory(item);
 

@@ -32,6 +32,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: -0.0014647245
       objectReference: {fileID: 0}
+    - target: {fileID: 1100258196089152816, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
+      propertyPath: m_Layer
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1680932731369957642, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
       propertyPath: m_Name
       value: Shrine_EnemySpawn_Building
@@ -144,36 +148,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1680932731369957642, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6563005071157072120}
-    - targetCorrespondingSourceObject: {fileID: 5544070549349902316, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5641174042070378218}
   m_SourcePrefab: {fileID: 100100000, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
---- !u!1 &128351158872065129 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5544070549349902316, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
-  m_PrefabInstance: {fileID: 5564057120084648837}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &5641174042070378218
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 128351158872065129}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f1918e89ffc2749f68998b1a151e801e, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!212 &3851714972855143086 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 8665921998799857963, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}

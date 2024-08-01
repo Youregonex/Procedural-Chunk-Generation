@@ -22,6 +22,11 @@ public class PlayerItemHoldPoint : ItemHoldPoint
         _playerItemSelection.OnCurrentItemChanged += PlayerItemSelection_OnCurrentItemChanged;
     }
 
+    private void OnDestroy()
+    {
+        _playerItemSelection.OnCurrentItemChanged -= PlayerItemSelection_OnCurrentItemChanged;
+    }
+
     private void PlayerItemSelection_OnCurrentItemChanged(ItemDataSO itemDataSO)
     {
         if (itemDataSO == null || itemDataSO.ItemType == EItemType.Weapon || itemDataSO.ItemType == EItemType.Tool)

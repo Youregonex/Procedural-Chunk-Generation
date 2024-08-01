@@ -68,10 +68,12 @@ public class BulletShooter
                 Projectile projectile = GameObject.Instantiate(_prefab, position, Quaternion.identity);
                 projectile.transform.right = projectile.transform.position - _selfTransform.position;
 
+                EFactions senderFaction = _selfTransform.GetComponent<AgentCoreBase>().GetFaction();
                 DamageStruct damageStruct = new DamageStruct
                 {
                     damageAmount = _damage,
                     damageSender = _selfTransform.gameObject,
+                    senderFaction = senderFaction,
                     knockbackForce = 0f
                 };
 
@@ -114,7 +116,7 @@ public class BulletShooter
 
         if (_burstAngleSpread != 0)
         {
-            angleStep = _burstAngleSpread / (_projectilesPerBurst - 1f);
+            angleStep = _burstAngleSpread / (_projectilesPerBurst - 1);
             halfAngleSpread = _burstAngleSpread / 2f;
             startAngle = targetAngle - halfAngleSpread;
             endAngle = targetAngle + halfAngleSpread;

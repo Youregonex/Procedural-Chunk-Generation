@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class PlayerInteraction : AgentMonobehaviourComponent
 {
+    [Header("Config")]
+    [SerializeField, Range(0.1f, 1f)] private float _interactionCheckProximity = .5f;
+
     [Header("Debug Fields")]
     [SerializeField] private PlayerCore _playerCore;
     [SerializeField] private IInteractable _currentInteractable;
@@ -23,7 +26,7 @@ public class PlayerInteraction : AgentMonobehaviourComponent
 
     private void Update()
     {
-        transform.localPosition = _agentMovement.LastMovementDirection / 2;
+        transform.localPosition = _agentMovement.LastMovementDirection * _interactionCheckProximity;
     }
 
     private void OnDestroy()
@@ -33,7 +36,7 @@ public class PlayerInteraction : AgentMonobehaviourComponent
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out IInteractable interactable))
+        if(collision.transform.root.TryGetComponent(out IInteractable interactable))
         {
             _currentInteractable = interactable;
             _currentInteractable.HighlightInteractable();
@@ -45,7 +48,7 @@ public class PlayerInteraction : AgentMonobehaviourComponent
         if (_currentInteractable == null)
             return;
 
-        if (collision.TryGetComponent(out IInteractable interactable))
+        if (collision.transform.root.TryGetComponent(out IInteractable interactable))
         {
             _currentInteractable.UnhighlightInteractable();
             _currentInteractable.StopInteraction();

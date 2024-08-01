@@ -9,10 +9,8 @@ public class AgentAttackModule : AgentMonobehaviourComponent
     [Header("Debug Fields")]
     [SerializeField] protected Weapon _currentWeapon;
     [SerializeField] protected WeaponItemDataSO _currentWeaponItemDataSO;
-
     [SerializeField] protected Tool _currentTool;
     [SerializeField] protected ToolItemDataSO _currentToolItemDataSO;
-
     [SerializeField] protected AgentInput _agentInput;
     [SerializeField] protected EnemyCore _agentCore;
 
@@ -43,7 +41,7 @@ public class AgentAttackModule : AgentMonobehaviourComponent
         _agentInput.OnAgentAttackTriggered += AgentInput_OnAgentAttackTrigger;
     }
 
-    protected void OnDestroy()
+    protected virtual void OnDestroy()
     {
         if(_agentInput != null)
             _agentInput.OnAgentAttackTriggered -= AgentInput_OnAgentAttackTrigger;

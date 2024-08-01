@@ -26,7 +26,7 @@ public class AgentTargetDetectionZone : AgentMonobehaviourComponent
 
     private void Start()
     {
-        _faction = _agentCore.GetAgentFaction();
+        _faction = _agentCore.GetFaction();
     }
 
     private void Update()
@@ -50,7 +50,7 @@ public class AgentTargetDetectionZone : AgentMonobehaviourComponent
         {
             EnemyCore agentCore = collider.GetComponent<EnemyCore>();
 
-            if (agentCore != null && agentCore.GetAgentFaction() != _agentCore.GetAgentFaction())
+            if (agentCore != null && agentCore.GetFaction() != _agentCore.GetFaction())
                 validTargets.Add(collider.transform);
         }
 

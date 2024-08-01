@@ -9,6 +9,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] private Vector2 _movementVector;
     [SerializeField] private Vector2 _startPosition;
     [SerializeField] private Rigidbody2D _rigidBody;
+    [SerializeField] private EFactions _senderFaction;
 
     private void Update()
     {
@@ -18,15 +19,15 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out AgentHitbox agentHitbox))
+        if(collision.TryGetComponent(out IDamageable damageable))
         {
             AgentHitbox senderHitbox = _projectileDamage.damageSender.GetComponent<AgentCoreBase>().GetAgentComponent<AgentHitbox>();
             Collider2D senderCollider = _projectileDamage.damageSender.GetComponent<AgentCoreBase>().GetAgentCollider();
 
-            if(ReferenceEquals(senderHitbox, agentHitbox) || ReferenceEquals(senderCollider, collision))
+            if(ReferenceEquals(senderHitbox, damageable) || ReferenceEquals(senderCollider, collision) || damageable.GetFaction() == _senderFaction)
                 return;
                 
-            agentHitbox.TakeDamage(_projectileDamage);
+            damageable.TakeDamage(_projectileDamage);
         }
 
         Destroy(gameObject);
@@ -40,6 +41,7 @@ public class Projectile : MonoBehaviour
         _projectileSpeed = projectileSpeed;
         _projectileRange = projectileRange;
         _projectileDamage = projectileDamage;
+        _senderFaction = projectileDamage.senderFaction;
 
         _rigidBody.velocity = transform.right * _projectileSpeed;
     }

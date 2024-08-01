@@ -28,6 +28,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0.0021399409
       objectReference: {fileID: 0}
+    - target: {fileID: 1100258196089152816, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
+      propertyPath: m_Layer
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 1680932731369957642, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
       propertyPath: m_Name
       value: Chest_Small_Building

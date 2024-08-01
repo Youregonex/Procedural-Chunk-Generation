@@ -47,7 +47,7 @@ public class AgentHealthSystem : AgentMonobehaviourComponent
 
     public virtual void TakeDamage(DamageStruct damageStruct)
     {
-        if (_isDead)
+        if (_isDead || _agentCore.GetFaction() == damageStruct.senderFaction)
             return;
 
         int damageTaken = CalculateDamage(damageStruct);

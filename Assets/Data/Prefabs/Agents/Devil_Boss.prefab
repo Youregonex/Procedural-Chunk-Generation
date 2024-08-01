@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 4340788672296164125}
   - component: {fileID: 639650765066315052}
   - component: {fileID: 2716491587730172374}
-  - component: {fileID: 5426810442813838147}
+  - component: {fileID: 5835343632778712873}
   m_Layer: 15
   m_Name: Devil_Boss
   m_TagString: Untagged
@@ -221,7 +221,7 @@ MonoBehaviour:
   _agentInput: {fileID: 465963116688875511}
   _agentStats: {fileID: 4340788672296164125}
   _agentItemHoldPoint: {fileID: 5590291423628192004}
-  _agentAbilitySystem: {fileID: 5426810442813838147}
+  _agentAbilitySystem: {fileID: 5835343632778712873}
   _agentCollider: {fileID: 6524151457122161689}
   _rigidBody2D: {fileID: 787065315744638245}
   _agentComponents: []
@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81985bc42d096488aaf4ded3d2fd0af7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 0
+  <DisableOnDeath>k__BackingField: 1
   <AttackRangeMax>k__BackingField: 10.35
   <AttackRangeMin>k__BackingField: 1.18
   <AggroRange>k__BackingField: 8.76
@@ -261,7 +261,7 @@ MonoBehaviour:
   _agentAttackModule: {fileID: 0}
   _enemyCore: {fileID: 0}
   _showGizmos: 1
-  _radial360AttackDataSO: {fileID: 0}
+  _radial360AttackDataSO: {fileID: 11400000, guid: 15ad6b1f1455a49dd9f0dcad436a29ec, type: 2}
   _jumpAttackRangeGizmos: 0
   _agentAbilitySystem: {fileID: 0}
 --- !u!114 &4340788672296164125
@@ -316,7 +316,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nodeResourceDrop: {fileID: 11400000, guid: 296d8f77ad0274d9ba4c1596d2b72ead, type: 2}
   _lootList: []
---- !u!114 &5426810442813838147
+--- !u!114 &5835343632778712873
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -325,14 +325,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 618886201950957018}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15a78df0df3c9480498488321f46fd2e, type: 3}
+  m_Script: {fileID: 11500000, guid: caf9d4601c237470099bf71438afd61b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 0
+  <DisableOnDeath>k__BackingField: 1
   _abilityDataSOList:
   - {fileID: 11400000, guid: 96e7f5fdc01b14fea8f9dc0050dc4c76, type: 2}
   - {fileID: 11400000, guid: 059d1debb1bdc4cf78b53f2f36afb097, type: 2}
   _agentCore: {fileID: 0}
+  _bossDevilBehaviour: {fileID: 98385478952016499}
 --- !u!1 &713282732801586978
 GameObject:
   m_ObjectHideFlags: 0

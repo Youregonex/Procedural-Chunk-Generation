@@ -17,20 +17,19 @@ public class MeleeWeapon : Weapon
 
         foreach (Collider2D hit in targetsHit)
         {
-            IDamageable damageable = hit.GetComponent<IDamageable>();
+            if(hit.TryGetComponent(out IDamageable damageable))
+            {                
+                if (ReferenceEquals(damageable, _agentCore.GetAgentComponent<AgentHitbox>()))
+                    continue;
 
-            if (damageable == null)
-                continue;
-
-            if (damageable == _agentAttackModule.GetComponent<AgentHealthSystem>().GetHitbox())
-                continue;
-
-            damageable.TakeDamage(new DamageStruct
-            {
-                damageSender = gameObject,
-                damageAmount = Random.Range(_attackDamageMin, _attackDamageMax),
-                knockbackForce = _knockbackForce
-            });
+                damageable.TakeDamage(new DamageStruct
+                {
+                    damageSender = gameObject,
+                    damageAmount = Random.Range(_attackDamageMin, _attackDamageMax),
+                    senderFaction = _agentCore.GetFaction(),
+                    knockbackForce = _knockbackForce
+                });
+            }
         }
 
         _attackCooldownCurrent = _attackCooldownMax;

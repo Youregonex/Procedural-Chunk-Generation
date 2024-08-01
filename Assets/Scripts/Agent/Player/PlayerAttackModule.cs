@@ -17,6 +17,13 @@ public class PlayerAttackModule : AgentAttackModule
         _playerItemSelection.OnCurrentItemChanged += PlayerItemSelection_OnCurrentItemChanged;
     }
 
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+
+        _playerItemSelection.OnCurrentItemChanged -= PlayerItemSelection_OnCurrentItemChanged;
+    }
+
     private void PlayerItemSelection_OnCurrentItemChanged(ItemDataSO itemDataSO)
     {
         if (itemDataSO == null || (itemDataSO.ItemType != EItemType.Weapon && itemDataSO.ItemType != EItemType.Tool))

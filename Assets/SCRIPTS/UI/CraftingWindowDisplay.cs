@@ -17,7 +17,7 @@ public class CraftingWindowDisplay : MonoBehaviour
         _playerInventorySystem.OnInventoryContentChanged -= PlayerInventorySystem_OnInventoryContentChanged;
     }
 
-    public void InitializeCraftingWindowDisplay(PlayerCraftingSystem playerCraftingSystem, PlayerInventorySystem playerInventorySystem)
+    public void Initialize(PlayerCraftingSystem playerCraftingSystem, PlayerInventorySystem playerInventorySystem)
     {
         _playerCraftingSystem = playerCraftingSystem;
         _playerInventorySystem = playerInventorySystem;

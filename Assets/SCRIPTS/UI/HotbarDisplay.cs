@@ -12,9 +12,13 @@ public class HotbarDisplay : InventoryDisplay
     [Header("Debug Fields")]
     [SerializeField] private HotbarSlotUI _currentHotbarSlotUI;
     [SerializeField] private PlayerInventorySystem _playerInventorySystem;
+    [SerializeField] private AgentHealthSystem _playerHealthSystem;
 
     private void Update()
     {
+        if (_playerHealthSystem.IsDead)
+            return;
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
             SelectSlot(0);
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -42,8 +46,10 @@ public class HotbarDisplay : InventoryDisplay
         _currentInventory.Inventory_OnInventorySlotChanged -= Inventory_OnInventorySlotChanged;
     }
 
-    public void InitializeHotbar(PlayerInventorySystem playerInventorySystem)
+    public void Initialize(PlayerInventorySystem playerInventorySystem, AgentHealthSystem playerHealthSystem)
     {
+        _playerHealthSystem = playerHealthSystem;
+
         _isOpened = true;
 
         _currentInventory = playerInventorySystem.GetHotbarInventory();

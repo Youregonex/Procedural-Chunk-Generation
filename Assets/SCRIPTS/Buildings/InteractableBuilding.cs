@@ -6,6 +6,7 @@ public abstract class InteractableBuilding : Building, IInteractable
     [SerializeField] protected Sprite _uninteractedSprite;
     [SerializeField] protected Sprite _interactedSprite;
     [SerializeField] protected SpriteRenderer _spriteRenderer;
+    [SerializeField] protected bool _saveInitialColor;
 
     [Header("Debug Fields")]
     [SerializeField] protected Color _interactColor;
@@ -14,8 +15,11 @@ public abstract class InteractableBuilding : Building, IInteractable
 
     protected virtual void Awake()
     {
-        _uninteractColor = new Color(1, 1, 1);
-        _uninteractColor.a = 1f;
+        if(!_saveInitialColor)
+        {
+            _uninteractColor = new Color(1, 1, 1);
+            _uninteractColor.a = 1f;
+        }
 
         _interactColor = new Color(0, 1, 0);
         _interactColor.a = .8f;

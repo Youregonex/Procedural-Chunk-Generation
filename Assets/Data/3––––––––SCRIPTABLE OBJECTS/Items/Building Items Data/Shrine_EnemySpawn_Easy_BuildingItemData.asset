@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 55cc0d4c5d53b4d6a903ea5a8d150da0, type: 3}
-  m_Name: Shrine_EnemySpawn_BuildingItemData
+  m_Name: Shrine_EnemySpawn_Easy_BuildingItemData
   m_EditorClassIdentifier: 
   <Id>k__BackingField: 0
-  <Name>k__BackingField: Shrine_EnemySpawn
-  Description: Shrine_EnemySpawn
+  <Name>k__BackingField: Shrine_EnemySpawn_Easy_BuildingItemData
+  Description: Shrine_EnemySpawn_Easy_BuildingItemData
   <Icon>k__BackingField: {fileID: -343928407, guid: 18cfac4b2897a4e089a19671f1b1bb6c, type: 3}
   <ItemPrefab>k__BackingField: {fileID: 6149466425579451927, guid: 0ee638886ab864dfe82c98e39449b41a, type: 3}
   <MaxStackSize>k__BackingField: 5

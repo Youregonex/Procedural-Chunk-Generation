@@ -52,7 +52,7 @@ public class MouseItemSlot : MonoBehaviour
         SetMouseSlot(slot.ItemDataSO, slot.CurrentStackSize);
     }
 
-    public void InitializeMouseItemSlot(PlayerCore playerCore)
+    public void Initialize(PlayerCore playerCore)
     {
         _playerCore = playerCore;
     }

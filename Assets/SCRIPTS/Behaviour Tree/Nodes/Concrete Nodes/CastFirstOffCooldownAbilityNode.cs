@@ -18,7 +18,7 @@ namespace Youregone.BehaviourTrees
             {
                 if (!keyValuePair.Value.OnCooldown)
                 {
-                    _agentAbilitySystem.CastAbility(keyValuePair.Value.Name.ToUpper(), Vector2.zero);
+                    _agentAbilitySystem.CastAbility(keyValuePair.Value.AbilityName.ToUpper(), Vector2.zero);
                     break;
                 }
             }

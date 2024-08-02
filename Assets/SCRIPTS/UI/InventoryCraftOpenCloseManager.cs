@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class InventoryCraftOpenCloseManager : MonoBehaviour
 {
+    [Header("Config")]
     [SerializeField] private DynamicInventoryDisplay _playerInventoryWindow;
     [SerializeField] private CraftingWindowDisplay _playerCraftingWindow;
+    [SerializeField] private ItemDescriptionWindow _itemDescriptionWindow;
 
     private bool _windowsOpened;
 
@@ -36,6 +38,7 @@ public class InventoryCraftOpenCloseManager : MonoBehaviour
 
     public void HideWindows()
     {
+        _itemDescriptionWindow.HideItemDescription();
         _windowsOpened = false;
 
         _playerInventoryWindow.HideInventory();

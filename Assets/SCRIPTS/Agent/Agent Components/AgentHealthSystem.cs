@@ -16,7 +16,7 @@ public class AgentHealthSystem : AgentMonobehaviourComponent
 
     [Header("Debug Fields")]
     [SerializeField] protected bool _isDead = false;
-    [SerializeField] protected EnemyCore _agentCore;
+    [SerializeField] protected AgentCoreBase _agentCore;
     [SerializeField] protected AgentAnimation _agentAnimation;
     [SerializeField] protected AgentHitbox _hitbox;
 

@@ -11,6 +11,7 @@ public class DashAbilityDataSO : AbilityDataSO
     {
         DashAbility dashAbility = new DashAbility(caster,
                                                   casterAnimation,
+                                                  this,
                                                   AbilityName,
                                                   AbilityType,
                                                   Cooldown,

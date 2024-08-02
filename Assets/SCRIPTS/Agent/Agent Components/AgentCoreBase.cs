@@ -20,14 +20,16 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
     [SerializeField] protected AgentAbilitySystem _agentAbilitySystem;
 
     [Header("Agent Colliders")]
-    [SerializeField] private CapsuleCollider2D _agentCollider;
+    [SerializeField] protected CapsuleCollider2D _agentCollider;
 
     [Header("Agent RigidBody2D")]
-    [SerializeField] private Rigidbody2D _rigidBody2D;
+    [SerializeField] protected Rigidbody2D _rigidBody2D;
 
     [Header("Debug Fields")]
     [SerializeField] protected List<AgentMonobehaviourComponent> _agentComponents = new List<AgentMonobehaviourComponent>();
     [SerializeField] protected List<AgentMonobehaviourComponent> _disableOnDeathComponents = new List<AgentMonobehaviourComponent>();
+
+    public bool IsDead => _healthSystem.IsDead;
 
     protected virtual void Awake()
     {

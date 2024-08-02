@@ -31,6 +31,7 @@ public class JumpAttackAbility : Ability
 
     public JumpAttackAbility(AgentCoreBase caster,
                              AgentAnimation casterAnimator,
+                             AbilityDataSO abilityDataSO,
                              string name,
                              EAbilityType abilityType,
                              float cooldown,
@@ -38,7 +39,7 @@ public class JumpAttackAbility : Ability
                              float maxTimeInAir,
                              float proximityThreshold,
                              float airborneSpeed,
-                             Action<Transform> callbackAction) : base(caster, casterAnimator, name, abilityType, cooldown, abilityParticles, callbackAction)
+                             Action<Transform> callbackAction) : base(caster, casterAnimator, abilityDataSO, name, abilityType, cooldown, abilityParticles, callbackAction)
     {
         _maxTimeInAir = maxTimeInAir;
         _proximityThreshold = proximityThreshold;

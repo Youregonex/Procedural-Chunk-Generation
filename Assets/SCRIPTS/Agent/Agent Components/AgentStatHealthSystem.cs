@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(AgentHealthSystem))]
 public class AgentStatHealthSystem : AgentHealthSystem
 {
     [Header("Config")]
@@ -12,13 +11,7 @@ public class AgentStatHealthSystem : AgentHealthSystem
 
     protected override void Awake()
     {
-        _agentCore = GetComponent<EnemyCore>();
-    }
-
-    protected override void Start()
-    {
-        base.Start();
-
+        _agentCore = GetComponent<AgentCoreBase>();
         _agentStats = _agentCore.GetAgentComponent<AgentStats>();
 
         float vitalityValue = _agentStats.GetCurrentStatValue(EStats.Vitality);

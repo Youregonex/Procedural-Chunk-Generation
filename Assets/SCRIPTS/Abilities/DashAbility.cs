@@ -13,13 +13,14 @@ public class DashAbility : Ability
 
     public DashAbility(AgentCoreBase caster,
                        AgentAnimation casterAnimator,
+                       AbilityDataSO abilityDataSO,
                        string name,
                        EAbilityType abilityType,
                        float cooldown,
                        GameObject abilityParticles,
                        float maxDashTime,
                        float dashSpeed,
-                       Action<Transform> callbackAction) : base(caster, casterAnimator, name, abilityType, cooldown, abilityParticles, callbackAction)
+                       Action<Transform> callbackAction) : base(caster, casterAnimator, abilityDataSO, name, abilityType, cooldown, abilityParticles, callbackAction)
     {
         _maxDashTime = maxDashTime;
         _dashSpeed = dashSpeed;
@@ -37,7 +38,7 @@ public class DashAbility : Ability
 
         _agentVisual.EnableTrailRenderer();
         _casterMovementModule.DisableComponent();
-        _casterAnimator.PlayAbilityAnimation(Name);
+        _casterAnimator.PlayAbilityAnimation(AbilityName);
         
         _casterRigidBody.velocity = targetPosition.normalized * _dashSpeed;
     }

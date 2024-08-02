@@ -13,6 +13,7 @@ public class SummonAddsAbilityDataSO : AbilityDataSO
     {
         SummonAddsAbility summonAddsAbility = new SummonAddsAbility(caster,
                                                                     casterAnimation,
+                                                                    this,
                                                                     AbilityName,
                                                                     AbilityType,
                                                                     Cooldown,

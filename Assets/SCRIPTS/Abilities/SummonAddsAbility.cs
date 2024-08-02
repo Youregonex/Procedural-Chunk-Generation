@@ -12,6 +12,7 @@ public class SummonAddsAbility : Ability
 
     public SummonAddsAbility(AgentCoreBase caster,
                              AgentAnimation casterAnimator,
+                             AbilityDataSO abilityDataSO,
                              string name,
                              EAbilityType abilityType,
                              float cooldown,
@@ -19,7 +20,7 @@ public class SummonAddsAbility : Ability
                              int addsSummonPerCast,
                              int maxAddsCount,
                              List<AgentCoreBase> addsPrefabList,
-                             Action<Transform> callbackAction) : base(caster, casterAnimator, name, abilityType, cooldown, abilityParticles, callbackAction)
+                             Action<Transform> callbackAction) : base(caster, casterAnimator, abilityDataSO, name, abilityType, cooldown, abilityParticles, callbackAction)
     {
         _maxAddsCount = maxAddsCount;
         _addsSummonPerCast = addsSummonPerCast;

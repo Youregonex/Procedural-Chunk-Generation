@@ -15,6 +15,7 @@ MonoBehaviour:
   <AbilityName>k__BackingField: DASH
   <AbilityType>k__BackingField: 0
   <Cooldown>k__BackingField: 3
+  <AbilityIcon>k__BackingField: {fileID: 21300000, guid: 1839d94d707e0473d9ab127978a03f30, type: 3}
   <AbilityParticles>k__BackingField: {fileID: 0}
   <HasCallback>k__BackingField: 0
   <MaxDashTime>k__BackingField: 0.1

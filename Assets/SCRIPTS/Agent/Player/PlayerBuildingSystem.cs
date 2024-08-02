@@ -41,6 +41,7 @@ public class PlayerBuildingSystem : AgentMonobehaviourComponent
 
     public override void DisableComponent()
     {
+        _pendingBuildingItem.HidePendingBuildingItem();
         this.enabled = false;
     }
 

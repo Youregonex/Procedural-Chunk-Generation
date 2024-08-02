@@ -28,6 +28,12 @@ public class PlayerInput : AgentInput
         _playerInputActions.Player.Interact.performed += PlayerInputActions_Interact_performed;
     }
 
+    private void OnDisable()
+    {
+        if(_playerInputActions != null)
+            _playerInputActions.Player.Disable();
+    }
+
     public override Vector2 GetMovementVectorNormalized()
     {
         Vector2 movementVector = _playerInputActions.Player.Movement.ReadValue<Vector2>();

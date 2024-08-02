@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76b4666a10e27499ebf3a90fd1d0b766, type: 3}
+  m_Name: Shrine_EnemySpawn_Easy_Recipe
+  m_EditorClassIdentifier: 
+  <RecipeComponentsList>k__BackingField:
+  - componentItemDataSO: {fileID: 11400000, guid: 828283a221c7649ae9add73601c6ae2f, type: 2}
+    amountForCraft: 5
+  - componentItemDataSO: {fileID: 11400000, guid: f3e654d01aa554de88fae79f4b8b3a46, type: 2}
+    amountForCraft: 5
+  - componentItemDataSO: {fileID: 11400000, guid: b1f62aedb64b747048937ea452fccff5, type: 2}
+    amountForCraft: 5
+  <RecipeResult>k__BackingField: {fileID: 11400000, guid: ef81eb08a4f9c4868aa5a43d6cb506ea, type: 2}

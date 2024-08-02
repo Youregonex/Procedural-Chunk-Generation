@@ -7,7 +7,7 @@ public class AgentMovement : AgentMonobehaviourComponent
     [Header("Debug Fields")]
     [SerializeField] private AgentInput _agentInput;
     [SerializeField] private AgentAnimation _agentAnimation;
-    [SerializeField] private EnemyCore _agentCore;
+    [SerializeField] private AgentCoreBase _agentCore;
     [SerializeField] private AgentStats _agentStats;
     [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private bool _canMove = true;
@@ -17,7 +17,7 @@ public class AgentMovement : AgentMonobehaviourComponent
 
     private void Awake()
     {
-        _agentCore = GetComponent<EnemyCore>();
+        _agentCore = GetComponent<AgentCoreBase>();
     }
 
     private void Start()

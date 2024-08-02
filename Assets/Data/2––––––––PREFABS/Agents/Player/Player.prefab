@@ -210,7 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad556376dbd314b229d9a2b696feddfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 0
+  <DisableOnDeath>k__BackingField: 1
   _agentCore: {fileID: 0}
   _agentInput: {fileID: 0}
   _itemSpriteRenderer: {fileID: 9092679858966837874}
@@ -470,7 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07632d2052af6483cb32bd0b0bcb1f82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 0
+  <DisableOnDeath>k__BackingField: 1
   _shadowGameObject: {fileID: 0}
   _trailRenderer: {fileID: 0}
   _agentCore: {fileID: 0}
@@ -488,7 +488,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2b79c60f97b54ec8a1e9d1e63b2c8e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 0
+  <DisableOnDeath>k__BackingField: 1
 --- !u!114 &6311971053885854840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -844,7 +844,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65ffbb7095bd04ac5a937d2752f45c40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 0
+  <DisableOnDeath>k__BackingField: 1
   _agentCore: {fileID: 0}
   _healthSystem: {fileID: 0}
   _hitboxCollider: {fileID: 0}
@@ -1000,10 +1000,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _availableCraftingRecipeList:
-  - {fileID: 11400000, guid: 1f92d2f93110c433ea5ee370bc3ccc2c, type: 2}
-  - {fileID: 11400000, guid: 8b5b11a7bf2624f0cb56824e7d90deaa, type: 2}
   - {fileID: 11400000, guid: ea1595aa22d7648c68c66ecdf282fa25, type: 2}
+  - {fileID: 11400000, guid: 89e0b79ed30ab4eb98f99ca479a0a2c8, type: 2}
+  - {fileID: 11400000, guid: 4ecaf2ee5bcff417eb998e2a395175b1, type: 2}
   - {fileID: 11400000, guid: f3506a9fae8ae4621b6444ef699c25e2, type: 2}
+  - {fileID: 11400000, guid: 8b5b11a7bf2624f0cb56824e7d90deaa, type: 2}
+  - {fileID: 11400000, guid: 1f92d2f93110c433ea5ee370bc3ccc2c, type: 2}
 --- !u!50 &5338156526390290287
 Rigidbody2D:
   serializedVersion: 4
@@ -1094,8 +1096,6 @@ MonoBehaviour:
   _rigidBody2D: {fileID: 5338156526390290287}
   _agentComponents: []
   _disableOnDeathComponents: []
-  _agentTargetDetectionZone: {fileID: 0}
-  _enemyBehaviour: {fileID: 0}
   _playerItemSelection: {fileID: 4418344960092735506}
   _playerBuildingSystem: {fileID: 5178569141562071873}
   _playerInteraction: {fileID: 6444002862003535754}
@@ -1114,14 +1114,14 @@ MonoBehaviour:
   <DisableOnDeath>k__BackingField: 0
   <MaxHealth>k__BackingField: 0
   <CurrentHealth>k__BackingField: 0
-  _destructionDelay: 0
+  _destructionDelay: 180
   _damagePopupPosition: {fileID: 9134585211035008253}
   _isDead: 0
   _agentCore: {fileID: 0}
   _agentAnimation: {fileID: 0}
   _hitbox: {fileID: 0}
   _vitalityToHealthRatio: 5
-  _initialHealth: 1000
+  _initialHealth: 25
   _agentStats: {fileID: 0}
 --- !u!114 &4418344960092735506
 MonoBehaviour:
@@ -1135,7 +1135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d33231c49af4e11bc2c0c51e9f9ceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 0
+  <DisableOnDeath>k__BackingField: 1
   _currentInventorySlot:
     _itemDataSO: {fileID: 0}
     _currentStackSize: -1
@@ -1151,7 +1151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14e89a98e374e48e2b4634601e650e3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 0
+  <DisableOnDeath>k__BackingField: 1
   _pendingBuildingItem: {fileID: 8749416624612113333}
   _buildingRange: 3
   _playerCore: {fileID: 0}
@@ -1169,7 +1169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17b08ffb64e8144098bb7542ab9c2a55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 0
+  <DisableOnDeath>k__BackingField: 1
   _abilityDataSOList:
   - {fileID: 11400000, guid: ffe2a87a8a282467ba0c5c2145a5ef0a, type: 2}
   _agentCore: {fileID: 0}
@@ -1299,7 +1299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28cceb7b9f4a548f9b316baeba616b60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 0
+  <DisableOnDeath>k__BackingField: 1
   _interactionCheckProximity: 0.5
   _playerCore: {fileID: 0}
   _agentMovement: {fileID: 0}

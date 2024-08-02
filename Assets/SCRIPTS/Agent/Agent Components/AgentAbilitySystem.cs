@@ -24,7 +24,7 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
         _currentAbility = null;
     }
 
-    protected void Start()
+    protected virtual void Start()
     {
         BuildAbilityCallbacks();
         BuildAbilities();
@@ -53,7 +53,7 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
 
     public void CastAbility(Ability ability, Vector2 targetPosition)
     {
-        StartCast(ability.Name.ToUpper(), targetPosition);
+        StartCast(ability.AbilityName.ToUpper(), targetPosition);
     }
 
     public void CastAbility(string abilityName, Vector2 targetPosition)
@@ -99,7 +99,7 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
         _abilityCallbacksDictionary.Add(abilityName, callback);
     }
 
-    protected void BuildAbilities()
+    protected virtual void BuildAbilities()
     {
         foreach(AbilityDataSO abilityDataSO in _abilityDataSOList)
         {
@@ -108,14 +108,13 @@ public class AgentAbilitySystem : AgentMonobehaviourComponent
             if(abilityDataSO.HasCallback)
             {
                 Action<Transform> abilityCallback = _abilityCallbacksDictionary[abilityDataSO.AbilityName.ToUpper()];
-
                 ability = abilityDataSO.BuildAbility(_agentCore, _agentCore.GetAgentComponent<AgentAnimation>(), abilityCallback);
             }
             else
                 ability = abilityDataSO.BuildAbility(_agentCore, _agentCore.GetAgentComponent<AgentAnimation>());
             
 
-            _abilityDictionary.Add(ability.Name.ToUpper(), ability);
+            _abilityDictionary.Add(ability.AbilityName.ToUpper(), ability);
         }
     }
 

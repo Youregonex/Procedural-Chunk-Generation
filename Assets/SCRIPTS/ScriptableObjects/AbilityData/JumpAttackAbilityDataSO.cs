@@ -12,6 +12,7 @@ public class JumpAttackAbilityDataSO : AbilityDataSO
     {
         JumpAttackAbility jumpAttackAbility = new JumpAttackAbility(caster,
                                                                     casterAnimation,
+                                                                    this,
                                                                     AbilityName,
                                                                     AbilityType,
                                                                     Cooldown,

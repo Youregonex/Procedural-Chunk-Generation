@@ -12,7 +12,7 @@ public class AgentAttackModule : AgentMonobehaviourComponent
     [SerializeField, HideInInspector] protected Tool _currentTool;
     [SerializeField, HideInInspector] protected ToolItemDataSO _currentToolItemDataSO;
     [SerializeField, HideInInspector] protected AgentInput _agentInput;
-    [SerializeField, HideInInspector] protected EnemyCore _agentCore;
+    [SerializeField, HideInInspector] protected AgentCoreBase _agentCore;
 
 
     public bool CanAttack
@@ -32,7 +32,7 @@ public class AgentAttackModule : AgentMonobehaviourComponent
 
     protected virtual void Awake()
     {
-        _agentCore = GetComponent<EnemyCore>();
+        _agentCore = GetComponent<AgentCoreBase>();
     }
 
     protected virtual void Start()

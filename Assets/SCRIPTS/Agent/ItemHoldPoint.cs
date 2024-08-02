@@ -3,7 +3,7 @@ using UnityEngine;
 public class ItemHoldPoint : AgentMonobehaviourComponent
 {
     [Header("Debug Fields")]
-    [SerializeField] protected EnemyCore _agentCore;
+    [SerializeField] protected AgentCoreBase _agentCore;
     [SerializeField] private AgentInput _agentInput;
 
     private Vector2 _aimPosition;
@@ -26,16 +26,20 @@ public class ItemHoldPoint : AgentMonobehaviourComponent
 
     public override void DisableComponent()
     {
-        this.enabled = false;
+        Debug.Log("Item Hold Point disabled");
+        enabled = false;
     }
 
     public override void EnableComponent()
     {
-        this.enabled = true;
+        enabled = true;
     }
 
     private void ManageItemHoldPointPosition()
     {
+        if (_agentCore.IsDead)
+            return;
+
         _aimPosition = _agentInput.GetAimPosition();
 
         _aimDirection = (_aimPosition - (Vector2)transform.position).normalized;

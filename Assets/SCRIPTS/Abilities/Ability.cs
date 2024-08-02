@@ -5,12 +5,14 @@ using System;
 public abstract class Ability
 {
     public event Action OnCastCompleted;
+    public event Action<Ability, float, float> OnCooldownTick;
 
     public AgentCoreBase Caster { get; protected set; }
-    public string Name { get; protected set; }
+    public string AbilityName { get; protected set; }
     public EAbilityType AbilityType { get; protected set; }
     public float Cooldown { get; protected set; }
     public GameObject AbilityParticles { get; private set; }
+    public AbilityDataSO AbilityDataSO { get; private set; }
 
     public float CurrentCooldown { get; protected set; }
     public bool IsCasting { get; protected set; }
@@ -23,6 +25,7 @@ public abstract class Ability
 
     public Ability(AgentCoreBase caster,
                    AgentAnimation casterAnimator,
+                   AbilityDataSO abilityDataSO,
                    string name,
                    EAbilityType abilityType,
                    float cooldown,
@@ -31,7 +34,8 @@ public abstract class Ability
     {
         Caster = caster;
         _casterAnimator = casterAnimator;
-        Name = name;
+        AbilityDataSO = abilityDataSO;
+        AbilityName = name;
         AbilityType = abilityType;
         Cooldown = cooldown;
         AbilityParticles = abilityParticles;
@@ -64,6 +68,7 @@ public abstract class Ability
         if (CurrentCooldown > 0 && !IsCasting)
         {
             CurrentCooldown -= Time.deltaTime;
+            OnCooldownTick?.Invoke(this, CurrentCooldown, Cooldown);
         }
     }
 

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameOverScreen : MonoBehaviour
@@ -19,7 +20,8 @@ public class GameOverScreen : MonoBehaviour
 
         _reloadSceneButton.onClick.AddListener(() =>
         {
-
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currentSceneName);
         });
     }
 

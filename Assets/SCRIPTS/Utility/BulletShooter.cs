@@ -57,7 +57,7 @@ public class BulletShooter
         float currentAngle;
         float angleStep;
 
-        TargetConeOfInfluence(targerTransform, out startAngle, out currentAngle, out angleStep);
+        CalculateTargetConeOfInfluence(targerTransform, out startAngle, out currentAngle, out angleStep);
 
         for (int i = 0; i < _burstCount; i++)
         {
@@ -89,14 +89,14 @@ public class BulletShooter
             yield return new WaitForSeconds(_timeBetweenBursts);
 
             if(_updateTargetPositionEveryBurst)
-                TargetConeOfInfluence(targerTransform, out startAngle, out currentAngle, out angleStep);
+                CalculateTargetConeOfInfluence(targerTransform, out startAngle, out currentAngle, out angleStep);
         }
 
         yield return new WaitForSeconds(_restTime);
         _isShooting = false;
     }
 
-    private void TargetConeOfInfluence(Transform targerTransform, out float startAngle, out float currentAngle, out float angleStep)
+    private void CalculateTargetConeOfInfluence(Transform targerTransform, out float startAngle, out float currentAngle, out float angleStep)
     {
         Vector2 targetPosition;
 

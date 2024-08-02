@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d92fc432b46e488eb8a8a74494a7f9f, type: 3}
+  m_Name: Shrine_Reward_Green
+  m_EditorClassIdentifier: 
+  <Id>k__BackingField: 0
+  <Name>k__BackingField: Shrine_Reward_Green
+  Description: Shrine_Reward_Green
+  <Icon>k__BackingField: {fileID: 1732396015, guid: 5f178c4820cdd44a3bd5f1162b7516ce, type: 3}
+  <ItemPrefab>k__BackingField: {fileID: 5920647730692348748, guid: 1f83e1aaa49d74ad2abadeb0073b5f1b, type: 3}
+  <MaxStackSize>k__BackingField: 99
+  <ItemType>k__BackingField: 1

@@ -1,6 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 using System;
+using Youregone.Utilities;
 
 public class JumpAttackAbility : Ability
 {
@@ -8,8 +9,6 @@ public class JumpAttackAbility : Ability
     private const string JUMP_ATTACK_LAND = "JUMP_ATTACK_LAND";
 
     private float _maxTimeInAir;
-    private float _impactDamage;
-    private float _impactRange;
     private float _airborneSpeed;
 
     private AgentMovement _casterMovementModule;
@@ -37,15 +36,11 @@ public class JumpAttackAbility : Ability
                              float cooldown,
                              GameObject abilityParticles,
                              float maxTimeInAir,
-                             float impactDamage,
-                             float impactRange,
                              float proximityThreshold,
                              float airborneSpeed,
                              Action<Transform> callbackAction) : base(caster, casterAnimator, name, abilityType, cooldown, abilityParticles, callbackAction)
     {
         _maxTimeInAir = maxTimeInAir;
-        _impactDamage = impactDamage;
-        _impactRange = impactRange;
         _proximityThreshold = proximityThreshold;
         _currentTimeInAir = _maxTimeInAir;
         _airborneSpeed = airborneSpeed;
@@ -69,7 +64,7 @@ public class JumpAttackAbility : Ability
             _enemyBehaviour.SetMovementDirection(movementDirection);
 
             if (_currentTimeInAir <= 0 ||
-                Vector2.Distance(Caster.transform.position, _enemyBehaviour.GetCurrentTargetTransform().position) <= _proximityThreshold)
+                Utility.InRange(_proximityThreshold, Caster.transform.position, _enemyBehaviour.GetCurrentTargetTransform().position))
             {
                 StartLanding();
             }
@@ -91,6 +86,7 @@ public class JumpAttackAbility : Ability
         if(_landing)
         {
             Caster.EnableCollider();
+            _agentHitbox.EnableComponent();
 
             _callbackAction?.Invoke(_enemyBehaviour.GetCurrentTargetTransform());
 
@@ -132,8 +128,6 @@ public class JumpAttackAbility : Ability
         _casterRigidBody.velocity = Vector2.zero;
 
         _casterMovementModule.DisableComponent();
-        _agentHitbox.EnableComponent();
-
         _casterAnimator.PlayAbilityAnimation(JUMP_ATTACK_LAND);
 
         _shadowTransform.DOScale(_shadowZeroScale, _shadowGrowthTime).OnComplete(() =>

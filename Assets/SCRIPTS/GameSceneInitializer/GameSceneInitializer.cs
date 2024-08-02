@@ -8,10 +8,13 @@ public class GameSceneInitializer : MonoBehaviour
     [SerializeField] private HotbarDisplay _playerHotbarDisplay;
     [SerializeField] private CinemachineVirtualCamera _playerFollorwCamera;
     [SerializeField] private CraftingWindowDisplay _playerCraftingWindowDisplay;
+    [SerializeField] private Transform _playerSpawn;
+    [SerializeField] private MouseItemSlot _mouseItemSlot;
 
     [Header("Debug Fields")]
     [SerializeField] private PlayerInventorySystem _playerInventory;
     [SerializeField] private PlayerCraftingSystem _playerCraftingSystem;
+    [SerializeField] private PlayerCore _playerCore;
 
     private void Awake()
     {
@@ -23,15 +26,17 @@ public class GameSceneInitializer : MonoBehaviour
         SetupPlayer();
         InitializeHotbarDisplay();
         InitializePlayerCraftingWindowDisplay();
+        InitializeMouseItemSlot();
     }
 
     private void SetupPlayer()
     {
-        GameObject player = Instantiate(_playerPrefab, Vector2.zero, Quaternion.identity);
+        GameObject player = Instantiate(_playerPrefab, _playerSpawn.position, Quaternion.identity);
         player.name = "Player";
 
         _playerFollorwCamera.Follow = player.transform;
 
+        _playerCore = player.GetComponent<PlayerCore>();
         _playerInventory = player.GetComponent<PlayerInventorySystem>();
         _playerCraftingSystem = player.GetComponent<PlayerCraftingSystem>();
     }
@@ -44,5 +49,10 @@ public class GameSceneInitializer : MonoBehaviour
     private void InitializePlayerCraftingWindowDisplay()
     {
         _playerCraftingWindowDisplay.InitializeCraftingWindowDisplay(_playerCraftingSystem, _playerInventory);
+    }
+
+    private void InitializeMouseItemSlot()
+    {
+        _mouseItemSlot.InitializeMouseItemSlot(_playerCore);
     }
 }

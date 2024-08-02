@@ -5,8 +5,6 @@ using System;
 public class JumpAttackAbilityDataSO : AbilityDataSO
 {
     [field: SerializeField] public float MaxTimeInAir { get; private set; }
-    [field: SerializeField] public float ImpactDamage { get; private set; }
-    [field: SerializeField] public float ImpactRange { get; private set; }
     [field: SerializeField] public float ProximityThreshold { get; private set; }
     [field: SerializeField] public float AirborneSpeed { get; private set; }
 
@@ -19,8 +17,6 @@ public class JumpAttackAbilityDataSO : AbilityDataSO
                                                                     Cooldown,
                                                                     AbilityParticles,
                                                                     MaxTimeInAir,
-                                                                    ImpactDamage,
-                                                                    ImpactRange,
                                                                     ProximityThreshold,
                                                                     AirborneSpeed,
                                                                     callbackAction);

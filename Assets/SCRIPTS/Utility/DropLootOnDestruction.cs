@@ -6,6 +6,7 @@ public class DropLootOnDestruction : MonoBehaviour
 {
     [Header("Config")]
     [SerializeField] private DropList _nodeResourceDrop;
+    [SerializeField] private bool _dropOneItemFromDropTable;
 
     [Header("Debug Fields")]
     [SerializeField] private List<Item> _lootList = new List<Item>();
@@ -43,6 +44,20 @@ public class DropLootOnDestruction : MonoBehaviour
     private Dictionary<ItemDropDataStruct, int> GetDropTable()
     {
         Dictionary<ItemDropDataStruct, int> dropTable = new Dictionary<ItemDropDataStruct, int>();
+
+        if(_dropOneItemFromDropTable)
+        {
+            int randomItem = Random.Range(0, _nodeResourceDrop.ItemDropList.Count);
+
+            ItemDropDataStruct dropItem = _nodeResourceDrop.ItemDropList[randomItem];
+
+            if (Random.Range(0f, 1f) > dropItem.dropChance)
+                return dropTable;
+
+            dropTable.Add(dropItem, Random.Range(dropItem.dropResourceAmountMin, dropItem.dropResourceAmountMax + 1));
+
+            return dropTable;
+        }
 
         foreach (ItemDropDataStruct resourceDrop in _nodeResourceDrop.ItemDropList)
         {

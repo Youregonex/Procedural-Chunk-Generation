@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
+using Youregone.Utilities;
 using UnityEngine;
 
 public class PlayerAttackModule : AgentAttackModule
@@ -50,7 +48,7 @@ public class PlayerAttackModule : AgentAttackModule
 
     protected override void Attack()
     {
-        if ((_currentWeapon == null && _currentTool == null) || !CanAttack || IsPointerOverUIObject())
+        if ((_currentWeapon == null && _currentTool == null) || !CanAttack || Utility.PointerOverUIObject())
             return;
 
         if(_currentWeapon != null)
@@ -58,15 +56,5 @@ public class PlayerAttackModule : AgentAttackModule
 
         if (_currentTool != null)
             _currentTool.Attack();
-    }
-
-    private bool IsPointerOverUIObject()
-    {
-        PointerEventData eventDataCurrentPosition = new(EventSystem.current);
-        eventDataCurrentPosition.position = Mouse.current.position.ReadValue();
-        List<RaycastResult> results = new();
-        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-
-        return results.Count > 0;
     }
 }

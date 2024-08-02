@@ -15,15 +15,15 @@ TagManager:
   - ChunkLayer
   - Item
   - Obstacle
-  - Player
+  - PlayerCollision
   - AgentDetection
   - PlayerObjectInteraction
   - Projectile
   - HitBox
-  - AgentCollider
+  - AgentCollision
   - PlayerItemInteraction
   - Interactable
-  - 
+  - PendingBuildingObject
   - 
   - 
   - 

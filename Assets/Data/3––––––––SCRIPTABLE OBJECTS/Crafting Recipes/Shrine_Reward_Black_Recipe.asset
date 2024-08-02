@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76b4666a10e27499ebf3a90fd1d0b766, type: 3}
+  m_Name: Shrine_Reward_Black_Recipe
+  m_EditorClassIdentifier: 
+  <RecipeComponentsList>k__BackingField:
+  - componentItemDataSO: {fileID: 11400000, guid: 61e6be31bbcc5472fa0dee5196fe1cd7, type: 2}
+    amountForCraft: 1
+  - componentItemDataSO: {fileID: 11400000, guid: d40629f0f798d43409a9d045f62a725e, type: 2}
+    amountForCraft: 1
+  - componentItemDataSO: {fileID: 11400000, guid: 6b74d43237ba342b69cebe991076f50f, type: 2}
+    amountForCraft: 1
+  - componentItemDataSO: {fileID: 11400000, guid: 701f9c13c6668454fb88a3f14b7db86a, type: 2}
+    amountForCraft: 1
+  - componentItemDataSO: {fileID: 11400000, guid: 867c89eecaea44ab4a813f0d3c4e1674, type: 2}
+    amountForCraft: 1
+  <RecipeResult>k__BackingField: {fileID: 11400000, guid: 8e63b4d846f2944e08fd8badb976074e, type: 2}

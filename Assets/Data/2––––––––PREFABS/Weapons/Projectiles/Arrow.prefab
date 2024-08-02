@@ -112,7 +112,7 @@ Transform:
   m_GameObject: {fileID: 6620764636720170158}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.317, y: -0.409, z: -0.011411126}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -131,11 +131,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 382d54e01f296419095778c56acdb2c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isPiercing: 1
   _projectileSpeed: 0
   _projectileRange: 0
   _movementVector: {x: 0, y: 0}
   _startPosition: {x: 0, y: 0}
   _rigidBody: {fileID: 0}
+  _senderFaction: 0
 --- !u!61 &4325936832582986481
 BoxCollider2D:
   m_ObjectHideFlags: 0

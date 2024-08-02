@@ -164,6 +164,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1680932731369957642, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6563005071157072120}
+    - targetCorrespondingSourceObject: {fileID: 1680932731369957642, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7055713961256273787}
   m_SourcePrefab: {fileID: 100100000, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
 --- !u!212 &3851714972855143086 stripped
 SpriteRenderer:
@@ -208,3 +211,18 @@ MonoBehaviour:
   _isActive: 0
   _wavesComplited: 0
   _bossSpawned: 0
+--- !u!114 &7055713961256273787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6513435489046022799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ca9609aad52f4b9c98e19d8a78cf4af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nodeResourceDrop: {fileID: 11400000, guid: a71b1c5afc89e4b6c90462a3c1d23c90, type: 2}
+  _dropOneItemFromDropTable: 1
+  _lootList: []

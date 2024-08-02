@@ -17,10 +17,10 @@ MonoBehaviour:
   <ProjectileDamage>k__BackingField: 5
   <ProjectileSpeed>k__BackingField: 5
   <StartingDistance>k__BackingField: 0.1
-  <BurstCount>k__BackingField: 5
+  <BurstCount>k__BackingField: 3
   <ProjectilesPerBurst>k__BackingField: 18
   <TimeBetweenShots>k__BackingField: 0
   <BurstAngleSpread>k__BackingField: 359
   <TimeBetweenBursts>k__BackingField: 0.3
   <RestTime>k__BackingField: 1
-  <UpdateTargetPositionEveryBurst>k__BackingField: 0
+  <UpdateTargetPositionEveryBurst>k__BackingField: 1

@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using Youregone.BehaviourTrees;
+using Youregone.Utilities;
 
 public class BaseEnemyBehaviour : AgentMonobehaviourComponent
 {
@@ -66,13 +67,6 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
 
     public Vector2 SetRoamPosition(Vector2 newRoamPosition) => CurrentRoamPosition = newRoamPosition;
     public Transform GetCurrentTargetTransform() => _currentTargetTransform;
-    public float GetDistanceToCurrentTarget()
-    {
-        if (_currentTargetTransform == null)
-            return 0;
-
-        return Vector2.Distance(transform.position, _currentTargetTransform.position);
-    }
 
     public void SetCurrentTarget(Transform newTarget) => _currentTargetTransform = newTarget;
 
@@ -103,7 +97,7 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
         if (_currentTargetTransform == null || _currentTargetTransform.GetComponent<AgentHealthSystem>().IsDead)
             _currentTargetTransform = TargetTransformList.Count == 0 ? null : TargetTransformList[0];
 
-        if (_currentTargetTransform != null && Vector2.Distance(transform.position, _currentTargetTransform.position) > ChaseRange)
+        if (_currentTargetTransform != null && !Utility.InRange(ChaseRange, transform.position, _currentTargetTransform.position))
             _currentTargetTransform = null;
     }
 

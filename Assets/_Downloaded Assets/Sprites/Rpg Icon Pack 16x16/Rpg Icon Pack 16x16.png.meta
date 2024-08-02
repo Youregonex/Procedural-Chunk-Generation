@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 20
+  spritePixelsToUnits: 22
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -249,7 +249,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_6
+      name: Shrine_Reward_Black
       rect:
         serializedVersion: 2
         x: 96
@@ -270,7 +270,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_7
+      name: Shrine_Reward_Green
       rect:
         serializedVersion: 2
         x: 112
@@ -291,7 +291,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_8
+      name: Shrine_Reward_Blue
       rect:
         serializedVersion: 2
         x: 128
@@ -312,7 +312,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_9
+      name: Shrine_Reward_Yellow
       rect:
         serializedVersion: 2
         x: 144
@@ -333,7 +333,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_10
+      name: Shrine_Reward_Red
       rect:
         serializedVersion: 2
         x: 160
@@ -354,7 +354,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_11
+      name: Shrine_Reward_Cyan
       rect:
         serializedVersion: 2
         x: 176
@@ -3037,7 +3037,6 @@ TextureImporter:
       Ore_Resource_Yellow: -367902558
       Rpg Icon Pack 16x16_0: -463663341
       Rpg Icon Pack 16x16_1: 493336628
-      Rpg Icon Pack 16x16_10: -53624574
       Rpg Icon Pack 16x16_100: -2080865078
       Rpg Icon Pack 16x16_101: -53560267
       Rpg Icon Pack 16x16_102: 1535780670
@@ -3048,7 +3047,6 @@ TextureImporter:
       Rpg Icon Pack 16x16_107: -1771585083
       Rpg Icon Pack 16x16_108: -1661787161
       Rpg Icon Pack 16x16_109: -902132412
-      Rpg Icon Pack 16x16_11: 2072294571
       Rpg Icon Pack 16x16_110: -237711629
       Rpg Icon Pack 16x16_111: -1128967367
       Rpg Icon Pack 16x16_112: 1198754183
@@ -3125,7 +3123,6 @@ TextureImporter:
       Rpg Icon Pack 16x16_57: -1089372877
       Rpg Icon Pack 16x16_58: -739848314
       Rpg Icon Pack 16x16_59: 2095107079
-      Rpg Icon Pack 16x16_6: -1026311187
       Rpg Icon Pack 16x16_60: 2115035674
       Rpg Icon Pack 16x16_62: -801426787
       Rpg Icon Pack 16x16_63: 744226450
@@ -3134,7 +3131,6 @@ TextureImporter:
       Rpg Icon Pack 16x16_67: -314185193
       Rpg Icon Pack 16x16_68: -649854474
       Rpg Icon Pack 16x16_69: -642335089
-      Rpg Icon Pack 16x16_7: 1732396015
       Rpg Icon Pack 16x16_70: 1807024706
       Rpg Icon Pack 16x16_71: 244583968
       Rpg Icon Pack 16x16_72: -1147357824
@@ -3145,7 +3141,6 @@ TextureImporter:
       Rpg Icon Pack 16x16_77: -319529313
       Rpg Icon Pack 16x16_78: 1765706120
       Rpg Icon Pack 16x16_79: -2104968938
-      Rpg Icon Pack 16x16_8: -1022387195
       Rpg Icon Pack 16x16_80: 840086660
       Rpg Icon Pack 16x16_81: 1157571477
       Rpg Icon Pack 16x16_82: 282580754
@@ -3156,7 +3151,6 @@ TextureImporter:
       Rpg Icon Pack 16x16_87: -862988949
       Rpg Icon Pack 16x16_88: 1872285603
       Rpg Icon Pack 16x16_89: -1353337279
-      Rpg Icon Pack 16x16_9: -1254845982
       Rpg Icon Pack 16x16_90: -230128934
       Rpg Icon Pack 16x16_91: -1749514051
       Rpg Icon Pack 16x16_92: -771970471
@@ -3167,6 +3161,12 @@ TextureImporter:
       Rpg Icon Pack 16x16_97: 1110090584
       Rpg Icon Pack 16x16_98: -1146699312
       Rpg Icon Pack 16x16_99: -1580544838
+      Shrine_Reward_Black: -1026311187
+      Shrine_Reward_Blue: -1022387195
+      Shrine_Reward_Cyan: 2072294571
+      Shrine_Reward_Green: 1732396015
+      Shrine_Reward_Red: -53624574
+      Shrine_Reward_Yellow: -1254845982
       Stone_Resource: -1455981689
       Wood_Resource: -1622323422
   mipmapLimitGroupName: 

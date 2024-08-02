@@ -2,20 +2,20 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using UnityEngine.EventSystems;
-using System.Collections.Generic;
+using Youregone.Utilities;
 
 public class MouseItemSlot : MonoBehaviour
 {
+    [Header("Config")]
     [SerializeField] private Image _itemImage;
     [SerializeField] private TextMeshProUGUI _itemQuantityText;
     [SerializeField] private RectTransform _quantityTextBackground;
     [SerializeField] private Vector2 _mouseItemOffset;
-    [SerializeField] private AgentMovement _playerMovement;
 
     [Header("Debug Fields")]
     [SerializeField] private ItemDataSO _itemDataSO;
     [SerializeField] private int _itemQuantity;
+    [SerializeField] private PlayerCore _playerCore;
 
     public int ItemQuantity => _itemQuantity;
     public ItemDataSO ItemdDataSO => _itemDataSO;
@@ -35,11 +35,11 @@ public class MouseItemSlot : MonoBehaviour
 
         transform.position = Mouse.current.position.ReadValue() + _mouseItemOffset;
 
-        if (Mouse.current.leftButton.wasPressedThisFrame && !IsPointerOverUIObject())
+        if (Mouse.current.leftButton.wasPressedThisFrame && !Utility.PointerOverUIObject())
         {
             Item item = _itemFactory.CreateItem(_itemDataSO, _itemQuantity);
 
-            item.transform.position = _playerMovement.transform.position;
+            item.transform.position = _playerCore.transform.position;
 
             Vector2 mouseMoveDirectionNormalized = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             item.MoveInDirection(mouseMoveDirectionNormalized);
@@ -50,6 +50,11 @@ public class MouseItemSlot : MonoBehaviour
     public void SetMouseSlot(InventorySlot slot)
     {
         SetMouseSlot(slot.ItemDataSO, slot.CurrentStackSize);
+    }
+
+    public void InitializeMouseItemSlot(PlayerCore playerCore)
+    {
+        _playerCore = playerCore;
     }
 
     public void SetMouseSlot(ItemDataSO itemDataSO, int itemQuantity)
@@ -85,16 +90,6 @@ public class MouseItemSlot : MonoBehaviour
         _itemDataSO = null;
         _itemQuantity = -1;
         _quantityTextBackground.gameObject.SetActive(false);
-    }
-
-    public static bool IsPointerOverUIObject()
-    {
-        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
-        eventDataCurrentPosition.position = Mouse.current.position.ReadValue();
-        List<RaycastResult> results = new();
-        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-
-        return results.Count > 0;
     }
 
     public bool SlotIsFull() => _itemQuantity == _itemDataSO.MaxStackSize;

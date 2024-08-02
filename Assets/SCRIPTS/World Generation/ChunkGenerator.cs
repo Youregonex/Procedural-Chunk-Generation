@@ -29,7 +29,7 @@ public class ChunkGenerator : MonoBehaviour
     [SerializeField] private float _persistance = .5f;
 
     [SerializeField] private float _lacunarity = 1f;
-    [SerializeField] private float _obstacleChance = .2f;
+    [SerializeField] private float _obstacleSpawnThreshold = .2f;
     [SerializeField] private int _seed;
     [SerializeField] Vector2 seamOffset = Vector2.zero;
     [SerializeField] private Noise.NormalizeMode _normalizeMode = Noise.NormalizeMode.Local;
@@ -163,16 +163,17 @@ public class ChunkGenerator : MonoBehaviour
         Vector3 chunkPosition = new Vector3(chunkCenter.x, chunkCenter.y, 0);
         Chunk chunk = Instantiate(_chunkPrefab, chunkPosition, Quaternion.identity);
 
-        chunk.transform.gameObject.name = $"Chunk  ({chunkCenter.x} | {chunkCenter.y})";
+        chunk.transform.gameObject.name = $"Chunk ({chunkCenter.x} | {chunkCenter.y})";
         chunk.transform.SetParent(_chunkParent);
-
         chunk.InitializeChunk(_chunkLayerCount);
 
         if (_chunkDictionary.ContainsKey(chunkCenter))
+        {
             Debug.LogError($"Chunk at {chunkCenter} already exists!");
+            return null;
+        }
 
         _chunkDictionary.Add(chunkCenter, chunk);
-
         chunk.GenerateChunkMap(_seed, _noiseScale, _octaves, _persistance, _lacunarity, chunkCenter + seamOffset, _normalizeMode);
 
         GenerateNodePositionMap(chunk);
@@ -182,7 +183,6 @@ public class ChunkGenerator : MonoBehaviour
     private void GenerateNodePositionMap(Chunk parentChunk)
     {
         List<Vector2Int> nodeValidPositions = GetNodeValidPositions(parentChunk);
-
         Dictionary<ResourceNodeSpawnStruct, int>  nodesToSpawnDictionary = GetNodesToSpawn(_nodeResourceSpawnConfigSO, out int nodeAmount);
 
         if (nodeAmount > nodeValidPositions.Count)
@@ -282,13 +282,10 @@ public class ChunkGenerator : MonoBehaviour
         {
             for (int y = chunkCenter.y - _chunkLayerCount; y <= chunkCenter.y + _chunkLayerCount; y++)
             {
-
                 float chunkNoiseMapValue = parentChunk.GetChunkMapValue(loopIndexX, loopIndexY);
-
                 Vector2Int tilPlacementPosition = new Vector2Int(x, y);
 
                 TileBase tile = GetRandomTile(chunkNoiseMapValue, out ETileType tileType);
-
                 TilePlacer.Instance.SetTileAtPosition(tile, tilPlacementPosition, tileType);
 
                 parentChunk.AddTileToChunk(tile, tilPlacementPosition, tileType);
@@ -324,7 +321,7 @@ public class ChunkGenerator : MonoBehaviour
 
     private ETileType GetTileTypeWithNoise(float tileNoise)
     {
-        if (tileNoise <= _obstacleChance)
+        if (tileNoise <= _obstacleSpawnThreshold)
         {
             return ETileType.Obstacle;
         }

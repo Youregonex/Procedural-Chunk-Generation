@@ -29,6 +29,11 @@ public class BossDevilBehaviour : BaseEnemyBehaviour
         base.Start();
     }
 
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
     protected override void ConstructBehaviourTree()
     {
         AgentSpawnedCondition agentSpawnedCondition = new AgentSpawnedCondition(this);

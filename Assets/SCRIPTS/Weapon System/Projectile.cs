@@ -1,7 +1,12 @@
 using UnityEngine;
+using Youregone.Utilities;
 
 public class Projectile : MonoBehaviour
 {
+    [Header("Config")]
+    [SerializeField] private bool _isPiercing;
+    [SerializeField] private int _pierceTargetAmount;
+
     [Header("Debug Fields")]
     [SerializeField] private float _projectileSpeed;
     [SerializeField] private float _projectileRange;
@@ -13,7 +18,7 @@ public class Projectile : MonoBehaviour
 
     private void Update()
     {
-        if (Vector2.Distance(transform.position, _startPosition) > _projectileRange)
+        if (!Utility.InRange(_projectileRange, _startPosition, transform.position))
             Destroy(gameObject);
     }
 
@@ -26,11 +31,17 @@ public class Projectile : MonoBehaviour
 
             if(ReferenceEquals(senderHitbox, damageable) || ReferenceEquals(senderCollider, collision) || damageable.GetFaction() == _senderFaction)
                 return;
-                
-            damageable.TakeDamage(_projectileDamage);
-        }
 
-        Destroy(gameObject);
+            damageable.TakeDamage(_projectileDamage);
+
+            if (!_isPiercing)
+                Destroy(gameObject);
+        }
+        else
+        {
+            if(!collision.transform.root.TryGetComponent(out AgentCoreBase agentcore))
+                Destroy(gameObject);
+        }
     }
 
     public void SetupProjectile(float projectileSpeed, float projectileRange, DamageStruct projectileDamage)

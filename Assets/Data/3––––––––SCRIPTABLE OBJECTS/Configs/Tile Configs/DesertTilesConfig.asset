@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b06fc9a22773482a955ab163e5e5d10, type: 3}
-  m_Name: TileConfig
+  m_Name: DesertTilesConfig
   m_EditorClassIdentifier: 
   <GroundTiles>k__BackingField:
   - {fileID: 11400000, guid: dcd457eb3fffb41c9bd95821dd1b2fe7, type: 2}

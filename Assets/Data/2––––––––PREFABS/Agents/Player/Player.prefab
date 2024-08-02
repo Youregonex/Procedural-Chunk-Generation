@@ -227,7 +227,8 @@ GameObject:
   - component: {fileID: 133182805641234844}
   - component: {fileID: 8749416624612113333}
   - component: {fileID: 378085069748465676}
-  m_Layer: 0
+  - component: {fileID: 2485910870558554691}
+  m_Layer: 18
   m_Name: PendingBuildingObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -271,6 +272,7 @@ MonoBehaviour:
   _currentBuildingItemDataSO: {fileID: 0}
   _buildingCollider: {fileID: 0}
   _buildingRange: 0
+  _mainCamera: {fileID: 0}
   <CanPlaceBuilding>k__BackingField: 0
 --- !u!61 &378085069748465676
 BoxCollider2D:
@@ -317,6 +319,33 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.0001, y: 0.0001}
   m_EdgeRadius: 0
+--- !u!50 &2485910870558554691
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3684719141866510062}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &3876072826969368225
 GameObject:
   m_ObjectHideFlags: 0
@@ -841,7 +870,7 @@ GameObject:
   - component: {fileID: 4418344960092735506}
   - component: {fileID: 5178569141562071873}
   - component: {fileID: 6491182790022526099}
-  m_Layer: 10
+  m_Layer: 15
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -974,6 +1003,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1f92d2f93110c433ea5ee370bc3ccc2c, type: 2}
   - {fileID: 11400000, guid: 8b5b11a7bf2624f0cb56824e7d90deaa, type: 2}
   - {fileID: 11400000, guid: ea1595aa22d7648c68c66ecdf282fa25, type: 2}
+  - {fileID: 11400000, guid: f3506a9fae8ae4621b6444ef699c25e2, type: 2}
 --- !u!50 &5338156526390290287
 Rigidbody2D:
   serializedVersion: 4
@@ -1234,7 +1264,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1704571943874735370}
   - component: {fileID: 6444002862003535754}
-  - component: {fileID: 4072846625774791178}
+  - component: {fileID: 8656021031247727322}
   m_Layer: 12
   m_Name: PlayerObjectInteraction
   m_TagString: Untagged
@@ -1274,8 +1304,8 @@ MonoBehaviour:
   _playerCore: {fileID: 0}
   _agentMovement: {fileID: 0}
   _playerInput: {fileID: 0}
---- !u!58 &4072846625774791178
-CircleCollider2D:
+--- !u!70 &8656021031247727322
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1306,9 +1336,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.16
+  m_Offset: {x: -0.07537317, y: -0.066261366}
+  m_Size: {x: 0.46459576, y: 0.3494394}
+  m_Direction: 1
 --- !u!1001 &6178545339903000850
 PrefabInstance:
   m_ObjectHideFlags: 0

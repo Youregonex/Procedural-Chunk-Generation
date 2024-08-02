@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using Youregone.Utilities;
 
 public class PendingBuildingItem : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class PendingBuildingItem : MonoBehaviour
 
         transform.position = GetMouseGridPosition();
 
-        if (CheckForCollisions() && InRange(_buildingRange, _playerTransform.position, GetMouseGridPosition()))
+        if (CheckForCollisions() && Utility.InRange(_buildingRange, _playerTransform.position, GetMouseGridPosition()))
         {
             CanPlaceBuilding = true;
             ChangeColor(true);
@@ -88,14 +89,6 @@ public class PendingBuildingItem : MonoBehaviour
             return true;
 
         return false;
-    }
-
-    bool InRange(float range, Vector2 v1, Vector2 v2)
-    {
-        var dx = v1.x - v2.x;
-        var dy = v1.y - v2.y;
-
-        return dx * dx + dy * dy < range * range;
     }
 
     private void ChangeColor(bool canBuild)

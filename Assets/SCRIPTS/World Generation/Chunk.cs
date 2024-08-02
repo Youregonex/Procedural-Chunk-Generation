@@ -30,8 +30,8 @@ public class Chunk : MonoBehaviour
     [SerializeField] private List<TileData> _chunkTilesList = new List<TileData>();
 
     public Dictionary<Vector2Int, ResourceNode> NodePositionMapDictionary => _nodePositionMapDictionary;
-    public List<Vector2Int> NeighbourChunkList => _neighbourChunkList;
     public Dictionary<Vector2Int, ResourceNode> ChunkObjectDictionary => _chunkNodeDictionary;
+    public List<Vector2Int> NeighbourChunkList => _neighbourChunkList;
     public List<TileData> ChunkTilesList => _chunkTilesList;
     public float[,] ChunkNoiseMapArray => _noiseMapArray;
 
@@ -63,23 +63,23 @@ public class Chunk : MonoBehaviour
         _sideLength = (_chunkLayerCount * 2) + 1;
 
         for (int x = (int)transform.position.x + -_sideLength; x <= (int)transform.position.x + _sideLength; x += _sideLength)
-        {
             for (int y = (int)transform.position.y + -_sideLength; y <= (int)transform.position.y + _sideLength; y += _sideLength)
             {
                 if (new Vector3(x, y) == transform.position)
                     continue;
 
                 Vector2Int neighbourChunkPosition = new Vector2Int(x, y);
-
                 _neighbourChunkList.Add(neighbourChunkPosition);
             }
-        }
     }
 
     public void GenerateChunkMap(int seed, float noiseScale, int octaves, float persistance, float lacunarity, Vector2 offset, Noise.NormalizeMode normalizeMode)
     {
         if (_noiseMapFilled)
+        {
+            Debug.LogError($"{gameObject.name} noise map is already filled!");
             return;
+        }
 
         _noiseMapArray = new float[_sideLength, _sideLength];
 

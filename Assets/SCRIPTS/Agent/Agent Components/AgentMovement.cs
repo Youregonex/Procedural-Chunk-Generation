@@ -28,6 +28,16 @@ public class AgentMovement : AgentMonobehaviourComponent
         _agentAnimation = _agentCore.GetAgentComponent<AgentAnimation>();
     }
 
+    private void FixedUpdate()
+    {
+        HandleMovement();
+    }
+
+    private void OnDisable()
+    {
+        _rigidBody.velocity = Vector2.zero;
+    }
+
     public override void DisableComponent()
     {
         _rigidBody.velocity = Vector2.zero;
@@ -37,13 +47,6 @@ public class AgentMovement : AgentMonobehaviourComponent
     public override void EnableComponent()
     {
         this.enabled = true;
-    }
-
-    public Vector2 GetCurrentDirection() => LastMovementDirection;
-
-    private void FixedUpdate()
-    {
-        HandleMovement();
     }
 
     private void HandleMovement()
@@ -63,7 +66,6 @@ public class AgentMovement : AgentMonobehaviourComponent
         EStats moveSpeedStat = EStats.MoveSpeed;
 
         _rigidBody.velocity = new Vector3(MovementDirection.x, MovementDirection.y, 0f) * _agentStats.GetCurrentStatValue(moveSpeedStat);
-
         _agentAnimation.ManageMoveAnimation(MovementDirection);
     }
 }

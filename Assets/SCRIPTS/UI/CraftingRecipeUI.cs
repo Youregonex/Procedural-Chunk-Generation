@@ -34,6 +34,11 @@ public class CraftingRecipeUI : MonoBehaviour
         });
     }
 
+    public void ResetScale()
+    {
+        transform.localScale = Vector2.one;
+    }
+
     public void SetCraftingRecipeUIData(CraftingRecipeSO craftingRecipeSO, bool craftPossible)
     {
         _currentCraftingRecipeSO = craftingRecipeSO;

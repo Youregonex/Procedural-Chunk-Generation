@@ -5,11 +5,13 @@ public class PlayerObjectInteraction : AgentMonobehaviourComponent
     [Header("Debug Fields")]
     [SerializeField] private PlayerCore _playerCore;
     [SerializeField] private IInteractable _currentInteractable;
+    [SerializeField] private AgentMovement _playerMovement;
     [SerializeField] private PlayerInput _playerInput;
 
     private void Awake()
     {
         _playerCore = transform.root.GetComponent<PlayerCore>();
+        _playerMovement = _playerCore.GetAgentComponent<AgentMovement>();
     }
 
     private void Start()
@@ -72,26 +74,9 @@ public class PlayerObjectInteraction : AgentMonobehaviourComponent
         if (_playerCore.IsDead)
             return;
 
-        Vector2 aimPosition = _playerInput.GetAimPosition();
+        Vector2 aimDirection = _playerMovement.LastMovementDirection;
 
-        Vector2 aimDirection = (aimPosition - (Vector2)transform.position).normalized;
         transform.right = aimDirection;
-
-        Vector3 localScale = transform.localScale;
-
-        if (aimDirection.x <= 0)
-        {
-            localScale.y = -1;
-        }
-        else if (aimDirection.x > 0)
-        {
-            localScale.y = 1;
-        }
-
-        if (aimDirection.y == 0)
-            localScale.y = 1;
-
-        transform.localScale = localScale;
     }
 
     private void PlayerInput_OnInteractKeyPressed()

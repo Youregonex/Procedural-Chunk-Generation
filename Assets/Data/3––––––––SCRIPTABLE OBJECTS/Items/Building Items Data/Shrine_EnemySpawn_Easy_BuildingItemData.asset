@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Id>k__BackingField: 0
   <Name>k__BackingField: Shrine_EnemySpawn_Easy_BuildingItemData
-  Description: Shrine_EnemySpawn_Easy_BuildingItemData
+  Description: Spawns waves of enemies
   <Icon>k__BackingField: {fileID: -343928407, guid: 18cfac4b2897a4e089a19671f1b1bb6c, type: 3}
   <ItemPrefab>k__BackingField: {fileID: 6149466425579451927, guid: 0ee638886ab864dfe82c98e39449b41a, type: 3}
   <MaxStackSize>k__BackingField: 5

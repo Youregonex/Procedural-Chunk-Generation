@@ -41,6 +41,7 @@ public class CraftingListDisplay : MonoBehaviour
         {
             _craftRecipeUIList[i].gameObject.SetActive(true);
             _activeRecipeUIList.Add(_craftRecipeUIList[i]);
+            _craftRecipeUIList[i].ResetScale();
 
             bool recipeCraftPossible = playerInventory.CanCraftRecipe(availableCrafts[i]);
 

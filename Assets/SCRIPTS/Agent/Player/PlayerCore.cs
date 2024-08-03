@@ -5,7 +5,7 @@ public class PlayerCore : AgentCoreBase
     [Header("Config")]
     [SerializeField] private PlayerItemSelection _playerItemSelection;
     [SerializeField] private PlayerBuildingSystem _playerBuildingSystem;
-    [SerializeField] private PlayerInteraction _playerInteraction;
+    [SerializeField] private PlayerObjectInteraction _playerInteraction;
    
 
     protected override void InitializeComponentList()

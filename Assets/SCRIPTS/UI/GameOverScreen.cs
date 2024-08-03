@@ -1,39 +1,61 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
+using TMPro;
+using Youregone.SceneLoader;
 
 public class GameOverScreen : MonoBehaviour
 {
-    [Header("Test")]
+    [Header("Config")]
     [SerializeField] private Image _gameOverImage;
     [SerializeField] private Button _exitButton;
-    [SerializeField] private Button _reloadSceneButton;
+    [SerializeField] private Button _mainMenuButton;
+    [SerializeField] private TextMeshProUGUI _gameOverText;
 
+    [Header("Animation")]
+    [SerializeField] private float _screenFadeInTime = 1.5f;
+
+    [Header("Debug Fields")]
     [SerializeField] private AgentHealthSystem _playerHealthSystem;
+
 
     private void Awake()
     {
+        _gameOverImage.gameObject.SetActive(false);
+        _gameOverText.gameObject.SetActive(false);
+        _mainMenuButton.gameObject.SetActive(false);
+
         _exitButton.onClick.AddListener(() =>
         {
             Application.Quit();
         });
 
-        _reloadSceneButton.onClick.AddListener(() =>
+        _mainMenuButton.onClick.AddListener(() =>
         {
-            string currentSceneName = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(currentSceneName);
+            SceneLoader.LoadScene(SceneLoader.ESceneName.MainMenu);
         });
+    }
+
+    private void OnDestroy()
+    {
+        _playerHealthSystem.OnDeath -= AgentHealthSystem_OnDeath;
     }
 
     public void Initialize(AgentHealthSystem playerHealthSystem)
     {
         _playerHealthSystem = playerHealthSystem;
-
         _playerHealthSystem.OnDeath += AgentHealthSystem_OnDeath;
     }
 
     private void AgentHealthSystem_OnDeath(AgentHealthSystem obj)
     {
+        _gameOverImage.color = new Color(0,0,0,0);
         _gameOverImage.gameObject.SetActive(true);
+
+        _gameOverImage.DOFade(.8f, _screenFadeInTime).OnComplete(() =>
+        {
+            _gameOverText.gameObject.SetActive(true);
+            _mainMenuButton.gameObject.SetActive(true);
+        });
     }
 }

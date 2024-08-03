@@ -16,6 +16,7 @@ public class Chunk : MonoBehaviour
     }
 
     [Header("Debug Fields")]
+    // Chunk data
     [SerializeField] private int _chunkLayerCount;
     [SerializeField] private bool _isLoaded;
     [SerializeField] private bool _isPlayerInRange;
@@ -24,16 +25,24 @@ public class Chunk : MonoBehaviour
     [SerializeField] private bool _noiseMapFilled;
     [SerializeField] private float[,] _noiseMapArray;
 
-    [SerializeField] private Dictionary<Vector2Int, ResourceNode> _nodePositionMapDictionary = new Dictionary<Vector2Int, ResourceNode>();
-    [SerializeField] private Dictionary<Vector2Int, ResourceNode> _chunkNodeDictionary = new Dictionary<Vector2Int, ResourceNode>();
+    // Collections
     [SerializeField] private List<Vector2Int> _neighbourChunkList = new List<Vector2Int>();
     [SerializeField] private List<TileData> _chunkTilesList = new List<TileData>();
+    [SerializeField] private Dictionary<Vector2Int, ResourceNode> _nodePositionMapDictionary = new Dictionary<Vector2Int, ResourceNode>();
+    [SerializeField] private Dictionary<Vector2Int, ResourceNode> _chunkNodeDictionary = new Dictionary<Vector2Int, ResourceNode>();
 
+    // Properties
     public Dictionary<Vector2Int, ResourceNode> NodePositionMapDictionary => _nodePositionMapDictionary;
     public Dictionary<Vector2Int, ResourceNode> ChunkObjectDictionary => _chunkNodeDictionary;
     public List<Vector2Int> NeighbourChunkList => _neighbourChunkList;
     public List<TileData> ChunkTilesList => _chunkTilesList;
     public float[,] ChunkNoiseMapArray => _noiseMapArray;
+
+    public bool IsLoaded => _isLoaded;
+    public bool IsFilled => _isFilled;
+    public bool IsLoadingTiles => _isLoadingTiles;
+    public bool IsNoiseMapFilled => _noiseMapFilled;
+    public bool IsPlayerInRange => _isPlayerInRange;
 
     private int _sideLength;
 
@@ -65,7 +74,7 @@ public class Chunk : MonoBehaviour
         for (int x = (int)transform.position.x + -_sideLength; x <= (int)transform.position.x + _sideLength; x += _sideLength)
             for (int y = (int)transform.position.y + -_sideLength; y <= (int)transform.position.y + _sideLength; y += _sideLength)
             {
-                if (new Vector3(x, y) == transform.position)
+                if (new Vector2(x, y) == (Vector2)transform.position)
                     continue;
 
                 Vector2Int neighbourChunkPosition = new Vector2Int(x, y);
@@ -73,7 +82,7 @@ public class Chunk : MonoBehaviour
             }
     }
 
-    public void GenerateChunkMap(int seed, float noiseScale, int octaves, float persistance, float lacunarity, Vector2 offset, Noise.NormalizeMode normalizeMode)
+    public void GenerateChunkNoiseMap(int seed, float noiseScale, int octaves, float persistance, float lacunarity, Vector2 offset, Noise.NormalizeMode normalizeMode)
     {
         if (_noiseMapFilled)
         {
@@ -128,13 +137,8 @@ public class Chunk : MonoBehaviour
         _chunkTilesList.Add(new TileData(tile, tilePosition, tileType));
     }
 
-    public bool IsFilled() => _isFilled;
-    public bool IsLoaded() => _isLoaded;
     public void FillChunk() => _isFilled = true;
-    public bool IsLoadingTiles() => _isLoadingTiles;
-    public bool NoiseMapFilled() => _noiseMapFilled;
-    public bool IsPlayerInRange() => _isPlayerInRange;
-    public float GetChunkMapValue(int x, int y) => _noiseMapArray[x, y];
+    public float GetChunkNoiseMapValueWithXY(int x, int y) => _noiseMapArray[x, y];
     public Vector2Int GetChunkPositionVector2Int() => new Vector2Int((int)transform.position.x, (int)transform.position.y);
 
     public void StartLoadingTiles()

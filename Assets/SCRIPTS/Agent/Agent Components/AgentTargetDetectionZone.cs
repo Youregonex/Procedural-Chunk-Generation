@@ -43,12 +43,11 @@ public class AgentTargetDetectionZone : AgentMonobehaviourComponent
     private void DetectTargets()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, _detectionRadius);
-
         List<Transform> validTargets = new List<Transform>();
 
         foreach(Collider2D collider in colliders)
         {
-            EnemyCore agentCore = collider.GetComponent<EnemyCore>();
+            AgentCoreBase agentCore = collider.GetComponent<AgentCoreBase>();
 
             if (agentCore != null && agentCore.GetFaction() != _agentCore.GetFaction())
                 validTargets.Add(collider.transform);

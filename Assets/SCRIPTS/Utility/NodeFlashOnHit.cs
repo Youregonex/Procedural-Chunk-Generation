@@ -7,12 +7,12 @@ public class NodeFlashOnHit : FlashOnHit
 
     private void Start()
     {
-        _nodeHealthSystem.OnGather += NodeHealthSystem_OnGather;
+        _nodeHealthSystem.OnDamageTaken += NodeHealthSystem_OnGather;
     }
 
     private void OnDestroy()
     {
-        _nodeHealthSystem.OnGather -= NodeHealthSystem_OnGather;
+        _nodeHealthSystem.OnDamageTaken -= NodeHealthSystem_OnGather;
     }
 
     private void NodeHealthSystem_OnGather(GatherStruct gatherStruct)

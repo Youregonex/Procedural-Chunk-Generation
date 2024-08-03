@@ -1,14 +1,10 @@
 using UnityEngine;
 
-public class PlayerInteraction : AgentMonobehaviourComponent
+public class PlayerObjectInteraction : AgentMonobehaviourComponent
 {
-    [Header("Config")]
-    [SerializeField, Range(0.1f, 1f)] private float _interactionCheckProximity = .5f;
-
     [Header("Debug Fields")]
     [SerializeField] private PlayerCore _playerCore;
     [SerializeField] private IInteractable _currentInteractable;
-    [SerializeField] private AgentMovement _agentMovement;
     [SerializeField] private PlayerInput _playerInput;
 
     private void Awake()
@@ -18,7 +14,6 @@ public class PlayerInteraction : AgentMonobehaviourComponent
 
     private void Start()
     {
-        _agentMovement = _playerCore.GetAgentComponent<AgentMovement>();
         _playerInput = _playerCore.GetAgentComponent<PlayerInput>();
 
         _playerInput.OnInteractKeyPressed += PlayerInput_OnInteractKeyPressed;
@@ -26,7 +21,7 @@ public class PlayerInteraction : AgentMonobehaviourComponent
 
     private void Update()
     {
-        transform.localPosition = _agentMovement.LastMovementDirection * _interactionCheckProximity;
+        ManageInteractionColliderAngle();
     }
 
     private void OnDestroy()
@@ -38,6 +33,12 @@ public class PlayerInteraction : AgentMonobehaviourComponent
     {
         if(collision.transform.root.TryGetComponent(out IInteractable interactable))
         {
+            if (_currentInteractable != null)
+            {
+                _currentInteractable.UnhighlightInteractable();
+                _currentInteractable.StopInteraction();
+            }
+
             _currentInteractable = interactable;
             _currentInteractable.HighlightInteractable();
         }
@@ -64,6 +65,33 @@ public class PlayerInteraction : AgentMonobehaviourComponent
     public override void EnableComponent()
     {
         this.enabled = true;
+    }
+
+    private void ManageInteractionColliderAngle()
+    {
+        if (_playerCore.IsDead)
+            return;
+
+        Vector2 aimPosition = _playerInput.GetAimPosition();
+
+        Vector2 aimDirection = (aimPosition - (Vector2)transform.position).normalized;
+        transform.right = aimDirection;
+
+        Vector3 localScale = transform.localScale;
+
+        if (aimDirection.x <= 0)
+        {
+            localScale.y = -1;
+        }
+        else if (aimDirection.x > 0)
+        {
+            localScale.y = 1;
+        }
+
+        if (aimDirection.y == 0)
+            localScale.y = 1;
+
+        transform.localScale = localScale;
     }
 
     private void PlayerInput_OnInteractKeyPressed()

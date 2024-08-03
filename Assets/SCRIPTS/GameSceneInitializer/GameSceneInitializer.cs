@@ -5,7 +5,7 @@ public class GameSceneInitializer : MonoBehaviour
 {
     [Header("Player Config")]
     [SerializeField] private GameObject _playerPrefab;
-    [SerializeField] private CinemachineVirtualCamera _playerFollorwCamera;
+    [SerializeField] private CinemachineVirtualCamera _playerFollowCamera;
     [SerializeField] private Transform _playerSpawn;
 
     [Header("UI Config")]
@@ -15,6 +15,7 @@ public class GameSceneInitializer : MonoBehaviour
     [SerializeField] private PlayerHealthbarUI _playerHealthbarUI;
     [SerializeField] private AbilityCooldownUIDisplay _abilityCooldownUIDisplay;
     [SerializeField] private GameOverScreen _gameOverScreen;
+    [SerializeField] private PreloadScreen _preloadScreen;
 
     [Header("Debug Fields")]
     [SerializeField] private PlayerInventorySystem _playerInventory;
@@ -30,6 +31,8 @@ public class GameSceneInitializer : MonoBehaviour
 
     private void SetupScene()
     {
+        InitializePreloadScreen();
+
         SetupPlayer();
         InitializHotbar();
         InitializePlayerCraftingWindowDisplay();
@@ -51,7 +54,7 @@ public class GameSceneInitializer : MonoBehaviour
         GameObject player = Instantiate(_playerPrefab, _playerSpawn.position, Quaternion.identity);
         player.name = "Player";
 
-        _playerFollorwCamera.Follow = player.transform;
+        _playerFollowCamera.Follow = player.transform;
 
         _playerAbilitySystem = player.GetComponent<PlayerAbilitySystem>();
         _playerCore = player.GetComponent<PlayerCore>();
@@ -88,5 +91,10 @@ public class GameSceneInitializer : MonoBehaviour
     private void InitializeGameOverScreen()
     {
         _gameOverScreen.Initialize(_playerHealthSystem);
+    }
+
+    private void InitializePreloadScreen()
+    {
+        _preloadScreen.Initialize();
     }
 }

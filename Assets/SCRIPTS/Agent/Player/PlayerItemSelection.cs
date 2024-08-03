@@ -95,6 +95,12 @@ public class PlayerItemSelection : AgentMonobehaviourComponent
 
     private void BuildingItemDataSO_OnBuildingItemPlaced()
     {
+        if(_currentInventorySlot.CurrentStackSize == 1)
+        {
+            BuildingItemDataSO buildingItemDataSO = _currentInventorySlot.ItemDataSO as BuildingItemDataSO;
+            buildingItemDataSO.OnBuildingItemPlaced -= BuildingItemDataSO_OnBuildingItemPlaced;
+        }
+
         _currentInventorySlot.RemoveFromStackSize(1);
     }
 

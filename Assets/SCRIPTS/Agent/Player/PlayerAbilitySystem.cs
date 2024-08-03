@@ -57,4 +57,9 @@ public class PlayerAbilitySystem : AgentAbilitySystem
             _abilityDictionary.Add(ability.AbilityName.ToUpper(), ability);
         }
     }
+
+    private void RemoveAbility()
+    {
+        OnAbilityRemoved?.Invoke(null, null); // TODO: Remove ability system
+    }
 }

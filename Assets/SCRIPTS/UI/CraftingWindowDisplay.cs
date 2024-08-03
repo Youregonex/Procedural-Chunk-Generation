@@ -24,6 +24,8 @@ public class CraftingWindowDisplay : MonoBehaviour
 
         _craftingListDisplay.OnCraftRecipeDetailsDisplayRequested += CraftListDisplay_OnCraftRecipeDetailsDisplayRequested;
         _playerInventorySystem.OnInventoryContentChanged += PlayerInventorySystem_OnInventoryContentChanged;
+
+        _craftingDetailsDisplay.Initialize(_playerInventorySystem);
     }
 
     public void DisplayCraftingWindow()
@@ -34,7 +36,7 @@ public class CraftingWindowDisplay : MonoBehaviour
         _craftingListDisplay.DisplayCraftingRecipes(_playerCraftingSystem.GetAvailableCraftingRecipes(), _playerInventorySystem);
 
         _craftingDetailsDisplay.gameObject.SetActive(true);
-        _craftingDetailsDisplay.DisplayCraftingDetailsWindow();
+        _craftingDetailsDisplay.ShowCraftingDetailsWindow();
     }
 
     public void HideCraftingWindow()

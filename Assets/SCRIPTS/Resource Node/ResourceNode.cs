@@ -20,15 +20,15 @@ public class ResourceNode : MonoBehaviour
 
     private void Start()
     {
-        _nodeHealthSystem.OnDepletion += NodeHealthSystem_OnDepletion;
+        _nodeHealthSystem.OnDeath += NodeHealthSystem_OnDeath;
     }
 
     private void OnDestroy()
     {
-        _nodeHealthSystem.OnDepletion -= NodeHealthSystem_OnDepletion;
+        _nodeHealthSystem.OnDeath -= NodeHealthSystem_OnDeath;
     }
 
-    private void NodeHealthSystem_OnDepletion()
+    private void NodeHealthSystem_OnDeath()
     {
         OnDepletion?.Invoke(new Vector2Int((int)transform.position.x, (int)transform.position.y));
     }

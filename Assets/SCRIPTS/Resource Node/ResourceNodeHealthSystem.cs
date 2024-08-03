@@ -4,9 +4,9 @@ using System;
 
 public class ResourceNodeHealthSystem : MonoBehaviour
 {
-    public event Action<GatherStruct> OnGather;
+    public event Action<GatherStruct> OnDamageTaken;
     public event Action<int, int> OnHealthChanged;
-    public event Action OnDepletion;
+    public event Action OnDeath;
 
     [Header("Config")]
     [SerializeField] private int _maxTicks;
@@ -30,7 +30,7 @@ public class ResourceNodeHealthSystem : MonoBehaviour
 
         _currentTicks -= gatherStruct.ticksPerHit;
 
-        OnGather?.Invoke(gatherStruct);
+        OnDamageTaken?.Invoke(gatherStruct);
 
         if (_currentTicks <= 0)
             _currentTicks = 0;
@@ -39,7 +39,7 @@ public class ResourceNodeHealthSystem : MonoBehaviour
 
         if (_currentTicks == 0)
         {
-            OnDepletion?.Invoke();
+            OnDeath?.Invoke();
 
             DepleteNode();
         }

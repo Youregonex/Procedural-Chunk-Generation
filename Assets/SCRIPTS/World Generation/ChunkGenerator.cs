@@ -8,8 +8,6 @@ public class ChunkGenerator : MonoBehaviour
 {
     public static ChunkGenerator Instance { get; private set; }
 
-    private Dictionary<Vector2Int, Chunk> _chunkDictionary = new Dictionary<Vector2Int, Chunk>();
-
     [Header("Tile Setup")]
     [SerializeField] private TileConfigSO _tileConfigSO;
 
@@ -38,6 +36,8 @@ public class ChunkGenerator : MonoBehaviour
     [SerializeField] private bool _showGizmos = false;
     [SerializeField] private List<Chunk> _loadingChunks = new List<Chunk>();
 
+    private Dictionary<Vector2Int, Chunk> _chunkDictionary = new Dictionary<Vector2Int, Chunk>();
+
 
     private void Awake()
     {
@@ -45,8 +45,6 @@ public class ChunkGenerator : MonoBehaviour
             Destroy(gameObject);
 
         Instance = this;
-
-        //DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -94,7 +92,7 @@ public class ChunkGenerator : MonoBehaviour
     {
         Chunk enteredChunk = sender as Chunk;
 
-        if(!enteredChunk.IsFilled())
+        if(!enteredChunk.IsFilled)
         {
             StartCoroutine(FillChunkWithTilesCoroutine(enteredChunk));
         }
@@ -117,7 +115,7 @@ public class ChunkGenerator : MonoBehaviour
         Chunk exitChunk = sender as Chunk;
 
 
-        if (!_loadingChunks.Contains(exitChunk) && exitChunk.IsLoadingTiles())
+        if (!_loadingChunks.Contains(exitChunk) && exitChunk.IsLoadingTiles)
         {
             _loadingChunks.Add(exitChunk);
             exitChunk.OnFinishTileLoading += ExitChunk_OnFinishTileLoading;
@@ -142,7 +140,7 @@ public class ChunkGenerator : MonoBehaviour
     {
         Chunk chunk = e.chunk;
 
-        if (!chunk.IsPlayerInRange())
+        if (!chunk.IsPlayerInRange)
             UnloadChunk(chunk);
 
         chunk.OnFinishTileLoading -= ExitChunk_OnFinishTileLoading;
@@ -174,7 +172,7 @@ public class ChunkGenerator : MonoBehaviour
         }
 
         _chunkDictionary.Add(chunkCenter, chunk);
-        chunk.GenerateChunkMap(_seed, _noiseScale, _octaves, _persistance, _lacunarity, chunkCenter + seamOffset, _normalizeMode);
+        chunk.GenerateChunkNoiseMap(_seed, _noiseScale, _octaves, _persistance, _lacunarity, chunkCenter + seamOffset, _normalizeMode);
 
         GenerateNodePositionMap(chunk);
         return chunk;
@@ -224,7 +222,7 @@ public class ChunkGenerator : MonoBehaviour
 
     private List<Vector2Int> GetNodeValidPositions(Chunk parentChunk)
     {
-        if (!parentChunk.NoiseMapFilled())
+        if (!parentChunk.IsNoiseMapFilled)
         {
             Debug.LogError($"{parentChunk.name}'s noise map  wasn't filled!");
             return null;
@@ -240,7 +238,7 @@ public class ChunkGenerator : MonoBehaviour
         {
             for (int y = chunkCenter.y - _chunkLayerCount; y <= chunkCenter.y + _chunkLayerCount; y++)
             {
-                float chunkNoiseMapValue = parentChunk.GetChunkMapValue(loopIndexX, loopIndexY);
+                float chunkNoiseMapValue = parentChunk.GetChunkNoiseMapValueWithXY(loopIndexX, loopIndexY);
                 ETileType tileType = GetTileTypeWithNoise(chunkNoiseMapValue);
 
                 if (tileType == ETileType.Ground)
@@ -261,10 +259,10 @@ public class ChunkGenerator : MonoBehaviour
 
     private IEnumerator FillChunkWithTilesCoroutine(Chunk parentChunk)
     {
-        if (parentChunk.IsLoadingTiles())
+        if (parentChunk.IsLoadingTiles)
             yield break;
 
-        if (!parentChunk.NoiseMapFilled())
+        if (!parentChunk.IsNoiseMapFilled)
         {
             Debug.LogError($"{parentChunk.name}'s noise map  wasn't filled!");
             yield break;
@@ -282,7 +280,7 @@ public class ChunkGenerator : MonoBehaviour
         {
             for (int y = chunkCenter.y - _chunkLayerCount; y <= chunkCenter.y + _chunkLayerCount; y++)
             {
-                float chunkNoiseMapValue = parentChunk.GetChunkMapValue(loopIndexX, loopIndexY);
+                float chunkNoiseMapValue = parentChunk.GetChunkNoiseMapValueWithXY(loopIndexX, loopIndexY);
                 Vector2Int tilPlacementPosition = new Vector2Int(x, y);
 
                 TileBase tile = GetRandomTile(chunkNoiseMapValue, out ETileType tileType);

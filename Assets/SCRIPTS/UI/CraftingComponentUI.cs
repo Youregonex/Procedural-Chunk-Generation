@@ -19,12 +19,6 @@ public class CraftingComponentUI : MonoBehaviour
     public void SetCraftingComponentData(CraftingComponentStruct craftingComponent, int currentCraftCountAmount)
     {
         _currentCraftingComponent = craftingComponent;
-
-        UpdateCraftingComponentData(currentCraftCountAmount);
-    }
-
-    public void UpdateCraftingComponentData(int currentCraftCountAmount)
-    {
         _componentIcon.sprite = _currentCraftingComponent.componentItemDataSO.Icon;
 
         UpdateCraftingComponentAmountText(currentCraftCountAmount);

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Youregone.BehaviourTrees
 {
-    public class IdleToRoamNode : Node
+    public class IdleToRoamNode : BehaviourNode
     {
         public IdleToRoamNode(BaseEnemyBehaviour enemyBehaviour, float timeBetweenRoamMin, float timeBetweenRoamMax, Vector2 roamPositionOffsetMax, int nodePriority = 0) : base(nodePriority)
         {

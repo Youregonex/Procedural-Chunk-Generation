@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Youregone.BehaviourTrees;
 
@@ -6,7 +5,6 @@ public class DemonMeleeBehaviour : BaseEnemyBehaviour
 {
     [Header("Debug Fields")]
     [SerializeField] private AgentAbilitySystem _agentAbilitySystem;
-
 
     protected override void Start()
     {
@@ -17,38 +15,65 @@ public class DemonMeleeBehaviour : BaseEnemyBehaviour
 
     protected override void ConstructBehaviourTree()
     {
-        RoamPositionExistsCondition roamPositionExistsCondition = new RoamPositionExistsCondition(this);
-        RoamTimerExpiredCondition roamTimerExpiredCondition = new RoamTimerExpiredCondition(this, RoamTimeMax);
-        Inverter roamTimerExpiredConditionInverter = new Inverter(roamTimerExpiredCondition);
-        MoveToRoamPositionNode moveToRoamPositionNode = new MoveToRoamPositionNode(this);
-        Sequence roamSequence = new Sequence(new List<Node> { roamPositionExistsCondition, roamTimerExpiredConditionInverter, moveToRoamPositionNode });
+        Composite roamSequence =
+            _btBuilder.StartBuildingSequence()
+            .WithCondition(new RoamPositionExistsCondition(this))
+            .WithInverter(new Inverter(new RoamTimerExpiredCondition(this, RoamTimeMax)))
+            .WithBehaviour(new MoveToRoamPositionNode(this))
+            .Build();
 
-        IdleToRoamNode idleToRoamNode = new IdleToRoamNode(this, TimeToStartRoamMin, TimeToStartRoamMax, RoamPositionOffsetMax);
+        Composite idleToRoamSelector =
+            _btBuilder.StartBuildingSelector()
+            .WithBehaviour(new IdleToRoamNode(this, TimeToStartRoamMin, TimeToStartRoamMax, RoamPositionOffsetMax))
+            .Build();
 
-        TargetInRangeCondition targetInAttackRangeCondition = new TargetInRangeCondition(this, AttackRangeMax);
-        AttackOffCooldownCondition attackOffCooldownCondition = new AttackOffCooldownCondition(this);
-        AttackNode attackNode = new AttackNode(this, AttackDelayMin, AttackDelayMax);
-        Sequence attackSequnce = new Sequence(new List<Node> { targetInAttackRangeCondition, attackOffCooldownCondition, attackNode });
+        Composite attackSequnce =
+            _btBuilder.StartBuildingSequence()
+            .WithCondition(new TargetInRangeCondition(this, AttackRangeMax))
+            .WithCondition(new AttackOffCooldownCondition(this))
+            .WithBehaviour(new AttackNode(this, AttackDelayMin, AttackDelayMax))
+            .Build();
 
-        TargetInChaseRangeCondition targetInChaseRangeCondition = new TargetInChaseRangeCondition(this, ChaseRange);
-        ChaseNode chaseNode = new ChaseNode(this, AttackRangeMin, AttackRangeMax);
-        Sequence chaseSequence = new Sequence(new List<Node> { targetInChaseRangeCondition, chaseNode });
+        Composite chaseSequence =
+            _btBuilder.StartBuildingSequence()
+            .WithCondition(new TargetInRangeCondition(this, ChaseRange))
+            .WithBehaviour(new ChaseNode(this, AttackRangeMin, AttackRangeMax))
+            .Build();
 
-        Inverter targetInAttackRangeInvertor = new Inverter(targetInAttackRangeCondition);
-        AbilityOffCooldownCondition abilityOffCooldownCondition = new AbilityOffCooldownCondition(_agentAbilitySystem, "DASH");
-        CastDashToTargetNode castDashToTargetNode = new CastDashToTargetNode(this, "DASH", _agentAbilitySystem);
-        Sequence dashSequence = new Sequence(new List<Node>() { targetInAttackRangeInvertor, abilityOffCooldownCondition, castDashToTargetNode });
+        Composite dashSequence =
+            _btBuilder.StartBuildingSequence()
+            .WithInverter(new Inverter(new TargetInRangeCondition(this, AttackRangeMax)))
+            .WithCondition(new AbilityOffCooldownCondition(_agentAbilitySystem, "DASH"))
+            .WithBehaviour(new CastDashToTargetNode(this, "DASH", _agentAbilitySystem))
+            .Build();
 
-        TargetExistsCondition targetExistsCondition = new TargetExistsCondition(this);
-        Selector combatSelector = new Selector(new List<Node> { dashSequence, attackSequnce, chaseSequence });
-        Sequence combatSequence = new Sequence(new List<Node> { targetExistsCondition, combatSelector });
+        Composite combatSelector =
+            _btBuilder.StartBuildingSelector()
+            .WithSequence(dashSequence)
+            .WithSequence(attackSequnce)
+            .WithSequence(chaseSequence)
+            .Build();
 
-        AgentSpawnedCondition agentSpawnedCondition = new AgentSpawnedCondition(this);
-        Inverter agentSpawnedInverter = new Inverter(agentSpawnedCondition);
-        Sequence enemySpawnSequence = new Sequence(new List<Node> { agentSpawnedInverter, idleToRoamNode });
+        Composite combatSequence =
+            _btBuilder.StartBuildingSequence()
+            .WithCondition(new TargetExistsCondition(this))
+            .WithSelector(combatSelector)
+            .Build();
 
-        Selector treeRoot = new Selector(new List<Node> { enemySpawnSequence, combatSequence, roamSequence, idleToRoamNode });
+        Composite enemySpawnSequence =
+            _btBuilder.StartBuildingSequence()
+            .WithInverter(new Inverter(new AgentSpawnedCondition(this)))
+            .WithSelector(idleToRoamSelector)
+            .Build();
 
-        _behaviourTree = treeRoot;
+        Composite treeRoot =
+            _btBuilder.StartBuildingSelector()
+            .WithSequence(enemySpawnSequence)
+            .WithSequence(combatSequence)
+            .WithSequence(roamSequence)
+            .WithSequence(idleToRoamSelector)
+            .Build();
+
+        _behaviourTree = (Selector)treeRoot;
     }
 }

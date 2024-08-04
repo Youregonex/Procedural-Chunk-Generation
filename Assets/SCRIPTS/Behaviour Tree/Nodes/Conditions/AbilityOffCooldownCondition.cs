@@ -1,7 +1,7 @@
 
 namespace Youregone.BehaviourTrees
 {
-    public class AbilityOffCooldownCondition : Node
+    public class AbilityOffCooldownCondition : ConditionNode
     {
         private string _abilityName;
         private AgentAbilitySystem _agentAbilitySystem;
@@ -12,10 +12,9 @@ namespace Youregone.BehaviourTrees
             _abilityName = abilityName;
         }
 
-        public override ENodeState Evaluate()
+        protected override bool Predicate()
         {
-            return _agentAbilitySystem.IsOnCooldown(_abilityName) ? ENodeState.Failure : ENodeState.Success;
+            return !_agentAbilitySystem.IsOnCooldown(_abilityName);
         }
     }
-
 }

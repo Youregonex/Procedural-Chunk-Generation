@@ -2,21 +2,18 @@ using UnityEngine;
 
 namespace Youregone.BehaviourTrees
 {
-    public class RoamPositionExistsCondition : Node
+    public class RoamPositionExistsCondition : ConditionNode
     {
+        private BaseEnemyBehaviour _enemyBehaviour;
+
         public RoamPositionExistsCondition(BaseEnemyBehaviour enemyBehaviour, int nodePriority = 0) : base(nodePriority)
         {
             _enemyBehaviour = enemyBehaviour;
         }
 
-        private BaseEnemyBehaviour _enemyBehaviour;
-
-        public override ENodeState Evaluate()
+        protected override bool Predicate()
         {
-            _nodeState = _enemyBehaviour.CurrentRoamPosition != Vector2.zero ? ENodeState.Success : ENodeState.Failure;
-
-            return _nodeState;
+            return _enemyBehaviour.CurrentRoamPosition != Vector2.zero;
         }
     }
-
 }

@@ -1,5 +1,5 @@
 
-public struct GatherStruct : IImpactStruct
+public struct GatherStruct
 {
     public EToolType toolType;
     public int toolTier;

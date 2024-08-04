@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Youregone.BehaviourTrees
 {
-    public class CastFirstOffCooldownAbilityNode : Node
+    public class CastFirstOffCooldownAbilityNode : BehaviourNode
     {
         private AgentAbilitySystem _agentAbilitySystem;
 

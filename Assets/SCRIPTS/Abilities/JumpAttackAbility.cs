@@ -61,11 +61,11 @@ public class JumpAttackAbility : Ability
     {
         if(_inAir)
         {
-            Vector2 movementDirection = (_enemyBehaviour.GetCurrentTargetTransform().position - Caster.transform.position).normalized;
+            Vector2 movementDirection = (_enemyBehaviour.CurrentTargetTransform.position - Caster.transform.position).normalized;
             _enemyBehaviour.SetMovementDirection(movementDirection);
 
             if (_currentTimeInAir <= 0 ||
-                Utility.InRange(_proximityThreshold, Caster.transform.position, _enemyBehaviour.GetCurrentTargetTransform().position))
+                Utility.InRange(_proximityThreshold, Caster.transform.position, _enemyBehaviour.CurrentTargetTransform.position))
             {
                 StartLanding();
             }
@@ -89,7 +89,7 @@ public class JumpAttackAbility : Ability
             Caster.EnableCollider();
             _agentHitbox.EnableComponent();
 
-            _callbackAction?.Invoke(_enemyBehaviour.GetCurrentTargetTransform());
+            _callbackAction?.Invoke(_enemyBehaviour.CurrentTargetTransform);
 
             StopCast();
             _casterAnimator.OnAnimationEnded -= CasterAnimator_OnAnimationEnded;
@@ -98,7 +98,6 @@ public class JumpAttackAbility : Ability
 
         _inAir = true;
         _casterMovementModule.EnableComponent();
-
     }
 
     private void StartJumpingAttack()

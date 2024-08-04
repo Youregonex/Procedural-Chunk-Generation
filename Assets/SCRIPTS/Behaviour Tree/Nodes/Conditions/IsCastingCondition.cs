@@ -1,7 +1,7 @@
 
 namespace Youregone.BehaviourTrees
 {
-    public class IsCastingCondition : Node
+    public class IsCastingCondition : ConditionNode
     {
         private AgentAbilitySystem _agentAbilitySystem;
 
@@ -10,12 +10,9 @@ namespace Youregone.BehaviourTrees
             _agentAbilitySystem = agentAbilitySystem;
         }
 
-        public override ENodeState Evaluate()
+        protected override bool Predicate()
         {
-            _nodeState = _agentAbilitySystem.IsCastingAbility ? ENodeState.Success : ENodeState.Failure;
-
-            return _nodeState;
+            return _agentAbilitySystem.IsCastingAbility;
         }
     }
-
 }

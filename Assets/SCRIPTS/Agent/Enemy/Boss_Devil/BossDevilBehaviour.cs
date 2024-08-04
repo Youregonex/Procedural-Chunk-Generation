@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Youregone.BehaviourTrees;
 
@@ -36,35 +35,65 @@ public class BossDevilBehaviour : BaseEnemyBehaviour
 
     protected override void ConstructBehaviourTree()
     {
-        AgentSpawnedCondition agentSpawnedCondition = new AgentSpawnedCondition(this);
-        Inverter agentSpawnedConditionInverter = new Inverter(agentSpawnedCondition);
-        IdleToRoamNode idleToRoamNode = new IdleToRoamNode(this, TimeToStartRoamMin, TimeToStartRoamMax, RoamPositionOffsetMax);
-        Sequence spawnSequence = new Sequence(new List<Node> { agentSpawnedConditionInverter, idleToRoamNode });
+        Composite spawnSequence =
+            _btBuilder.StartBuildingSequence()
+            .WithInverter(new Inverter(new AgentSpawnedCondition(this)))
+            .WithBehaviour(new IdleToRoamNode(this, TimeToStartRoamMin, TimeToStartRoamMax, RoamPositionOffsetMax))
+            .Build();
 
-        TargetInRangeCondition targetInAttackRangeCondition = new TargetInRangeCondition(this, AttackRangeMax);
-        AnyAbilityOffCooldownCondition anyAbilityOffCooldownCondition = new AnyAbilityOffCooldownCondition(_agentAbilitySystem);
-        CastFirstOffCooldownAbilityNode castFirstOffCooldownAbilityNode = new CastFirstOffCooldownAbilityNode(_agentAbilitySystem);
-        Sequence attackSequence = new Sequence(new List<Node> { targetInAttackRangeCondition, anyAbilityOffCooldownCondition, castFirstOffCooldownAbilityNode });
+        Composite idleToRoamSelector =
+            _btBuilder.StartBuildingSelector()
+            .WithBehaviour(new IdleToRoamNode(this, TimeToStartRoamMin, TimeToStartRoamMax, RoamPositionOffsetMax))
+            .Build();
 
-        TargetInChaseRangeCondition targetInChaseRangeCondition = new TargetInChaseRangeCondition(this, ChaseRange);
-        ChaseNode chaseNode = new ChaseNode(this, AttackRangeMin, AttackRangeMax);
-        Sequence chaseSequence = new Sequence(new List<Node> { targetInChaseRangeCondition, chaseNode });
+        Composite attackSequence =
+            _btBuilder.StartBuildingSequence()
+            .WithCondition(new TargetInRangeCondition(this, AttackRangeMax))
+            .WithCondition(new AnyAbilityOffCooldownCondition(_agentAbilitySystem))
+            .WithBehaviour(new CastFirstOffCooldownAbilityNode(_agentAbilitySystem))
+            .Build();
 
-        IsCastingCondition isCastingCondition = new IsCastingCondition(_agentAbilitySystem);
-        TargetExistsCondition targetExistsCondition = new TargetExistsCondition(this);
-        Selector combatSelector = new Selector(new List<Node> { isCastingCondition, attackSequence, chaseSequence });
-        Sequence combatSequence = new Sequence(new List<Node> { targetExistsCondition, combatSelector });
+        Composite chaseSequence =
+            _btBuilder.StartBuildingSequence()
+            .WithCondition(new TargetInRangeCondition(this, ChaseRange))
+            .WithBehaviour(new ChaseNode(this, AttackRangeMin, AttackRangeMax))
+            .Build();
 
-        RoamPositionExistsCondition roamPositionExistsCondition = new RoamPositionExistsCondition(this);
-        RoamTimerExpiredCondition roamTimerExpiredCondition = new RoamTimerExpiredCondition(this, RoamTimeMax);
-        Inverter roamTimerExpiredConditionInverter = new Inverter(roamTimerExpiredCondition);
-        MoveToRoamPositionNode moveToRoamPositionNode = new MoveToRoamPositionNode(this);
-        Sequence roamSequence = new Sequence(new List<Node> { roamPositionExistsCondition, roamTimerExpiredConditionInverter, moveToRoamPositionNode });
+        Composite combatSelector =
+            _btBuilder.StartBuildingSelector()
+            .WithCondition(new IsCastingCondition(_agentAbilitySystem))
+            .WithSequence(attackSequence)
+            .WithSequence(chaseSequence)
+            .Build();
 
-        Inverter isCastingConditionInverter = new Inverter(isCastingCondition);
-        Sequence idleSequence = new Sequence(new List<Node> { isCastingConditionInverter, idleToRoamNode });
+        Composite combatSequence =
+            _btBuilder.StartBuildingSequence()
+            .WithCondition(new TargetExistsCondition(this))
+            .WithSelector(combatSelector)
+            .Build();
 
-        _behaviourTree = new Selector(new List<Node> {spawnSequence, combatSequence, roamSequence, idleSequence });
+        Composite roamSequence =
+            _btBuilder.StartBuildingSequence()
+            .WithCondition(new RoamPositionExistsCondition(this))
+            .WithInverter(new Inverter(new RoamTimerExpiredCondition(this, RoamTimeMax)))
+            .WithBehaviour(new MoveToRoamPositionNode(this))
+            .Build();
+
+        Composite idleSequence =
+            _btBuilder.StartBuildingSequence()
+            .WithInverter(new Inverter(new IsCastingCondition(_agentAbilitySystem)))
+            .WithSelector(idleToRoamSelector)
+            .Build();
+
+        Composite treeRoot =
+            _btBuilder.StartBuildingSelector()
+            .WithSequence(spawnSequence)
+            .WithSequence(combatSequence)
+            .WithSequence(roamSequence)
+            .WithSequence(idleSequence)
+            .Build();
+
+        _behaviourTree = (Selector)treeRoot;
     }
 
     protected override void OnDrawGizmos()

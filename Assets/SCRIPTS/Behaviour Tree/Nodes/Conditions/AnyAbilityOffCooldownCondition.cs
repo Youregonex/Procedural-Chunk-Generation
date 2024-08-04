@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Youregone.BehaviourTrees
 {
-    public class AnyAbilityOffCooldownCondition : Node
+    public class AnyAbilityOffCooldownCondition : ConditionNode
     {
         private AgentAbilitySystem _agentAbilitySystem;
 
@@ -21,6 +21,16 @@ namespace Youregone.BehaviourTrees
 
             return ENodeState.Failure;
         }
-    }
 
+        protected override bool Predicate()
+        {
+            foreach (KeyValuePair<string, Ability> keyValuePair in _agentAbilitySystem.AbilityDictionary)
+            {
+                if (!keyValuePair.Value.OnCooldown)
+                    return true;
+            }
+
+            return false;
+        }
+    }
 }

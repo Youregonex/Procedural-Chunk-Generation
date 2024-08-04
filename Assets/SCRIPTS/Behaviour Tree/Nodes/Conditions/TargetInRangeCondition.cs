@@ -1,8 +1,8 @@
-using UnityEngine;
+using Youregone.Utilities;
 
 namespace Youregone.BehaviourTrees
 {
-    public class TargetInRangeCondition : Node
+    public class TargetInRangeCondition : ConditionNode
     {
         private BaseEnemyBehaviour _enemyBehaviour;
         private float _range;
@@ -13,14 +13,11 @@ namespace Youregone.BehaviourTrees
             _range = range;
         }
 
-        public override ENodeState Evaluate()
+        protected override bool Predicate()
         {
-            _nodeState = Vector2.Distance(_enemyBehaviour.transform.position,
-                                          _enemyBehaviour.GetCurrentTargetTransform().position) <= _range ?
-                                                                                                           ENodeState.Success :
-                                                                                                           ENodeState.Failure;
-            return _nodeState;
+            return Utility.InRange(_range,
+                                   _enemyBehaviour.transform.position,
+                                   _enemyBehaviour.CurrentTargetTransform.position);
         }
     }
-
 }

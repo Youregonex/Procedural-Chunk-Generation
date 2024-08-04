@@ -1,7 +1,7 @@
 
 namespace Youregone.BehaviourTrees
 {
-    public class CastDashToTargetNode : Node
+    public class CastDashToTargetNode : BehaviourNode
     {
         protected string _abilityName;
         protected AgentAbilitySystem _agentAbilitySystem;

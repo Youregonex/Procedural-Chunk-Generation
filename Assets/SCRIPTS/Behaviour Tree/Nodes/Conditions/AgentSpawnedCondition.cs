@@ -1,18 +1,18 @@
 
 namespace Youregone.BehaviourTrees
 {
-    public class AgentSpawnedCondition : Node
+    public class AgentSpawnedCondition : ConditionNode
     {
+        private BaseEnemyBehaviour _enemyBehaviour;
+
         public AgentSpawnedCondition(BaseEnemyBehaviour enemyBehaviour, int nodePriority = 0) : base(nodePriority)
         {
             _enemyBehaviour = enemyBehaviour;
         }
 
-        private BaseEnemyBehaviour _enemyBehaviour;
-
-        public override ENodeState Evaluate()
+        protected override bool Predicate()
         {
-            return _enemyBehaviour.IsSpawned ? ENodeState.Success : ENodeState.Failure;
+            return _enemyBehaviour.IsSpawned;
         }
     }
 }

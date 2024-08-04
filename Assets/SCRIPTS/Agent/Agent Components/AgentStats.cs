@@ -14,12 +14,10 @@ public class AgentStats : AgentMonobehaviourComponent
         public float newValue;
     }
 
-    private Dictionary<EStats, Stat> _characterStatDictionary;
+    private Dictionary<EStats, Stat> _characterStatDictionary = new Dictionary<EStats, Stat>();
 
     private void Awake()
     {
-        _characterStatDictionary = new Dictionary<EStats, Stat>();
-
         InitializeStatDictionary();
     }
 

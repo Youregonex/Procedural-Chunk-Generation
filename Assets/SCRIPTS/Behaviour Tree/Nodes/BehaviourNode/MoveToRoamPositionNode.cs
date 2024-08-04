@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Youregone.BehaviourTrees
 {
-    public class MoveToRoamPositionNode : Node
+    public class MoveToRoamPositionNode : BehaviourNode
     {
         private BaseEnemyBehaviour _enemyBehaviour;
 

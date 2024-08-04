@@ -1,21 +1,18 @@
 
 namespace Youregone.BehaviourTrees
 {
-    public class AttackOffCooldownCondition : Node
+    public class AttackOffCooldownCondition : ConditionNode
     {
+        private BaseEnemyBehaviour _enemyBehaviour;
+
         public AttackOffCooldownCondition(BaseEnemyBehaviour enemyBehaviour, int nodePriority = 0) : base(nodePriority)
         {
             _enemyBehaviour = enemyBehaviour;
         }
 
-        private BaseEnemyBehaviour _enemyBehaviour;
-
-        public override ENodeState Evaluate()
+        protected override bool Predicate()
         {
-            _nodeState = _enemyBehaviour.GetAttackCooldown() <= 0 ? ENodeState.Success : ENodeState.Failure;
-
-            return _nodeState;
+            return _enemyBehaviour.GetAttackCooldown() <= 0;
         }
     }
-
 }

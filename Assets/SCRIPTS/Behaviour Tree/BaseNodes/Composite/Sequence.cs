@@ -2,14 +2,14 @@ using System.Collections.Generic;
 
 namespace Youregone.BehaviourTrees
 {
-    public class Sequence : Node
+    public class Sequence : Composite
     {
+        public Sequence(int nodePriority = 0) : base(nodePriority) { }
+
         public Sequence(List<Node> childNodes, int nodePriority = 0) : base(nodePriority)
         {
             _childNodes = childNodes;
         }
-
-        protected List<Node> _childNodes = new List<Node>();
 
         public override ENodeState Evaluate()
         {

@@ -1,19 +1,18 @@
 
 namespace Youregone.BehaviourTrees
 {
-    public class TargetExistsCondition : Node
+    public class TargetExistsCondition : ConditionNode
     {
+        private BaseEnemyBehaviour _enemyBehaviour;
+
         public TargetExistsCondition(BaseEnemyBehaviour enemyBehaviour, int nodePriority = 0) : base(nodePriority)
         {
             _enemyBehaviour = enemyBehaviour;
         }
 
-        private BaseEnemyBehaviour _enemyBehaviour;
-
-        public override ENodeState Evaluate()
+        protected override bool Predicate()
         {
-            return _enemyBehaviour.GetCurrentTargetTransform() != null ? ENodeState.Success : ENodeState.Failure;
+            return _enemyBehaviour.CurrentTargetTransform != null;
         }
     }
-
 }

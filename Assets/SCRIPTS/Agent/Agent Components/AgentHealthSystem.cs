@@ -1,12 +1,14 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
-public class AgentHealthSystem : AgentMonobehaviourComponent
+public class AgentHealthSystem : AgentMonobehaviourComponent, IContainLoot
 {
     public event Action<DamageStruct> OnDamageTaken;
     public event Action<float, float> OnHealthChanged;
     public event Action<AgentHealthSystem> OnDeath;
+    public event Action OnLootDrop;
 
     [field: Header("Config")]
     [field: SerializeField] public float MaxHealth { get; protected set; }
@@ -33,6 +35,11 @@ public class AgentHealthSystem : AgentMonobehaviourComponent
     {
         _agentAnimation = _agentCore.GetAgentComponent<AgentAnimation>();
         _hitbox = _agentCore.GetAgentComponent<AgentHitbox>();
+    }
+
+    public void FillLootList(List<Item> lootList)
+    {
+
     }
 
     public override void DisableComponent()
@@ -83,7 +90,7 @@ public class AgentHealthSystem : AgentMonobehaviourComponent
     protected virtual void Die()
     {
         CurrentHealth = 0f;
-
+        OnLootDrop?.Invoke();
         _isDead = true;
         _hitbox.enabled = false;
 

@@ -1,23 +1,28 @@
 using UnityEngine;
 using System.Collections;
+using System;
+using DG.Tweening;
 
-[System.Serializable]
+[Serializable]
 public class Item : MonoBehaviour
 {
+    public event Action<Item> OnDestruction;
+
     [Header("Item Drop Config")]
     [SerializeField] private float _nodeDropMoveSpeed = 3f;
-    [SerializeField] private float _nodeDropMoveTime = .2f;
-
     [SerializeField] private float _agentDropMoveSpeed = 5f;
-    [SerializeField] private float _agentDropMoveTime = .3f;
+    [SerializeField] private float _moveDuration = .2f;
 
+    [Header("Drop Animation")]
+    [SerializeField] private float _scaleFrom = 2f;
+    [SerializeField] private float _dropAnimationTime = .5f;
     [SerializeField] private float _dropColliderDisableTime = .3f;
 
-    [SerializeField] private ItemDataSO _itemDataSO;
 
     [Header("Debug Fields")]
-    [SerializeField] private Rigidbody2D _rigidBody;
+    [SerializeField] private ItemDataSO _itemDataSO;
     [SerializeField] private int _itemQuantity;
+    [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private BoxCollider2D _capsuleCollider;
 
     public ItemDataSO ItemDataSO => _itemDataSO;
@@ -32,6 +37,11 @@ public class Item : MonoBehaviour
     private void OnEnable()
     {
         StartCoroutine(DisableColliderCoroutine());
+    }
+
+    private void OnDestroy()
+    {
+        OnDestruction?.Invoke(this);
     }
 
     public void DestroyItem()
@@ -50,28 +60,22 @@ public class Item : MonoBehaviour
         _itemQuantity = itemQuantity;
     }
 
-    public void Drop()
-    {
-        DropInRandomDirection();
-    }
-
     public void DropInRandomDirection()
     {
-        StartCoroutine(MoveInDirectionCoroutine(GetRandomMovementVector(), _nodeDropMoveSpeed, _nodeDropMoveTime));
+        StartCoroutine(MoveInDirectionCoroutine(GetRandomMovementVector(), _nodeDropMoveSpeed));
     }
 
-    public void MoveInDirection(Vector2 movementDirection)
+    public void DropInDirection(Vector2 movementDirection)
     {
-        Vector2 movementVectorNormalized = (movementDirection - (Vector2)transform.position).normalized;
-
-        StartCoroutine(MoveInDirectionCoroutine(movementVectorNormalized, _agentDropMoveSpeed, _agentDropMoveTime));
+        Vector2 moveDirectionNormalized = movementDirection.normalized;
+        StartCoroutine(MoveInDirectionCoroutine(moveDirectionNormalized, _agentDropMoveSpeed));
     }
 
-    private IEnumerator MoveInDirectionCoroutine(Vector2 movementVectorNormalized, float dropMoveSpeed, float moveDuration)
+    private IEnumerator MoveInDirectionCoroutine(Vector2 movementVectorNormalized, float dropMoveSpeed)
     {
         _rigidBody.velocity = movementVectorNormalized * dropMoveSpeed;
-
-        yield return new WaitForSeconds(moveDuration);
+        PlayDropAnimation();
+        yield return new WaitForSeconds(_moveDuration);
 
         _rigidBody.velocity = Vector2.zero;
     }
@@ -87,7 +91,11 @@ public class Item : MonoBehaviour
 
     private Vector2 GetRandomMovementVector()
     {
-        return Random.insideUnitCircle;
+        return UnityEngine.Random.insideUnitCircle;
     }
 
+    private void PlayDropAnimation()
+    {
+        transform.DOScale(_scaleFrom, _dropAnimationTime).From().SetEase(Ease.InOutBack);
+    }
 }

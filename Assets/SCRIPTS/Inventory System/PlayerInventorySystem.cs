@@ -71,9 +71,7 @@ public class PlayerInventorySystem : MonoBehaviour
 
         if(inventoryCantFit != 0)
         {
-            ItemFactory itemFactory = new ItemFactory();
-
-            itemFactory.CreateItem(craftingRecipeSO.RecipeResult, craftItemAmount);
+            WorldItemSpawner.Instance.SpawnItem(craftingRecipeSO.RecipeResult, craftItemAmount);
         }
     }
 

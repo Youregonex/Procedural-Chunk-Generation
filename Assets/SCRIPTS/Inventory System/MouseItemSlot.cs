@@ -20,8 +20,6 @@ public class MouseItemSlot : MonoBehaviour
     public int ItemQuantity => _itemQuantity;
     public ItemDataSO ItemdDataSO => _itemDataSO;
 
-    private ItemFactory _itemFactory = new ItemFactory();
-
 
     private void Start()
     {
@@ -37,12 +35,12 @@ public class MouseItemSlot : MonoBehaviour
 
         if (Mouse.current.leftButton.wasPressedThisFrame && !Utility.PointerOverUIObject())
         {
-            Item item = _itemFactory.CreateItem(_itemDataSO, _itemQuantity);
+            Item item = WorldItemSpawner.Instance.SpawnItem(_itemDataSO, _itemQuantity);
 
             item.transform.position = _playerCore.transform.position;
 
-            Vector2 mouseMoveDirectionNormalized = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-            item.MoveInDirection(mouseMoveDirectionNormalized);
+            Vector2 itemDropDirection = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            item.DropInDirection(itemDropDirection);
             ClearSlot();
         }
     }

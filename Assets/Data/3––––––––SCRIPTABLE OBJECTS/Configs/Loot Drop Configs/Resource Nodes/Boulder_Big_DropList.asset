@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca23b32ab694946a0a20c9b9e7af984f, type: 3}
+  m_Script: {fileID: 11500000, guid: 60136acaaf6a54bf5903334864fdac43, type: 3}
   m_Name: Boulder_Big_DropList
   m_EditorClassIdentifier: 
   <ItemDropList>k__BackingField:
@@ -21,3 +21,4 @@ MonoBehaviour:
     dropResourceAmountMin: 1
     dropResourceAmountMax: 2
     dropChance: 0.4
+  <DropOneFromList>k__BackingField: 0

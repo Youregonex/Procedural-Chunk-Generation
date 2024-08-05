@@ -48,13 +48,14 @@ MonoBehaviour:
   _weaponItemDataSO: {fileID: 11400000, guid: 24a878881cd3044a2bf39ef9b73dd736, type: 2}
   _weaponAnimation: {fileID: 5475347275811682380}
   _attackOrigin: {fileID: 6196943772299055142}
-  _attackRadius: 0
   _attackDamageMax: 0
   _attackDamageMin: 0
   _knockbackForce: 0
   _attackCooldownMax: 0
   _attackCooldownCurrent: 0
-  _weaponHolder: {fileID: 0}
+  _agentCore: {fileID: 0}
+  _agentAttackModule: {fileID: 0}
+  _itemHoldPoint: {fileID: 0}
   _showGizmos: 1
 --- !u!1 &5126940036593304015
 GameObject:

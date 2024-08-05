@@ -5,33 +5,36 @@ using UnityEngine;
 public class DropLootOnDestruction : MonoBehaviour
 {
     [Header("Config")]
-    [SerializeField] private DropList _nodeResourceDrop;
-    [SerializeField] private bool _dropOneItemFromDropTable;
+    [SerializeField] private DropListDataSO _nodeResourceDrop;
 
     [Header("Debug Fields")]
     [SerializeField] private List<Item> _lootList = new List<Item>();
 
+    private IContainLoot _lootContainer;
+
     private void Awake()
     {
-        StartCoroutine(GenerateResources());
+        _lootContainer = GetComponent<IContainLoot>();
+        _lootContainer.OnLootDrop += IContainLoot_OnLootDrop;
+        
+        StartCoroutine(GenerateLootList());
     }
 
-    private void OnDestroy()
+    private void IContainLoot_OnLootDrop()
     {
         DropLoot();
     }
 
-    private IEnumerator GenerateResources()
+    private IEnumerator GenerateLootList()
     {
-        Dictionary<ItemDropDataStruct, int> dropTable = GetDropTable();
+        Dictionary<ItemDataSO, int> dropTable = LootTableGenerator.GetDropTable(_nodeResourceDrop);
 
-        ItemFactory itemFactory = new ItemFactory();
-
-        foreach (KeyValuePair<ItemDropDataStruct, int> keyValuePair in dropTable)
+        foreach (KeyValuePair<ItemDataSO, int> keyValuePair in dropTable)
         {
             for (int i = 0; i < keyValuePair.Value; i++)
             {
-                Item item = itemFactory.CreateItemAtPosition(keyValuePair.Key.dropResource, transform.position);
+                Item item = WorldItemSpawner.Instance.SpawnNodeItem(keyValuePair.Key);
+                item.transform.position = transform.position;
                 item.transform.SetParent(transform);
                 _lootList.Add(item);
                 item.gameObject.SetActive(false);
@@ -39,35 +42,8 @@ public class DropLootOnDestruction : MonoBehaviour
 
             yield return null;
         }
-    }
 
-    private Dictionary<ItemDropDataStruct, int> GetDropTable()
-    {
-        Dictionary<ItemDropDataStruct, int> dropTable = new Dictionary<ItemDropDataStruct, int>();
-
-        if(_dropOneItemFromDropTable)
-        {
-            int randomItem = Random.Range(0, _nodeResourceDrop.ItemDropList.Count);
-
-            ItemDropDataStruct dropItem = _nodeResourceDrop.ItemDropList[randomItem];
-
-            if (Random.Range(0f, 1f) > dropItem.dropChance)
-                return dropTable;
-
-            dropTable.Add(dropItem, Random.Range(dropItem.dropResourceAmountMin, dropItem.dropResourceAmountMax + 1));
-
-            return dropTable;
-        }
-
-        foreach (ItemDropDataStruct resourceDrop in _nodeResourceDrop.ItemDropList)
-        {
-            if (Random.Range(0f, 1f) > resourceDrop.dropChance)
-                continue;
-
-            dropTable.Add(resourceDrop, Random.Range(resourceDrop.dropResourceAmountMin, resourceDrop.dropResourceAmountMax + 1));
-        }
-
-        return dropTable;
+        _lootContainer.FillLootList(_lootList);
     }
 
     private void DropLoot()
@@ -77,10 +53,12 @@ public class DropLootOnDestruction : MonoBehaviour
 
         foreach (Item item in _lootList)
         {
+            WorldItemSpawner.Instance.AddItem(item);
+
             item.transform.SetParent(null);
             item.gameObject.SetActive(true);
             item.enabled = true;
-            item.Drop();
+            item.DropInRandomDirection();
         }
 
         _lootList.Clear();

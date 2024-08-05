@@ -71,6 +71,7 @@ GameObject:
   - component: {fileID: 639650765066315052}
   - component: {fileID: 2716491587730172374}
   - component: {fileID: 5835343632778712873}
+  - component: {fileID: 5526964548711466879}
   m_Layer: 15
   m_Name: Devil_Boss
   m_TagString: Untagged
@@ -334,6 +335,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 059d1debb1bdc4cf78b53f2f36afb097, type: 2}
   _agentCore: {fileID: 0}
   _bossDevilBehaviour: {fileID: 98385478952016499}
+--- !u!114 &5526964548711466879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618886201950957018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db6a7b24fd78e4f0bb03ca72920a014c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <ID>k__BackingField: 
 --- !u!1 &713282732801586978
 GameObject:
   m_ObjectHideFlags: 0

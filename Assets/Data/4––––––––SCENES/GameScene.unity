@@ -652,6 +652,10 @@ PrefabInstance:
       propertyPath: _itemQuantity
       value: 500
       objectReference: {fileID: 0}
+    - target: {fileID: 1078059546286476654, guid: cbe5c1f5c1515461e8c13c5b54d6cf1b, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 2315113815333594182, guid: cbe5c1f5c1515461e8c13c5b54d6cf1b, type: 3}
       propertyPath: m_Name
       value: WoodItem
@@ -1948,6 +1952,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 106279577}
     m_Modifications:
+    - target: {fileID: 1078059546286476654, guid: cbe5c1f5c1515461e8c13c5b54d6cf1b, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 2315113815333594182, guid: cbe5c1f5c1515461e8c13c5b54d6cf1b, type: 3}
       propertyPath: m_Name
       value: WoodItem (2)
@@ -2422,6 +2430,10 @@ PrefabInstance:
     - target: {fileID: 4942140072769342023, guid: fe449143d64e8427d974f769b8eca256, type: 3}
       propertyPath: _itemQuantity
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4942140072769342023, guid: fe449143d64e8427d974f769b8eca256, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 7656371137063084911, guid: fe449143d64e8427d974f769b8eca256, type: 3}
       propertyPath: m_Name
@@ -3363,6 +3375,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StoneItem (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3983655111898587715, guid: 140dd409c796e43b6829be8ac6c9ca6c, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 7751994548152071265, guid: 140dd409c796e43b6829be8ac6c9ca6c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.519032
@@ -4077,6 +4093,10 @@ PrefabInstance:
       propertyPath: _itemQuantity
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 687678475400028213, guid: 50fc8d80b931a463aa4362e512a8ec53, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 1788595759953397325, guid: 50fc8d80b931a463aa4362e512a8ec53, type: 3}
       propertyPath: m_IsTrigger
       value: 1
@@ -4130,6 +4150,51 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50fc8d80b931a463aa4362e512a8ec53, type: 3}
+--- !u!1 &775573832
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 775573833}
+  - component: {fileID: 775573834}
+  m_Layer: 0
+  m_Name: WorldItemSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &775573833
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775573832}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1547803817}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &775573834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775573832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c217bb25167924a3d92a4140cd4017f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _itemList: []
 --- !u!1001 &782580612
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4141,6 +4206,10 @@ PrefabInstance:
     - target: {fileID: 1078059546286476654, guid: cbe5c1f5c1515461e8c13c5b54d6cf1b, type: 3}
       propertyPath: _itemQuantity
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1078059546286476654, guid: cbe5c1f5c1515461e8c13c5b54d6cf1b, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2315113815333594182, guid: cbe5c1f5c1515461e8c13c5b54d6cf1b, type: 3}
       propertyPath: m_Name
@@ -5654,6 +5723,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StoneItem (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3983655111898587715, guid: 140dd409c796e43b6829be8ac6c9ca6c, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 7751994548152071265, guid: 140dd409c796e43b6829be8ac6c9ca6c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.519032
@@ -6341,6 +6414,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StoneItem
       objectReference: {fileID: 0}
+    - target: {fileID: 3983655111898587715, guid: 140dd409c796e43b6829be8ac6c9ca6c, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 7751994548152071265, guid: 140dd409c796e43b6829be8ac6c9ca6c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.269032
@@ -6397,6 +6474,10 @@ PrefabInstance:
     - target: {fileID: 1078059546286476654, guid: cbe5c1f5c1515461e8c13c5b54d6cf1b, type: 3}
       propertyPath: _itemQuantity
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1078059546286476654, guid: cbe5c1f5c1515461e8c13c5b54d6cf1b, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2315113815333594182, guid: cbe5c1f5c1515461e8c13c5b54d6cf1b, type: 3}
       propertyPath: m_Name
@@ -7470,6 +7551,10 @@ PrefabInstance:
       propertyPath: _itemQuantity
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3983655111898587715, guid: 140dd409c796e43b6829be8ac6c9ca6c, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 7751994548152071265, guid: 140dd409c796e43b6829be8ac6c9ca6c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.47
@@ -7825,6 +7910,10 @@ PrefabInstance:
       propertyPath: _itemQuantity
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3983655111898587715, guid: 140dd409c796e43b6829be8ac6c9ca6c, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 6270003639368770900, guid: 140dd409c796e43b6829be8ac6c9ca6c, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -8002,6 +8091,7 @@ Transform:
   - {fileID: 2126149823}
   - {fileID: 1925405563}
   - {fileID: 34327488}
+  - {fileID: 775573833}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1548043211 stripped
@@ -8470,6 +8560,10 @@ PrefabInstance:
       propertyPath: _itemQuantity
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4942140072769342023, guid: e051eb108a71f40a194c67239b4c53cb, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 7656371137063084911, guid: e051eb108a71f40a194c67239b4c53cb, type: 3}
       propertyPath: m_Name
       value: Hammer_Iron_Item
@@ -8531,6 +8625,10 @@ PrefabInstance:
     - target: {fileID: 1750307036268059749, guid: cae7b705eedcb439ea17e2d71685d57e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4942140072769342023, guid: cae7b705eedcb439ea17e2d71685d57e, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 7656371137063084911, guid: cae7b705eedcb439ea17e2d71685d57e, type: 3}
       propertyPath: m_Name
@@ -10015,6 +10113,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4942140072769342023, guid: c983d3ab93a1c4f11b7794732216e923, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 7656371137063084911, guid: c983d3ab93a1c4f11b7794732216e923, type: 3}
       propertyPath: m_Name
       value: One_Shot_Hammer
@@ -10035,6 +10137,10 @@ PrefabInstance:
     - target: {fileID: 1078059546286476654, guid: cbe5c1f5c1515461e8c13c5b54d6cf1b, type: 3}
       propertyPath: _itemQuantity
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1078059546286476654, guid: cbe5c1f5c1515461e8c13c5b54d6cf1b, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2315113815333594182, guid: cbe5c1f5c1515461e8c13c5b54d6cf1b, type: 3}
       propertyPath: m_Name
@@ -10724,6 +10830,10 @@ PrefabInstance:
       propertyPath: _itemQuantity
       value: 40
       objectReference: {fileID: 0}
+    - target: {fileID: 687678475400028213, guid: 0ee638886ab864dfe82c98e39449b41a, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 2836697272311843101, guid: 0ee638886ab864dfe82c98e39449b41a, type: 3}
       propertyPath: m_Name
       value: Shrine_EnemySpawn_Item
@@ -10794,6 +10904,10 @@ PrefabInstance:
       propertyPath: _itemQuantity
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3983655111898587715, guid: 140dd409c796e43b6829be8ac6c9ca6c, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 6270003639368770900, guid: 140dd409c796e43b6829be8ac6c9ca6c, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -10863,6 +10977,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 106279577}
     m_Modifications:
+    - target: {fileID: 1078059546286476654, guid: cbe5c1f5c1515461e8c13c5b54d6cf1b, type: 3}
+      propertyPath: _dropAnimationTime
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 2315113815333594182, guid: cbe5c1f5c1515461e8c13c5b54d6cf1b, type: 3}
       propertyPath: m_Name
       value: WoodItem (3)

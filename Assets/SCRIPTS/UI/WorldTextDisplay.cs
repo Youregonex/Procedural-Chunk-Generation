@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class WorldTextDisplay : MonoBehaviour
 {
-    public static WorldTextDisplay Instance;
+    public static WorldTextDisplay Instance { get; private set; }
 
     [SerializeField] private DamagePopup _damagePopupPrefab;
 

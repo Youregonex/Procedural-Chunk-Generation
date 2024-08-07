@@ -12,12 +12,12 @@ public class PlayerBuildingSystem : AgentMonobehaviourComponent
     [SerializeField] private PlayerItemSelection _playerItemSelection;
     [SerializeField] private BuildingItemDataSO _currentBuildingItemDataSO;
 
-    private BuildingFactory _buildingFactory;
+    private Camera _mainCamera;
 
     private void Awake()
     {
-        _buildingFactory = new BuildingFactory();
         _playerCore = GetComponent<PlayerCore>();
+        _mainCamera = Camera.main;
     }
 
     private void Start()
@@ -70,7 +70,7 @@ public class PlayerBuildingSystem : AgentMonobehaviourComponent
     {
         if (_currentBuildingItemDataSO != null && _pendingBuildingItem.CanPlaceBuilding)
         {
-            _buildingFactory.CreateBuildingAtPosition(_currentBuildingItemDataSO, GetMouseGridPosition());
+            WorldBuildingSpawner.Instance.CreateBuildingAtPosition(_currentBuildingItemDataSO, GetMouseGridPosition());
             _currentBuildingItemDataSO.OnBuildingItemPlacedInvoke();
         }
     }
@@ -87,7 +87,7 @@ public class PlayerBuildingSystem : AgentMonobehaviourComponent
 
     private Vector2 GetMouseGridPosition()
     {
-        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        Vector2 mousePosition = _mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 
         return new Vector2(Mathf.Round(mousePosition.x), Mathf.Round(mousePosition.y));
     }

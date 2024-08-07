@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d92fc432b46e488eb8a8a74494a7f9f, type: 3}
+  m_Name: Bone_ResourceItemData
+  m_EditorClassIdentifier: 
+  <Id>k__BackingField: 0
+  <Name>k__BackingField: BoneItemData
+  Description: BoneItemData
+  <Icon>k__BackingField: {fileID: 2085218458, guid: d27e510bf48354be28e44e74cd485783, type: 3}
+  <ItemPrefab>k__BackingField: {fileID: 5920647730692348748, guid: f504fb40c428a4065a8b4b1664080184, type: 3}
+  <MaxStackSize>k__BackingField: 99
+  <ItemType>k__BackingField: 1

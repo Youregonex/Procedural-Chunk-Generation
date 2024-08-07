@@ -16,6 +16,11 @@ public class GameSceneInitializer : MonoBehaviour
     [SerializeField] private AbilityCooldownUIDisplay _abilityCooldownUIDisplay;
     [SerializeField] private GameOverScreen _gameOverScreen;
     [SerializeField] private PreloadScreen _preloadScreen;
+    [SerializeField] private TestSaveLoad _testSaveLoad;
+
+    [Header("Managers")]
+    [SerializeField] private DataPersistanceManager _dataPersistanceManager;
+    [SerializeField] private ChunkGenerator _chunkGenerator;
 
     [Header("Debug Fields")]
     [SerializeField] private PlayerInventorySystem _playerInventory;
@@ -42,6 +47,7 @@ public class GameSceneInitializer : MonoBehaviour
         InitializeGameOverScreen();
 
         InitializePlayerAbilitySystem();
+        InitializeTestSaveLoad();
     }
 
     private void InitializePlayerAbilitySystem() // Initialize after AbilityCooldownDisplay
@@ -96,5 +102,10 @@ public class GameSceneInitializer : MonoBehaviour
     private void InitializePreloadScreen()
     {
         _preloadScreen.Initialize();
+    }
+
+    private void InitializeTestSaveLoad()
+    {
+        _testSaveLoad.Initialize(_dataPersistanceManager);
     }
 }

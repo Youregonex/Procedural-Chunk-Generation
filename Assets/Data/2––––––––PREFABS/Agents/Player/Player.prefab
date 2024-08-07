@@ -870,6 +870,7 @@ GameObject:
   - component: {fileID: 4418344960092735506}
   - component: {fileID: 5178569141562071873}
   - component: {fileID: 6491182790022526099}
+  - component: {fileID: 3937403376618379292}
   m_Layer: 15
   m_Name: Player
   m_TagString: Untagged
@@ -1099,6 +1100,7 @@ MonoBehaviour:
   _playerItemSelection: {fileID: 4418344960092735506}
   _playerBuildingSystem: {fileID: 5178569141562071873}
   _playerInteraction: {fileID: 3021720893398585767}
+  <SelfTransform>k__BackingField: {fileID: 0}
 --- !u!114 &740731628879918300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1174,6 +1176,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ffe2a87a8a282467ba0c5c2145a5ef0a, type: 2}
   _agentCore: {fileID: 0}
   _agentMovement: {fileID: 1921641667620888523}
+--- !u!114 &3937403376618379292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6595742445640833445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26e2e5d1ba1db4027b3536e98204426b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerTransform: {fileID: 0}
+  _playerCore: {fileID: 0}
 --- !u!1 &7949201166080975616
 GameObject:
   m_ObjectHideFlags: 0
@@ -1336,6 +1352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 1
   _playerCore: {fileID: 0}
+  _playerMovement: {fileID: 0}
   _playerInput: {fileID: 0}
 --- !u!1001 &6178545339903000850
 PrefabInstance:

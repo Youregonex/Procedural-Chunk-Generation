@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948cb857b5ce648259144d6a5aad96a1, type: 3}
+  m_Name: Devil_Boss_JumpAttack_AbilityData
+  m_EditorClassIdentifier: 
+  <AbilityName>k__BackingField: JUMP_ATTACK
+  <AbilityType>k__BackingField: 0
+  <Cooldown>k__BackingField: 5
+  <AbilityParticles>k__BackingField: {fileID: 0}
+  <HasCallback>k__BackingField: 1
+  <MaxTimeInAir>k__BackingField: 5
+  <ImpactDamage>k__BackingField: 10
+  <ImpactRange>k__BackingField: 3
+  <ProximityThreshold>k__BackingField: 1
+  <AirborneSpeed>k__BackingField: 5

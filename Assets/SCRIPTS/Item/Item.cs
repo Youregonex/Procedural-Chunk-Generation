@@ -25,6 +25,8 @@ public class Item : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private BoxCollider2D _capsuleCollider;
 
+    private Tween _currentAnimation;
+
     public ItemDataSO ItemDataSO => _itemDataSO;
     public int ItemQuantity => _itemQuantity;
 
@@ -41,6 +43,8 @@ public class Item : MonoBehaviour
 
     private void OnDestroy()
     {
+        _currentAnimation.Kill();
+
         OnDestruction?.Invoke(this);
     }
 
@@ -96,6 +100,8 @@ public class Item : MonoBehaviour
 
     private void PlayDropAnimation()
     {
-        transform.DOScale(_scaleFrom, _dropAnimationTime).From().SetEase(Ease.InOutBack);
+        _currentAnimation = transform.DOScale(_scaleFrom, _dropAnimationTime)
+                                     .From()
+                                     .SetEase(Ease.InOutBack);
     }
 }

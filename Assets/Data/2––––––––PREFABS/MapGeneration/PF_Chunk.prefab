@@ -45,15 +45,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c3a9c780450f46ad938c6888b2917b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tilesCount: 0
-  _neighbourChunkList: []
   _chunkLayerCount: 0
-  _markerPrefab: {fileID: 9163560141979414375, guid: 4128da4c07a0f448daa74752c9a1a4b9, type: 3}
   _isLoaded: 1
   _isPlayerInRange: 0
   _isFilled: 0
   _isLoadingTiles: 0
-  _chunkMapFilled: 0
+  _noiseMapFilled: 0
+  _neighbourChunkList: []
+  _chunkTilesList: []
+  _nodePositionMapDictionary:
+    keys: []
+    values: []
+  _chunkNodeDictionary:
+    keys: []
+    values: []
+  _sideLength: 0
 --- !u!58 &5314264974313713906
 CircleCollider2D:
   m_ObjectHideFlags: 0

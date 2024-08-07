@@ -6,7 +6,16 @@ public class PlayerCore : AgentCoreBase
     [SerializeField] private PlayerItemSelection _playerItemSelection;
     [SerializeField] private PlayerBuildingSystem _playerBuildingSystem;
     [SerializeField] private PlayerObjectInteraction _playerInteraction;
-   
+
+    [field: Header("Debug Fields")]
+    [field: SerializeField] public Transform SelfTransform { get; private set; }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        SelfTransform = transform;
+    }
+
 
     protected override void InitializeComponentList()
     {

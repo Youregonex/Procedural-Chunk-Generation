@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIComponentProvider : MonoBehaviour
 {
-    public static UIComponentProvider Instance;
+    public static UIComponentProvider Instance { get; private set; }
 
     [field: Header("Config")]
     [field: SerializeField] public DynamicInventoryDisplay CustomContainerDisplay { get; private set; }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class WorldItemSpawner : MonoBehaviour
 {
-    public static WorldItemSpawner Instance;
+    public static WorldItemSpawner Instance { get; private set; }
 
     [Header("Debug Fields")]
     [SerializeField] private List<Item> _itemList;

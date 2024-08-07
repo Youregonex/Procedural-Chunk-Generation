@@ -17,19 +17,19 @@ public class Chunk : MonoBehaviour
 
     [Header("Debug Fields")]
     // Chunk data
-    [SerializeField] private int _chunkLayerCount;
-    [SerializeField] private bool _isLoaded;
-    [SerializeField] private bool _isPlayerInRange;
+    [SerializeField] private bool _isLoaded = false;
+    [SerializeField] private bool _isPlayerInRange = false;
     [SerializeField] private bool _isFilled = false;
     [SerializeField] private bool _isLoadingTiles = false;
-    [SerializeField] private bool _noiseMapFilled;
+    [SerializeField] private bool _noiseMapFilled = false;
     [SerializeField] private float[,] _noiseMapArray;
+    [SerializeField] private Vector2Int _position;
 
     // Collections
     [SerializeField] private List<Vector2Int> _neighbourChunkList = new List<Vector2Int>();
     [SerializeField] private List<TileData> _chunkTilesList = new List<TileData>();
-    [SerializeField] private Dictionary<Vector2Int, ResourceNode> _nodePositionMapDictionary = new Dictionary<Vector2Int, ResourceNode>();
-    [SerializeField] private Dictionary<Vector2Int, ResourceNode> _chunkNodeDictionary = new Dictionary<Vector2Int, ResourceNode>();
+    [SerializeField] private SerializableDictionary<Vector2Int, ResourceNode> _nodePositionMapDictionary = new SerializableDictionary<Vector2Int, ResourceNode>();
+    [SerializeField] private SerializableDictionary<Vector2Int, ResourceNode> _chunkNodeDictionary = new SerializableDictionary<Vector2Int, ResourceNode>();
 
     // Properties
     public Dictionary<Vector2Int, ResourceNode> NodePositionMapDictionary => _nodePositionMapDictionary;
@@ -38,14 +38,19 @@ public class Chunk : MonoBehaviour
     public List<TileData> ChunkTilesList => _chunkTilesList;
     public float[,] ChunkNoiseMapArray => _noiseMapArray;
 
+    public Vector2Int Position => _position;
     public bool IsLoaded => _isLoaded;
     public bool IsFilled => _isFilled;
     public bool IsLoadingTiles => _isLoadingTiles;
     public bool IsNoiseMapFilled => _noiseMapFilled;
     public bool IsPlayerInRange => _isPlayerInRange;
 
-    private int _sideLength;
+    [SerializeField] private int _sideLength;
 
+    private void Awake()
+    {
+        _position = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -65,21 +70,37 @@ public class Chunk : MonoBehaviour
         }
     }
 
+    public ChunkSaveData GenerateSaveData()
+    {
+        ChunkSaveData chunkSaveData = new ChunkSaveData();
+
+        chunkSaveData.isLoaded = _isLoaded;
+        chunkSaveData.isFilled = _isFilled;
+        chunkSaveData.position = _position;
+        chunkSaveData.neighbourChunkList = _neighbourChunkList;
+        chunkSaveData.chunkTilesList = _chunkTilesList;
+        chunkSaveData.nodePositionMapDictionary = _nodePositionMapDictionary;
+
+        return chunkSaveData;
+    }
+
+    public Chunk LoadChunkFromSaveData(ChunkSaveData chunkSaveData)
+    {
+        _isLoaded = chunkSaveData.isLoaded;
+        _isFilled = chunkSaveData.isFilled;
+        _position = chunkSaveData.position;
+        _neighbourChunkList = chunkSaveData.neighbourChunkList;
+        _chunkTilesList = chunkSaveData.chunkTilesList;
+        _nodePositionMapDictionary = chunkSaveData.nodePositionMapDictionary;
+
+        return this;
+    }
+
     public void InitializeChunk(int chunkLayerCount)
     {
-        _chunkLayerCount = chunkLayerCount;
+        _sideLength = (chunkLayerCount * 2) + 1;
 
-        _sideLength = (_chunkLayerCount * 2) + 1;
-
-        for (int x = (int)transform.position.x + -_sideLength; x <= (int)transform.position.x + _sideLength; x += _sideLength)
-            for (int y = (int)transform.position.y + -_sideLength; y <= (int)transform.position.y + _sideLength; y += _sideLength)
-            {
-                if (new Vector2(x, y) == (Vector2)transform.position)
-                    continue;
-
-                Vector2Int neighbourChunkPosition = new Vector2Int(x, y);
-                _neighbourChunkList.Add(neighbourChunkPosition);
-            }
+        UpdateChunkNeighbourPositions();
     }
 
     public void GenerateChunkNoiseMap(int seed, float noiseScale, int octaves, float persistance, float lacunarity, Vector2 offset, Noise.NormalizeMode normalizeMode)
@@ -154,12 +175,29 @@ public class Chunk : MonoBehaviour
         {
             chunk = this
         });
+
+        if (!_isPlayerInRange)
+            UnloadChunk();
+    }
+
+    private void UpdateChunkNeighbourPositions()
+    {
+        for (int x = (int)transform.position.x + -_sideLength; x <= (int)transform.position.x + _sideLength; x += _sideLength)
+            for (int y = (int)transform.position.y + -_sideLength; y <= (int)transform.position.y + _sideLength; y += _sideLength)
+            {
+                if (new Vector2(x, y) == (Vector2)transform.position)
+                    continue;
+
+                Vector2Int neighbourChunkPosition = new Vector2Int(x, y);
+                _neighbourChunkList.Add(neighbourChunkPosition);
+            }
     }
 
     private void Node_OnDepletion(Vector2Int nodePosition)
     {
         _chunkNodeDictionary[nodePosition].OnDepletion -= Node_OnDepletion;
 
+        _nodePositionMapDictionary.Remove(nodePosition);
         _chunkNodeDictionary.Remove(nodePosition);
     }
 
@@ -193,6 +231,33 @@ public class Chunk : MonoBehaviour
         {
             keyValuePair.Value.gameObject.SetActive(true);
         }
+    }
+}
+
+[Serializable]
+public struct ChunkSaveData
+{
+    public bool isLoaded;
+    public bool isFilled;
+    public Vector2Int position;
+
+    public List<Vector2Int> neighbourChunkList;
+    public List<TileData> chunkTilesList;
+    public SerializableDictionary<Vector2Int, ResourceNode> nodePositionMapDictionary;
+
+    public ChunkSaveData(bool isLoaded,
+                         bool isFilled,
+                         Vector2Int position,
+                         List<Vector2Int> neighbourChunkList,
+                         List<TileData> chunkTilesList,
+                         SerializableDictionary<Vector2Int, ResourceNode> nodePositionMapDictionary)
+    {
+        this.isLoaded = isLoaded;
+        this.isFilled = isFilled;
+        this.position = position;
+        this.neighbourChunkList = neighbourChunkList;
+        this.chunkTilesList = chunkTilesList;
+        this.nodePositionMapDictionary = nodePositionMapDictionary;
     }
 
 }

@@ -14,6 +14,21 @@ public class HotbarDisplay : InventoryDisplay
     [SerializeField] private PlayerInventorySystem _playerInventorySystem;
     [SerializeField] private AgentHealthSystem _playerHealthSystem;
 
+
+    public void Initialize(PlayerInventorySystem playerInventorySystem, AgentHealthSystem playerHealthSystem)
+    {
+        _playerHealthSystem = playerHealthSystem;
+
+        _isOpened = true;
+
+        _currentInventory = playerInventorySystem.Hotbar;
+        _playerInventorySystem = playerInventorySystem;
+        _currentInventory.Inventory_OnInventorySlotChanged += Inventory_OnInventorySlotChanged;
+
+        InitializeHotbarSlots();
+        SelectDefaultSlot();
+    }
+
     private void Update()
     {
         if (_playerHealthSystem.IsDead)
@@ -44,20 +59,6 @@ public class HotbarDisplay : InventoryDisplay
     private void OnDestroy()
     {
         _currentInventory.Inventory_OnInventorySlotChanged -= Inventory_OnInventorySlotChanged;
-    }
-
-    public void Initialize(PlayerInventorySystem playerInventorySystem, AgentHealthSystem playerHealthSystem)
-    {
-        _playerHealthSystem = playerHealthSystem;
-
-        _isOpened = true;
-
-        _currentInventory = playerInventorySystem.Hotbar;
-        _playerInventorySystem = playerInventorySystem;
-        _currentInventory.Inventory_OnInventorySlotChanged += Inventory_OnInventorySlotChanged;
-
-        InitializeHotbarSlots();
-        SelectDefaultSlot();
     }
 
     private void InitializeHotbarSlots()

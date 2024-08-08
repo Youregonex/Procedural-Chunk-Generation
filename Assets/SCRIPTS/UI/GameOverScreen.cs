@@ -19,6 +19,12 @@ public class GameOverScreen : MonoBehaviour
     [SerializeField] private AgentHealthSystem _playerHealthSystem;
 
 
+    public void Initialize(AgentHealthSystem playerHealthSystem)
+    {
+        _playerHealthSystem = playerHealthSystem;
+        _playerHealthSystem.OnDeath += AgentHealthSystem_OnDeath;
+    }
+
     private void Awake()
     {
         _gameOverImage.gameObject.SetActive(false);
@@ -39,12 +45,6 @@ public class GameOverScreen : MonoBehaviour
     private void OnDestroy()
     {
         _playerHealthSystem.OnDeath -= AgentHealthSystem_OnDeath;
-    }
-
-    public void Initialize(AgentHealthSystem playerHealthSystem)
-    {
-        _playerHealthSystem = playerHealthSystem;
-        _playerHealthSystem.OnDeath += AgentHealthSystem_OnDeath;
     }
 
     private void AgentHealthSystem_OnDeath(AgentHealthSystem obj)

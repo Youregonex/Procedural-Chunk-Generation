@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 38651742773291787, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
+      propertyPath: _dropListDataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: b312d32caf62d4a1a8c7090cfc28a92c, type: 2}
+    - target: {fileID: 38651742773291787, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
       propertyPath: _nodeResourceDrop
       value: 
       objectReference: {fileID: 11400000, guid: b312d32caf62d4a1a8c7090cfc28a92c, type: 2}
@@ -156,6 +160,7 @@ MonoBehaviour:
   _uninteractedSprite: {fileID: -1305658201, guid: 18cfac4b2897a4e089a19671f1b1bb6c, type: 3}
   _interactedSprite: {fileID: 782980887, guid: 18cfac4b2897a4e089a19671f1b1bb6c, type: 3}
   _spriteRenderer: {fileID: 9153287247243758829}
+  _saveInitialColor: 0
   _interactColor: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 0.8235294}
   _uninteractColor: {r: 0, g: 0, b: 0, a: 0}
   _containerSize: 10

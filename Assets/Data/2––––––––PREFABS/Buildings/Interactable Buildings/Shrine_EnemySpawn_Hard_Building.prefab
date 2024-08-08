@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 38651742773291787, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
+      propertyPath: _dropListDataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: a71b1c5afc89e4b6c90462a3c1d23c90, type: 2}
+    - target: {fileID: 38651742773291787, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
       propertyPath: _appropriateTool
       value: 0
       objectReference: {fileID: 0}
@@ -236,5 +240,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nodeResourceDrop: {fileID: 11400000, guid: a71b1c5afc89e4b6c90462a3c1d23c90, type: 2}
-  _dropOneItemFromDropTable: 1
   _lootList: []

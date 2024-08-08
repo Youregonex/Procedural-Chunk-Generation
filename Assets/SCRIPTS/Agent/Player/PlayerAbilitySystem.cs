@@ -11,7 +11,19 @@ public class PlayerAbilitySystem : AgentAbilitySystem
 
     private bool _isInitialized = false;
 
-    protected override void Start() {} // Stops Building Abilities on Start
+
+    public void Initialize()
+    {
+        if (_isInitialized)
+            return;
+
+        _isInitialized = true;
+
+        BuildAbilityCallbacks();
+        BuildAbilities();
+    }
+
+    protected override void Start() {} // Stops from building abilities on Start
 
     protected override void Update()
     {
@@ -21,17 +33,6 @@ public class PlayerAbilitySystem : AgentAbilitySystem
         {
             CastAbility(_abilityDictionary["DASH"], _agentMovement.LastMovementDirection);
         }
-    }
-
-    public void InitializePlayerAbilitySystem()
-    {
-        if (_isInitialized)
-            return;
-
-        _isInitialized = true;
-
-        BuildAbilityCallbacks();
-        BuildAbilities();
     }
 
     protected override void BuildAbilities()

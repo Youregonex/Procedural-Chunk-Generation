@@ -9,6 +9,14 @@ public class AgentStatHealthSystem : AgentHealthSystem
     [Header("Debug Fields")]
     [SerializeField] private AgentStats _agentStats;
 
+    public void Initialize()
+    {
+        _agentCore = GetComponent<AgentCoreBase>();
+        _agentStats = _agentCore.GetAgentComponent<AgentStats>();
+
+        MaxHealth = CalculateMaxHealth();
+        CurrentHealth = MaxHealth;
+    }
 
     protected override void Start()
     {
@@ -19,15 +27,6 @@ public class AgentStatHealthSystem : AgentHealthSystem
         CurrentHealth = MaxHealth;
 
         base.Start();
-    }
-
-    public void Initialize()
-    {
-        _agentCore = GetComponent<AgentCoreBase>();
-        _agentStats = _agentCore.GetAgentComponent<AgentStats>();
-
-        MaxHealth = CalculateMaxHealth();
-        CurrentHealth = MaxHealth;
     }
 
     private float CalculateMaxHealth()

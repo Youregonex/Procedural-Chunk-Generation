@@ -40,6 +40,7 @@ public class GameSceneInitializer : MonoBehaviour
         InitializePreloadScreen();
 
         SetupPlayer();
+
         InitializHotbarDisplay();
         InitializePlayerCraftingWindowDisplay();
         InitializeMouseItemSlot();
@@ -72,7 +73,7 @@ public class GameSceneInitializer : MonoBehaviour
 
     private void InitializePlayerAbilitySystem() // Initialize after AbilityCooldownDisplay
     {
-        _playerAbilitySystem.InitializePlayerAbilitySystem();
+        _playerAbilitySystem.Initialize();
     }
 
     private void InitializePlayerHealthSystem() // Initialize before PlayerHealthbarUI

@@ -9,6 +9,11 @@ public class PreloadScreen : MonoBehaviour
     [SerializeField] private float _loadTime = 1f;
     [SerializeField] private float _preloadScreenFadeTime = 1.5f;
 
+    public void Initialize()
+    {
+        gameObject.SetActive(true);
+    }
+
     private IEnumerator Start()
     {
         yield return new WaitForSeconds(_loadTime);
@@ -17,10 +22,5 @@ public class PreloadScreen : MonoBehaviour
         {
             gameObject.SetActive(false);
         });
-    }
-
-    public void Initialize()
-    {
-        gameObject.SetActive(true);
     }
 }

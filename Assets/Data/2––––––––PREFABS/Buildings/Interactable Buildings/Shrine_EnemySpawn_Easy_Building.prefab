@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 38651742773291787, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
+      propertyPath: _dropListDataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: a71b1c5afc89e4b6c90462a3c1d23c90, type: 2}
+    - target: {fileID: 38651742773291787, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
       propertyPath: _appropriateTool
       value: 0
       objectReference: {fileID: 0}
@@ -38,7 +42,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1680932731369957642, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
       propertyPath: m_Name
-      value: Shrine_EnemySpawn_Building
+      value: Shrine_EnemySpawn_Easy_Building
       objectReference: {fileID: 0}
     - target: {fileID: 2738879445855249250, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
       propertyPath: _flashMaterial
@@ -193,6 +197,7 @@ MonoBehaviour:
   _uninteractedSprite: {fileID: -343928407, guid: 18cfac4b2897a4e089a19671f1b1bb6c, type: 3}
   _interactedSprite: {fileID: -343928407, guid: 18cfac4b2897a4e089a19671f1b1bb6c, type: 3}
   _spriteRenderer: {fileID: 3851714972855143086}
+  _saveInitialColor: 0
   _interactColor: {r: 0, g: 0, b: 0, a: 0}
   _uninteractColor: {r: 0, g: 0, b: 0, a: 0}
   _enemyPrefabList:
@@ -224,5 +229,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nodeResourceDrop: {fileID: 11400000, guid: a71b1c5afc89e4b6c90462a3c1d23c90, type: 2}
-  _dropOneItemFromDropTable: 1
   _lootList: []

@@ -8,6 +8,7 @@ public class PlayerData : MonoBehaviour, IDataPersistance
     [SerializeField] private PlayerInventorySystem _playerInventorySystem;
     [SerializeField] private AgentStatHealthSystem _playerHealthSystem;
 
+
     public void Initialize(PlayerCore playerCore)
     {
         _playerCore = playerCore;

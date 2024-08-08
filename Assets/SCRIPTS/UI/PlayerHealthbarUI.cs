@@ -12,10 +12,6 @@ public class PlayerHealthbarUI : MonoBehaviour
     [Header("Debug Fields")]
     [SerializeField] private AgentHealthSystem _playerHealthSystem;
 
-    private void OnDestroy()
-    {
-        _playerHealthSystem.OnHealthChanged -= AgentHealthSystem_OnHealthChanged;
-    }
 
     public void Initialize(AgentHealthSystem playerHealthSystem)
     {
@@ -25,6 +21,11 @@ public class PlayerHealthbarUI : MonoBehaviour
         _maxHealthText.text = _playerHealthSystem.MaxHealth.ToString();
 
         _playerHealthSystem.OnHealthChanged += AgentHealthSystem_OnHealthChanged;
+    }
+
+    private void OnDestroy()
+    {
+        _playerHealthSystem.OnHealthChanged -= AgentHealthSystem_OnHealthChanged;
     }
 
     private void AgentHealthSystem_OnHealthChanged(float currentHealth, float maxHealth)

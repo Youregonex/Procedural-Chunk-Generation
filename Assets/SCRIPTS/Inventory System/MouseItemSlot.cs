@@ -21,6 +21,11 @@ public class MouseItemSlot : MonoBehaviour
     public ItemDataSO ItemdDataSO => _itemDataSO;
 
 
+    public void Initialize(PlayerCore playerCore)
+    {
+        _playerCore = playerCore;
+    }
+
     private void Start()
     {
         ClearSlot();
@@ -48,11 +53,6 @@ public class MouseItemSlot : MonoBehaviour
     public void SetMouseSlot(InventorySlot slot)
     {
         SetMouseSlot(slot.ItemDataSO, slot.CurrentStackSize);
-    }
-
-    public void Initialize(PlayerCore playerCore)
-    {
-        _playerCore = playerCore;
     }
 
     public void SetMouseSlot(ItemDataSO itemDataSO, int itemQuantity)

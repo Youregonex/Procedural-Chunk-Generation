@@ -12,6 +12,20 @@ public class AbilityCooldownUIDisplay : MonoBehaviour
     [SerializeField] private List<Ability> _currentAbilityList = new List<Ability>();
     [SerializeField] private Dictionary<AbilityDataSO, AbilityCooldownUI> _abilitiesToDisplayDictionary = new Dictionary<AbilityDataSO, AbilityCooldownUI>();
 
+
+    public void Initialize(PlayerAbilitySystem playerAbilitySystem)
+    {
+        _playerAbilitySystem = playerAbilitySystem;
+
+        foreach (KeyValuePair<AbilityDataSO, AbilityCooldownUI> keyValuePair in _abilitiesToDisplayDictionary)
+        {
+            keyValuePair.Value.HideElement();
+        }
+
+        _playerAbilitySystem.OnAbilityAdded += PlayerAbilitySystem_OnAbilityAdded;
+        _playerAbilitySystem.OnAbilityRemoved += PlayerAbilitySystem_OnAbilityRemoved;
+    }
+
     private void OnDestroy()
     {
         if(_currentAbilityList.Count != 0)
@@ -22,19 +36,6 @@ public class AbilityCooldownUIDisplay : MonoBehaviour
 
         _playerAbilitySystem.OnAbilityAdded -= PlayerAbilitySystem_OnAbilityAdded;
         _playerAbilitySystem.OnAbilityRemoved -= PlayerAbilitySystem_OnAbilityRemoved;
-    }
-
-    public void Initialize(PlayerAbilitySystem playerAbilitySystem)
-    {
-        _playerAbilitySystem = playerAbilitySystem;
-
-        foreach(KeyValuePair<AbilityDataSO, AbilityCooldownUI> keyValuePair in _abilitiesToDisplayDictionary)
-        {
-            keyValuePair.Value.HideElement();
-        }
-
-        _playerAbilitySystem.OnAbilityAdded += PlayerAbilitySystem_OnAbilityAdded;
-        _playerAbilitySystem.OnAbilityRemoved += PlayerAbilitySystem_OnAbilityRemoved;
     }
 
     private void PlayerAbilitySystem_OnAbilityRemoved(AbilityDataSO abilityDataSO, Ability ability)

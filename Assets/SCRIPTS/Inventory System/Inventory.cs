@@ -38,7 +38,6 @@ public class Inventory
 
     public int AddItemToInventory(ItemDataSO itemDataSO, int amount)
     {
-
         if (ContainsItem(itemDataSO, out List<InventorySlot> sameItemSlots)) // If inventory cointains same item -> get List of slots, containing this item
         {
             foreach (InventorySlot slot in sameItemSlots)

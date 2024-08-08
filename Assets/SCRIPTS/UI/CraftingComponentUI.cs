@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
-public class CraftingComponentUI : MonoBehaviour
+public class CraftingComponentUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private Image _componentIcon;
     [SerializeField] private TextMeshProUGUI _componentAmountText;
@@ -43,5 +44,15 @@ public class CraftingComponentUI : MonoBehaviour
             _componentBackground.color = _componentAvailableColor;
         else
             _componentBackground.color = _componentNotAvailableColor;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        UIComponentProvider.Instance.ItemDescriptionWindow.DisplayItemDescription(_currentCraftingComponent.componentItemDataSO, transform.position);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        UIComponentProvider.Instance.ItemDescriptionWindow.HideItemDescription();
     }
 }

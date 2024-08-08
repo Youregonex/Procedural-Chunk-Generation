@@ -6,6 +6,7 @@ public class UIComponentProvider : MonoBehaviour
 
     [field: Header("Config")]
     [field: SerializeField] public DynamicInventoryDisplay CustomContainerDisplay { get; private set; }
+    [field: SerializeField] public ItemDescriptionWindow ItemDescriptionWindow { get; private set; }
 
     private void Awake()
     {

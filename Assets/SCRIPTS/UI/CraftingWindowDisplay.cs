@@ -11,12 +11,6 @@ public class CraftingWindowDisplay : MonoBehaviour
     [SerializeField] private Image _craftingWindowBackground;
 
 
-    private void OnDestroy()
-    {
-        _craftingListDisplay.OnCraftRecipeDetailsDisplayRequested -= CraftListDisplay_OnCraftRecipeDetailsDisplayRequested;
-        _playerInventorySystem.OnInventoryContentChanged -= PlayerInventorySystem_OnInventoryContentChanged;
-    }
-
     public void Initialize(PlayerCraftingSystem playerCraftingSystem, PlayerInventorySystem playerInventorySystem)
     {
         _playerCraftingSystem = playerCraftingSystem;
@@ -26,6 +20,12 @@ public class CraftingWindowDisplay : MonoBehaviour
         _playerInventorySystem.OnInventoryContentChanged += PlayerInventorySystem_OnInventoryContentChanged;
 
         _craftingDetailsDisplay.Initialize(_playerInventorySystem);
+    }
+
+    private void OnDestroy()
+    {
+        _craftingListDisplay.OnCraftRecipeDetailsDisplayRequested -= CraftListDisplay_OnCraftRecipeDetailsDisplayRequested;
+        _playerInventorySystem.OnInventoryContentChanged -= PlayerInventorySystem_OnInventoryContentChanged;
     }
 
     public void DisplayCraftingWindow()

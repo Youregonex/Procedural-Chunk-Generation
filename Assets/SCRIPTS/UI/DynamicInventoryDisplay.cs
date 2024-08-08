@@ -18,11 +18,9 @@ public class DynamicInventoryDisplay : InventoryDisplay
         }
 
         _currentInventory = inventoryToDisplay;
-
         _currentInventory.Inventory_OnInventorySlotChanged += Inventory_OnInventorySlotChanged;
 
         _inventoryBackground.gameObject.SetActive(true);
-
         _isOpened = true;
 
         for (int i = 0; i < inventoryToDisplay.InventorySize; i++)
@@ -61,8 +59,6 @@ public class DynamicInventoryDisplay : InventoryDisplay
         foreach (InventorySlotUI slotUI in _inventorySlotsUIList)
         {
             slotUI.OnUISlotClicked -= InventorySlotUI_OnUISlotClicked;
-            slotUI.OnPointerEnterUISlot -= InventorySlotUI_OnPointerEnterUISlot;
-            slotUI.OnPointerExitUISlot -= InventorySlotUI_OnPointerExitUISlot;
 
             Destroy(slotUI.gameObject);
         }

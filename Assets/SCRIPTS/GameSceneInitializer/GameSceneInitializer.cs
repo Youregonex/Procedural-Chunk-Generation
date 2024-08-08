@@ -28,6 +28,7 @@ public class GameSceneInitializer : MonoBehaviour
     [SerializeField] private PlayerCore _playerCore;
     [SerializeField] private AgentStatHealthSystem _playerHealthSystem;
     [SerializeField] private PlayerAbilitySystem _playerAbilitySystem;
+    [SerializeField] private PlayerData _playerData;
 
     private void Awake()
     {
@@ -39,7 +40,7 @@ public class GameSceneInitializer : MonoBehaviour
         InitializePreloadScreen();
 
         SetupPlayer();
-        InitializHotbar();
+        InitializHotbarDisplay();
         InitializePlayerCraftingWindowDisplay();
         InitializeMouseItemSlot();
         InitializePlayerHealthSystem();
@@ -49,16 +50,8 @@ public class GameSceneInitializer : MonoBehaviour
 
         InitializePlayerAbilitySystem();
         InitializeTestSaveLoad();
-    }
 
-    private void InitializePlayerAbilitySystem() // Initialize after AbilityCooldownDisplay
-    {
-        _playerAbilitySystem.InitializePlayerAbilitySystem();
-    }
-
-    private void InitializePlayerHealthSystem() // Initialize before PlayerHealthbarUI
-    {
-        _playerHealthSystem.Initialize();
+        InitializePlayerData();
     }
 
     private void SetupPlayer()
@@ -73,9 +66,21 @@ public class GameSceneInitializer : MonoBehaviour
         _playerInventory = player.GetComponent<PlayerInventorySystem>();
         _playerCraftingSystem = player.GetComponent<PlayerCraftingSystem>();
         _playerHealthSystem = player.GetComponent<AgentStatHealthSystem>();
+
+        _playerData = player.GetComponent<PlayerData>();
     }
 
-    private void InitializHotbar()
+    private void InitializePlayerAbilitySystem() // Initialize after AbilityCooldownDisplay
+    {
+        _playerAbilitySystem.InitializePlayerAbilitySystem();
+    }
+
+    private void InitializePlayerHealthSystem() // Initialize before PlayerHealthbarUI
+    {
+        _playerHealthSystem.Initialize();
+    }
+
+    private void InitializHotbarDisplay()
     {
         _playerHotbarDisplay.Initialize(_playerInventory, _playerHealthSystem);
     }
@@ -113,5 +118,10 @@ public class GameSceneInitializer : MonoBehaviour
     private void InitializeTestSaveLoad()
     {
         _testSaveLoad.Initialize(_dataPersistanceManager);
+    }
+
+    private void InitializePlayerData()
+    {
+        _playerData.Initialize(_playerCore);
     }
 }

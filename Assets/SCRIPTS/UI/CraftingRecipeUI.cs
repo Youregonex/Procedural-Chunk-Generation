@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.EventSystems;
 
-public class CraftingRecipeUI : MonoBehaviour
+public class CraftingRecipeUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public event EventHandler<OnCraftingRecipeUIClickedEventArgs> OnCraftingRecipeUIClicked;
     public class OnCraftingRecipeUIClickedEventArgs : EventArgs
@@ -64,5 +65,15 @@ public class CraftingRecipeUI : MonoBehaviour
     public void DestroyCraftingRecipUI()
     {
         Destroy(gameObject);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        UIComponentProvider.Instance.ItemDescriptionWindow.DisplayItemDescription(_currentCraftingRecipeSO.RecipeResult, transform.position);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        UIComponentProvider.Instance.ItemDescriptionWindow.HideItemDescription();
     }
 }

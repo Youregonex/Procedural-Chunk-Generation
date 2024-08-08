@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class InventoryDisplay : MonoBehaviour
 {
+    [Header("Config")]
     [SerializeField] protected RectTransform _inventorySlotUIPrefab;
     [SerializeField] protected RectTransform _inventorySlotContainer;
     [SerializeField] protected MouseItemSlot _mouseItemSlot;
@@ -183,16 +184,12 @@ public class InventoryDisplay : MonoBehaviour
     protected InventorySlotUI CreateInventorySlotUI()
     {
         Transform slotTransform = Instantiate(_inventorySlotUIPrefab, _inventorySlotContainer);
-
         InventorySlotUI inventorySlotUI = slotTransform.GetComponent<InventorySlotUI>();
 
         _inventorySlotsUIList.Add(inventorySlotUI);
-
         inventorySlotUI.SetParentDisplay(this);
 
         inventorySlotUI.OnUISlotClicked += InventorySlotUI_OnUISlotClicked;
-        inventorySlotUI.OnPointerEnterUISlot += InventorySlotUI_OnPointerEnterUISlot;
-        inventorySlotUI.OnPointerExitUISlot += InventorySlotUI_OnPointerExitUISlot;
 
         return inventorySlotUI;
     }
@@ -206,7 +203,7 @@ public class InventoryDisplay : MonoBehaviour
     {
         InventorySlotUI inventorySlotUI = sender as InventorySlotUI;
 
-        _itemDescriptionWindow.DisplayItemDescription(inventorySlotUI);
+        _itemDescriptionWindow.DisplayItemDescription(inventorySlotUI.AssignedInventorySlot.ItemDataSO, inventorySlotUI.transform.position);
     }
 
     protected void InventorySlotUI_OnUISlotClicked(object sender, System.EventArgs e)

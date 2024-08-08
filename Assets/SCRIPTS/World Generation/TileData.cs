@@ -4,14 +4,14 @@ using UnityEngine.Tilemaps;
 [System.Serializable]
 public struct TileData
 {
-    public TileBase Tile;
-    public Vector2Int TilePosition;
-    public ETileType TileType;
+    public TileBase tile;
+    public Vector2Int position;
+    public ETileType type;
 
-    public TileData(TileBase tile, Vector2Int tilePosition, ETileType tileType)
+    public TileData(TileBase tile, Vector2Int position, ETileType type)
     {
-        Tile = tile;
-        TilePosition = tilePosition;
-        TileType = tileType;
+        this.tile = tile;
+        this.position = position;
+        this.type = type;
     }
 }

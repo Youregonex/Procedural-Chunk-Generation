@@ -21,6 +21,9 @@ public class PlayerInventorySystem : MonoBehaviour
 
     private PlayerInput _playerInput;
 
+    public Inventory Hotbar => _hotbar;
+    public Inventory MainInventory => _mainInventory;
+
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
@@ -44,6 +47,21 @@ public class PlayerInventorySystem : MonoBehaviour
         _playerInput.OnInventoryKeyPressed -= PlayerInput_OnInventoryKeyPressed;
         _hotbar.Inventory_OnInventorySlotChanged -= Inventory_OnInventorySlotChanged;
         _mainInventory.Inventory_OnInventorySlotChanged -= Inventory_OnInventorySlotChanged;
+    }
+
+    public void InitializePlayerInventoryFromSave(Inventory hotbar, Inventory mainInventory)
+    {
+        for (int i = 0; i < HOTBAR_SIZE; i++)
+        {
+            _hotbar.InventoryContentList[i].SetSlotData(hotbar.InventoryContentList[i].ItemDataSO,
+                                                        hotbar.InventoryContentList[i].CurrentStackSize);
+        }
+
+        for (int i = 0; i < _mainInventory.InventorySize; i++)
+        {
+            _mainInventory.InventoryContentList[i].SetSlotData(mainInventory.InventoryContentList[i].ItemDataSO,
+                                                               mainInventory.InventoryContentList[i].CurrentStackSize);
+        }
     }
 
     public int AddItemToInventory(Item item)
@@ -104,9 +122,6 @@ public class PlayerInventorySystem : MonoBehaviour
 
         return false;
     }
-
-    public int GetHotbarSize() => HOTBAR_SIZE;
-    public Inventory GetHotbarInventory() => _hotbar;
 
     private void Inventory_OnInventorySlotChanged(object sender, EventArgs e)
     {

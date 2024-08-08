@@ -42,6 +42,23 @@ public class AgentHealthSystem : AgentMonobehaviourComponent, IContainLoot
 
     }
 
+    public void SetCurrentHealth(float currentHealth)
+    {
+        if (currentHealth > MaxHealth)
+            currentHealth = MaxHealth;
+
+        CurrentHealth = currentHealth;
+
+        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+    }
+
+    public void SetMaxHealth(float maxHealth)
+    {
+        MaxHealth = maxHealth;
+
+        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+    }
+
     public override void DisableComponent()
     {
         this.enabled = false;

@@ -1081,7 +1081,6 @@ RectTransform:
   - {fileID: 1742705874}
   - {fileID: 823401421}
   - {fileID: 2038222544}
-  - {fileID: 2070941797}
   m_Father: {fileID: 475181218}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4863,6 +4862,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 571f04b3ecf274460bd16fc086af6167, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _itemDescriptionWindow: {fileID: 0}
   _playerCraftingSystem: {fileID: 0}
   _playerInventorySystem: {fileID: 0}
   _craftingDetailsDisplay: {fileID: 377511842}
@@ -7413,6 +7413,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <CustomContainerDisplay>k__BackingField: {fileID: 1742705875}
+  <ItemDescriptionWindow>k__BackingField: {fileID: 2070941798}
 --- !u!1 &1416386857
 GameObject:
   m_ObjectHideFlags: 0
@@ -7642,6 +7643,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 475181218}
+  - {fileID: 2070941797}
   - {fileID: 611549705}
   - {fileID: 1659097534}
   - {fileID: 1979186722}
@@ -11462,7 +11464,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 569213489}
-  m_Father: {fileID: 248261344}
+  m_Father: {fileID: 1417589852}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -11762,6 +11764,7 @@ MonoBehaviour:
   _playerCore: {fileID: 0}
   _playerHealthSystem: {fileID: 0}
   _playerAbilitySystem: {fileID: 0}
+  _playerData: {fileID: 0}
 --- !u!1001 &6124786769892841631
 PrefabInstance:
   m_ObjectHideFlags: 0

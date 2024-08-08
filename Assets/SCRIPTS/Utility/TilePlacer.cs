@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Collections.Generic;
 
 public class TilePlacer : MonoBehaviour
 {
@@ -17,43 +18,73 @@ public class TilePlacer : MonoBehaviour
         Instance = this;
     }
 
-    public void SetTileAtPosition(TileBase tile, Vector2 tileWorldPosition, ETileType tileType)
+    public void LoadChunkTiles(Chunk chunk)
+    {
+        List<TileData> tileDataMapList = ChunkGenerator.Instance.ChunkNoiseMapToTileData(chunk);
+
+        for (int i = 0; i < tileDataMapList.Count; i++)
+        {
+            SetTileAtPosition(tileDataMapList[i]);
+        }
+    }
+
+    public void UnloadChunkTiles(Chunk chunk)
+    {
+        List<TileData> tileDataMapList = ChunkGenerator.Instance.ChunkNoiseMapToTileData(chunk);
+
+        for (int i = 0; i < tileDataMapList.Count; i++)
+        {
+            ClearTileAtPosition(tileDataMapList[i]);
+        }
+    }
+
+    public void SetTileAtPosition(TileData tileData)
     {
         if (_groundTilemap == null || _obstacleTilemap == null)
+        {
+            Debug.LogError("Tilemap is missing!");
             return;
+        }
 
-        switch (tileType)
+        Vector2 tileWorldPosition = new Vector2(tileData.position.x, tileData.position.y);
+
+        switch (tileData.type)
         {
             default:
             case ETileType.Ground:
 
                 Vector3Int tilemapPosition = _groundTilemap.WorldToCell(tileWorldPosition);
-                _groundTilemap.SetTile(tilemapPosition, tile);
+                _groundTilemap.SetTile(tilemapPosition, tileData.tile);
 
                 break;
 
             case ETileType.Obstacle:
 
                 tilemapPosition = _obstacleTilemap.WorldToCell(tileWorldPosition);
-                _obstacleTilemap.SetTile(tilemapPosition, tile);
+                _obstacleTilemap.SetTile(tilemapPosition, tileData.tile);
 
                 break;
         }
     }
 
-    public bool HasObstaclAtPosition(Vector2 position)
+    public bool HasObstacleAtPosition(Vector2 position)
     {
         Vector3Int tilemapPosition = _obstacleTilemap.WorldToCell(position);
 
         return _obstacleTilemap.HasTile(tilemapPosition) ? true : false;
     }
 
-    public void ClearTileAtPosition(Vector2 tileWorldPosition, ETileType tileType)
+    public void ClearTileAtPosition(TileData tileData)
     {
         if (_groundTilemap == null || _obstacleTilemap == null)
+        {
+            Debug.Log("Tilemap is missing!");
             return;
+        }
 
-        switch (tileType)
+        Vector2 tileWorldPosition = new Vector2(tileData.position.x, tileData.position.y);
+
+        switch (tileData.type)
         {
             default:
             case ETileType.Ground:

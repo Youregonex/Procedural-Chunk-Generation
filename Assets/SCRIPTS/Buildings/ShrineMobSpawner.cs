@@ -89,7 +89,7 @@ public class ShrineMobSpawner : InteractableBuilding
 
                 randomPositionAroundShrine = (Vector2)transform.position + randomOffset;
 
-                positionValid = !TilePlacer.Instance.HasObstaclAtPosition(randomPositionAroundShrine);
+                positionValid = !TilePlacer.Instance.HasObstacleAtPosition(randomPositionAroundShrine);
 
                 if (positionValid)
                     validPositions.Add(randomPositionAroundShrine);

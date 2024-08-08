@@ -6,6 +6,10 @@ public class GameData
 {
     // Player
     public Vector2 playerPosition;
+    public Inventory playerHotbar;
+    public Inventory playerMainInventory;
+    public float playerCurrentHealth;
+    public float playerMaxHealth;
 
     // World Generation
     public List<ChunkSaveData> chunkSaveDataList = new List<ChunkSaveData>();
@@ -22,7 +26,6 @@ public class GameData
     public int seed;
     public Vector2 seamOffset;
     public Noise.NormalizeMode normalizeMode;
-
 
     // World items
     public List<ItemSaveData> itemSaveDataList = new List<ItemSaveData>();

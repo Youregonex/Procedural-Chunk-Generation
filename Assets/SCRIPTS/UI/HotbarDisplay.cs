@@ -52,7 +52,7 @@ public class HotbarDisplay : InventoryDisplay
 
         _isOpened = true;
 
-        _currentInventory = playerInventorySystem.GetHotbarInventory();
+        _currentInventory = playerInventorySystem.Hotbar;
         _playerInventorySystem = playerInventorySystem;
         _currentInventory.Inventory_OnInventorySlotChanged += Inventory_OnInventorySlotChanged;
 
@@ -63,9 +63,9 @@ public class HotbarDisplay : InventoryDisplay
     private void InitializeHotbarSlots()
     {
 
-        List<InventorySlot> hotbarInventoryContent = _playerInventorySystem.GetHotbarInventory().InventoryContentList;
+        List<InventorySlot> hotbarInventoryContent = _playerInventorySystem.Hotbar.InventoryContentList;
 
-        for (int i = 0; i < _playerInventorySystem.GetHotbarSize(); i++)
+        for (int i = 0; i < _playerInventorySystem.Hotbar.InventorySize; i++)
         {
             InventorySlotUI slotUI = CreateInventorySlotUI();
 

@@ -86,7 +86,7 @@ public static class Noise
                 }
 				else
                 {
-					float estimatedMaxPossibleHeight = 8f;
+					float estimatedMaxPossibleHeight = 8f; // Take a guess...
 					float normalizedHeight = (noiseMap[x, y]) / (2f * maxPossibleHeight / estimatedMaxPossibleHeight);
 
 					if (normalizedHeight > 1)
@@ -99,5 +99,4 @@ public static class Noise
 
 		return noiseMap;
 	}
-
 }

@@ -19,11 +19,10 @@ public class ItemDescriptionWindow : MonoBehaviour
 
     public void HideItemDescription() => _itemDescriptionUIPanel.gameObject.SetActive(false);
 
-    public void DisplayItemDescription(InventorySlotUI currentItem)
+    public void DisplayItemDescription(ItemDataSO itemDataSO, Vector2 position)
     {
-        ItemDataSO itemDataSO = currentItem.AssignedInventorySlot.ItemDataSO;
         SetItemDescriptionData(itemDataSO);
-        transform.position = currentItem.transform.position;
+        transform.position = position;
         RectTransform panelRect = _itemDescriptionUIPanel.GetComponent<RectTransform>();
 
         if (_selfRectTransform.anchoredPosition.y >= 0 && _selfRectTransform.anchoredPosition.x <= 0) // Upper left part of screen

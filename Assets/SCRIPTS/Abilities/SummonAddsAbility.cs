@@ -62,7 +62,7 @@ public class SummonAddsAbility : Ability
 
                 randomPositionAroundCaster = (Vector2)Caster.transform.position + randomOffset;
 
-                positionValid = !TilePlacer.Instance.HasObstaclAtPosition(randomPositionAroundCaster);
+                positionValid = !TilePlacer.Instance.HasObstacleAtPosition(randomPositionAroundCaster);
 
                 if (positionValid)
                     validPositions.Add(randomPositionAroundCaster);

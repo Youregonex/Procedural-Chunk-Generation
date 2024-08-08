@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
-using UnityEngine.Tilemaps;
 
 [Serializable]
 public class Chunk : MonoBehaviour
@@ -19,15 +18,13 @@ public class Chunk : MonoBehaviour
     // Chunk data
     [SerializeField] private bool _isLoaded = false;
     [SerializeField] private bool _isPlayerInRange = false;
-    [SerializeField] private bool _isFilled = false;
+    [SerializeField] private bool _nodesSpawned = false;
     [SerializeField] private bool _isLoadingTiles = false;
     [SerializeField] private bool _noiseMapFilled = false;
     [SerializeField] private float[,] _noiseMapArray;
-    [SerializeField] private Vector2Int _position;
 
     // Collections
     [SerializeField] private List<Vector2Int> _neighbourChunkList = new List<Vector2Int>();
-    [SerializeField] private List<TileData> _chunkTilesList = new List<TileData>();
     [SerializeField] private SerializableDictionary<Vector2Int, ResourceNode> _nodePositionMapDictionary = new SerializableDictionary<Vector2Int, ResourceNode>();
     [SerializeField] private SerializableDictionary<Vector2Int, ResourceNode> _chunkNodeDictionary = new SerializableDictionary<Vector2Int, ResourceNode>();
 
@@ -35,21 +32,22 @@ public class Chunk : MonoBehaviour
     public Dictionary<Vector2Int, ResourceNode> NodePositionMapDictionary => _nodePositionMapDictionary;
     public Dictionary<Vector2Int, ResourceNode> ChunkObjectDictionary => _chunkNodeDictionary;
     public List<Vector2Int> NeighbourChunkList => _neighbourChunkList;
-    public List<TileData> ChunkTilesList => _chunkTilesList;
     public float[,] ChunkNoiseMapArray => _noiseMapArray;
 
-    public Vector2Int Position => _position;
     public bool IsLoaded => _isLoaded;
-    public bool IsFilled => _isFilled;
+    public bool NodesSpawned => _nodesSpawned;
     public bool IsLoadingTiles => _isLoadingTiles;
     public bool IsNoiseMapFilled => _noiseMapFilled;
     public bool IsPlayerInRange => _isPlayerInRange;
 
     private int _sideLength;
 
-    private void Awake()
+    private void OnDestroy()
     {
-        _position = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+        foreach(KeyValuePair<Vector2Int, ResourceNode> keyValuePair in _chunkNodeDictionary)
+        {
+            keyValuePair.Value.OnDepletion -= Node_OnDepletion;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -72,23 +70,15 @@ public class Chunk : MonoBehaviour
 
     public ChunkSaveData GenerateSaveData()
     {
-        ChunkSaveData chunkSaveData = new ChunkSaveData();
-
-        chunkSaveData.isLoaded = _isLoaded;
-        chunkSaveData.isFilled = _isFilled;
-        chunkSaveData.position = _position;
-        chunkSaveData.chunkTilesList = _chunkTilesList;
-        chunkSaveData.nodePositionMapDictionary = _nodePositionMapDictionary;
-
+        Vector2Int chunkPosition = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+        ChunkSaveData chunkSaveData = new ChunkSaveData(chunkPosition,
+                                                        _nodePositionMapDictionary);
         return chunkSaveData;
     }
 
     public Chunk LoadChunkFromSaveData(ChunkSaveData chunkSaveData)
     {
-        _isLoaded = chunkSaveData.isLoaded;
-        _isFilled = chunkSaveData.isFilled;
-        _position = chunkSaveData.position;
-        _chunkTilesList = chunkSaveData.chunkTilesList;
+        _nodesSpawned = false;
         _nodePositionMapDictionary = chunkSaveData.nodePositionMapDictionary;
 
         return this;
@@ -151,12 +141,7 @@ public class Chunk : MonoBehaviour
         _nodePositionMapDictionary.Add(nodePosition, resourceNodePrefab);
     }
 
-    public void AddTileToChunk(TileBase tile, Vector2Int tilePosition, ETileType tileType)
-    {
-        _chunkTilesList.Add(new TileData(tile, tilePosition, tileType));
-    }
-
-    public void FillChunk() => _isFilled = true;
+    public void SpawnNodes() => _nodesSpawned = true;
     public float GetChunkNoiseMapValueWithXY(int x, int y) => _noiseMapArray[x, y];
     public Vector2Int GetChunkPositionVector2Int() => new Vector2Int((int)transform.position.x, (int)transform.position.y);
 
@@ -201,10 +186,7 @@ public class Chunk : MonoBehaviour
 
     private void UnloadTiles()
     {
-        foreach (TileData tileData in _chunkTilesList)
-        {
-            TilePlacer.Instance.ClearTileAtPosition(tileData.TilePosition, tileData.TileType);
-        }
+        TilePlacer.Instance.UnloadChunkTiles(this);
     }
 
     private void UnloadNodes()
@@ -217,10 +199,7 @@ public class Chunk : MonoBehaviour
 
     private void LoadTiles()
     {
-        foreach (TileData tileData in _chunkTilesList)
-        {
-            TilePlacer.Instance.SetTileAtPosition(tileData.Tile, tileData.TilePosition, tileData.TileType);
-        }
+        TilePlacer.Instance.LoadChunkTiles(this);
     }
 
     private void LoadNodes()
@@ -235,23 +214,14 @@ public class Chunk : MonoBehaviour
 [Serializable]
 public struct ChunkSaveData
 {
-    public bool isLoaded;
-    public bool isFilled;
     public Vector2Int position;
 
-    public List<TileData> chunkTilesList;
     public SerializableDictionary<Vector2Int, ResourceNode> nodePositionMapDictionary;
 
-    public ChunkSaveData(bool isLoaded,
-                         bool isFilled,
-                         Vector2Int position,
-                         List<TileData> chunkTilesList,
+    public ChunkSaveData(Vector2Int position,
                          SerializableDictionary<Vector2Int, ResourceNode> nodePositionMapDictionary)
     {
-        this.isLoaded = isLoaded;
-        this.isFilled = isFilled;
         this.position = position;
-        this.chunkTilesList = chunkTilesList;
         this.nodePositionMapDictionary = nodePositionMapDictionary;
     }
 }

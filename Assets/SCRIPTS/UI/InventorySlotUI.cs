@@ -7,8 +7,6 @@ using System;
 public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public event EventHandler OnUISlotClicked;
-    public event EventHandler OnPointerEnterUISlot;
-    public event EventHandler OnPointerExitUISlot;
 
     [Header("Config")]
     [SerializeField] protected Image _itemImage;
@@ -55,20 +53,19 @@ public class InventorySlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!InventorySlotUIEmpty())
-            OnPointerEnterUISlot?.Invoke(this, EventArgs.Empty);
+        UIComponentProvider.Instance.ItemDescriptionWindow.DisplayItemDescription(_assignedInventorySlot.ItemDataSO, transform.position);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        OnPointerExitUISlot?.Invoke(this, EventArgs.Empty);
+        UIComponentProvider.Instance.ItemDescriptionWindow.HideItemDescription();
     }
 
     public void RefreshSlotUI()
     {
         if(_assignedInventorySlot == null)
         {
-            Debug.LogError($"There is no Inventory slot assigned to this {gameObject}");
+            Debug.LogError($"There is no Inventory slot assigned to this {gameObject.name}");
             return;
         }
 

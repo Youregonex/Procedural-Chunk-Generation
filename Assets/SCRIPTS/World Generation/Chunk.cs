@@ -45,7 +45,7 @@ public class Chunk : MonoBehaviour
     public bool IsNoiseMapFilled => _noiseMapFilled;
     public bool IsPlayerInRange => _isPlayerInRange;
 
-    [SerializeField] private int _sideLength;
+    private int _sideLength;
 
     private void Awake()
     {
@@ -77,7 +77,6 @@ public class Chunk : MonoBehaviour
         chunkSaveData.isLoaded = _isLoaded;
         chunkSaveData.isFilled = _isFilled;
         chunkSaveData.position = _position;
-        chunkSaveData.neighbourChunkList = _neighbourChunkList;
         chunkSaveData.chunkTilesList = _chunkTilesList;
         chunkSaveData.nodePositionMapDictionary = _nodePositionMapDictionary;
 
@@ -89,7 +88,6 @@ public class Chunk : MonoBehaviour
         _isLoaded = chunkSaveData.isLoaded;
         _isFilled = chunkSaveData.isFilled;
         _position = chunkSaveData.position;
-        _neighbourChunkList = chunkSaveData.neighbourChunkList;
         _chunkTilesList = chunkSaveData.chunkTilesList;
         _nodePositionMapDictionary = chunkSaveData.nodePositionMapDictionary;
 
@@ -241,23 +239,19 @@ public struct ChunkSaveData
     public bool isFilled;
     public Vector2Int position;
 
-    public List<Vector2Int> neighbourChunkList;
     public List<TileData> chunkTilesList;
     public SerializableDictionary<Vector2Int, ResourceNode> nodePositionMapDictionary;
 
     public ChunkSaveData(bool isLoaded,
                          bool isFilled,
                          Vector2Int position,
-                         List<Vector2Int> neighbourChunkList,
                          List<TileData> chunkTilesList,
                          SerializableDictionary<Vector2Int, ResourceNode> nodePositionMapDictionary)
     {
         this.isLoaded = isLoaded;
         this.isFilled = isFilled;
         this.position = position;
-        this.neighbourChunkList = neighbourChunkList;
         this.chunkTilesList = chunkTilesList;
         this.nodePositionMapDictionary = nodePositionMapDictionary;
     }
-
 }

@@ -12,9 +12,13 @@ public class MainMenu : MonoBehaviour
     [Header("UI Components")]
     [SerializeField] private PreloadScreen _preloadScreen;
 
+    [Header("Chunk Generator")]
+    [SerializeField] private ChunkGenerator _chunkGenerator;
+
     private void Awake()
     {
         _preloadScreen.Initialize();
+        _chunkGenerator.InitializeMainMenuGeneration();
 
         _playButton.onClick.AddListener(() =>
         {

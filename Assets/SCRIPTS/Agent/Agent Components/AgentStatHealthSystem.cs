@@ -21,6 +21,15 @@ public class AgentStatHealthSystem : AgentHealthSystem
         base.Start();
     }
 
+    public void Initialize()
+    {
+        _agentCore = GetComponent<AgentCoreBase>();
+        _agentStats = _agentCore.GetAgentComponent<AgentStats>();
+
+        MaxHealth = CalculateMaxHealth();
+        CurrentHealth = MaxHealth;
+    }
+
     private float CalculateMaxHealth()
     {
         float vitalityValue = _agentStats.GetCurrentStatValue(EStats.Vitality);

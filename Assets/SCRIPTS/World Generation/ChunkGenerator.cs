@@ -28,6 +28,7 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
     [SerializeField] private int _seed;
     [SerializeField] private Vector2 _seamOffset = Vector2.zero;
     [SerializeField] private Noise.NormalizeMode _normalizeMode = Noise.NormalizeMode.Local;
+    [SerializeField] private bool _useRandomSeed = true;
 
     [Header("Debug Fields")]
     [SerializeField] private bool _showGizmos = false;
@@ -42,14 +43,15 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
             Destroy(gameObject);
 
         Instance = this;
+
+        if(_useRandomSeed)
+            _seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
     }
 
     private void Start()
     {
         Chunk.OnPlayerEnteredChunkRange += Chunk_OnPlayerEnteredChunkRange;
         Chunk.OnPlayerLeftChunkRange += Chunk_OnPlayerLeftChunkRange;
-
-        //CreateInitialChunk();
     }
 
     private void Update()
@@ -64,6 +66,11 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
     {
         Chunk.OnPlayerEnteredChunkRange -= Chunk_OnPlayerEnteredChunkRange;
         Chunk.OnPlayerLeftChunkRange -= Chunk_OnPlayerLeftChunkRange;
+    }
+
+    public void InitializeMainMenuGeneration()
+    {
+        CreateInitialChunk();
     }
 
     public void SaveData(ref GameData gameData)
@@ -87,23 +94,10 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
 
     public void LoadData(GameData gameData)
     {
-        for(int i = 0; i < gameData.chunkSaveDataList.Count; i++)
+        if(gameData == null)
         {
-            if (_chunkDictionary.ContainsKey(gameData.chunkSaveDataList[i].position))
-            {
-                Debug.Log("Chunk already exists!");
-                continue;
-            }
-
-            ChunkSaveData chunkSaveData = gameData.chunkSaveDataList[i];
-
-            Chunk chunk = GenerateChunk(chunkSaveData.position);
-            chunk.LoadChunkFromSaveData(chunkSaveData);
-
-            StartCoroutine(FillChunkCoroutine(chunk));
-
-            if(!_chunkDictionary.ContainsKey(chunk.Position))
-                _chunkDictionary.Add(chunk.Position, chunk);
+            CreateInitialChunk();
+            return;
         }
 
         _chunkLayerCount = gameData.chunkLayerCount;
@@ -116,6 +110,26 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
         _seed = gameData.seed;
         _seamOffset = gameData.seamOffset;
         _normalizeMode = gameData.normalizeMode;
+
+        for (int i = 0; i < gameData.chunkSaveDataList.Count; i++)
+        {
+            if (_chunkDictionary.ContainsKey(gameData.chunkSaveDataList[i].position))
+            {
+                Debug.Log("Chunk already exists!");
+                continue;
+            }
+
+            ChunkSaveData chunkSaveData = gameData.chunkSaveDataList[i];
+
+            Chunk chunk = GenerateChunk(chunkSaveData.position);
+            chunk.LoadChunkFromSaveData(chunkSaveData);
+
+            if(chunk.IsFilled)
+                StartCoroutine(FillChunkCoroutine(chunk));
+
+            if(!_chunkDictionary.ContainsKey(chunk.Position))
+                _chunkDictionary.Add(chunk.Position, chunk);
+        }
     }
 
     public Chunk GetChunkAtPosition(Vector2Int chunkPosition)

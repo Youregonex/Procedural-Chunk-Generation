@@ -11879,6 +11879,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChunkGenerator
       objectReference: {fileID: 0}
+    - target: {fileID: 5148829293059158187, guid: cc4cacdf77a9244feb3b5e376ab3372e, type: 3}
+      propertyPath: _useRandomSeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5148829293059158187, guid: cc4cacdf77a9244feb3b5e376ab3372e, type: 3}
+      propertyPath: _chunkLayerCount
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

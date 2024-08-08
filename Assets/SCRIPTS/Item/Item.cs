@@ -48,6 +48,20 @@ public class Item : MonoBehaviour
         OnDestruction?.Invoke(this);
     }
 
+    public ItemSaveData GenerateSaveData()
+    {
+        ItemSaveData itemSaveData = new ItemSaveData(transform.position, _itemDataSO, _itemQuantity);
+
+        return itemSaveData;
+    }
+
+    public void LoadFromSaveData(ItemSaveData itemSaveData)
+    {
+        transform.position = itemSaveData.position;
+        _itemDataSO = itemSaveData.itemDataSO;
+        _itemQuantity = itemSaveData.quantity;
+    }
+
     public void DestroyItem()
     {
         Destroy(gameObject);
@@ -103,5 +117,20 @@ public class Item : MonoBehaviour
         _currentAnimation = transform.DOScale(_scaleFrom, _dropAnimationTime)
                                      .From()
                                      .SetEase(Ease.InOutBack);
+    }
+}
+
+[Serializable]
+public struct ItemSaveData
+{
+    public Vector2 position;
+    public ItemDataSO itemDataSO;
+    public int quantity;
+
+    public ItemSaveData(Vector2 position, ItemDataSO itemDataSO, int quantity)
+    {
+        this.position = position;
+        this.itemDataSO = itemDataSO;
+        this.quantity = quantity;
     }
 }

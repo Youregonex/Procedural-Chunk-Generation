@@ -26,7 +26,7 @@ public class GameSceneInitializer : MonoBehaviour
     [SerializeField] private PlayerInventorySystem _playerInventory;
     [SerializeField] private PlayerCraftingSystem _playerCraftingSystem;
     [SerializeField] private PlayerCore _playerCore;
-    [SerializeField] private AgentHealthSystem _playerHealthSystem;
+    [SerializeField] private AgentStatHealthSystem _playerHealthSystem;
     [SerializeField] private PlayerAbilitySystem _playerAbilitySystem;
 
     private void Awake()
@@ -42,7 +42,8 @@ public class GameSceneInitializer : MonoBehaviour
         InitializHotbar();
         InitializePlayerCraftingWindowDisplay();
         InitializeMouseItemSlot();
-        InitializePlayereHealthbar();
+        InitializePlayerHealthSystem();
+        InitializePlayereHealthbarUI();
         InitializeAbilityCooldownUIDisplay();
         InitializeGameOverScreen();
 
@@ -53,6 +54,11 @@ public class GameSceneInitializer : MonoBehaviour
     private void InitializePlayerAbilitySystem() // Initialize after AbilityCooldownDisplay
     {
         _playerAbilitySystem.InitializePlayerAbilitySystem();
+    }
+
+    private void InitializePlayerHealthSystem() // Initialize before PlayerHealthbarUI
+    {
+        _playerHealthSystem.Initialize();
     }
 
     private void SetupPlayer()
@@ -66,7 +72,7 @@ public class GameSceneInitializer : MonoBehaviour
         _playerCore = player.GetComponent<PlayerCore>();
         _playerInventory = player.GetComponent<PlayerInventorySystem>();
         _playerCraftingSystem = player.GetComponent<PlayerCraftingSystem>();
-        _playerHealthSystem = player.GetComponent<AgentHealthSystem>();
+        _playerHealthSystem = player.GetComponent<AgentStatHealthSystem>();
     }
 
     private void InitializHotbar()
@@ -84,7 +90,7 @@ public class GameSceneInitializer : MonoBehaviour
         _mouseItemSlot.Initialize(_playerCore);
     }
 
-    private void InitializePlayereHealthbar()
+    private void InitializePlayereHealthbarUI()
     {
         _playerHealthbarUI.Initialize(_playerHealthSystem);
     }

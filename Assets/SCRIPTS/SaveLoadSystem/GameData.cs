@@ -10,10 +10,10 @@ public class GameData
     // World Generation
     public List<ChunkSaveData> chunkSaveDataList = new List<ChunkSaveData>();
 
-        //Chunk Settings
+        // Chunk Settings
     public int chunkLayerCount;
 
-        //Noise Settings
+        // Noise Settings
     public float noiseScale;
     public int octaves;
     public float persistance;
@@ -22,4 +22,8 @@ public class GameData
     public int seed;
     public Vector2 seamOffset;
     public Noise.NormalizeMode normalizeMode;
+
+
+    // World items
+    public List<ItemSaveData> itemSaveDataList = new List<ItemSaveData>();
 }

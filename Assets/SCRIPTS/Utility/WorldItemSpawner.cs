@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorldItemSpawner : MonoBehaviour
+public class WorldItemSpawner : MonoBehaviour, IDataPersistance
 {
     public static WorldItemSpawner Instance { get; private set; }
 
@@ -25,6 +25,30 @@ public class WorldItemSpawner : MonoBehaviour
         foreach (Item item in _itemList)
         {
             item.OnDestruction -= Item_OnDestruction;
+        }
+    }
+
+    public void SaveData(ref GameData gameData)
+    {
+        List<ItemSaveData> itemSaveDataList = new List<ItemSaveData>();
+
+        for (int i = 0; i < _itemList.Count; i++)
+        {
+            ItemSaveData itemSaveData = _itemList[i].GenerateSaveData();
+            itemSaveDataList.Add(itemSaveData);
+        }
+
+            gameData.itemSaveDataList = itemSaveDataList;
+    }
+
+    public void LoadData(GameData gameData)
+    {
+        _itemList = new List<Item>();
+
+        for (int i = 0; i < gameData.itemSaveDataList.Count; i++)
+        {
+            Item item = SpawnItem(gameData.itemSaveDataList[i].itemDataSO);
+            item.LoadFromSaveData(gameData.itemSaveDataList[i]);
         }
     }
 

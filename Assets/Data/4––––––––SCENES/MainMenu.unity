@@ -1912,6 +1912,7 @@ MonoBehaviour:
   _optionsButton: {fileID: 771928403}
   _exitButton: {fileID: 480329878}
   _preloadScreen: {fileID: 1848490184}
+  _chunkGenerator: {fileID: 2127600423}
 --- !u!224 &1848490183 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 219172548401950984, guid: 8c8d6eb0c8fa342be838978d08098c94, type: 3}
@@ -2029,6 +2030,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1381615128490325406, guid: cc4cacdf77a9244feb3b5e376ab3372e, type: 3}
   m_PrefabInstance: {fileID: 2127600421}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2127600423 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5148829293059158187, guid: cc4cacdf77a9244feb3b5e376ab3372e, type: 3}
+  m_PrefabInstance: {fileID: 2127600421}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 990be63e8b7354ba5be0143a80d7fd3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5713511116109586283
 PrefabInstance:
   m_ObjectHideFlags: 0

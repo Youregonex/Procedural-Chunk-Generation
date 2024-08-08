@@ -19,9 +19,9 @@ namespace Youregone.BehaviourTrees
             return this;
         }
 
-        public BTBuilder WithCondition(ConditionNode _conditionNode)
+        public BTBuilder WithCondition(ConditionNode conditionNode)
         {
-            _compositeNode.AddChildNode(_conditionNode);
+            _compositeNode.AddChildNode(conditionNode);
 
             return this;
         }
@@ -56,7 +56,10 @@ namespace Youregone.BehaviourTrees
 
         public Composite Build()
         {
-            return _compositeNode;
+            Composite compositeNode = _compositeNode;
+            _compositeNode = new Composite();
+
+            return compositeNode;
         }
     }
 }

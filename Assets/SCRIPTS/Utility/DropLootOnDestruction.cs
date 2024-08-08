@@ -33,6 +33,9 @@ public class DropLootOnDestruction : MonoBehaviour
         {
             for (int i = 0; i < keyValuePair.Value; i++)
             {
+                if (WorldItemSpawner.Instance == null)
+                    yield break;
+
                 Item item = WorldItemSpawner.Instance.SpawnNodeItem(keyValuePair.Key);
                 item.transform.position = transform.position;
                 item.transform.SetParent(transform);

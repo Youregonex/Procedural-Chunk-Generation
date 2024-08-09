@@ -77,10 +77,7 @@ public class TilePlacer : MonoBehaviour
     public void ClearTileAtPosition(TileData tileData)
     {
         if (_groundTilemap == null || _obstacleTilemap == null)
-        {
-            Debug.Log("Tilemap is missing!");
             return;
-        }
 
         Vector2 tileWorldPosition = new Vector2(tileData.position.x, tileData.position.y);
 

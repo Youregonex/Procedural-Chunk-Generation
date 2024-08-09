@@ -11,7 +11,7 @@ public abstract class InteractableBuilding : Building, IInteractable
     [Header("Debug Fields")]
     [SerializeField] protected Color _interactColor;
     [SerializeField] protected Color _uninteractColor;
-    [SerializeField] public bool IsInteracting { get; protected set; } = false;
+    [field: SerializeField] public bool IsInteracting { get; protected set; } = false;
 
 
     public override void Initialize(BuildingItemDataSO buildingItemDataSO)

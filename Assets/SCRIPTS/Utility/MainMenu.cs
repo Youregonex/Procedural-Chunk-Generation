@@ -1,27 +1,35 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Youregone.SceneLoader;
+using Youregone.SaveLoadSystem;
 
 public class MainMenu : MonoBehaviour
 {
     [Header("Buttons")]
-    [SerializeField] private Button _playButton;
+    [SerializeField] private Button _newGameButton;
     [SerializeField] private Button _optionsButton;
     [SerializeField] private Button _exitButton;
-
-    [Header("UI Components")]
-    [SerializeField] private PreloadScreen _preloadScreen;
+    [SerializeField] private Button _continueButton;
 
     [Header("Chunk Generator")]
     [SerializeField] private ChunkGenerator _chunkGenerator;
 
     private void Awake()
     {
-        _preloadScreen.Initialize();
-        _chunkGenerator.InitializeMainMenuGeneration();
+        _chunkGenerator.StartGeneration();
+    }
 
-        _playButton.onClick.AddListener(() =>
+    private void Start()
+    {
+        _continueButton.onClick.AddListener(() =>
         {
+            DataPersistanceManager.Instance.IsLoadingGame = true;
+            SceneLoader.LoadScene(SceneLoader.ESceneName.GameScene);
+        });
+
+        _newGameButton.onClick.AddListener(() =>
+        {
+            DataPersistanceManager.Instance.IsLoadingGame = false;
             SceneLoader.LoadScene(SceneLoader.ESceneName.GameScene);
         });
 
@@ -34,5 +42,7 @@ public class MainMenu : MonoBehaviour
         {
             Application.Quit();
         });
+
+        _continueButton.interactable = SaveLoadSystem.SaveFileExists();
     }
 }

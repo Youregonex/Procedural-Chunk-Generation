@@ -47,10 +47,9 @@ public class ShrineMobSpawner : InteractableBuilding
 
     private IEnumerator DestroyShrine(float destructionDelay)
     {
-        _resourceNode.OnLootDropInvoke();
-
         yield return new WaitForSeconds(destructionDelay);
 
+        _resourceNode.OnLootDropInvoke();
         Destroy(gameObject);
     }
 

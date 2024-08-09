@@ -1,7 +1,6 @@
 using UnityEngine;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 
 public class AgentHealthSystem : AgentMonobehaviourComponent, IContainLoot
 {
@@ -41,11 +40,6 @@ public class AgentHealthSystem : AgentMonobehaviourComponent, IContainLoot
     {
         _agentAnimation = _agentCore.GetAgentComponent<AgentAnimation>();
         _hitbox = _agentCore.GetAgentComponent<AgentHitbox>();
-    }
-
-    public void FillLootList(List<Item> lootList) // TODO: add lootList to AgentHealthSystem
-    {
-
     }
 
     public void SetCurrentHealth(float currentHealth)
@@ -125,7 +119,6 @@ public class AgentHealthSystem : AgentMonobehaviourComponent, IContainLoot
     protected virtual void Die()
     {
         CurrentHealth = 0f;
-        OnLootDrop?.Invoke();
         _isDead = true;
         _hitbox.enabled = false;
 
@@ -137,6 +130,7 @@ public class AgentHealthSystem : AgentMonobehaviourComponent, IContainLoot
     {
         yield return new WaitForSeconds(_destructionDelay);
 
+        OnLootDrop?.Invoke();
         Destroy(gameObject);
     }
 }

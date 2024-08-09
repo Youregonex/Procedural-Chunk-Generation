@@ -8,7 +8,6 @@ public class GameOverScreen : MonoBehaviour
 {
     [Header("Config")]
     [SerializeField] private Image _gameOverImage;
-    [SerializeField] private Button _exitButton;
     [SerializeField] private Button _mainMenuButton;
     [SerializeField] private TextMeshProUGUI _gameOverText;
 
@@ -30,11 +29,6 @@ public class GameOverScreen : MonoBehaviour
         _gameOverImage.gameObject.SetActive(false);
         _gameOverText.gameObject.SetActive(false);
         _mainMenuButton.gameObject.SetActive(false);
-
-        _exitButton.onClick.AddListener(() =>
-        {
-            Application.Quit();
-        });
 
         _mainMenuButton.onClick.AddListener(() =>
         {

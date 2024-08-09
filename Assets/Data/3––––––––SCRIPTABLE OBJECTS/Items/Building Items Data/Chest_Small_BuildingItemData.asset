@@ -19,5 +19,5 @@ MonoBehaviour:
   <ItemPrefab>k__BackingField: {fileID: 6149466425579451927, guid: 50fc8d80b931a463aa4362e512a8ec53, type: 3}
   <MaxStackSize>k__BackingField: 5
   <ItemType>k__BackingField: 5
-  <BuildingPrefab>k__BackingField: {fileID: 3901001061215652619, guid: 6ff987acaf73545e89e7cadf65489908, type: 3}
+  <BuildingPrefab>k__BackingField: {fileID: 897901168499567443, guid: 6ff987acaf73545e89e7cadf65489908, type: 3}
   <BuildingSize>k__BackingField: {x: 0.7, y: 0.65}

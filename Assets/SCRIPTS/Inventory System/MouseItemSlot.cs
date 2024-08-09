@@ -44,8 +44,8 @@ public class MouseItemSlot : MonoBehaviour
 
             item.transform.position = _playerCore.transform.position;
 
-            Vector2 itemDropDirection = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-            item.DropInDirection(itemDropDirection);
+            Vector2 itemDropTargetDirection = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            item.DropInDirection(itemDropTargetDirection);
             ClearSlot();
         }
     }

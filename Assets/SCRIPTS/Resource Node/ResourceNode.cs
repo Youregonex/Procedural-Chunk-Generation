@@ -1,6 +1,5 @@
 using UnityEngine;
 using System;
-using System.Collections.Generic;
 
 [Serializable]
 public class ResourceNode : MonoBehaviour, IContainLoot
@@ -14,11 +13,8 @@ public class ResourceNode : MonoBehaviour, IContainLoot
 
     [Header("Debug Fields")]
     [SerializeField] private ResourceNodeHealthSystem _nodeHealthSystem;
-    [SerializeField] private List<Item> _lootList;
 
     public EToolType AppropriateTool => _appropriateTool;
-
-    public IEnumerable<Item> LootList => _lootList;
 
     private void Awake()
     {
@@ -38,11 +34,6 @@ public class ResourceNode : MonoBehaviour, IContainLoot
     public void OnLootDropInvoke()
     {
         OnLootDrop?.Invoke();
-    }
-
-    public void FillLootList(List<Item> lootList)
-    {
-        _lootList = lootList;
     }
 
     private void NodeHealthSystem_OnDeath()

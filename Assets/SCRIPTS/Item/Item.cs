@@ -84,9 +84,9 @@ public class Item : MonoBehaviour, IGenerateSaveData
         StartCoroutine(MoveInDirectionCoroutine(GetRandomMovementVector(), _nodeDropMoveSpeed));
     }
 
-    public void DropInDirection(Vector2 movementDirection)
+    public void DropInDirection(Vector2 targetDirection)
     {
-        Vector2 moveDirectionNormalized = movementDirection.normalized;
+        Vector2 moveDirectionNormalized = (targetDirection - (Vector2)transform.position).normalized;
         StartCoroutine(MoveInDirectionCoroutine(moveDirectionNormalized, _agentDropMoveSpeed));
     }
 

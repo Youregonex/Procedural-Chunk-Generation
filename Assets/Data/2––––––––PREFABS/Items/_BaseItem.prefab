@@ -134,7 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nodeDropMoveSpeed: 3
   _agentDropMoveSpeed: 5
-  _moveDuration: 0.2
+  _moveDuration: 0.25
   _scaleFrom: 1.5
   _dropAnimationTime: 0.4
   _dropColliderDisableTime: 0.3

@@ -29,10 +29,31 @@ public class HotbarDisplay : InventoryDisplay
         SelectDefaultSlot();
     }
 
-    private void Update()
+    private void Update() // TODO: Cringe
     {
-        if (_playerHealthSystem.IsDead)
+        if (_playerHealthSystem == null || _playerHealthSystem.IsDead)
             return;
+
+        int newIndex;
+
+        if (Input.mouseScrollDelta.y > 0)
+        {
+            newIndex = _inventorySlotsUIList.IndexOf(_currentHotbarSlotUI) + 1;
+
+            if (newIndex > 9)
+                newIndex = 0;
+
+            SelectSlot(newIndex);
+        }
+        else if(Input.mouseScrollDelta.y < 0)
+        {
+            newIndex = _inventorySlotsUIList.IndexOf(_currentHotbarSlotUI) - 1;
+
+            if (newIndex < 0)
+                newIndex = 9;
+
+            SelectSlot(newIndex);
+        }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
             SelectSlot(0);

@@ -7,22 +7,16 @@ public class TestSaveLoad : MonoBehaviour
     [SerializeField] private Button _saveButton;
     [SerializeField] private Button _loadButton;
 
-    [Header("Debug Fields")]
-    [SerializeField] private DataPersistanceManager _dataPersistanceManager;
-
-
-    public void Initialize(DataPersistanceManager dataPersistanceManager)
+    public void Initialize()
     {
-        _dataPersistanceManager = dataPersistanceManager;
-
         _saveButton.onClick.AddListener(() =>
         {
-            _dataPersistanceManager.SaveGame();
+            DataPersistanceManager.Instance.SaveGame();
         });
 
         _loadButton.onClick.AddListener(() =>
         {
-            _dataPersistanceManager.LoadGame();
+            DataPersistanceManager.Instance.LoadGame();
         });
     }
 }

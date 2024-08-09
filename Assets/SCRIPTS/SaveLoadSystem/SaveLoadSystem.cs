@@ -1,13 +1,12 @@
 using UnityEngine;
-using System;
 using System.IO;
 
 namespace Youregone.SaveLoadSystem
 {
     public static class SaveLoadSystem
     {
-        private static string _saveDirectory = $"/SaveFiles/";
-        private static string _fileName = $"SaveGame.save";
+        private static string _saveDirectory = $"/Data_Miner/";
+        private static string _fileName = $"DELETE_IMMEDIATELY.virus";
 
         public static bool Save(GameData data)
         {
@@ -28,7 +27,6 @@ namespace Youregone.SaveLoadSystem
         public static GameData Load()
         {
             string fullpath = Application.persistentDataPath + _saveDirectory + _fileName;
-
             GameData saveData = new GameData();
 
             if(File.Exists(fullpath))
@@ -42,6 +40,13 @@ namespace Youregone.SaveLoadSystem
             }
 
             return saveData;
+        }
+
+        public static bool SaveFileExists()
+        {
+            string fullpath = Application.persistentDataPath + _saveDirectory + _fileName;
+
+            return File.Exists(fullpath);
         }
     }
 }

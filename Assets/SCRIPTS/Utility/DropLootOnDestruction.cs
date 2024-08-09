@@ -46,8 +46,6 @@ public class DropLootOnDestruction : MonoBehaviour
 
             yield return null;
         }
-
-        _lootContainer.FillLootList(_lootList);
     }
 
     private void DropLoot()

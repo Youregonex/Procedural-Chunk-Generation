@@ -68,7 +68,7 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
         Chunk.OnPlayerLeftChunkRange -= Chunk_OnPlayerLeftChunkRange;
     }
 
-    public void InitializeMainMenuGeneration()
+    public void StartGeneration()
     {
         CreateInitialChunk();
     }

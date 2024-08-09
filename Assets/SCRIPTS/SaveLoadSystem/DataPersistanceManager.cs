@@ -10,17 +10,16 @@ public class DataPersistanceManager : MonoBehaviour
     private GameData _gameData = new GameData();
     private List<IDataPersistance> _dataPersistanceObjects;
 
+    public bool IsLoadingGame;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
             Destroy(gameObject);
 
         Instance = this;
-    }
 
-    public void NewGame()
-    {
-        _gameData = new GameData();
+        DontDestroyOnLoad(gameObject);
     }
 
     public void LoadGame()

@@ -1,5 +1,6 @@
 using UnityEngine;
 using Cinemachine;
+using System.Collections;
 
 public class GameSceneInitializer : MonoBehaviour
 {
@@ -15,14 +16,13 @@ public class GameSceneInitializer : MonoBehaviour
     [SerializeField] private PlayerHealthbarUI _playerHealthbarUI;
     [SerializeField] private AbilityCooldownUIDisplay _abilityCooldownUIDisplay;
     [SerializeField] private GameOverScreen _gameOverScreen;
-    [SerializeField] private PreloadScreen _preloadScreen;
     [SerializeField] private TestSaveLoad _testSaveLoad;
 
     [Header("Managers")]
-    [SerializeField] private DataPersistanceManager _dataPersistanceManager;
     [SerializeField] private ChunkGenerator _chunkGenerator;
 
     [Header("Debug Fields")]
+    [SerializeField] private GameScenePreloader _gameScenePreloader;
     [SerializeField] private PlayerInventorySystem _playerInventory;
     [SerializeField] private PlayerCraftingSystem _playerCraftingSystem;
     [SerializeField] private PlayerCore _playerCore;
@@ -30,15 +30,32 @@ public class GameSceneInitializer : MonoBehaviour
     [SerializeField] private PlayerAbilitySystem _playerAbilitySystem;
     [SerializeField] private PlayerData _playerData;
 
-    private void Awake()
+
+    public void SetupScene(GameScenePreloader gameScenePreloader)
     {
-        SetupScene();
+        StartCoroutine(SetupSceneCoroutine(gameScenePreloader));
     }
 
-    private void SetupScene()
+    private IEnumerator SetupSceneCoroutine(GameScenePreloader gameScenePreloader)
     {
-        InitializePreloadScreen();
+        _gameScenePreloader = gameScenePreloader;
 
+        yield return InitialSceneSetup();
+
+        if (DataPersistanceManager.Instance.IsLoadingGame)
+        {
+            DataPersistanceManager.Instance.LoadGame();
+        }
+        else
+        {
+            _chunkGenerator.StartGeneration();
+        }
+
+        _gameScenePreloader.SetupComplete();
+    }
+
+    private IEnumerator InitialSceneSetup()
+    {
         SetupPlayer();
 
         InitializHotbarDisplay();
@@ -53,12 +70,13 @@ public class GameSceneInitializer : MonoBehaviour
         InitializeTestSaveLoad();
 
         InitializePlayerData();
+
+        yield return null;
     }
 
     private void SetupPlayer()
     {
         GameObject player = Instantiate(_playerPrefab, _playerSpawn.position, Quaternion.identity);
-        player.name = "Player";
 
         _playerFollowCamera.Follow = player.transform;
 
@@ -111,14 +129,9 @@ public class GameSceneInitializer : MonoBehaviour
         _gameOverScreen.Initialize(_playerHealthSystem);
     }
 
-    private void InitializePreloadScreen()
-    {
-        _preloadScreen.Initialize();
-    }
-
     private void InitializeTestSaveLoad()
     {
-        _testSaveLoad.Initialize(_dataPersistanceManager);
+        _testSaveLoad.Initialize();
     }
 
     private void InitializePlayerData()

@@ -208,23 +208,14 @@ GameObject:
   m_Component:
   - component: {fileID: 507167943}
   - component: {fileID: 507167942}
-  - component: {fileID: 507167941}
   - component: {fileID: 507167944}
   m_Layer: 0
   m_Name: Main Camera
-  m_TagString: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &507167941
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 507167940}
-  m_Enabled: 1
 --- !u!20 &507167942
 Camera:
   m_ObjectHideFlags: 0
@@ -415,7 +406,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &813153929
 RectTransform:
@@ -499,7 +490,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1361327686
 MonoBehaviour:
   m_ObjectHideFlags: 0

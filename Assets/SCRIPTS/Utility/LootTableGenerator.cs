@@ -3,14 +3,13 @@ using UnityEngine;
 
 public static class LootTableGenerator
 {
-    public static Dictionary<ItemDataSO, int> GetDropTable(DropListDataSO dropListDataSO, bool generateOneFromList = false)
+    public static Dictionary<ItemDataSO, int> GetDropTable(DropListDataSO dropListDataSO)
     {
         Dictionary<ItemDataSO, int> dropTable = new Dictionary<ItemDataSO, int>();
 
-        if (generateOneFromList)
+        if (dropListDataSO.DropOneFromList)
         {
             int randomItem = Random.Range(0, dropListDataSO.ItemDropList.Count);
-
             ItemDropDataStruct itemDrop = dropListDataSO.ItemDropList[randomItem];
 
             if (Random.Range(0f, 1f) > itemDrop.dropChance)

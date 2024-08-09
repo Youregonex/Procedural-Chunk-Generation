@@ -28,9 +28,9 @@ public class PlayerHealthbarUI : MonoBehaviour
         _playerHealthSystem.OnHealthChanged -= AgentHealthSystem_OnHealthChanged;
     }
 
-    private void AgentHealthSystem_OnHealthChanged(float currentHealth, float maxHealth)
+    private void AgentHealthSystem_OnHealthChanged(object sender, AgentHealthSystem.OnHealthChangedEventArgs e)
     {
-        _healthbarFill.fillAmount = currentHealth / maxHealth;
+        _healthbarFill.fillAmount = e.currentHealth / e.maxHealth;
 
         _currentHealthText.text = _playerHealthSystem.CurrentHealth.ToString();
         _maxHealthText.text = _playerHealthSystem.MaxHealth.ToString();

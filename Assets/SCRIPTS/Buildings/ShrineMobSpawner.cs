@@ -15,6 +15,7 @@ public class ShrineMobSpawner : InteractableBuilding
     [SerializeField] private bool _spawnBoss;
 
     [Header("Debug Fields")]
+    [SerializeField] private ResourceNode _resourceNode;
     [SerializeField] private List<AgentHealthSystem> _aliveEnemies = new List<AgentHealthSystem>();
     [SerializeField] private int _currentWave = 1;
     [SerializeField] private Transform _currentTarget;
@@ -28,6 +29,7 @@ public class ShrineMobSpawner : InteractableBuilding
         if (_isActive)
             return;
 
+        _resourceNode = GetComponent<ResourceNode>();
         _isActive = true;
         _currentTarget = initiator.transform.root;
         StartCoroutine(SpawnEnemies(_currentTarget));
@@ -45,6 +47,8 @@ public class ShrineMobSpawner : InteractableBuilding
 
     private IEnumerator DestroyShrine(float destructionDelay)
     {
+        _resourceNode.OnLootDropInvoke();
+
         yield return new WaitForSeconds(destructionDelay);
 
         Destroy(gameObject);

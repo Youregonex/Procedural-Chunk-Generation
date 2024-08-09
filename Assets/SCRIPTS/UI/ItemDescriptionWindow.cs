@@ -21,6 +21,9 @@ public class ItemDescriptionWindow : MonoBehaviour
 
     public void DisplayItemDescription(ItemDataSO itemDataSO, Vector2 position)
     {
+        if (itemDataSO == null)
+            return;
+
         SetItemDescriptionData(itemDataSO);
         transform.position = position;
         RectTransform panelRect = _itemDescriptionUIPanel.GetComponent<RectTransform>();
@@ -70,11 +73,13 @@ public class ItemDescriptionWindow : MonoBehaviour
         panelRect.sizeDelta = Vector2.zero;
 
         _itemDescriptionUIPanel.gameObject.SetActive(true);
-
     }
 
     private void SetItemDescriptionData(ItemDataSO itemData)
     {
+        if (itemData == null)
+            return;
+
         _itemNameText.text = itemData.Name;
         _itemDescriptionText.text = itemData.Description;
     }

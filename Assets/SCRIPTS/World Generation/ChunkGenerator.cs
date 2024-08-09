@@ -79,7 +79,7 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
 
         foreach (KeyValuePair<Vector2Int, Chunk> keyValuePair in _chunkDictionary)
         {
-            gameData.chunkSaveDataList.Add(keyValuePair.Value.GenerateSaveData());
+            gameData.chunkSaveDataList.Add(keyValuePair.Value.GenerateSaveData() as ChunkSaveData);
         }
 
         gameData.chunkLayerCount = _chunkLayerCount;
@@ -118,7 +118,7 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
             ChunkSaveData chunkSaveData = gameData.chunkSaveDataList[i];
 
             Chunk chunk = GenerateChunk(chunkSaveData.position);
-            chunk.LoadChunkFromSaveData(chunkSaveData);
+            chunk.LoadFromSaveData(chunkSaveData);
 
             if (chunk.NodesSpawned && chunk.IsPlayerInRange)
                 StartCoroutine(SpawnChunkNodesCoroutine(chunk));

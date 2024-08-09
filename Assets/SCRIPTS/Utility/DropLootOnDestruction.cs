@@ -39,8 +39,9 @@ public class DropLootOnDestruction : MonoBehaviour
                 Item item = WorldItemSpawner.Instance.SpawnNodeItem(keyValuePair.Key);
                 item.transform.position = transform.position;
                 item.transform.SetParent(transform);
-                _lootList.Add(item);
                 item.gameObject.SetActive(false);
+
+                _lootList.Add(item);
             }
 
             yield return null;

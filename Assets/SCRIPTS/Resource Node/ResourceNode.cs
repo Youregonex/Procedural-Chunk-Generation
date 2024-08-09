@@ -35,6 +35,11 @@ public class ResourceNode : MonoBehaviour, IContainLoot
         _nodeHealthSystem.OnDeath -= NodeHealthSystem_OnDeath;
     }
 
+    public void OnLootDropInvoke()
+    {
+        OnLootDrop?.Invoke();
+    }
+
     public void FillLootList(List<Item> lootList)
     {
         _lootList = lootList;

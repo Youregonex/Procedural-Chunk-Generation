@@ -22,19 +22,19 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: ed8134cdfc75f43ffad105cc109a7a89, type: 2}
     - target: {fileID: 384787058298691739, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
       propertyPath: m_Size.x
-      value: 0.45
+      value: 0.48821467
       objectReference: {fileID: 0}
     - target: {fileID: 384787058298691739, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
       propertyPath: m_Size.y
-      value: 0.65
+      value: 0.6827555
       objectReference: {fileID: 0}
     - target: {fileID: 384787058298691739, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
       propertyPath: m_Offset.x
-      value: -0.0014647394
+      value: 0.0012649
       objectReference: {fileID: 0}
     - target: {fileID: 384787058298691739, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
       propertyPath: m_Offset.y
-      value: -0.0014647245
+      value: -0.0069239587
       objectReference: {fileID: 0}
     - target: {fileID: 1100258196089152816, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
       propertyPath: m_Layer
@@ -194,6 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3adf26407add4417a9200dfe5d0caf96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buildingItemDataSO: {fileID: 0}
   _uninteractedSprite: {fileID: -343928407, guid: 18cfac4b2897a4e089a19671f1b1bb6c, type: 3}
   _interactedSprite: {fileID: -343928407, guid: 18cfac4b2897a4e089a19671f1b1bb6c, type: 3}
   _spriteRenderer: {fileID: 3851714972855143086}

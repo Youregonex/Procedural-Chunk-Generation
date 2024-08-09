@@ -37,11 +37,11 @@ public class Healthbar : MonoBehaviour
         _healthbarBackground.enabled = false;
     }
 
-    private void HealthSystem_OnHealthChanged(float currentHealth, float maxHealth)
+    private void HealthSystem_OnHealthChanged(object sender, AgentHealthSystem.OnHealthChangedEventArgs e)
     {
         ShowHealthbar();
 
-        float healthbarFill = currentHealth / maxHealth;
+        float healthbarFill = e.currentHealth / e.maxHealth;
 
         _healthbarFill.fillAmount = healthbarFill;
 

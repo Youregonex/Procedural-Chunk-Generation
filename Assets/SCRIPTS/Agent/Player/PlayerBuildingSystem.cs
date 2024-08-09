@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Youregone.Utilities;
 
 public class PlayerBuildingSystem : AgentMonobehaviourComponent
 {
@@ -70,7 +71,7 @@ public class PlayerBuildingSystem : AgentMonobehaviourComponent
     {
         if (_currentBuildingItemDataSO != null && _pendingBuildingItem.CanPlaceBuilding)
         {
-            WorldBuildingSpawner.Instance.CreateBuildingAtPosition(_currentBuildingItemDataSO, GetMouseGridPosition());
+            WorldBuildingSpawner.Instance.CreateBuildingAtPosition(_currentBuildingItemDataSO, Utility.GetMouseGridPosition());
             _currentBuildingItemDataSO.OnBuildingItemPlacedInvoke();
         }
     }
@@ -83,12 +84,5 @@ public class PlayerBuildingSystem : AgentMonobehaviourComponent
     private void HidePendingBuildingItem()
     {
         _pendingBuildingItem.HidePendingBuildingItem();
-    }
-
-    private Vector2 GetMouseGridPosition()
-    {
-        Vector2 mousePosition = _mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-
-        return new Vector2(Mathf.Round(mousePosition.x), Mathf.Round(mousePosition.y));
     }
 }

@@ -34,7 +34,7 @@ public class WorldItemSpawner : MonoBehaviour, IDataPersistance
 
         for (int i = 0; i < _itemList.Count; i++)
         {
-            ItemSaveData itemSaveData = _itemList[i].GenerateSaveData();
+            ItemSaveData itemSaveData = _itemList[i].GenerateSaveData() as ItemSaveData;
             itemSaveDataList.Add(itemSaveData);
         }
 

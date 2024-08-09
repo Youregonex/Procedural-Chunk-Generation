@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 
 [Serializable]
-public class Chunk : MonoBehaviour
+public class Chunk : MonoBehaviour, IGenerateSaveData
 {
     public static event EventHandler OnPlayerEnteredChunkRange;
     public static event EventHandler OnPlayerLeftChunkRange;
@@ -68,7 +68,7 @@ public class Chunk : MonoBehaviour
         }
     }
 
-    public ChunkSaveData GenerateSaveData()
+    public SaveData GenerateSaveData()
     {
         Vector2Int chunkPosition = new Vector2Int((int)transform.position.x, (int)transform.position.y);
         ChunkSaveData chunkSaveData = new ChunkSaveData(chunkPosition,
@@ -76,12 +76,12 @@ public class Chunk : MonoBehaviour
         return chunkSaveData;
     }
 
-    public Chunk LoadChunkFromSaveData(ChunkSaveData chunkSaveData)
+    public void LoadFromSaveData(SaveData saveData)
     {
+        ChunkSaveData chunkSaveData = saveData as ChunkSaveData;
+
         _nodesSpawned = false;
         _nodePositionMapDictionary = chunkSaveData.nodePositionMapDictionary;
-
-        return this;
     }
 
     public void InitializeChunk(int chunkLayerCount)
@@ -130,9 +130,9 @@ public class Chunk : MonoBehaviour
         LoadNodes();
     }
 
-    public void AddNodeToChunk(Vector2Int objectPosition, ResourceNode node)
+    public void AddNodeToChunk(Vector2Int nodePosition, ResourceNode node)
     {
-        _chunkNodeDictionary.Add(objectPosition, node);
+        _chunkNodeDictionary.Add(nodePosition, node);
         node.OnDepletion += Node_OnDepletion;
     }
 
@@ -208,20 +208,5 @@ public class Chunk : MonoBehaviour
         {
             keyValuePair.Value.gameObject.SetActive(true);
         }
-    }
-}
-
-[Serializable]
-public struct ChunkSaveData
-{
-    public Vector2Int position;
-
-    public SerializableDictionary<Vector2Int, ResourceNode> nodePositionMapDictionary;
-
-    public ChunkSaveData(Vector2Int position,
-                         SerializableDictionary<Vector2Int, ResourceNode> nodePositionMapDictionary)
-    {
-        this.position = position;
-        this.nodePositionMapDictionary = nodePositionMapDictionary;
     }
 }

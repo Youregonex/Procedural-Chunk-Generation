@@ -25,5 +25,12 @@ namespace Youregone.Utilities
 
             return results.Count > 0;
         }
+
+        public static Vector2 GetMouseGridPosition()
+        {
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+
+            return new Vector2(Mathf.Round(mousePosition.x), Mathf.Round(mousePosition.y));
+        }
     }
 }

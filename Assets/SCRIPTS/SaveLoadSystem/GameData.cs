@@ -29,4 +29,12 @@ public class GameData
 
     // World items
     public List<ItemSaveData> itemSaveDataList = new List<ItemSaveData>();
+
+    // World buildings
+
+        // Buildings Save Data
+    public List<BuildingSaveData> buildingSaveDataList = new List<BuildingSaveData>();
+
+        // Containers Save Data
+    public List<ContainerSaveData> containerSaveDataList = new List<ContainerSaveData>();
 }

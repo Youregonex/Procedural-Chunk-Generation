@@ -6,7 +6,13 @@ using System.Collections.Generic;
 public class AgentHealthSystem : AgentMonobehaviourComponent, IContainLoot
 {
     public event Action<DamageStruct> OnDamageTaken;
-    public event Action<float, float> OnHealthChanged;
+    public event EventHandler<OnHealthChangedEventArgs> OnHealthChanged;
+    public class OnHealthChangedEventArgs : EventArgs
+    {
+        public float currentHealth;
+        public float maxHealth;
+    }
+
     public event Action<AgentHealthSystem> OnDeath;
     public event Action OnLootDrop;
 
@@ -37,7 +43,7 @@ public class AgentHealthSystem : AgentMonobehaviourComponent, IContainLoot
         _hitbox = _agentCore.GetAgentComponent<AgentHitbox>();
     }
 
-    public void FillLootList(List<Item> lootList)
+    public void FillLootList(List<Item> lootList) // TODO: add lootList to AgentHealthSystem
     {
 
     }
@@ -49,14 +55,22 @@ public class AgentHealthSystem : AgentMonobehaviourComponent, IContainLoot
 
         CurrentHealth = currentHealth;
 
-        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+        OnHealthChanged?.Invoke(this, new OnHealthChangedEventArgs
+        {
+            currentHealth = CurrentHealth,
+            maxHealth = MaxHealth
+        });
     }
 
     public void SetMaxHealth(float maxHealth)
     {
         MaxHealth = maxHealth;
 
-        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+        OnHealthChanged?.Invoke(this, new OnHealthChangedEventArgs
+        {
+            currentHealth = CurrentHealth,
+            maxHealth = MaxHealth
+        });
     }
 
     public override void DisableComponent()
@@ -86,7 +100,11 @@ public class AgentHealthSystem : AgentMonobehaviourComponent, IContainLoot
         if (CurrentHealth <= 0f)
             CurrentHealth = 0f;
 
-        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+        OnHealthChanged?.Invoke(this, new OnHealthChangedEventArgs
+        {
+            currentHealth = CurrentHealth,
+            maxHealth = MaxHealth
+        });
 
         if (CurrentHealth == 0f)
         {

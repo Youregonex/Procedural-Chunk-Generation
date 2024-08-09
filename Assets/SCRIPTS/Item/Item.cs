@@ -4,7 +4,7 @@ using System;
 using DG.Tweening;
 
 [Serializable]
-public class Item : MonoBehaviour
+public class Item : MonoBehaviour, IGenerateSaveData
 {
     public event Action<Item> OnDestruction;
 
@@ -17,7 +17,6 @@ public class Item : MonoBehaviour
     [SerializeField] private float _scaleFrom = 2f;
     [SerializeField] private float _dropAnimationTime = .5f;
     [SerializeField] private float _dropColliderDisableTime = .3f;
-
 
     [Header("Debug Fields")]
     [SerializeField] private ItemDataSO _itemDataSO;
@@ -48,15 +47,17 @@ public class Item : MonoBehaviour
         OnDestruction?.Invoke(this);
     }
 
-    public ItemSaveData GenerateSaveData()
+    public SaveData GenerateSaveData()
     {
         ItemSaveData itemSaveData = new ItemSaveData(transform.position, _itemDataSO, _itemQuantity);
 
         return itemSaveData;
     }
 
-    public void LoadFromSaveData(ItemSaveData itemSaveData)
+    public void LoadFromSaveData(SaveData saveData)
     {
+        ItemSaveData itemSaveData = saveData as ItemSaveData;
+
         transform.position = itemSaveData.position;
         _itemDataSO = itemSaveData.itemDataSO;
         _itemQuantity = itemSaveData.quantity;
@@ -117,20 +118,5 @@ public class Item : MonoBehaviour
         _currentAnimation = transform.DOScale(_scaleFrom, _dropAnimationTime)
                                      .From()
                                      .SetEase(Ease.InOutBack);
-    }
-}
-
-[Serializable]
-public struct ItemSaveData
-{
-    public Vector2 position;
-    public ItemDataSO itemDataSO;
-    public int quantity;
-
-    public ItemSaveData(Vector2 position, ItemDataSO itemDataSO, int quantity)
-    {
-        this.position = position;
-        this.itemDataSO = itemDataSO;
-        this.quantity = quantity;
     }
 }

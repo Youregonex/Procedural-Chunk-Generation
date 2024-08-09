@@ -2,11 +2,10 @@ using UnityEngine;
 
 public class BuildingFactory
 {
-    public Building CreateBuildingAtPosition(BuildingItemDataSO buildingItemDataSO, Vector2 position)
+    public Building CreateBuilding(BuildingItemDataSO buildingItemDataSO)
     {
-        Transform itemTransform = GameObject.Instantiate(buildingItemDataSO.BuildingPrefab, position, Quaternion.identity).transform;
-
-        Building building = itemTransform.GetComponent<Building>();
+        Building building = GameObject.Instantiate(buildingItemDataSO.BuildingPrefab);
+        building.Initialize(buildingItemDataSO);
 
         return building;
     }

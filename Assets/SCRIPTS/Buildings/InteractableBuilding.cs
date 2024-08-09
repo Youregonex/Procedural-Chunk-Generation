@@ -13,9 +13,12 @@ public abstract class InteractableBuilding : Building, IInteractable
     [SerializeField] protected Color _uninteractColor;
     [SerializeField] public bool IsInteracting { get; protected set; } = false;
 
-    protected virtual void Awake()
+
+    public override void Initialize(BuildingItemDataSO buildingItemDataSO)
     {
-        if(!_saveInitialColor)
+        base.Initialize(buildingItemDataSO);
+
+        if (!_saveInitialColor)
         {
             _uninteractColor = new Color(1, 1, 1);
             _uninteractColor.a = 1f;

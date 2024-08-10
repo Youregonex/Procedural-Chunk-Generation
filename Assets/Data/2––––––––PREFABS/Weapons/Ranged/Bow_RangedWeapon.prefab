@@ -74,7 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6196943772299055142, guid: 9f0e374b3773b4479b1f53030b94d233, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.332
+      value: 0.154
       objectReference: {fileID: 0}
     - target: {fileID: 6196943772299055142, guid: 9f0e374b3773b4479b1f53030b94d233, type: 3}
       propertyPath: m_LocalPosition.y
@@ -142,7 +142,9 @@ MonoBehaviour:
   _knockbackForce: 0
   _attackCooldownMax: 0
   _attackCooldownCurrent: 0
-  _weaponHolder: {fileID: 0}
+  _agentCore: {fileID: 0}
+  _agentAttackModule: {fileID: 0}
+  _itemHoldPoint: {fileID: 0}
   _showGizmos: 0
   _projectilePrefab: {fileID: 0}
   _projectileSpeed: 0

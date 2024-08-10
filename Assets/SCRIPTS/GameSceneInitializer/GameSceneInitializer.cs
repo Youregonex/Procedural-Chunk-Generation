@@ -58,7 +58,7 @@ public class GameSceneInitializer : MonoBehaviour
         }
 
         if(_gameScenePreloader != null)
-            _gameScenePreloader.SetupComplete();
+            _gameScenePreloader.FinishPreloading();
     }
 
     private IEnumerator InitialSceneSetup()

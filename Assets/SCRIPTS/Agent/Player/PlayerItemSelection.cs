@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using Youregone.Utilities;
 
 public class PlayerItemSelection : AgentMonobehaviourComponent
 {
@@ -43,7 +44,7 @@ public class PlayerItemSelection : AgentMonobehaviourComponent
 
     private void PlayerInput_OnMouseSecondary()
     {
-        if(_currentInventorySlot.ItemDataSO != null &&_currentInventorySlot.ItemDataSO.ItemType == EItemType.ActionItem)
+        if(_currentInventorySlot.ItemDataSO != null &&_currentInventorySlot.ItemDataSO.ItemType == EItemType.ActionItem && !Utility.PointerOverUIObject())
         {
             ActionItemDataSO actionItemDataSO = _currentInventorySlot.ItemDataSO as ActionItemDataSO;
             actionItemDataSO.Use(_playerCore);

@@ -29,11 +29,11 @@ public class GameSceneInitializer : MonoBehaviour
     [SerializeField] private AgentStatHealthSystem _playerHealthSystem;
     [SerializeField] private PlayerAbilitySystem _playerAbilitySystem;
     [SerializeField] private PlayerData _playerData;
-    [SerializeField, Space(10)] private bool _testingScene;
+    [SerializeField, Space(10)] private bool _testMode;
 
     private void Awake()
     {
-        if(_testingScene)
+        if(_testMode)
             StartCoroutine(SetupSceneCoroutine());
     }
 

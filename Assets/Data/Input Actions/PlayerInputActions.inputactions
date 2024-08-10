@@ -24,6 +24,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "MouseSecondary",
+                    "type": "Button",
+                    "id": "d3d30bc1-0fec-477f-9170-00acf6e0aee5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Inventory",
                     "type": "Button",
                     "id": "a4e998af-3c24-4d8e-9df1-b02a4e05dca9",
@@ -128,6 +137,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d6f10e66-75f3-42d5-83ea-d5873a61166f",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseSecondary",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

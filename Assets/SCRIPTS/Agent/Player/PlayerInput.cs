@@ -8,6 +8,7 @@ public class PlayerInput : AgentInput
 
     public event Action OnInventoryKeyPressed;
     public event Action OnInteractKeyPressed;
+    public event Action OnMouseSecondary;
 
     private Camera _mainCamera;
 
@@ -26,12 +27,24 @@ public class PlayerInput : AgentInput
         _playerInputActions.Player.MousePrimary.performed += PlayerInputActions_MousePrimary_performed;
         _playerInputActions.Player.Inventory.performed += PlayerInputActions_Inventory_performed;
         _playerInputActions.Player.Interact.performed += PlayerInputActions_Interact_performed;
+        _playerInputActions.Player.MouseSecondary.performed += PlayerInputActions_MouseSecondary_performed;
     }
 
     private void OnDisable()
     {
         if(_playerInputActions != null)
             _playerInputActions.Player.Disable();
+    }
+
+    private void OnDestroy()
+    {
+        if (_playerInputActions == null)
+            return;
+
+        _playerInputActions.Player.MousePrimary.performed -= PlayerInputActions_MousePrimary_performed;
+        _playerInputActions.Player.Inventory.performed -= PlayerInputActions_Inventory_performed;
+        _playerInputActions.Player.Interact.performed -= PlayerInputActions_Interact_performed;
+        _playerInputActions.Player.MouseSecondary.performed -= PlayerInputActions_MouseSecondary_performed;
     }
 
     public override Vector2 GetMovementVectorNormalized()
@@ -41,8 +54,12 @@ public class PlayerInput : AgentInput
     }
 
     public Vector2 GetMouseScreenPosition() => Mouse.current.position.ReadValue();
-    public Vector2 GetMouseScreenPositionNormalized() => GetMouseScreenPosition().normalized;
     public override Vector2 GetAimPosition() => _mainCamera.ScreenToWorldPoint(GetMouseScreenPosition());
+
+    private void PlayerInputActions_MouseSecondary_performed(InputAction.CallbackContext obj)
+    {
+        OnMouseSecondary?.Invoke();
+    }
 
     private void PlayerInputActions_Inventory_performed(InputAction.CallbackContext obj)
     {
@@ -57,15 +74,5 @@ public class PlayerInput : AgentInput
     private void PlayerInputActions_Interact_performed(InputAction.CallbackContext obj)
     {
         OnInteractKeyPressed?.Invoke();
-    }
-
-    private void OnDestroy()
-    {
-        if (_playerInputActions == null)
-            return;
-
-        _playerInputActions.Player.MousePrimary.performed -= PlayerInputActions_MousePrimary_performed;
-        _playerInputActions.Player.Inventory.performed -= PlayerInputActions_Inventory_performed;
-        _playerInputActions.Player.Interact.performed -= PlayerInputActions_Interact_performed;
     }
 }

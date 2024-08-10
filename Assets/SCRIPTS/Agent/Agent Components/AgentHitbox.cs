@@ -18,6 +18,12 @@ public class AgentHitbox : AgentMonobehaviourComponent, IDamageable
     private void Start()
     {
         _healthSystem = _agentCore.GetAgentComponent<AgentHealthSystem>();
+        _healthSystem.OnDeath += HealthSystem_OnDeath;
+    }
+
+    private void OnDestroy()
+    {
+        _healthSystem.OnDeath -= HealthSystem_OnDeath;
     }
 
     public bool IsDead() => _healthSystem.IsDead;
@@ -37,4 +43,9 @@ public class AgentHitbox : AgentMonobehaviourComponent, IDamageable
     }
 
     public EFactions GetFaction() => _agentCore.GetFaction();
+
+    private void HealthSystem_OnDeath(AgentHealthSystem obj)
+    {
+        DisableComponent();
+    }
 }

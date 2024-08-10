@@ -7,16 +7,28 @@ public class PlayerItemSelection : AgentMonobehaviourComponent
 
     [Header("Debug Field")]
     [SerializeField] private InventorySlot _currentInventorySlot;
+    [SerializeField] private PlayerCore _playerCore;
+    [SerializeField] private PlayerInput _playerInput;
+
+    private void Awake()
+    {
+        _playerCore = GetComponent<PlayerCore>();
+    }
 
     private void Start()
     {
-        HotbarDisplay.OnHotbarSlotSelected += HotbarDisplay_OnHotbarSlotSelected;    
+        _playerInput = _playerCore.GetAgentComponent<PlayerInput>();
+
+        HotbarDisplay.OnHotbarSlotSelected += HotbarDisplay_OnHotbarSlotSelected;
+        _playerInput.OnMouseSecondary += PlayerInput_OnMouseSecondary;
     }
 
     private void OnDestroy()
     {
         DeselectCurrentSlot();
+
         HotbarDisplay.OnHotbarSlotSelected -= HotbarDisplay_OnHotbarSlotSelected;
+        _playerInput.OnMouseSecondary -= PlayerInput_OnMouseSecondary;
     }
 
     public override void DisableComponent()
@@ -27,6 +39,15 @@ public class PlayerItemSelection : AgentMonobehaviourComponent
     public override void EnableComponent()
     {
         this.enabled = true;
+    }
+
+    private void PlayerInput_OnMouseSecondary()
+    {
+        if(_currentInventorySlot.ItemDataSO != null &&_currentInventorySlot.ItemDataSO.ItemType == EItemType.ActionItem)
+        {
+            ActionItemDataSO actionItemDataSO = _currentInventorySlot.ItemDataSO as ActionItemDataSO;
+            actionItemDataSO.Use(_playerCore);
+        }
     }
 
     private void HotbarDisplay_OnHotbarSlotSelected(InventorySlot inventorySlot)

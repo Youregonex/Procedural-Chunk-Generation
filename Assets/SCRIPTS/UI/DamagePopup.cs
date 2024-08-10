@@ -22,10 +22,11 @@ public class DamagePopup : MonoBehaviour
     private TextMeshPro _popupText;
     private Sequence _damagePopupSequence;
 
-    public void InitializeDamagePopup(int damage)
+    public void InitializeDamagePopup(int damage, Color color)
     {
         _popupText = GetComponent<TextMeshPro>();
         _popupText.text = damage.ToString();
+        _popupText.color = color;
 
         transform.localScale = _startScale;
 

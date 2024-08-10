@@ -46,6 +46,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""MouseSecondary"",
+                    ""type"": ""Button"",
+                    ""id"": ""d3d30bc1-0fec-477f-9170-00acf6e0aee5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Inventory"",
                     ""type"": ""Button"",
                     ""id"": ""a4e998af-3c24-4d8e-9df1-b02a4e05dca9"",
@@ -152,6 +161,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d6f10e66-75f3-42d5-83ea-d5873a61166f"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseSecondary"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -162,6 +182,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_MousePrimary = m_Player.FindAction("MousePrimary", throwIfNotFound: true);
+        m_Player_MouseSecondary = m_Player.FindAction("MouseSecondary", throwIfNotFound: true);
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
     }
@@ -227,6 +248,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_MousePrimary;
+    private readonly InputAction m_Player_MouseSecondary;
     private readonly InputAction m_Player_Inventory;
     private readonly InputAction m_Player_Interact;
     public struct PlayerActions
@@ -235,6 +257,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @MousePrimary => m_Wrapper.m_Player_MousePrimary;
+        public InputAction @MouseSecondary => m_Wrapper.m_Player_MouseSecondary;
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -252,6 +275,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MousePrimary.started += instance.OnMousePrimary;
             @MousePrimary.performed += instance.OnMousePrimary;
             @MousePrimary.canceled += instance.OnMousePrimary;
+            @MouseSecondary.started += instance.OnMouseSecondary;
+            @MouseSecondary.performed += instance.OnMouseSecondary;
+            @MouseSecondary.canceled += instance.OnMouseSecondary;
             @Inventory.started += instance.OnInventory;
             @Inventory.performed += instance.OnInventory;
             @Inventory.canceled += instance.OnInventory;
@@ -268,6 +294,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MousePrimary.started -= instance.OnMousePrimary;
             @MousePrimary.performed -= instance.OnMousePrimary;
             @MousePrimary.canceled -= instance.OnMousePrimary;
+            @MouseSecondary.started -= instance.OnMouseSecondary;
+            @MouseSecondary.performed -= instance.OnMouseSecondary;
+            @MouseSecondary.canceled -= instance.OnMouseSecondary;
             @Inventory.started -= instance.OnInventory;
             @Inventory.performed -= instance.OnInventory;
             @Inventory.canceled -= instance.OnInventory;
@@ -295,6 +324,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnMousePrimary(InputAction.CallbackContext context);
+        void OnMouseSecondary(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
     }

@@ -8,18 +8,20 @@ public class Item : MonoBehaviour, IGenerateSaveData
 {
     public event Action<Item> OnDestruction;
 
+    [Header("Config")]
+    [SerializeField] private ItemDataSO _itemDataSO;
+
     [Header("Item Drop Config")]
     [SerializeField] private float _nodeDropMoveSpeed = 3f;
     [SerializeField] private float _agentDropMoveSpeed = 5f;
     [SerializeField] private float _moveDuration = .2f;
 
-    [Header("Drop Animation")]
+    [Header("Drop Animation Config")]
     [SerializeField] private float _scaleFrom = 2f;
     [SerializeField] private float _dropAnimationTime = .5f;
     [SerializeField] private float _dropColliderDisableTime = .3f;
 
     [Header("Debug Fields")]
-    [SerializeField] private ItemDataSO _itemDataSO;
     [SerializeField] private int _itemQuantity;
     [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private BoxCollider2D _capsuleCollider;

@@ -17,10 +17,10 @@ public class WorldTextDisplay : MonoBehaviour
         Instance = this;
     }
 
-    public void DisplayDamagePopup(Vector2 position, int damage)
+    public void DisplayDamagePopup(Vector2 position, int damage, Color color)
     {
         DamagePopup damagePopup = Instantiate(_damagePopupPrefab, position, Quaternion.identity);
 
-        damagePopup.InitializeDamagePopup(damage);
+        damagePopup.InitializeDamagePopup(damage, color);
     }
 }

@@ -20,6 +20,7 @@ public class Tool : MonoBehaviour
     [SerializeField] private int _ticksPerAttackMin;
     [SerializeField] private int _ticksPerAttackMax;
     [SerializeField] private int _toolTier;
+    [SerializeField] private AgentCoreBase _agentCore;
 
     public float AttackCooldownCurrent => _attackCooldownCurrent;
     public bool CanSwing => _attackCooldownCurrent <= 0;
@@ -31,9 +32,10 @@ public class Tool : MonoBehaviour
             _attackCooldownCurrent -= Time.deltaTime;
     }
 
-    public void SetUpTool(AgentAttackModule agentAttackModue)
+    public void SetUpTool(AgentCoreBase agentCore, AgentAttackModule agentAttackModue)
     {
         _weaponHolder = agentAttackModue;
+        _agentCore = agentCore;
 
         SetupToolStats();
     }
@@ -49,12 +51,10 @@ public class Tool : MonoBehaviour
 
         foreach (Collider2D hit in targetsHit)
         {
-            IDamageable damageable = hit.GetComponent<IDamageable>();
-
-            if (damageable == null)
+            if (!hit.TryGetComponent(out IDamageable damageable))
                 continue;
 
-            if (damageable == _weaponHolder.GetComponent<AgentHealthSystem>().GetHitbox())
+            if (ReferenceEquals(damageable, _agentCore.GetAgentComponent<AgentHitbox>()))
                 continue;
 
             damageable.TakeDamage(new DamageStruct

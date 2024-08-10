@@ -10,14 +10,21 @@ public class AgentHealthSystem : AgentMonobehaviourComponent, IContainLoot
     {
         public float currentHealth;
         public float maxHealth;
+
+        public OnHealthChangedEventArgs(float currentHealth, float maxHealth)
+        {
+            this.currentHealth = currentHealth;
+            this.maxHealth = maxHealth;
+        }
     }
 
     public event Action<AgentHealthSystem> OnDeath;
     public event Action OnLootDrop;
 
     [field: Header("Config")]
-    [field: SerializeField] public float MaxHealth { get; protected set; }
-    [field: SerializeField] public float CurrentHealth { get; protected set; }
+    [SerializeField] private float _currentHealth;
+    [SerializeField] private float _maxHealth;
+
     [SerializeField] protected float _destructionDelay = 0f;
     [SerializeField] protected Transform _damagePopupPosition;
 
@@ -25,46 +32,68 @@ public class AgentHealthSystem : AgentMonobehaviourComponent, IContainLoot
     [SerializeField] protected bool _isDead = false;
     [SerializeField] protected AgentCoreBase _agentCore;
     [SerializeField] protected AgentAnimation _agentAnimation;
-    [SerializeField] protected AgentHitbox _hitbox;
 
     public bool IsDead => _isDead;
+
+    public float MaxHealth
+    {
+        get => _maxHealth;
+
+        protected set
+        {
+            if(value < 1f)
+            {
+                _maxHealth = 1f;
+                return;
+            }
+
+            _maxHealth = value;
+        }
+    }
+
+    public float CurrentHealth
+    {
+        get => _currentHealth;
+
+        protected set
+        {
+            if (value > _maxHealth)
+            {
+                _currentHealth = _maxHealth;
+                return;
+            }
+
+            if (value < 0f)
+            {
+                _currentHealth = 0f;
+                return;
+            }
+
+            _currentHealth = value;
+        }
+    }
 
     protected virtual void Awake()
     {
         CurrentHealth = MaxHealth;
-
         _agentCore = GetComponent<EnemyCore>();
     }
 
     protected virtual void Start()
     {
         _agentAnimation = _agentCore.GetAgentComponent<AgentAnimation>();
-        _hitbox = _agentCore.GetAgentComponent<AgentHitbox>();
     }
 
     public void SetCurrentHealth(float currentHealth)
     {
-        if (currentHealth > MaxHealth)
-            currentHealth = MaxHealth;
-
         CurrentHealth = currentHealth;
-
-        OnHealthChanged?.Invoke(this, new OnHealthChangedEventArgs
-        {
-            currentHealth = CurrentHealth,
-            maxHealth = MaxHealth
-        });
+        OnHealthChanged?.Invoke(this, new OnHealthChangedEventArgs(CurrentHealth, MaxHealth));
     }
 
     public void SetMaxHealth(float maxHealth)
     {
         MaxHealth = maxHealth;
-
-        OnHealthChanged?.Invoke(this, new OnHealthChangedEventArgs
-        {
-            currentHealth = CurrentHealth,
-            maxHealth = MaxHealth
-        });
+        OnHealthChanged?.Invoke(this, new OnHealthChangedEventArgs(CurrentHealth, MaxHealth));
     }
 
     public override void DisableComponent()
@@ -77,37 +106,50 @@ public class AgentHealthSystem : AgentMonobehaviourComponent, IContainLoot
         this.enabled = true;
     }
 
-    public virtual void TakeDamage(DamageStruct damageStruct)
+    public void TakeDamage(DamageStruct damageStruct)
     {
         if (_isDead || _agentCore.GetFaction() == damageStruct.senderFaction)
             return;
+
+        if(damageStruct.damageAmount < 0)
+        {
+            TakeHealing((int)damageStruct.damageAmount);
+            return;
+        }
 
         int damageTaken = CalculateDamage(damageStruct);
 
         _agentAnimation.ManageGetHitAnimation();
         CurrentHealth -= damageTaken;
 
-        WorldTextDisplay.Instance.DisplayDamagePopup(_damagePopupPosition.position, damageTaken);
+        WorldTextDisplay.Instance.DisplayDamagePopup(_damagePopupPosition.position, damageTaken, Color.white);
 
         OnDamageTaken?.Invoke(damageStruct);
 
         if (CurrentHealth <= 0f)
-            CurrentHealth = 0f;
-
-        OnHealthChanged?.Invoke(this, new OnHealthChangedEventArgs
-        {
-            currentHealth = CurrentHealth,
-            maxHealth = MaxHealth
-        });
-
-        if (CurrentHealth == 0f)
         {
             OnDeath?.Invoke(this);
             Die();
         }
+
+        OnHealthChanged?.Invoke(this, new OnHealthChangedEventArgs(CurrentHealth, MaxHealth));
     }
 
-    public IDamageable GetHitbox() => _hitbox;
+    public void TakeHealing(int healingAmount)
+    {
+        if(healingAmount < 0)
+        {
+            DamageStruct damageStruct = new DamageStruct(null, EFactions.None, healingAmount, 0f);
+            TakeDamage(damageStruct);
+            return;
+        }
+
+        CurrentHealth += healingAmount;
+
+        OnHealthChanged?.Invoke(this, new OnHealthChangedEventArgs(CurrentHealth, MaxHealth));
+
+        WorldTextDisplay.Instance.DisplayDamagePopup(_damagePopupPosition.position, healingAmount, Color.green);
+    }
 
     protected int CalculateDamage(DamageStruct damageStruct)
     {
@@ -116,17 +158,15 @@ public class AgentHealthSystem : AgentMonobehaviourComponent, IContainLoot
         return damageTaken;
     }
 
-    protected virtual void Die()
+    private void Die()
     {
-        CurrentHealth = 0f;
         _isDead = true;
-        _hitbox.enabled = false;
 
         _agentAnimation.PlayDeathAnimation();
         StartCoroutine(DestroyWithDelay());
     }
 
-    protected IEnumerator DestroyWithDelay()
+    private IEnumerator DestroyWithDelay()
     {
         yield return new WaitForSeconds(_destructionDelay);
 

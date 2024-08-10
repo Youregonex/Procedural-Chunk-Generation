@@ -120,7 +120,7 @@ public class AgentAttackModule : AgentMonobehaviourComponent
         _currentTool.transform.localRotation = Quaternion.identity;
         _currentTool.transform.localScale = Vector3.one;
 
-        _currentTool.SetUpTool(this);
+        _currentTool.SetUpTool(_agentCore, this);
     }
 
     protected void HideCurrentWeapon()

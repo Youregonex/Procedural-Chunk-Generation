@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1139002993746046954, guid: 9f0e374b3773b4479b1f53030b94d233, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1139002993746046954, guid: 9f0e374b3773b4479b1f53030b94d233, type: 3}
       propertyPath: m_labelHash
       value: 9.268231e-18
       objectReference: {fileID: 0}
@@ -30,7 +34,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3423027006737845153, guid: 9f0e374b3773b4479b1f53030b94d233, type: 3}
       propertyPath: m_Name
-      value: Machete_Iron_MeleeWeapon
+      value: Sword_MeleeWeapon
       objectReference: {fileID: 0}
     - target: {fileID: 5207203518321506005, guid: 9f0e374b3773b4479b1f53030b94d233, type: 3}
       propertyPath: m_LocalPosition.x
@@ -75,6 +79,10 @@ PrefabInstance:
     - target: {fileID: 6196943772299055142, guid: 9f0e374b3773b4479b1f53030b94d233, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.213
+      objectReference: {fileID: 0}
+    - target: {fileID: 7103971467397756756, guid: 9f0e374b3773b4479b1f53030b94d233, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7103971467397756756, guid: 9f0e374b3773b4479b1f53030b94d233, type: 3}
       propertyPath: m_SpriteLibraryAsset

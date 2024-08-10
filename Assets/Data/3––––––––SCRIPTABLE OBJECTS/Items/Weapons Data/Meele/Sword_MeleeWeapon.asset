@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d82363c459c4338a3b639a7d0cfb55, type: 3}
+  m_Name: Sword_MeleeWeapon
+  m_EditorClassIdentifier: 
+  <Id>k__BackingField: 0
+  <Name>k__BackingField: Sword
+  Description: Sword
+  <Icon>k__BackingField: {fileID: -1266625048, guid: 7cb7c3ac629e740cd886ffadad4ba098, type: 3}
+  <ItemPrefab>k__BackingField: {fileID: 1750307036268059749, guid: 3d36b4d354b9e4cb4acf31ad02e8e479, type: 3}
+  <MaxStackSize>k__BackingField: 1
+  <ItemType>k__BackingField: 2
+  <WeaponPrefab>k__BackingField: {fileID: 5377014887262697560, guid: 4284c21c3d4e748bab83026120227451, type: 3}
+  <AttackDamageMin>k__BackingField: 2
+  <AttackDamageMax>k__BackingField: 5
+  <KnockbackForce>k__BackingField: 2
+  <AttackCooldown>k__BackingField: 0.75
+  <AttackRadius>k__BackingField: 0.6

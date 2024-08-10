@@ -417,7 +417,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_14
+      name: Gem_orange
       rect:
         serializedVersion: 2
         x: 32
@@ -480,7 +480,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_17
+      name: Gem_dark_white
       rect:
         serializedVersion: 2
         x: 80
@@ -543,7 +543,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_20
+      name: Gem_Yellow
       rect:
         serializedVersion: 2
         x: 128
@@ -606,7 +606,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_23
+      name: Gem_white
       rect:
         serializedVersion: 2
         x: 176
@@ -669,7 +669,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_26
+      name: Gem_red
       rect:
         serializedVersion: 2
         x: 32
@@ -732,7 +732,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_29
+      name: Gem_blue
       rect:
         serializedVersion: 2
         x: 80
@@ -795,7 +795,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_32
+      name: Gem_black
       rect:
         serializedVersion: 2
         x: 128
@@ -858,7 +858,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_35
+      name: Gem_purple
       rect:
         serializedVersion: 2
         x: 176
@@ -921,7 +921,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_38
+      name: Gem_green
       rect:
         serializedVersion: 2
         x: 32
@@ -984,7 +984,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_41
+      name: Gem_orang
       rect:
         serializedVersion: 2
         x: 80
@@ -1530,7 +1530,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Rpg Icon Pack 16x16_67
+      name: Health_Potion
       rect:
         serializedVersion: 2
         x: 112
@@ -3031,6 +3031,17 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      Gem_Yellow: -910990433
+      Gem_black: 479998721
+      Gem_blue: 1716641846
+      Gem_dark_white: -1169078964
+      Gem_green: 390252617
+      Gem_orang: 1688105055
+      Gem_orange: 1391420729
+      Gem_purple: 3614741
+      Gem_red: 1833446519
+      Gem_white: -507547076
+      Health_Potion: -314185193
       Ore: 2140729878
       Ore_Resource_Blue: -985267769
       Ore_Resource_Red: 1811094204
@@ -3077,34 +3088,24 @@ TextureImporter:
       Rpg Icon Pack 16x16_135: 384278047
       Rpg Icon Pack 16x16_136: 1710649302
       Rpg Icon Pack 16x16_137: -616183530
-      Rpg Icon Pack 16x16_14: 1391420729
       Rpg Icon Pack 16x16_15: 1129404405
       Rpg Icon Pack 16x16_16: -1560987710
-      Rpg Icon Pack 16x16_17: -1169078964
       Rpg Icon Pack 16x16_19: 708064209
       Rpg Icon Pack 16x16_2: -588466656
-      Rpg Icon Pack 16x16_20: -910990433
       Rpg Icon Pack 16x16_21: 711219299
       Rpg Icon Pack 16x16_22: 1578626106
-      Rpg Icon Pack 16x16_23: -507547076
       Rpg Icon Pack 16x16_25: -1830065186
-      Rpg Icon Pack 16x16_26: 1833446519
       Rpg Icon Pack 16x16_28: -760304036
-      Rpg Icon Pack 16x16_29: 1716641846
       Rpg Icon Pack 16x16_3: 1413055943
       Rpg Icon Pack 16x16_30: 166947327
       Rpg Icon Pack 16x16_31: 964505784
-      Rpg Icon Pack 16x16_32: 479998721
       Rpg Icon Pack 16x16_33: -1898129008
       Rpg Icon Pack 16x16_34: -251988718
-      Rpg Icon Pack 16x16_35: 3614741
       Rpg Icon Pack 16x16_36: -679186430
       Rpg Icon Pack 16x16_37: -1911869644
-      Rpg Icon Pack 16x16_38: 390252617
       Rpg Icon Pack 16x16_39: -1934225095
       Rpg Icon Pack 16x16_4: 1643944827
       Rpg Icon Pack 16x16_40: -2051546331
-      Rpg Icon Pack 16x16_41: 1688105055
       Rpg Icon Pack 16x16_42: 1197291740
       Rpg Icon Pack 16x16_43: 359152503
       Rpg Icon Pack 16x16_44: -1801911780
@@ -3128,7 +3129,6 @@ TextureImporter:
       Rpg Icon Pack 16x16_63: 744226450
       Rpg Icon Pack 16x16_64: 1597209327
       Rpg Icon Pack 16x16_65: 2074202870
-      Rpg Icon Pack 16x16_67: -314185193
       Rpg Icon Pack 16x16_68: -649854474
       Rpg Icon Pack 16x16_69: -642335089
       Rpg Icon Pack 16x16_70: 1807024706

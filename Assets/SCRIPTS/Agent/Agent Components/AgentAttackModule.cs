@@ -39,13 +39,13 @@ public class AgentAttackModule : AgentMonobehaviourComponent
     {
         _agentInput = _agentCore.GetAgentComponent<AgentInput>();
 
-        _agentInput.OnAgentAttackTriggered += AgentInput_OnAgentAttackTrigger;
+        _agentInput.OnMousePrimary += AgentInput_OnAgentAttackTrigger;
     }
 
     protected virtual void OnDestroy()
     {
         if(_agentInput != null)
-            _agentInput.OnAgentAttackTriggered -= AgentInput_OnAgentAttackTrigger;
+            _agentInput.OnMousePrimary -= AgentInput_OnAgentAttackTrigger;
     }
 
     public float GetAttackCooldown()

@@ -23,7 +23,7 @@ public class PlayerInput : AgentInput
 
     private void Start()
     {
-        _playerInputActions.Player.Attack.performed += PlayerInputActions_Attack_performed;
+        _playerInputActions.Player.MousePrimary.performed += PlayerInputActions_MousePrimary_performed;
         _playerInputActions.Player.Inventory.performed += PlayerInputActions_Inventory_performed;
         _playerInputActions.Player.Interact.performed += PlayerInputActions_Interact_performed;
     }
@@ -49,9 +49,9 @@ public class PlayerInput : AgentInput
         OnInventoryKeyPressed?.Invoke();
     }
 
-    private void PlayerInputActions_Attack_performed(InputAction.CallbackContext obj)
+    private void PlayerInputActions_MousePrimary_performed(InputAction.CallbackContext obj)
     {
-        Invoke_AgentInput_OnAgentAttackTriggered();
+        Invoke_AgentInput_OnMousePrimary();
     }
 
     private void PlayerInputActions_Interact_performed(InputAction.CallbackContext obj)
@@ -64,7 +64,7 @@ public class PlayerInput : AgentInput
         if (_playerInputActions == null)
             return;
 
-        _playerInputActions.Player.Attack.performed -= PlayerInputActions_Attack_performed;
+        _playerInputActions.Player.MousePrimary.performed -= PlayerInputActions_MousePrimary_performed;
         _playerInputActions.Player.Inventory.performed -= PlayerInputActions_Inventory_performed;
         _playerInputActions.Player.Interact.performed -= PlayerInputActions_Interact_performed;
     }

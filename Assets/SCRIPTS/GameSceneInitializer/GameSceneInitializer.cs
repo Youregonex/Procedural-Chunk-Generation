@@ -29,20 +29,26 @@ public class GameSceneInitializer : MonoBehaviour
     [SerializeField] private AgentStatHealthSystem _playerHealthSystem;
     [SerializeField] private PlayerAbilitySystem _playerAbilitySystem;
     [SerializeField] private PlayerData _playerData;
+    [SerializeField, Space(10)] private bool _testingScene;
 
+    private void Awake()
+    {
+        if(_testingScene)
+            StartCoroutine(SetupSceneCoroutine());
+    }
 
     public void SetupScene(GameScenePreloader gameScenePreloader)
     {
         StartCoroutine(SetupSceneCoroutine(gameScenePreloader));
     }
 
-    private IEnumerator SetupSceneCoroutine(GameScenePreloader gameScenePreloader)
+    private IEnumerator SetupSceneCoroutine(GameScenePreloader gameScenePreloader = null)
     {
         _gameScenePreloader = gameScenePreloader;
 
         yield return InitialSceneSetup();
 
-        if (DataPersistanceManager.Instance.IsLoadingGame)
+        if (DataPersistanceManager.Instance != null && DataPersistanceManager.Instance.IsLoadingGame)
         {
             DataPersistanceManager.Instance.LoadGame();
         }
@@ -51,7 +57,8 @@ public class GameSceneInitializer : MonoBehaviour
             _chunkGenerator.StartGeneration();
         }
 
-        _gameScenePreloader.SetupComplete();
+        if(_gameScenePreloader != null)
+            _gameScenePreloader.SetupComplete();
     }
 
     private IEnumerator InitialSceneSetup()

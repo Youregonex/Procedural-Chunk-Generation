@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Youregone.Utilities;
 
 public class PlayerBuildingSystem : AgentMonobehaviourComponent
@@ -12,32 +11,27 @@ public class PlayerBuildingSystem : AgentMonobehaviourComponent
     [SerializeField] private PlayerCore _playerCore;
     [SerializeField] private PlayerItemSelection _playerItemSelection;
     [SerializeField] private BuildingItemDataSO _currentBuildingItemDataSO;
-
-    private Camera _mainCamera;
+    [SerializeField] private PlayerInput _playerInput;
+    [SerializeField] private bool _buildingEnabled = false;
 
     private void Awake()
     {
         _playerCore = GetComponent<PlayerCore>();
-        _mainCamera = Camera.main;
     }
 
     private void Start()
     {
         _playerItemSelection = _playerCore.GetAgentComponent<PlayerItemSelection>();
         _playerItemSelection.OnCurrentItemChanged += PlayerItemSelection_OnCurrentItemChanged;
-    }
 
-    private void Update()
-    {
-        if(Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            PlaceBuilding();
-        }
+        _playerInput = _playerCore.GetAgentComponent<PlayerInput>();
+        _playerInput.OnMousePrimary += PlayerInput_OnMousePrimary;
     }
 
     private void OnDestroy()
     {
         _playerItemSelection.OnCurrentItemChanged -= PlayerItemSelection_OnCurrentItemChanged;
+        _playerInput.OnMousePrimary -= PlayerInput_OnMousePrimary;
     }
 
     public override void DisableComponent()
@@ -51,18 +45,26 @@ public class PlayerBuildingSystem : AgentMonobehaviourComponent
         this.enabled = true;
     }
 
+    private void PlayerInput_OnMousePrimary(object sender, System.EventArgs e)
+    {
+        if(_buildingEnabled)
+            PlaceBuilding();
+    }
+
     private void PlayerItemSelection_OnCurrentItemChanged(ItemDataSO itemDataSO)
     {
         BuildingItemDataSO buildingItemDataSO = itemDataSO as BuildingItemDataSO;
 
         if(buildingItemDataSO != null)
         {
+            _buildingEnabled = true;
             _currentBuildingItemDataSO = buildingItemDataSO;
             RefreshPendingBuildingItem(buildingItemDataSO);
         }
         else
         {
             HidePendingBuildingItem();
+            _buildingEnabled = false;
             _currentBuildingItemDataSO = null;
         }
     }

@@ -29,6 +29,7 @@ public class MainMenu : MonoBehaviour
 
         _newGameButton.onClick.AddListener(() =>
         {
+            DataPersistanceManager.Instance.NewGame();
             DataPersistanceManager.Instance.IsLoadingGame = false;
             SceneLoader.LoadScene(SceneLoader.ESceneName.GameScene);
         });

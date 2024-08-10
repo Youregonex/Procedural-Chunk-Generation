@@ -3,7 +3,7 @@ using System;
 
 public abstract class AgentInput : AgentMonobehaviourComponent
 {
-    public event EventHandler OnAgentAttackTriggered;
+    public event EventHandler OnMousePrimary;
 
     public abstract Vector2 GetMovementVectorNormalized();
     public abstract Vector2 GetAimPosition();
@@ -20,8 +20,8 @@ public abstract class AgentInput : AgentMonobehaviourComponent
         this.enabled = true;
     }
 
-    protected void Invoke_AgentInput_OnAgentAttackTriggered()
+    protected void Invoke_AgentInput_OnMousePrimary()
     {
-        OnAgentAttackTriggered?.Invoke(this, EventArgs.Empty);
+        OnMousePrimary?.Invoke(this, EventArgs.Empty);
     }
 }

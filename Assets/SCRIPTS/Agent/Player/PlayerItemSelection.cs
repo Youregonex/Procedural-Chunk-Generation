@@ -106,6 +106,11 @@ public class PlayerItemSelection : AgentMonobehaviourComponent
 
     private void ActionItemDataSO_OnActionItemUsed()
     {
+        if (_currentInventorySlot.CurrentStackSize == 1)
+        {
+            ActionItemDataSO actionItemDataSO = _currentInventorySlot.ItemDataSO as ActionItemDataSO;
+            actionItemDataSO.OnActionItemUsed -= ActionItemDataSO_OnActionItemUsed;
+        }
         _currentInventorySlot.RemoveFromStackSize(1);
     }
 }

@@ -22,6 +22,12 @@ public class DataPersistanceManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    public void NewGame()
+    {
+        _gameData = new GameData();
+        SaveLoadSystem.DeleteSaveFile();
+    }
+
     public void LoadGame()
     {
         FindDataPersistantObjects();

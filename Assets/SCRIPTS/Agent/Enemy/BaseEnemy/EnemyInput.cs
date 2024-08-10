@@ -26,7 +26,7 @@ public class EnemyInput : AgentInput
 
     private void EnemyBehaviour_OnTargetInAttackRange()
     {
-        Invoke_AgentInput_OnAgentAttackTriggered();
+        Invoke_AgentInput_OnMousePrimary();
     }
 
     public override Vector2 GetAimPosition()

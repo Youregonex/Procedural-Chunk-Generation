@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 using UnityEngine.Tilemaps;
+using System.Diagnostics;
 
 public class ChunkGenerator : MonoBehaviour, IDataPersistance
 {
@@ -111,7 +112,7 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
         {
             if (_chunkDictionary.ContainsKey(gameData.chunkSaveDataList[i].position))
             {
-                Debug.Log("Chunk already exists!");
+                UnityEngine.Debug.Log("Chunk already exists!");
                 continue;
             }
 
@@ -229,7 +230,7 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
 
         if (_chunkDictionary.ContainsKey(chunkCenter))
         {
-            Debug.Log($"Chunk at {chunkCenter} is already in dictionary!");
+            UnityEngine.Debug.Log($"Chunk at {chunkCenter} is already in dictionary!");
         }
         else
         {
@@ -253,7 +254,7 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
 
         if (nodeAmount > nodeValidPositions.Count)
         {
-            Debug.LogError("Too much nodes for chunk!");
+            UnityEngine.Debug.LogError("Too much nodes for chunk!");
             return;
         }
 
@@ -292,7 +293,7 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
     {
         if (!parentChunk.IsNoiseMapFilled)
         {
-            Debug.LogError($"{parentChunk.name}'s noise map  wasn't filled!");
+            UnityEngine.Debug.LogError($"{parentChunk.name}'s noise map  wasn't filled!");
             return null;
         }
 
@@ -332,7 +333,7 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
 
         if (!parentChunk.IsNoiseMapFilled)
         {
-            Debug.LogError($"{parentChunk.name}'s noise map  wasn't filled!");
+            UnityEngine.Debug.LogError($"{parentChunk.name}'s noise map  wasn't filled!");
             yield break;
         }
 

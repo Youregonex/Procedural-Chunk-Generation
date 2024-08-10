@@ -91,7 +91,13 @@ public class Chunk : MonoBehaviour, IGenerateSaveData
         UpdateChunkNeighbourPositions();
     }
 
-    public void GenerateChunkNoiseMap(int seed, float noiseScale, int octaves, float persistance, float lacunarity, Vector2 offset, Noise.NormalizeMode normalizeMode)
+    public void GenerateChunkNoiseMap(int seed,
+                                      float noiseScale,
+                                      int octaves,
+                                      float persistance,
+                                      float lacunarity,
+                                      Vector2 offset,
+                                      Noise.NormalizeMode normalizeMode)
     {
         if (_noiseMapFilled)
         {

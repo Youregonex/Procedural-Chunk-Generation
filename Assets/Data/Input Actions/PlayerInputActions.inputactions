@@ -15,7 +15,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Attack",
+                    "name": "MousePrimary",
                     "type": "Button",
                     "id": "5a721690-3c6b-4144-b89e-690b431319b9",
                     "expectedControlType": "Button",
@@ -105,7 +105,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack",
+                    "action": "MousePrimary",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

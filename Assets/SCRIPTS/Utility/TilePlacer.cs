@@ -6,9 +6,10 @@ public class TilePlacer : MonoBehaviour
 {
     public static TilePlacer Instance { get; private set; }
 
+    [Header("Config")]
     [SerializeField] private Tilemap _groundTilemap;
     [SerializeField] private Tilemap _obstacleTilemap;
-
+    [SerializeField] private Dictionary<Chunk, List<TileData>> _tileDictionary = new Dictionary<Chunk, List<TileData>>();
 
     private void Awake()
     {
@@ -20,11 +21,22 @@ public class TilePlacer : MonoBehaviour
 
     public void LoadChunkTiles(Chunk chunk)
     {
-        List<TileData> tileDataMapList = ChunkGenerator.Instance.ChunkNoiseMapToTileData(chunk);
-
-        for (int i = 0; i < tileDataMapList.Count; i++)
+        if(!_tileDictionary.ContainsKey(chunk))
         {
-            SetTileAtPosition(tileDataMapList[i]);
+            List<TileData> tileDataMapList = ChunkGenerator.Instance.ChunkNoiseMapToTileData(chunk);
+            _tileDictionary.Add(chunk, tileDataMapList);
+
+            for (int i = 0; i < tileDataMapList.Count; i++)
+            {
+                SetTile(tileDataMapList[i]);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < _tileDictionary[chunk].Count; i++)
+            {
+                SetTile(_tileDictionary[chunk][i]);
+            }
         }
     }
 
@@ -38,11 +50,11 @@ public class TilePlacer : MonoBehaviour
         }
     }
 
-    public void SetTileAtPosition(TileData tileData)
+    public void SetTile(TileData tileData)
     {
         if (_groundTilemap == null || _obstacleTilemap == null)
         {
-            Debug.LogError("Tilemap is missing!");
+            UnityEngine.Debug.LogError("Tilemap is missing!");
             return;
         }
 

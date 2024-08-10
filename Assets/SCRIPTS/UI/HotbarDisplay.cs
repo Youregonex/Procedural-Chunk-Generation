@@ -7,7 +7,7 @@ public class HotbarDisplay : InventoryDisplay
     public static event Action<InventorySlot> OnHotbarSlotSelected;
 
     [Header("Config")]
-    [SerializeField] private float _inventorySlotUISize = 75f;
+    [SerializeField] private float _inventorySlotUISize = 70f;
 
     [Header("Debug Fields")]
     [SerializeField] private HotbarSlotUI _currentHotbarSlotUI;
@@ -29,7 +29,7 @@ public class HotbarDisplay : InventoryDisplay
         SelectDefaultSlot();
     }
 
-    private void Update() // TODO: Cringe
+    private void Update() // TODO: Prototype test
     {
         if (_playerHealthSystem == null || _playerHealthSystem.IsDead)
             return;

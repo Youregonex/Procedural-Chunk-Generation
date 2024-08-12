@@ -90,7 +90,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7502192802761773642, guid: 1ad3ff5bbb4f948008d0f7423dda951c, type: 3}
       propertyPath: m_Name
-      value: Chest_Item
+      value: Chest_Small_Item
+      objectReference: {fileID: 0}
+    - target: {fileID: 9031559237751807691, guid: 1ad3ff5bbb4f948008d0f7423dda951c, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 289517646
       objectReference: {fileID: 0}
     - target: {fileID: 9084461483748007689, guid: 1ad3ff5bbb4f948008d0f7423dda951c, type: 3}
       propertyPath: m_Sprite

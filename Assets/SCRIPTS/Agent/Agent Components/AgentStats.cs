@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class AgentStats : AgentMonobehaviourComponent
+public class AgentStats : AgentMonoBehaviourComponent
 {
     [SerializeField] private StatConfigSO _initialStatConfigSO;
 

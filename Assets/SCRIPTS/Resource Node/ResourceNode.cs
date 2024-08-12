@@ -1,8 +1,9 @@
 using UnityEngine;
 using System;
+using Unity.Netcode;
 
 [Serializable]
-public class ResourceNode : MonoBehaviour, IContainLoot
+public class ResourceNode : NetworkBehaviour, IContainLoot
 {
     public event Action<Vector2Int> OnDepletion;
     public event Action OnLootDrop;
@@ -26,7 +27,7 @@ public class ResourceNode : MonoBehaviour, IContainLoot
         _nodeHealthSystem.OnDeath += NodeHealthSystem_OnDeath;
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         _nodeHealthSystem.OnDeath -= NodeHealthSystem_OnDeath;
     }

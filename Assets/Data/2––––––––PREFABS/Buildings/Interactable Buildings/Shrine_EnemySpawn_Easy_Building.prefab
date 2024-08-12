@@ -36,6 +36,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: -0.0069239587
       objectReference: {fileID: 0}
+    - target: {fileID: 750623873960784570, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2620893432
+      objectReference: {fileID: 0}
     - target: {fileID: 1100258196089152816, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
       propertyPath: m_Layer
       value: 17
@@ -201,6 +205,7 @@ MonoBehaviour:
   _saveInitialColor: 0
   _interactColor: {r: 0, g: 0, b: 0, a: 0}
   _uninteractColor: {r: 0, g: 0, b: 0, a: 0}
+  <IsInteracting>k__BackingField: 0
   _enemyPrefabList:
   - {fileID: 610834880283180788, guid: 988d23e46c24348a19c8917524e1b63a, type: 3}
   - {fileID: 2661416382915046786, guid: 7cdb84ae099dc4651865e215aaec9dd7, type: 3}
@@ -211,6 +216,7 @@ MonoBehaviour:
   _enemySpawnArea: {x: 5, y: 5}
   _addExtraEnemiesEveryWave: 0
   _spawnBoss: 1
+  _resourceNode: {fileID: 0}
   _aliveEnemies: []
   _currentWave: 1
   _currentTarget: {fileID: 0}

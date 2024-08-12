@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8187302419217306237}
+  - component: {fileID: 985694912085790624}
   - component: {fileID: 4481669507089538021}
   - component: {fileID: 5314264974313713906}
   m_Layer: 7
@@ -33,6 +34,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &985694912085790624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5889536382578013579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3327163828
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &4481669507089538021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,21 +67,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c3a9c780450f46ad938c6888b2917b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _chunkLayerCount: 0
   _isLoaded: 1
-  _isPlayerInRange: 0
-  _isFilled: 0
-  _isLoadingTiles: 0
-  _noiseMapFilled: 0
+  _tileDataMapFilled: 0
+  _nodesSpawned: 0
   _neighbourChunkList: []
-  _chunkTilesList: []
-  _nodePositionMapDictionary:
-    keys: []
-    values: []
-  _chunkNodeDictionary:
-    keys: []
-    values: []
-  _sideLength: 0
+  _playersInRangeList: []
+  _tileDataMapList: []
 --- !u!58 &5314264974313713906
 CircleCollider2D:
   m_ObjectHideFlags: 0

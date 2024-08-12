@@ -12,7 +12,7 @@ namespace Youregone.BehaviourTrees
 
         protected override bool Predicate()
         {
-            return _enemyBehaviour.IsSpawned;
+            return _enemyBehaviour.AgentSpawned;
         }
     }
 }

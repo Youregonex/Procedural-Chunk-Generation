@@ -93,10 +93,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1880136954007694656}
+  - component: {fileID: 9031559237751807691}
   - component: {fileID: 5101384681233496930}
   - component: {fileID: 3099858894347960298}
   - component: {fileID: 6310251055265799450}
   - component: {fileID: 1394092040267149662}
+  - component: {fileID: 8625587676414478375}
   m_Layer: 8
   m_Name: _BaseItem
   m_TagString: Untagged
@@ -120,6 +122,27 @@ Transform:
   - {fileID: 2774371809012989045}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9031559237751807691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7502192802761773642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2916996612
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &5101384681233496930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,13 +155,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c18b6b350b14a749c12ee12dc67922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _itemDataSO: {fileID: 0}
   _nodeDropMoveSpeed: 3
   _agentDropMoveSpeed: 5
   _moveDuration: 0.25
   _scaleFrom: 1.5
   _dropAnimationTime: 0.4
   _dropColliderDisableTime: 0.3
-  _itemDataSO: {fileID: 0}
   _itemQuantity: 0
   _rigidBody: {fileID: 0}
   _capsuleCollider: {fileID: 0}
@@ -227,3 +250,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <ID>k__BackingField: 
+--- !u!114 &8625587676414478375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7502192802761773642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f971b3a104b44f238e6550a704184c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseUnreliableDeltas: 0
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 0
+  SyncRotAngleX: 0
+  SyncRotAngleY: 0
+  SyncRotAngleZ: 0
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0

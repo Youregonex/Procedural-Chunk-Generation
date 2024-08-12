@@ -6,9 +6,9 @@ public class PlayerCore : AgentCoreBase
     [SerializeField] private PlayerItemSelection _playerItemSelection;
     [SerializeField] private PlayerBuildingSystem _playerBuildingSystem;
     [SerializeField] private PlayerObjectInteraction _playerInteraction;
-
-    [field: Header("Debug Fields")]
-    [field: SerializeField] public Transform SelfTransform { get; private set; }
+    [SerializeField] private PlayerData _playerData;
+    [SerializeField] private PlayerInventorySystem _playerInventorySystem;
+    [SerializeField] private PlayerCraftingSystem _playerCraftingSystem;
 
     protected override void Awake()
     {
@@ -16,6 +16,16 @@ public class PlayerCore : AgentCoreBase
         SelfTransform = transform;
     }
 
+    protected override void Start()
+    {
+        base.Start();
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        if(IsOwner)
+            GameSceneInitializer.Instance.StartSceneSetup(this);
+    }
 
     protected override void InitializeComponentList()
     {
@@ -27,9 +37,13 @@ public class PlayerCore : AgentCoreBase
         _agentComponents.Add(_agentHitbox);
         _agentComponents.Add(_agentInput);
         _agentComponents.Add(_agentStats);
+        _agentComponents.Add(_agentAbilitySystem);
         _agentComponents.Add(_playerItemSelection);
         _agentComponents.Add(_playerBuildingSystem);
         _agentComponents.Add(_playerInteraction);
+        _agentComponents.Add(_playerData);
+        _agentComponents.Add(_playerInventorySystem);
+        _agentComponents.Add(_playerCraftingSystem);
 
         InitializeDisableOnDeathList();
     }

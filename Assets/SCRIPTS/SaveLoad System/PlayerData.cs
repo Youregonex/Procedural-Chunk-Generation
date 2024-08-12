@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerData : MonoBehaviour, IDataPersistance
+public class PlayerData : AgentMonoBehaviourComponent, IDataPersistance
 {
     [Header("Debug Fields")]
     [SerializeField] private Transform _playerTransform;
@@ -15,6 +15,16 @@ public class PlayerData : MonoBehaviour, IDataPersistance
         _playerInventorySystem = GetComponent<PlayerInventorySystem>();
         _playerTransform = _playerCore.SelfTransform;
         _playerHealthSystem = _playerCore.GetAgentComponent<AgentStatHealthSystem>();
+    }
+
+    public override void DisableComponent()
+    {
+        this.enabled = false;
+    }
+
+    public override void EnableComponent()
+    {
+        this.enabled = true;
     }
 
     public void LoadData(GameData gameData)

@@ -51,7 +51,6 @@ public class PlayerAbilitySystem : AgentAbilitySystem
             else
             {
                 ability = abilityDataSO.BuildAbility(_agentCore, _agentCore.GetAgentComponent<AgentAnimation>());
-
                 OnAbilityAdded?.Invoke(abilityDataSO, ability);
             }
 

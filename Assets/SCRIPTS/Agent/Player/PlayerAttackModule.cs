@@ -15,7 +15,7 @@ public class PlayerAttackModule : AgentAttackModule
         _playerItemSelection.OnCurrentItemChanged += PlayerItemSelection_OnCurrentItemChanged;
     }
 
-    protected override void OnDestroy()
+    public override void OnDestroy()
     {
         base.OnDestroy();
 

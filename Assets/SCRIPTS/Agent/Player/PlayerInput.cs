@@ -36,7 +36,7 @@ public class PlayerInput : AgentInput
             _playerInputActions.Player.Disable();
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         if (_playerInputActions == null)
             return;

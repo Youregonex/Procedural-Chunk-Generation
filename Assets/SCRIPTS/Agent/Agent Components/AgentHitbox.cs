@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CapsuleCollider2D))]
-public class AgentHitbox : AgentMonobehaviourComponent, IDamageable
+public class AgentHitbox : AgentMonoBehaviourComponent, IDamageable
 {
     [Header("Debug Fields")]
     [SerializeField] private AgentCoreBase _agentCore;
@@ -21,7 +21,7 @@ public class AgentHitbox : AgentMonobehaviourComponent, IDamageable
         _healthSystem.OnDeath += HealthSystem_OnDeath;
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         _healthSystem.OnDeath -= HealthSystem_OnDeath;
     }

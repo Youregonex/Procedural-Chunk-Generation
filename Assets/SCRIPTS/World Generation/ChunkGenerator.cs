@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 using UnityEngine.Tilemaps;
-using System.Diagnostics;
+using Unity.Netcode;
+using Youregone.Utilities;
 
-public class ChunkGenerator : MonoBehaviour, IDataPersistance
+public class ChunkGenerator : NetworkBehaviour//, IDataPersistance
 {
     public static ChunkGenerator Instance { get; private set; }
 
@@ -33,7 +34,6 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
 
     [Header("Debug Fields")]
     [SerializeField] private bool _showGizmos = false;
-    [SerializeField] private List<Chunk> _loadingChunks = new List<Chunk>();
 
     [SerializeField] private Dictionary<Vector2Int, Chunk> _chunkDictionary = new Dictionary<Vector2Int, Chunk>();
 
@@ -49,24 +49,10 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
             _seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
     }
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
-        Chunk.OnPlayerEnteredChunkRange += Chunk_OnPlayerEnteredChunkRange;
-        Chunk.OnPlayerLeftChunkRange += Chunk_OnPlayerLeftChunkRange;
-    }
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.F))
-        {
-            CreateInitialChunk();
-        }
-    }
-
-    private void OnDestroy()
-    {
-        Chunk.OnPlayerEnteredChunkRange -= Chunk_OnPlayerEnteredChunkRange;
-        Chunk.OnPlayerLeftChunkRange -= Chunk_OnPlayerLeftChunkRange;
+        if(IsHost)
+            StartGeneration();
     }
 
     public void StartGeneration()
@@ -74,170 +60,139 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
         CreateInitialChunk();
     }
 
-    public void SaveData(ref GameData gameData)
-    {
-        gameData.chunkSaveDataList = new List<ChunkSaveData>();
+    //public void SaveData(ref GameData gameData)
+    //{
+    //    if (!IsHost)
+    //        return;
 
-        foreach (KeyValuePair<Vector2Int, Chunk> keyValuePair in _chunkDictionary)
-        {
-            gameData.chunkSaveDataList.Add(keyValuePair.Value.GenerateSaveData() as ChunkSaveData);
-        }
+    //    gameData.chunkSaveDataList = new List<ChunkSaveData>();
 
-        gameData.chunkLayerCount = _chunkLayerCount;
+    //    foreach (KeyValuePair<Vector2Int, Chunk> keyValuePair in _chunkDictionary)
+    //    {
+    //        gameData.chunkSaveDataList.Add(keyValuePair.Value.GenerateSaveData() as ChunkSaveData);
+    //    }
 
-        gameData.noiseScale = _noiseScale;
-        gameData.octaves = _octaves;
-        gameData.persistance = _persistance;
-        gameData.lacunarity = _lacunarity;
-        gameData.obstacleSpawnThreshold = _obstacleSpawnThreshold;
-        gameData.seed = _seed;
-        gameData.seamOffset = _seamOffset;
-        gameData.normalizeMode = _normalizeMode;
-    }
+    //    gameData.chunkLayerCount = _chunkLayerCount;
 
-    public void LoadData(GameData gameData)
-    {
-        _chunkLayerCount = gameData.chunkLayerCount;
+    //    gameData.noiseScale = _noiseScale;
+    //    gameData.octaves = _octaves;
+    //    gameData.persistance = _persistance;
+    //    gameData.lacunarity = _lacunarity;
+    //    gameData.obstacleSpawnThreshold = _obstacleSpawnThreshold;
+    //    gameData.seed = _seed;
+    //    gameData.seamOffset = _seamOffset;
+    //    gameData.normalizeMode = _normalizeMode;
+    //}
 
-        _noiseScale = gameData.noiseScale;
-        _octaves = gameData.octaves;
-        _persistance = gameData.persistance;
-        _lacunarity = gameData.lacunarity;
-        _obstacleSpawnThreshold = gameData.obstacleSpawnThreshold;
-        _seed = gameData.seed;
-        _seamOffset = gameData.seamOffset;
-        _normalizeMode = gameData.normalizeMode;
+    //public void LoadData(GameData gameData)
+    //{
+    //    if (!IsHost)
+    //        return;
 
-        for (int i = 0; i < gameData.chunkSaveDataList.Count; i++)
-        {
-            if (_chunkDictionary.ContainsKey(gameData.chunkSaveDataList[i].position))
-            {
-                UnityEngine.Debug.Log("Chunk already exists!");
-                continue;
-            }
+    //    _chunkLayerCount = gameData.chunkLayerCount;
 
-            ChunkSaveData chunkSaveData = gameData.chunkSaveDataList[i];
+    //    _noiseScale = gameData.noiseScale;
+    //    _octaves = gameData.octaves;
+    //    _persistance = gameData.persistance;
+    //    _lacunarity = gameData.lacunarity;
+    //    _obstacleSpawnThreshold = gameData.obstacleSpawnThreshold;
+    //    _seed = gameData.seed;
+    //    _seamOffset = gameData.seamOffset;
+    //    _normalizeMode = gameData.normalizeMode;
 
-            Chunk chunk = GenerateChunk(chunkSaveData.position);
-            chunk.LoadFromSaveData(chunkSaveData);
+    //    for (int i = 0; i < gameData.chunkSaveDataList.Count; i++)
+    //    {
+    //        if (_chunkDictionary.ContainsKey(gameData.chunkSaveDataList[i].position))
+    //        {
+    //            Debug.Log("Chunk already exists!");
+    //            continue;
+    //        }
 
-            if (chunk.NodesSpawned && chunk.IsPlayerInRange)
-                StartCoroutine(SpawnChunkNodesCoroutine(chunk));
-        }
-    }
+    //        ChunkSaveData chunkSaveData = gameData.chunkSaveDataList[i];
 
-    public List<TileData> ChunkNoiseMapToTileData(Chunk chunk)
-    {
-        List<TileData> tileDataMapList = new List<TileData>();
-        Vector2Int chunkCenter = chunk.GetChunkPositionVector2Int();
+    //        Chunk chunk = GenerateChunk(chunkSaveData.position, true);
+    //        chunk.LoadFromSaveData(chunkSaveData);
 
-        int loopIndexX = 0;
-        int loopIndexY = 0;
-
-        for (int x = chunkCenter.x - _chunkLayerCount; x <= chunkCenter.x + _chunkLayerCount; x++)
-        {
-            for (int y = chunkCenter.y - _chunkLayerCount; y <= chunkCenter.y + _chunkLayerCount; y++)
-            {
-                float chunkNoiseMapValue = chunk.GetChunkNoiseMapValueWithXY(loopIndexX, loopIndexY);
-
-                Vector2Int tilPlacementPosition = new Vector2Int(x, y);
-                TileBase tile = GetRandomTile(chunkNoiseMapValue, out ETileType tileType);
-                TileData tileData = new TileData(tile, tilPlacementPosition, tileType);
-
-                tileDataMapList.Add(tileData);
-                loopIndexY++;
-            }
-
-            loopIndexX++;
-            loopIndexY = 0;
-        }
-
-        return tileDataMapList;
-    }
+    //        if (chunk.ChunkDataFilled && chunk.IsAnyPlayerInRange)
+    //            StartCoroutine(FillChunkData(chunk));
+    //    }
+    //}
 
     private void CreateInitialChunk()
     {
-        GenerateChunk(new Vector2Int(0, 0));
+        if (IsHost)
+            GenerateChunk(new Vector2Int(0, 0));
     }
 
-    private void Chunk_OnPlayerEnteredChunkRange(object sender, EventArgs e)
+    public void PlayerEnteredChunk(Chunk enteredChunk)
     {
-        Chunk enteredChunk = sender as Chunk;
+        StartCoroutine(PlayerEnteredChunkCoroutine(enteredChunk));
+    }
 
-        if (!enteredChunk.NodesSpawned)
+    private IEnumerator PlayerEnteredChunkCoroutine(Chunk enteredChunk)
+    {
+        if (!enteredChunk.ChunkDataFilled)
         {
-            StartCoroutine(SpawnChunkNodesCoroutine(enteredChunk));
+            yield return StartCoroutine(FillChunkData(enteredChunk));
         }
 
         LoadChunk(enteredChunk);
 
+        if (!IsHost)
+            yield break;
+
         List<Vector2Int> enteredChunkNeighbourPositionList = enteredChunk.NeighbourChunkList;
 
-        foreach(Vector2Int chunkNeighbourPosition in enteredChunkNeighbourPositionList)
+        foreach (Vector2Int chunkNeighbourPosition in enteredChunkNeighbourPositionList)
         {
-            if(!_chunkDictionary.ContainsKey(chunkNeighbourPosition))
+            if (!_chunkDictionary.ContainsKey(chunkNeighbourPosition))
             {
                 GenerateChunk(chunkNeighbourPosition);
             }
         }
     }
 
-    private void Chunk_OnPlayerLeftChunkRange(object sender, EventArgs e)
+    public void PlayerLeftChunk(Chunk exitChunk)
     {
-        Chunk exitChunk = sender as Chunk;
-
-
-        if (!_loadingChunks.Contains(exitChunk) && exitChunk.IsLoadingTiles)
+        if (exitChunk.IsLoadingTiles.Value)
         {
-            _loadingChunks.Add(exitChunk);
             exitChunk.OnFinishTileLoading += Chunk_OnFinishTileLoading;
-
             return;
         }
 
-        UnloadChunk(exitChunk);
+        if(!exitChunk.IsAnyPlayerInRange)
+            UnloadChunk(exitChunk);
     }
 
-    private void LoadChunk(Chunk chunk)
+    private void LoadChunk(Chunk chunk) => chunk.LoadChunk();
+    private void UnloadChunk(Chunk chunk) => chunk.UnloadChunk();
+
+    private void Chunk_OnFinishTileLoading(Chunk chunk)
     {
-        chunk.LoadChunk();
-    }
-
-    private void UnloadChunk(Chunk chunk)
-    {
-        chunk.UnloadChunk();
-    }
-
-    private void Chunk_OnFinishTileLoading(object sender, Chunk.OnFinishTileLoadingEventArgs e)
-    {
-        Chunk chunk = e.chunk;
-
-        if (!chunk.IsPlayerInRange)
-            UnloadChunk(chunk);
-
         chunk.OnFinishTileLoading -= Chunk_OnFinishTileLoading;
-        _loadingChunks.Remove(chunk);
+
+        if (!chunk.IsAnyPlayerInRange)
+            UnloadChunk(chunk);
     }
 
     private Chunk GenerateChunk(Vector2Int chunkCenter, bool loadingFromSaveFile = false)
     {
-        Vector2 chunkPosition = new Vector2(chunkCenter.x, chunkCenter.y);
-        Chunk chunk = Instantiate(_chunkPrefab, chunkPosition, Quaternion.identity);
-
-        chunk.transform.gameObject.name = $"Chunk ({chunkCenter.x} | {chunkCenter.y})";
-        chunk.transform.SetParent(_chunkParent);
-        chunk.InitializeChunk(_chunkLayerCount);
-
         if (_chunkDictionary.ContainsKey(chunkCenter))
         {
-            UnityEngine.Debug.Log($"Chunk at {chunkCenter} is already in dictionary!");
-        }
-        else
-        {
-            _chunkDictionary.Add(chunkCenter, chunk);
+            UnityEngine.Debug.Log($"Chunk at {chunkCenter} is already exists!");
+            return null;
         }
 
+        Vector2 chunkPosition = new(chunkCenter.x, chunkCenter.y);
+
+        Chunk chunk = Instantiate(_chunkPrefab, chunkPosition, Quaternion.identity);
+        chunk.GetComponent<NetworkObject>().Spawn(true);
+        chunk.transform.SetParent(_chunkParent);
+        chunk.transform.gameObject.name = $"Chunk ({chunkCenter.x} | {chunkCenter.y})";
+        chunk.InitializeChunk(_chunkLayerCount);
         chunk.GenerateChunkNoiseMap(_seed, _noiseScale, _octaves, _persistance, _lacunarity, chunkCenter + _seamOffset, _normalizeMode);
+
+        _chunkDictionary.Add(chunkCenter, chunk);
 
         if (!loadingFromSaveFile)
         {
@@ -250,30 +205,34 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
     private void GenerateNodePositionMap(Chunk parentChunk)
     {
         List<Vector2Int> nodeValidPositions = GetNodeValidPositions(parentChunk);
-        Dictionary<ResourceNodeSpawnStruct, int>  nodesToSpawnDictionary = GetNodesToSpawn(_nodeResourceSpawnConfigSO, out int nodeAmount);
+        Dictionary<ResourceNode, int>  nodesToSpawnDictionary = GetNodesToSpawn(_nodeResourceSpawnConfigSO, out int nodesAmount);
 
-        if (nodeAmount > nodeValidPositions.Count)
+        if (nodesAmount > nodeValidPositions.Count)
         {
             UnityEngine.Debug.LogError("Too much nodes for chunk!");
             return;
         }
 
-        foreach(KeyValuePair<ResourceNodeSpawnStruct, int> keyValuePair in nodesToSpawnDictionary)
+        Dictionary<Vector2Int, ResourceNode> resourceNodeMapDictionary = new();
+
+        foreach(KeyValuePair<ResourceNode, int> keyValuePair in nodesToSpawnDictionary)
         {
             for (int i = 0; i < keyValuePair.Value; i++)
             {
                 int randomNodePosition = UnityEngine.Random.Range(0, nodeValidPositions.Count);
 
-                parentChunk.AddNodeOnMap(nodeValidPositions[randomNodePosition], keyValuePair.Key.resourceNodePrefab);
+                resourceNodeMapDictionary.Add(nodeValidPositions[randomNodePosition], keyValuePair.Key);
                 nodeValidPositions.RemoveAt(randomNodePosition);
             }
         }
+
+        parentChunk.FillResourceNodeMap(resourceNodeMapDictionary);
     }
 
-    private Dictionary<ResourceNodeSpawnStruct, int> GetNodesToSpawn(NodeResourceSpawnConfigSO nodeResourceSpawnConfigSO, out int nodeAmount)
+    private Dictionary<ResourceNode, int> GetNodesToSpawn(NodeResourceSpawnConfigSO nodeResourceSpawnConfigSO, out int nodesAmount)
     {
-        Dictionary<ResourceNodeSpawnStruct, int> nodesToSpawnDictionary = new Dictionary<ResourceNodeSpawnStruct, int>();
-        nodeAmount = 0;
+        Dictionary<ResourceNode, int> nodesToSpawnDictionary = new();
+        nodesAmount = 0;
 
         foreach (ResourceNodeSpawnStruct nodeSpawnStruct in nodeResourceSpawnConfigSO.NodeResourceSpawn)
         {
@@ -282,8 +241,8 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
 
             int nodeAmountForChunk = UnityEngine.Random.Range(nodeSpawnStruct.minPerChunk, nodeSpawnStruct.maxPerChunk + 1);
 
-            nodesToSpawnDictionary.Add(nodeSpawnStruct, nodeAmountForChunk);
-            nodeAmount += nodeAmountForChunk;
+            nodesToSpawnDictionary.Add(nodeSpawnStruct.resourceNodePrefab, nodeAmountForChunk);
+            nodesAmount += nodeAmountForChunk;
         }
 
         return nodesToSpawnDictionary;
@@ -291,12 +250,6 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
 
     private List<Vector2Int> GetNodeValidPositions(Chunk parentChunk)
     {
-        if (!parentChunk.IsNoiseMapFilled)
-        {
-            UnityEngine.Debug.LogError($"{parentChunk.name}'s noise map  wasn't filled!");
-            return null;
-        }
-
         Vector2Int chunkCenter = parentChunk.GetChunkPositionVector2Int();
         List<Vector2Int> validNodePositionsList = new List<Vector2Int>();
 
@@ -326,48 +279,78 @@ public class ChunkGenerator : MonoBehaviour, IDataPersistance
         return validNodePositionsList;
     }
 
-    private IEnumerator SpawnChunkNodesCoroutine(Chunk parentChunk)
+    private IEnumerator FillChunkData(Chunk chunk)
     {
-        if (parentChunk.IsLoadingTiles)
+        if (chunk.GeneratingTileData.Value || chunk.SpawningNodes.Value)
             yield break;
 
-        if (!parentChunk.IsNoiseMapFilled)
-        {
-            UnityEngine.Debug.LogError($"{parentChunk.name}'s noise map  wasn't filled!");
+        yield return FillChunkTileDataCoroutine(chunk);
+        yield return PlaceResourceNodesCoroutine(chunk);
+    }
+
+    private IEnumerator FillChunkTileDataCoroutine(Chunk parentChunk)
+    {
+        if (parentChunk.GeneratingTileData.Value)
             yield break;
+
+        parentChunk.StartGeneratingTileData();
+
+        List<TileData> tileDataMapList = new();
+        Vector2Int chunkCenter = parentChunk.GetChunkPositionVector2Int();
+
+        int loopIndexX = 0;
+        int loopIndexY = 0;
+
+        for (int x = chunkCenter.x - _chunkLayerCount; x <= chunkCenter.x + _chunkLayerCount; x++)
+        {
+            for (int y = chunkCenter.y - _chunkLayerCount; y <= chunkCenter.y + _chunkLayerCount; y++)
+            {
+                int chunkSideLength = _chunkLayerCount * 2 + 1;
+                float[,] chunkNoiseMapValue = Utility.UnflattenArray(parentChunk.NoiseMapArray.Value, chunkSideLength, chunkSideLength);
+
+                Vector2Int tilPlacementPosition = new(x, y);
+                TileBase tile = GetRandomTile(chunkNoiseMapValue[x, y], out ETileType tileType);
+                TileData tileData = new(tile, tilPlacementPosition, tileType);
+
+                tileDataMapList.Add(tileData);
+                loopIndexY++;
+            }
+
+            loopIndexX++;
+            loopIndexY = 0;
+
+            yield return new WaitForEndOfFrame();
         }
 
-        parentChunk.StartLoadingTiles();
-
-        yield return PlaceResourceNodesCoroutine(parentChunk);
-
-        parentChunk.FinishLoadingTiles();
-
-        parentChunk.SpawnNodes();
+        parentChunk.FillChunkTileDataMap(tileDataMapList);
+        parentChunk.FinishGeneratingTileData();
     }
 
     private IEnumerator PlaceResourceNodesCoroutine(Chunk parentChunk)
     {
+        if (parentChunk.SpawningNodes.Value)
+            yield break;
+
+        parentChunk.StartSpawningNodes();
+
+        Dictionary<Vector2Int, ResourceNode> nodeDictionary = new();
+
         foreach(KeyValuePair<Vector2Int, ResourceNode> keyValuePair in parentChunk.NodePositionMapDictionary)
         {
             ResourceNode resourceNode = Instantiate(keyValuePair.Value, new Vector3(keyValuePair.Key.x, keyValuePair.Key.y, 0f), Quaternion.identity);
-            parentChunk.AddNodeToChunk(keyValuePair.Key, resourceNode);
+            nodeDictionary.Add(keyValuePair.Key, resourceNode);
             resourceNode.transform.SetParent(parentChunk.transform);
 
             yield return new WaitForEndOfFrame();
         }
+
+        parentChunk.FillNodeDictionary(nodeDictionary);
+        parentChunk.FinishSpawningNodes();
     }
 
     private ETileType GetTileTypeWithNoise(float tileNoise)
     {
-        if (tileNoise <= _obstacleSpawnThreshold)
-        {
-            return ETileType.Obstacle;
-        }
-        else
-        {
-            return ETileType.Ground;
-        }
+        return tileNoise <= _obstacleSpawnThreshold ? ETileType.Obstacle : ETileType.Ground;
     }
 
     private TileBase GetRandomTile(float tileNoise, out ETileType tileType)

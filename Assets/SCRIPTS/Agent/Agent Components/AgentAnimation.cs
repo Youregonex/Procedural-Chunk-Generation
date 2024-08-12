@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class AgentAnimation : AgentMonobehaviourComponent
+public class AgentAnimation : AgentMonoBehaviourComponent
 {
     public event Action OnAgentSpawned;
     public event Action OnAnimationEnded;

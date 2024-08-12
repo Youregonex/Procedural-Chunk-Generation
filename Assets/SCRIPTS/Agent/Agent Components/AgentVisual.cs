@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AgentVisual : AgentMonobehaviourComponent
+public class AgentVisual : AgentMonoBehaviourComponent
 {
     [Header("Config")]
     [SerializeField] private GameObject _shadowGameObject;
@@ -9,12 +9,10 @@ public class AgentVisual : AgentMonobehaviourComponent
     [SerializeField] private TrailRenderer _trailRenderer;
     [SerializeField] private AgentCoreBase _agentCore;
     [SerializeField] private AgentInput _agentInput;
-    [SerializeField] private SpriteRenderer _spriteRenderer;
 
     private void Awake()
     {
         _agentCore = transform.root.GetComponent<AgentCoreBase>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
         _trailRenderer = GetComponent<TrailRenderer>();
 
         if(_shadowGameObject != null)
@@ -73,11 +71,11 @@ public class AgentVisual : AgentMonobehaviourComponent
 
         if (aimDirection.x < 0)
         {
-            _spriteRenderer.flipX = true;
+            transform.localScale = new Vector3(-1f, 1f, 1f);
         }
         else if (aimDirection.x > 0)
         {
-            _spriteRenderer.flipX = false;
+            transform.localScale = Vector3.one;
         }
     }
 }

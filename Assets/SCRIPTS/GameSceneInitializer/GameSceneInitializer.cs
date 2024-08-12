@@ -1,9 +1,12 @@
 using UnityEngine;
 using Cinemachine;
 using System.Collections;
+using Unity.Netcode;
 
 public class GameSceneInitializer : MonoBehaviour
 {
+    public static GameSceneInitializer Instance;
+
     [Header("Player Config")]
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private CinemachineVirtualCamera _playerFollowCamera;
@@ -18,9 +21,6 @@ public class GameSceneInitializer : MonoBehaviour
     [SerializeField] private GameOverScreen _gameOverScreen;
     [SerializeField] private TestSaveLoad _testSaveLoad;
 
-    [Header("Managers")]
-    [SerializeField] private ChunkGenerator _chunkGenerator;
-
     [Header("Debug Fields")]
     [SerializeField] private GameScenePreloader _gameScenePreloader;
     [SerializeField] private PlayerInventorySystem _playerInventory;
@@ -33,20 +33,28 @@ public class GameSceneInitializer : MonoBehaviour
 
     private void Awake()
     {
-        if(_testMode)
-            StartCoroutine(SetupSceneCoroutine());
+        Instance = this;
     }
 
     public void SetupScene(GameScenePreloader gameScenePreloader)
     {
-        StartCoroutine(SetupSceneCoroutine(gameScenePreloader));
+        StartCoroutine(SetupSceneCoroutine(null, gameScenePreloader));
     }
 
-    private IEnumerator SetupSceneCoroutine(GameScenePreloader gameScenePreloader = null)
+    public void StartSceneSetup(PlayerCore playerCore)
+    {
+        if (_testMode)
+        {
+            Debug.Log($"Starting Setup for Player{NetworkManager.Singleton.LocalClientId} object");
+            StartCoroutine(SetupSceneCoroutine(playerCore));
+        }
+    }
+
+    private IEnumerator SetupSceneCoroutine(PlayerCore playerCore = null, GameScenePreloader gameScenePreloader = null)
     {
         _gameScenePreloader = gameScenePreloader;
 
-        yield return InitialSceneSetup();
+        yield return InitialSceneSetup(playerCore);
 
         if (DataPersistanceManager.Instance != null && DataPersistanceManager.Instance.IsLoadingGame)
         {
@@ -54,16 +62,15 @@ public class GameSceneInitializer : MonoBehaviour
         }
         else
         {
-            _chunkGenerator.StartGeneration();
         }
 
         if(_gameScenePreloader != null)
             _gameScenePreloader.FinishPreloading();
     }
 
-    private IEnumerator InitialSceneSetup()
+    private IEnumerator InitialSceneSetup(PlayerCore playerCore)
     {
-        SetupPlayer();
+        SetupPlayer(playerCore);
 
         InitializHotbarDisplay();
         InitializePlayerCraftingWindowDisplay();
@@ -81,19 +88,26 @@ public class GameSceneInitializer : MonoBehaviour
         yield return null;
     }
 
-    private void SetupPlayer()
+    private void SetupPlayer(PlayerCore playerCore)
     {
-        GameObject player = Instantiate(_playerPrefab, _playerSpawn.position, Quaternion.identity);
+        if (playerCore == null)
+        {
+            GameObject player = Instantiate(_playerPrefab, _playerSpawn.position, Quaternion.identity);
+            _playerCore = player.GetComponent<PlayerCore>();
+        }
+        else
+        {
+            _playerCore = playerCore;
+            _playerCore.gameObject.name = $"Player {NetworkManager.Singleton.LocalClientId}";
+        }
 
-        _playerFollowCamera.Follow = player.transform;
+        _playerFollowCamera.Follow = _playerCore.transform;
 
-        _playerAbilitySystem = player.GetComponent<PlayerAbilitySystem>();
-        _playerCore = player.GetComponent<PlayerCore>();
-        _playerInventory = player.GetComponent<PlayerInventorySystem>();
-        _playerCraftingSystem = player.GetComponent<PlayerCraftingSystem>();
-        _playerHealthSystem = player.GetComponent<AgentStatHealthSystem>();
-
-        _playerData = player.GetComponent<PlayerData>();
+        _playerAbilitySystem = _playerCore.GetAgentComponent<PlayerAbilitySystem>();
+        _playerInventory = _playerCore.GetAgentComponent<PlayerInventorySystem>();
+        _playerCraftingSystem = _playerCore.GetAgentComponent<PlayerCraftingSystem>();
+        _playerHealthSystem = _playerCore.GetAgentComponent<AgentStatHealthSystem>();
+        _playerData = _playerCore.GetAgentComponent<PlayerData>();
     }
 
     private void InitializePlayerAbilitySystem() // Initialize after AbilityCooldownDisplay

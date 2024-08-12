@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(CircleCollider2D))]
-public class AgentTargetDetectionZone : AgentMonobehaviourComponent
+public class AgentTargetDetectionZone : AgentMonoBehaviourComponent
 {
     [Header("Config")]
     [SerializeField] private float _detectionInterval = .4f;

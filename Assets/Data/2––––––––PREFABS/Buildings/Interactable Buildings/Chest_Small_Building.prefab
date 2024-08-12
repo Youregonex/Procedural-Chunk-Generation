@@ -32,6 +32,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: 0.0006338358
       objectReference: {fileID: 0}
+    - target: {fileID: 750623873960784570, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 572373870
+      objectReference: {fileID: 0}
     - target: {fileID: 1100258196089152816, guid: cbf9400ad9912413a8a9c001770b5201, type: 3}
       propertyPath: m_Layer
       value: 17
@@ -178,6 +182,7 @@ MonoBehaviour:
   _saveInitialColor: 0
   _interactColor: {r: 0, g: 0, b: 0, a: 0}
   _uninteractColor: {r: 0, g: 0, b: 0, a: 0}
+  <IsInteracting>k__BackingField: 0
   _containerSize: 10
   _containerInventory:
     _inventoryContentList: []

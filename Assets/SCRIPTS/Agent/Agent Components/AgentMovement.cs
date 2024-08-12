@@ -2,7 +2,7 @@ using UnityEngine;
 
 [SelectionBase]
 [RequireComponent(typeof(AgentInput), typeof(Rigidbody2D), typeof(AgentStats))]
-public class AgentMovement : AgentMonobehaviourComponent
+public class AgentMovement : AgentMonoBehaviourComponent
 {
     [Header("Debug Fields")]
     [SerializeField] private AgentInput _agentInput;
@@ -18,11 +18,11 @@ public class AgentMovement : AgentMonobehaviourComponent
     private void Awake()
     {
         _agentCore = GetComponent<AgentCoreBase>();
+        _rigidBody = GetComponent<Rigidbody2D>();
     }
 
     private void Start()
     {
-        _rigidBody = _agentCore.GetAgentRigidBody();
         _agentStats = _agentCore.GetAgentComponent<AgentStats>();
         _agentInput = _agentCore.GetAgentComponent<AgentInput>();
         _agentAnimation = _agentCore.GetAgentComponent<AgentAnimation>();

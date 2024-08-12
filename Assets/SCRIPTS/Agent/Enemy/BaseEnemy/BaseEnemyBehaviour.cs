@@ -4,7 +4,7 @@ using System;
 using Youregone.BehaviourTrees;
 using Youregone.Utilities;
 
-public class BaseEnemyBehaviour : AgentMonobehaviourComponent
+public class BaseEnemyBehaviour : AgentMonoBehaviourComponent
 {
     public event Action OnTargetInAttackRange;
 
@@ -22,7 +22,7 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
     [field: SerializeField] public Vector2 RoamPositionOffsetMax { get; private set; }
 
     [field: Header("Debug Fields")]
-    [field: SerializeField] public bool IsSpawned { get; private set; }
+    [field: SerializeField] public bool AgentSpawned { get; private set; }
     [field: SerializeField] public Vector2 CurrentRoamPosition { get; private set; }
     [field: SerializeField] public Vector2 MovementDirection { get; private set; }
     [field: SerializeField] public Vector2 AimPosition { get; private set; }
@@ -60,7 +60,7 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
         _behaviourTree.Evaluate();
     }
 
-    protected void OnDestroy()
+    public override void OnDestroy()
     {
         _enemyCore.GetAgentComponent<AgentAnimation>().OnAgentSpawned -= AgentAnimation_OnAgentSpawned;
     }
@@ -89,7 +89,7 @@ public class BaseEnemyBehaviour : AgentMonobehaviourComponent
 
     protected virtual void AgentAnimation_OnAgentSpawned()
     {
-        IsSpawned = true;
+        AgentSpawned = true;
     }
 
     protected virtual void PickCurrentTarget()

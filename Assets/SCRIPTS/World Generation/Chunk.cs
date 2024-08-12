@@ -1,78 +1,73 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Collections;
+using Unity.Netcode;
+using Youregone.Utilities;
 
 [Serializable]
-public class Chunk : MonoBehaviour, IGenerateSaveData
+public class Chunk : NetworkBehaviour, IGenerateSaveData
 {
-    public static event EventHandler OnPlayerEnteredChunkRange;
-    public static event EventHandler OnPlayerLeftChunkRange;
-
-    public event EventHandler<OnFinishTileLoadingEventArgs> OnFinishTileLoading;
-    public class OnFinishTileLoadingEventArgs : EventArgs
-    {
-        public Chunk chunk;
-    }
+    public event Action<Chunk> OnFinishTileLoading;
 
     [Header("Debug Fields")]
     // Chunk data
-    [SerializeField] private bool _isLoaded = false;
-    [SerializeField] private bool _isPlayerInRange = false;
-    [SerializeField] private bool _nodesSpawned = false;
-    [SerializeField] private bool _isLoadingTiles = false;
-    [SerializeField] private bool _noiseMapFilled = false;
-    [SerializeField] private float[,] _noiseMapArray;
+    [SerializeField] private NetworkVariable<bool> _tileDataMapFilled = new(false);
+    [SerializeField] private NetworkVariable<bool> _nodesSpawned = new(false);
 
     // Collections
-    [SerializeField] private List<Vector2Int> _neighbourChunkList = new List<Vector2Int>();
-    [SerializeField] private SerializableDictionary<Vector2Int, ResourceNode> _nodePositionMapDictionary = new SerializableDictionary<Vector2Int, ResourceNode>();
-    [SerializeField] private SerializableDictionary<Vector2Int, ResourceNode> _chunkNodeDictionary = new SerializableDictionary<Vector2Int, ResourceNode>();
+    [SerializeField] private List<Vector2Int> _neighbourChunkList = new();
+    [SerializeField] private List<PlayerCore> _playersInRangeList = new();
+    [SerializeField] private Dictionary<Vector2Int, ResourceNode> _nodePositionMapDictionary = new();
+    [SerializeField] private Dictionary<Vector2Int, ResourceNode> _chunkNodeDictionary = new();
+    [SerializeField] private List<TileData> _tileDataMapList = new();
 
     // Properties
+    [field: SerializeField] public NetworkVariable<float[]> NoiseMapArray { get; private set; } = new();
     public Dictionary<Vector2Int, ResourceNode> NodePositionMapDictionary => _nodePositionMapDictionary;
     public Dictionary<Vector2Int, ResourceNode> ChunkObjectDictionary => _chunkNodeDictionary;
     public List<Vector2Int> NeighbourChunkList => _neighbourChunkList;
-    public float[,] ChunkNoiseMapArray => _noiseMapArray;
 
-    public bool IsLoaded => _isLoaded;
-    public bool NodesSpawned => _nodesSpawned;
-    public bool IsLoadingTiles => _isLoadingTiles;
-    public bool IsNoiseMapFilled => _noiseMapFilled;
-    public bool IsPlayerInRange => _isPlayerInRange;
+    public NetworkVariable<bool> GeneratingTileData { get; private set; } = new(false);
+    public NetworkVariable<bool> SpawningNodes { get; private set; } = new(false);
+    public NetworkVariable<bool> IsLoadingTiles { get; private set; } = new(false);
+
+    public bool ChunkDataFilled => _tileDataMapFilled.Value && _nodesSpawned.Value;
+    public bool IsAnyPlayerInRange => _playersInRangeList.Count > 0;
 
     private int _sideLength;
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         foreach(KeyValuePair<Vector2Int, ResourceNode> keyValuePair in _chunkNodeDictionary)
         {
-            keyValuePair.Value.OnDepletion -= Node_OnDepletion;
+            keyValuePair.Value.OnDepletion -= ResourceNode_OnDepletion;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<PlayerChunkInteraction>() != null)
+        if (collision.TryGetComponent(out PlayerChunkInteraction playerChunkInteraction))
         {
-            OnPlayerEnteredChunkRange?.Invoke(this, EventArgs.Empty);
-            _isPlayerInRange = true;
+            _playersInRangeList.Add(playerChunkInteraction.transform.root.GetComponent<PlayerCore>());
+            ChunkGenerator.Instance.PlayerEnteredChunk(this);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.GetComponent<PlayerChunkInteraction>() != null)
+        if (collision.TryGetComponent(out PlayerChunkInteraction playerChunkInteraction))
         {
-            OnPlayerLeftChunkRange?.Invoke(this, EventArgs.Empty);
-            _isPlayerInRange = false;
+            _playersInRangeList.Remove(playerChunkInteraction.transform.root.GetComponent<PlayerCore>());
+            ChunkGenerator.Instance.PlayerLeftChunk(this);
         }
     }
 
     public SaveData GenerateSaveData()
     {
-        Vector2Int chunkPosition = new Vector2Int((int)transform.position.x, (int)transform.position.y);
-        ChunkSaveData chunkSaveData = new ChunkSaveData(chunkPosition,
-                                                        _nodePositionMapDictionary);
+        Vector2Int chunkPosition = new((int)transform.position.x, (int)transform.position.y);
+        ChunkSaveData chunkSaveData = new(chunkPosition,
+                                         (SerializableDictionary<Vector2Int, ResourceNode>)_nodePositionMapDictionary);
         return chunkSaveData;
     }
 
@@ -80,7 +75,7 @@ public class Chunk : MonoBehaviour, IGenerateSaveData
     {
         ChunkSaveData chunkSaveData = saveData as ChunkSaveData;
 
-        _nodesSpawned = false;
+        _nodesSpawned.Value = false;
         _nodePositionMapDictionary = chunkSaveData.nodePositionMapDictionary;
     }
 
@@ -99,30 +94,25 @@ public class Chunk : MonoBehaviour, IGenerateSaveData
                                       Vector2 offset,
                                       Noise.NormalizeMode normalizeMode)
     {
-        if (_noiseMapFilled)
-        {
-            Debug.LogError($"{gameObject.name} noise map is already filled!");
-            return;
-        }
+        float[,] md_noiseArray = new float[_sideLength, _sideLength];
 
-        _noiseMapArray = new float[_sideLength, _sideLength];
+        md_noiseArray = Noise.GenerateNoiseMap(_sideLength,
+                                               _sideLength,
+                                               seed,
+                                               noiseScale,
+                                               octaves,
+                                               persistance,
+                                               lacunarity,
+                                               offset,
+                                               normalizeMode);
 
-        _noiseMapArray = Noise.GenerateNoiseMap(_sideLength,
-                                                _sideLength,
-                                                seed,
-                                                noiseScale,
-                                                octaves,
-                                                persistance,
-                                                lacunarity,
-                                                offset,
-                                                normalizeMode);
-
-        _noiseMapFilled = true;
+        NoiseMapArray.Value = Utility.FlattenArray(md_noiseArray);
     }
 
     public void UnloadChunk()
     {
-        _isLoaded = false;
+        if (IsAnyPlayerInRange)
+            return;
 
         UnloadTiles();
         UnloadNodes();
@@ -130,43 +120,54 @@ public class Chunk : MonoBehaviour, IGenerateSaveData
 
     public void LoadChunk()
     {
-        _isLoaded = true;
-
-        LoadTiles();
+        StartCoroutine(LoadTiles());
         LoadNodes();
+
+        FinishLoadingTiles();
     }
 
-    public void AddNodeToChunk(Vector2Int nodePosition, ResourceNode node)
+    public void FillNodeDictionary(Dictionary<Vector2Int, ResourceNode> nodeDictionary)
     {
-        _chunkNodeDictionary.Add(nodePosition, node);
-        node.OnDepletion += Node_OnDepletion;
+        _chunkNodeDictionary = new(nodeDictionary);
+
+        foreach(KeyValuePair<Vector2Int, ResourceNode> keyValuePair in nodeDictionary)
+        {
+            keyValuePair.Value.OnDepletion += ResourceNode_OnDepletion;
+        }
+
+        _nodesSpawned.Value = true;
     }
 
-    public void AddNodeOnMap(Vector2Int nodePosition, ResourceNode resourceNodePrefab)
+    public void FillResourceNodeMap(Dictionary<Vector2Int, ResourceNode> resourceNodeMap)
     {
-        _nodePositionMapDictionary.Add(nodePosition, resourceNodePrefab);
+        _nodePositionMapDictionary = new(resourceNodeMap);
     }
 
-    public void SpawnNodes() => _nodesSpawned = true;
-    public float GetChunkNoiseMapValueWithXY(int x, int y) => _noiseMapArray[x, y];
-    public Vector2Int GetChunkPositionVector2Int() => new Vector2Int((int)transform.position.x, (int)transform.position.y);
+    public void FillChunkTileDataMap(List<TileData> tileDataMap)
+    {
+        _tileDataMapList = new(tileDataMap);
+        _tileDataMapFilled.Value = true;
+    }
+
+    public float GetChunkNoiseMapValueWithXY(int x, int y) => Utility.UnflattenArray(NoiseMapArray.Value, _sideLength, _sideLength)[x, y];
+    public Vector2Int GetChunkPositionVector2Int() => new((int)transform.position.x, (int)transform.position.y);
+
+    public void StartGeneratingTileData() => GeneratingTileData.Value = true;
+    public void FinishGeneratingTileData() => GeneratingTileData.Value = false;
+    public void StartSpawningNodes() => SpawningNodes.Value = true;
+    public void FinishSpawningNodes() => SpawningNodes.Value = false;
 
     public void StartLoadingTiles()
     {
-        _isLoadingTiles = true;
+        IsLoadingTiles.Value = true;
     }
 
     public void FinishLoadingTiles()
     {
-        _isLoadingTiles = false;
+        IsLoadingTiles.Value = false;
+        OnFinishTileLoading?.Invoke(this);
 
-        OnFinishTileLoading?.Invoke(this, new OnFinishTileLoadingEventArgs
-        {
-            chunk = this
-        });
-
-        if (!_isPlayerInRange)
-            UnloadChunk();
+        UnloadChunk();
     }
 
     private void UpdateChunkNeighbourPositions()
@@ -177,14 +178,14 @@ public class Chunk : MonoBehaviour, IGenerateSaveData
                 if (new Vector2(x, y) == (Vector2)transform.position)
                     continue;
 
-                Vector2Int neighbourChunkPosition = new Vector2Int(x, y);
+                Vector2Int neighbourChunkPosition = new(x, y);
                 _neighbourChunkList.Add(neighbourChunkPosition);
             }
     }
 
-    private void Node_OnDepletion(Vector2Int nodePosition)
+    private void ResourceNode_OnDepletion(Vector2Int nodePosition)
     {
-        _chunkNodeDictionary[nodePosition].OnDepletion -= Node_OnDepletion;
+        _chunkNodeDictionary[nodePosition].OnDepletion -= ResourceNode_OnDepletion;
 
         _nodePositionMapDictionary.Remove(nodePosition);
         _chunkNodeDictionary.Remove(nodePosition);
@@ -192,7 +193,7 @@ public class Chunk : MonoBehaviour, IGenerateSaveData
 
     private void UnloadTiles()
     {
-        TilePlacer.Instance.UnloadChunkTiles(this);
+        TilePlacer.Instance.UnloadChunkTiles(_tileDataMapList);
     }
 
     private void UnloadNodes()
@@ -203,9 +204,28 @@ public class Chunk : MonoBehaviour, IGenerateSaveData
         }
     }
 
-    private void LoadTiles()
+    private IEnumerator LoadTiles()
     {
-        TilePlacer.Instance.LoadChunkTiles(this);
+        if (IsLoadingTiles.Value)
+            yield break;
+
+        StartLoadingTiles();
+
+        int iterator = 0;
+
+        for (int i = 0; i < _tileDataMapList.Count; i++)
+        {
+            TilePlacer.Instance.SetTile(_tileDataMapList[i]);
+
+            iterator++;
+            if(iterator == _sideLength)
+            {
+                iterator = 0;
+                yield return new WaitForEndOfFrame();
+            }
+        }
+
+        FinishLoadingTiles();
     }
 
     private void LoadNodes()

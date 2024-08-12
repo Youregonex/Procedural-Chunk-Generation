@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
-public abstract class AgentCoreBase : AgentMonobehaviourComponent
+public abstract class AgentCoreBase : AgentMonoBehaviourComponent
 {
     [Header("Config")]
     [SerializeField] protected EFactions _faction;
@@ -25,9 +25,10 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
     [Header("Agent RigidBody2D")]
     [SerializeField] protected Rigidbody2D _rigidBody2D;
 
-    [Header("Debug Fields")]
-    [SerializeField] protected List<AgentMonobehaviourComponent> _agentComponents = new List<AgentMonobehaviourComponent>();
-    [SerializeField] protected List<AgentMonobehaviourComponent> _disableOnDeathComponents = new List<AgentMonobehaviourComponent>();
+    [field: Header("Debug Fields")]
+    [field: SerializeField] public Transform SelfTransform { get; protected set; }
+    [SerializeField] protected List<AgentMonoBehaviourComponent> _agentComponents = new List<AgentMonoBehaviourComponent>();
+    [SerializeField] protected List<AgentMonoBehaviourComponent> _disableOnDeathComponents = new List<AgentMonoBehaviourComponent>();
 
     public bool IsDead => _healthSystem.IsDead;
 
@@ -41,7 +42,7 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
         _healthSystem.OnDeath += HealthSystem_OnDeath;
     }
 
-    protected virtual void OnDestroy()
+    public override void OnDestroy()
     {
         _healthSystem.OnDeath -= HealthSystem_OnDeath;
     }
@@ -50,7 +51,7 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
     public CapsuleCollider2D GetAgentCollider() => _agentCollider;
     public EFactions GetFaction() => _faction;
 
-    public T GetAgentComponent<T>() where T : AgentMonobehaviourComponent
+    public T GetAgentComponent<T>() where T : AgentMonoBehaviourComponent
     {
         return _agentComponents.OfType<T>().FirstOrDefault();
     }
@@ -94,7 +95,7 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
 
     protected virtual void InitializeDisableOnDeathList()
     {
-        foreach(AgentMonobehaviourComponent component in _agentComponents)
+        foreach(AgentMonoBehaviourComponent component in _agentComponents)
         {
             if (component != null && component.DisableOnDeath)
                 _disableOnDeathComponents.Add(component);
@@ -105,7 +106,7 @@ public abstract class AgentCoreBase : AgentMonobehaviourComponent
     {
         _agentCollider.enabled = false;
 
-        foreach(AgentMonobehaviourComponent agentComponent in _disableOnDeathComponents)
+        foreach(AgentMonoBehaviourComponent agentComponent in _disableOnDeathComponents)
         {
             agentComponent.DisableComponent();
         }

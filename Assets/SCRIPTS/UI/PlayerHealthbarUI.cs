@@ -25,7 +25,8 @@ public class PlayerHealthbarUI : MonoBehaviour
 
     private void OnDestroy()
     {
-        _playerHealthSystem.OnHealthChanged -= AgentHealthSystem_OnHealthChanged;
+        if(_playerHealthSystem != null)
+            _playerHealthSystem.OnHealthChanged -= AgentHealthSystem_OnHealthChanged;
     }
 
     private void AgentHealthSystem_OnHealthChanged(object sender, AgentHealthSystem.OnHealthChangedEventArgs e)

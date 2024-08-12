@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerObjectInteraction : AgentMonobehaviourComponent
+public class PlayerObjectInteraction : AgentMonoBehaviourComponent
 {
     [Header("Debug Fields")]
     [SerializeField] private PlayerCore _playerCore;
@@ -26,7 +26,7 @@ public class PlayerObjectInteraction : AgentMonobehaviourComponent
         ManageInteractionColliderAngle();
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         _playerInput.OnInteractKeyPressed -= PlayerInput_OnInteractKeyPressed;
     }

@@ -2,9 +2,10 @@ using UnityEngine;
 using System.Collections;
 using System;
 using DG.Tweening;
+using Unity.Netcode;
 
 [Serializable]
-public class Item : MonoBehaviour, IGenerateSaveData
+public class Item : NetworkBehaviour, IGenerateSaveData
 {
     public event Action<Item> OnDestruction;
 
@@ -42,7 +43,7 @@ public class Item : MonoBehaviour, IGenerateSaveData
         StartCoroutine(DisableColliderCoroutine());
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         _currentAnimation.Kill();
 

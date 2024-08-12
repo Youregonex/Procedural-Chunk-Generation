@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public abstract class AgentInput : AgentMonobehaviourComponent
+public abstract class AgentInput : AgentMonoBehaviourComponent
 {
     public event EventHandler OnMousePrimary;
 

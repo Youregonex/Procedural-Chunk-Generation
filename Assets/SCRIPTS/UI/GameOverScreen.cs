@@ -38,7 +38,8 @@ public class GameOverScreen : MonoBehaviour
 
     private void OnDestroy()
     {
-        _playerHealthSystem.OnDeath -= AgentHealthSystem_OnDeath;
+        if(_playerHealthSystem != null)
+            _playerHealthSystem.OnDeath -= AgentHealthSystem_OnDeath;
     }
 
     private void AgentHealthSystem_OnDeath(AgentHealthSystem obj)

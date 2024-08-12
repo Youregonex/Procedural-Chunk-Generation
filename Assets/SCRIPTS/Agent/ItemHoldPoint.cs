@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ItemHoldPoint : AgentMonobehaviourComponent
+public class ItemHoldPoint : AgentMonoBehaviourComponent
 {
     [Header("Debug Fields")]
     [SerializeField] protected AgentCoreBase _agentCore;

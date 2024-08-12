@@ -22,7 +22,7 @@ public class PlayerItemHoldPoint : ItemHoldPoint
         _playerItemSelection.OnCurrentItemChanged += PlayerItemSelection_OnCurrentItemChanged;
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         _playerItemSelection.OnCurrentItemChanged -= PlayerItemSelection_OnCurrentItemChanged;
     }

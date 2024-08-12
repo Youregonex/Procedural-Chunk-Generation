@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-public class AgentAbilitySystem : AgentMonobehaviourComponent
+public class AgentAbilitySystem : AgentMonoBehaviourComponent
 {
     [Header("Config")]
     [SerializeField] protected List<AbilityDataSO> _abilityDataSOList;

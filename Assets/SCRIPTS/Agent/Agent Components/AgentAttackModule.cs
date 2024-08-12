@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(AgentInput))]
-public class AgentAttackModule : AgentMonobehaviourComponent
+public class AgentAttackModule : AgentMonoBehaviourComponent
 {
     [Header("Config")]
     [SerializeField] protected ItemHoldPoint _itemHoldPoint;
@@ -42,7 +42,7 @@ public class AgentAttackModule : AgentMonobehaviourComponent
         _agentInput.OnMousePrimary += AgentInput_OnAgentAttackTrigger;
     }
 
-    protected virtual void OnDestroy()
+    public override void OnDestroy()
     {
         if(_agentInput != null)
             _agentInput.OnMousePrimary -= AgentInput_OnAgentAttackTrigger;

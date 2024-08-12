@@ -25,7 +25,9 @@ public class CraftingWindowDisplay : MonoBehaviour
     private void OnDestroy()
     {
         _craftingListDisplay.OnCraftRecipeDetailsDisplayRequested -= CraftListDisplay_OnCraftRecipeDetailsDisplayRequested;
-        _playerInventorySystem.OnInventoryContentChanged -= PlayerInventorySystem_OnInventoryContentChanged;
+
+        if(_playerInventorySystem != null)
+            _playerInventorySystem.OnInventoryContentChanged -= PlayerInventorySystem_OnInventoryContentChanged;
     }
 
     public void DisplayCraftingWindow()

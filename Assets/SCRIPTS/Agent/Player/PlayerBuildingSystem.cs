@@ -1,7 +1,7 @@
 using UnityEngine;
 using Youregone.Utilities;
 
-public class PlayerBuildingSystem : AgentMonobehaviourComponent
+public class PlayerBuildingSystem : AgentMonoBehaviourComponent
 {
     [Header("Config")]
     [SerializeField] private PendingBuildingItem _pendingBuildingItem;
@@ -28,7 +28,7 @@ public class PlayerBuildingSystem : AgentMonobehaviourComponent
         _playerInput.OnMousePrimary += PlayerInput_OnMousePrimary;
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         _playerItemSelection.OnCurrentItemChanged -= PlayerItemSelection_OnCurrentItemChanged;
         _playerInput.OnMousePrimary -= PlayerInput_OnMousePrimary;

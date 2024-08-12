@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-public class AgentHealthSystem : AgentMonobehaviourComponent, IContainLoot
+public class AgentHealthSystem : AgentMonoBehaviourComponent, IContainLoot
 {
     public event Action<DamageStruct> OnDamageTaken;
     public event EventHandler<OnHealthChangedEventArgs> OnHealthChanged;

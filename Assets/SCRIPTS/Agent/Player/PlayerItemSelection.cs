@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using Youregone.Utilities;
 
-public class PlayerItemSelection : AgentMonobehaviourComponent
+public class PlayerItemSelection : AgentMonoBehaviourComponent
 {
     public event Action<ItemDataSO> OnCurrentItemChanged;
 
@@ -24,7 +24,7 @@ public class PlayerItemSelection : AgentMonobehaviourComponent
         _playerInput.OnMouseSecondary += PlayerInput_OnMouseSecondary;
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         DeselectCurrentSlot();
 

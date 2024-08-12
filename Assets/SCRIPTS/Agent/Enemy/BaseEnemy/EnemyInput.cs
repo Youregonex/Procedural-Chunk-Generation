@@ -19,7 +19,7 @@ public class EnemyInput : AgentInput
         _enemyBehaviour.OnTargetInAttackRange += EnemyBehaviour_OnTargetInAttackRange;
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         _enemyBehaviour.OnTargetInAttackRange -= EnemyBehaviour_OnTargetInAttackRange;
     }

@@ -3,7 +3,7 @@ using System;
 
 [Serializable]
 [RequireComponent(typeof(PlayerInput))]
-public class PlayerInventorySystem : MonoBehaviour
+public class PlayerInventorySystem : AgentMonoBehaviourComponent
 {
     private const int HOTBAR_SIZE = 10;
 
@@ -42,11 +42,21 @@ public class PlayerInventorySystem : MonoBehaviour
         _mainInventory.Inventory_OnInventorySlotChanged += Inventory_OnInventorySlotChanged;
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         _playerInput.OnInventoryKeyPressed -= PlayerInput_OnInventoryKeyPressed;
         _hotbar.Inventory_OnInventorySlotChanged -= Inventory_OnInventorySlotChanged;
         _mainInventory.Inventory_OnInventorySlotChanged -= Inventory_OnInventorySlotChanged;
+    }
+
+    public override void DisableComponent()
+    {
+        this.enabled = false;
+    }
+
+    public override void EnableComponent()
+    {
+        this.enabled = true;
     }
 
     public void InitializePlayerInventoryFromSave(Inventory hotbar, Inventory mainInventory)

@@ -34,8 +34,11 @@ public class AbilityCooldownUIDisplay : MonoBehaviour
                 ability.OnCooldownTick -= Ability_OnCooldownTick;
             }
 
-        _playerAbilitySystem.OnAbilityAdded -= PlayerAbilitySystem_OnAbilityAdded;
-        _playerAbilitySystem.OnAbilityRemoved -= PlayerAbilitySystem_OnAbilityRemoved;
+        if(_playerAbilitySystem != null)
+        {
+            _playerAbilitySystem.OnAbilityAdded -= PlayerAbilitySystem_OnAbilityAdded;
+            _playerAbilitySystem.OnAbilityRemoved -= PlayerAbilitySystem_OnAbilityRemoved;
+        }
     }
 
     private void PlayerAbilitySystem_OnAbilityRemoved(AbilityDataSO abilityDataSO, Ability ability)

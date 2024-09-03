@@ -37,7 +37,7 @@ namespace Youregone.SaveLoadSystem
 
         public static GameData Load()
         {
-            GameData saveData = new GameData();
+            GameData saveData = new();
 
             if(File.Exists(_fullpath))
             {
@@ -75,7 +75,7 @@ namespace Youregone.SaveLoadSystem
 
         private static string EncryptDecrypt(string data)
         {
-            Stopwatch stopwatch = new Stopwatch();
+            Stopwatch stopwatch = new();
 
             stopwatch.Start();
 

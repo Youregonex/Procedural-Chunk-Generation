@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2916996612
+  GlobalObjectIdHash: 487059468
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -161,7 +161,7 @@ MonoBehaviour:
   _moveDuration: 0.25
   _scaleFrom: 1.5
   _dropAnimationTime: 0.4
-  _dropColliderDisableTime: 0.3
+  _dropColliderDisableTime: 0.4
   _itemQuantity: 0
   _rigidBody: {fileID: 0}
   _capsuleCollider: {fileID: 0}

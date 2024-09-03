@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-public class AgentHealthSystem : AgentMonoBehaviourComponent, IContainLoot
+public class AgentHealthSystem : AgentNetworkBehaviourComponent, IContainLoot
 {
     public event Action<DamageStruct> OnDamageTaken;
     public event EventHandler<OnHealthChangedEventArgs> OnHealthChanged;
@@ -30,7 +30,6 @@ public class AgentHealthSystem : AgentMonoBehaviourComponent, IContainLoot
 
     [Header("Debug Fields")]
     [SerializeField] protected bool _isDead = false;
-    [SerializeField] protected AgentCoreBase _agentCore;
     [SerializeField] protected AgentAnimation _agentAnimation;
 
     public bool IsDead => _isDead;
@@ -73,15 +72,12 @@ public class AgentHealthSystem : AgentMonoBehaviourComponent, IContainLoot
         }
     }
 
-    protected virtual void Awake()
+    public override void Initialize()
     {
+        GetAgentCore();
         CurrentHealth = MaxHealth;
-        _agentCore = GetComponent<EnemyCore>();
-    }
 
-    protected virtual void Start()
-    {
-        _agentAnimation = _agentCore.GetAgentComponent<AgentAnimation>();
+        _agentAnimation = AgentCore.GetAgentComponent<AgentAnimation>();
     }
 
     public void SetCurrentHealth(float currentHealth)
@@ -108,7 +104,7 @@ public class AgentHealthSystem : AgentMonoBehaviourComponent, IContainLoot
 
     public void TakeDamage(DamageStruct damageStruct)
     {
-        if (_isDead || _agentCore.GetFaction() == damageStruct.senderFaction)
+        if (_isDead || AgentCore.Faction == damageStruct.senderFaction)
             return;
 
         if(damageStruct.damageAmount < 0)
@@ -139,7 +135,7 @@ public class AgentHealthSystem : AgentMonoBehaviourComponent, IContainLoot
     {
         if(healingAmount < 0)
         {
-            DamageStruct damageStruct = new DamageStruct(null, EFactions.None, healingAmount, 0f);
+            DamageStruct damageStruct = new(null, EFactions.None, healingAmount, 0f);
             TakeDamage(damageStruct);
             return;
         }

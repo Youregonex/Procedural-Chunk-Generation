@@ -20,8 +20,9 @@ public class BulletShooter
     private bool _updateTargetPositionEveryBurst = false;
 
     private bool _isShooting = false;
-    private Transform _selfTransform;
+    private Transform _shooterTransform;
     private MonoBehaviour _shooterMonoBehaviour;
+    private AgentCoreBase _shooterCore;
 
     public BulletShooter(ShootPatternDataSO shootPatternDataSO, Transform shooterTransform, MonoBehaviour shooterMonoBehaviour)
     {
@@ -39,8 +40,10 @@ public class BulletShooter
         _restTime = shootPatternDataSO.RestTime;
         _updateTargetPositionEveryBurst = shootPatternDataSO.UpdateTargetPositionEveryBurst;
 
-        _selfTransform = shooterTransform;
+        _shooterTransform = shooterTransform;
         _shooterMonoBehaviour = shooterMonoBehaviour;
+
+        _shooterCore = _shooterTransform.GetComponent<AgentCoreBase>();
     }
 
     public void SpawnProjctiles(Transform targerTransform)
@@ -66,18 +69,18 @@ public class BulletShooter
                 Vector2 position = FindProjectileSpawnPosition(currentAngle);
 
                 Projectile projectile = GameObject.Instantiate(_prefab, position, Quaternion.identity);
-                projectile.transform.right = projectile.transform.position - _selfTransform.position;
+                projectile.transform.right = projectile.transform.position - _shooterTransform.position;
 
-                EFactions senderFaction = _selfTransform.GetComponent<AgentCoreBase>().GetFaction();
-                DamageStruct damageStruct = new DamageStruct
+                EFactions senderFaction = _shooterCore.Faction;
+                DamageStruct damageStruct = new()
                 {
                     damageAmount = _damage,
-                    damageSender = _selfTransform.gameObject,
+                    damageSender = _shooterTransform.gameObject,
                     senderFaction = senderFaction,
                     knockbackForce = 0f
                 };
 
-                projectile.SetupProjectile(_moveSpeed, _range, damageStruct);
+                projectile.Initialize(_moveSpeed, _range, damageStruct);
                 currentAngle += angleStep;
 
                 if (_timeBetweenShots > 0)
@@ -105,7 +108,7 @@ public class BulletShooter
         else
             targetPosition = targerTransform.position;
 
-        Vector2 targetDirection = targetPosition - (Vector2)_selfTransform.position;
+        Vector2 targetDirection = targetPosition - (Vector2)_shooterTransform.position;
 
         float targetAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
         startAngle = targetAngle;
@@ -126,10 +129,10 @@ public class BulletShooter
 
     private Vector2 FindProjectileSpawnPosition(float currentAngle)
     {
-        float x = _selfTransform.position.x + _startingDistance * Mathf.Cos(currentAngle * Mathf.Deg2Rad);
-        float y = _selfTransform.position.y + _startingDistance * Mathf.Sin(currentAngle * Mathf.Deg2Rad);
+        float x = _shooterTransform.position.x + _startingDistance * Mathf.Cos(currentAngle * Mathf.Deg2Rad);
+        float y = _shooterTransform.position.y + _startingDistance * Mathf.Sin(currentAngle * Mathf.Deg2Rad);
 
-        Vector2 position = new Vector2(x, y);
+        Vector2 position = new(x, y);
         return position;
     }
 }

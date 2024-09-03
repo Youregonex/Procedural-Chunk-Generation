@@ -45,8 +45,8 @@ public class InventoryCraftOpenCloseManager : MonoBehaviour
         _playerCraftingWindow.HideCraftingWindow();
     }
 
-    private void PlayerInventorySystem_OnInventoryDisplayRequested(object sender, PlayerInventorySystem.OnInventoryDisplayRequestedEventArgs e)
+    private void PlayerInventorySystem_OnInventoryDisplayRequested(Inventory inventory)
     {
-        ShowWindows(e.inventory);
+        ShowWindows(inventory);
     }
 }

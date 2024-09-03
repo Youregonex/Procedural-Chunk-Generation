@@ -21,7 +21,7 @@ public class ContainerBuilding : InteractableBuilding
 
     public override SaveData GenerateSaveData()
     {
-        ContainerSaveData chestSaveData = new ContainerSaveData(_buildingItemDataSO, transform.position, _containerInventory);
+        ContainerSaveData chestSaveData = new(_buildingItemDataSO, transform.position, _containerInventory);
 
         return chestSaveData;
     }

@@ -1,9 +1,8 @@
 using UnityEngine;
-using System;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(CircleCollider2D))]
-public class AgentTargetDetectionZone : AgentMonoBehaviourComponent
+public class AgentTargetDetectionZone : AgentNetworkBehaviourComponent
 {
     [Header("Config")]
     [SerializeField] private float _detectionInterval = .4f;
@@ -12,25 +11,28 @@ public class AgentTargetDetectionZone : AgentMonoBehaviourComponent
     [SerializeField] private CircleCollider2D _detectionZone;
     [SerializeField] private float _detectionRadius;
     [SerializeField] private float _detectionCooldown = 0f;
-    [SerializeField] private EFactions _faction;
-    [SerializeField] private EnemyCore _agentCore;
-    [field: SerializeField] public List<Transform> TargetList { get; private set; } = new List<Transform>();
+    [field: SerializeField] public List<Transform> TargetList { get; private set; } = new();
 
+    private bool _isInitialized = false;
 
-    private void Awake()
+    public override void Initialize()
     {
+        GetAgentCore();
         _detectionZone = GetComponent<CircleCollider2D>();
-        _agentCore = transform.root.GetComponent<EnemyCore>();
         _detectionZone.isTrigger = true;
     }
 
-    private void Start()
+    public void SetDetectionZoneData(float newDetectionRadius)
     {
-        _faction = _agentCore.GetFaction();
+        SetDetectionRadius(newDetectionRadius);
+        _isInitialized = true;
     }
 
     private void Update()
     {
+        if (!_isInitialized)
+            return;
+
         if (_detectionCooldown <= 0)
         {
             DetectTargets();
@@ -43,20 +45,20 @@ public class AgentTargetDetectionZone : AgentMonoBehaviourComponent
     private void DetectTargets()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, _detectionRadius);
-        List<Transform> validTargets = new List<Transform>();
+        List<Transform> validTargets = new();
 
         foreach(Collider2D collider in colliders)
         {
-            AgentCoreBase agentCore = collider.GetComponent<AgentCoreBase>();
-
-            if (agentCore != null && agentCore.GetFaction() != _agentCore.GetFaction())
+            if(collider.TryGetComponent(out AgentCoreBase targetAgentCore) && targetAgentCore.Faction != AgentCore.Faction)
+            {
                 validTargets.Add(collider.transform);
+            }
         }
 
         TargetList = validTargets;
     }
 
-    public void SetDetectionRadius(float newDetectionRadius)
+    private void SetDetectionRadius(float newDetectionRadius)
     {
         _detectionRadius = newDetectionRadius;
         _detectionZone.radius = _detectionRadius;

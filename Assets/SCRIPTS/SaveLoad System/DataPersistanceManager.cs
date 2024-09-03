@@ -7,7 +7,7 @@ public class DataPersistanceManager : MonoBehaviour
 {
     public static DataPersistanceManager Instance { get; private set; }
 
-    private GameData _gameData = new GameData();
+    private GameData _gameData = new();
     private List<IDataPersistance> _dataPersistanceObjects;
 
     public bool IsLoadingGame;

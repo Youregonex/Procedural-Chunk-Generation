@@ -12,18 +12,18 @@ public class PlayerAbilitySystem : AgentAbilitySystem
     private bool _isInitialized = false;
 
 
-    public void Initialize()
+    public override void Initialize()
     {
         if (_isInitialized)
             return;
 
+        GetAgentCore();
+        _currentAbility = null;
         _isInitialized = true;
 
         BuildAbilityCallbacks();
         BuildAbilities();
     }
-
-    protected override void Start() {} // Stops from building abilities on Start
 
     protected override void Update()
     {
@@ -44,13 +44,13 @@ public class PlayerAbilitySystem : AgentAbilitySystem
             if (abilityDataSO.HasCallback)
             {
                 Action<Transform> abilityCallback = _abilityCallbacksDictionary[abilityDataSO.AbilityName.ToUpper()];
-                ability = abilityDataSO.BuildAbility(_agentCore, _agentCore.GetAgentComponent<AgentAnimation>(), abilityCallback);
+                ability = abilityDataSO.BuildAbility(AgentCore, AgentCore.GetAgentComponent<AgentAnimation>(), abilityCallback);
 
                 OnAbilityAdded?.Invoke(abilityDataSO, ability);
             }
             else
             {
-                ability = abilityDataSO.BuildAbility(_agentCore, _agentCore.GetAgentComponent<AgentAnimation>());
+                ability = abilityDataSO.BuildAbility(AgentCore, AgentCore.GetAgentComponent<AgentAnimation>());
                 OnAbilityAdded?.Invoke(abilityDataSO, ability);
             }
 

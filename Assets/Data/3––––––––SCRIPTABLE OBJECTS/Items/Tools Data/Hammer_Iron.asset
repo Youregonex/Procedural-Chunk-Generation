@@ -19,12 +19,12 @@ MonoBehaviour:
   <ItemPrefab>k__BackingField: {fileID: 1750307036268059749, guid: e051eb108a71f40a194c67239b4c53cb, type: 3}
   <MaxStackSize>k__BackingField: 1
   <ItemType>k__BackingField: 3
-  <ToolPrefab>k__BackingField: {fileID: 208212332542189909, guid: b0a391fac54a2459d97136a023428471, type: 3}
-  <AttackRadius>k__BackingField: 0.6
+  <WeaponPrefab>k__BackingField: {fileID: 208212332542189909, guid: b0a391fac54a2459d97136a023428471, type: 3}
   <AttackDamageMin>k__BackingField: 2
   <AttackDamageMax>k__BackingField: 4
   <KnockbackForce>k__BackingField: 10
   <AttackCooldown>k__BackingField: 1
+  <AttackRadius>k__BackingField: 0.6
   <ToolType>k__BackingField: 2
   <ToolTier>k__BackingField: 2
   <TicksPerHitMin>k__BackingField: 1

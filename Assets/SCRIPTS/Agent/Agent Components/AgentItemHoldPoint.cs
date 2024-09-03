@@ -1,32 +1,35 @@
 using UnityEngine;
 
-public class ItemHoldPoint : AgentMonoBehaviourComponent
+public class AgentItemHoldPoint : AgentNetworkBehaviourComponent
 {
     [Header("Debug Fields")]
-    [SerializeField] protected AgentCoreBase _agentCore;
-    [SerializeField] private AgentInput _agentInput;
+    [SerializeField] protected AgentInput _agentInput;
+
+    protected bool _isInitialized = false;
 
     private Vector2 _aimPosition;
     private Vector2 _aimDirection;
 
-    protected virtual void Awake()
+    public override void Initialize()
     {
-        _agentCore = transform.root.GetComponent<EnemyCore>();
+        GetAgentCore();
+        _agentInput = AgentCore.GetAgentComponent<AgentInput>();
+
+        _isInitialized = true;
     }
 
-    protected virtual void Start()
-    {
-        _agentInput = _agentCore.GetAgentComponent<AgentInput>();
-    }
+    public override void OnNetworkSpawn() {}
 
     private void Update()
     {
-        ManageItemHoldPointPosition();
+        if (!_isInitialized)
+            return;
+
+        ManageItemHoldPointRotation();
     }
 
     public override void DisableComponent()
     {
-        Debug.Log("Item Hold Point disabled");
         enabled = false;
     }
 
@@ -35,9 +38,9 @@ public class ItemHoldPoint : AgentMonoBehaviourComponent
         enabled = true;
     }
 
-    private void ManageItemHoldPointPosition()
+    private void ManageItemHoldPointRotation()
     {
-        if (_agentCore.IsDead)
+        if (AgentCore.IsDead)
             return;
 
         _aimPosition = _agentInput.GetAimPosition();

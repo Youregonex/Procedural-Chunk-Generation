@@ -16,7 +16,7 @@ public class Building : MonoBehaviour, IGenerateSaveData
 
     public virtual SaveData GenerateSaveData()
     {
-        BuildingSaveData buildingSaveData = new BuildingSaveData(_buildingItemDataSO, transform.position);
+        BuildingSaveData buildingSaveData = new(_buildingItemDataSO, transform.position);
 
         return buildingSaveData;
     }

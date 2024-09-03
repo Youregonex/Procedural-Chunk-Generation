@@ -2,12 +2,11 @@ using UnityEngine;
 
 [SelectionBase]
 [RequireComponent(typeof(AgentInput), typeof(Rigidbody2D), typeof(AgentStats))]
-public class AgentMovement : AgentMonoBehaviourComponent
+public class AgentMovement : AgentNetworkBehaviourComponent
 {
     [Header("Debug Fields")]
     [SerializeField] private AgentInput _agentInput;
     [SerializeField] private AgentAnimation _agentAnimation;
-    [SerializeField] private AgentCoreBase _agentCore;
     [SerializeField] private AgentStats _agentStats;
     [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private bool _canMove = true;
@@ -15,17 +14,14 @@ public class AgentMovement : AgentMonoBehaviourComponent
     [field: SerializeField] public Vector2 MovementDirection { get; private set; }
     [field: SerializeField] public Vector2 LastMovementDirection { get; private set; }
 
-    private void Awake()
+    public override void Initialize()
     {
-        _agentCore = GetComponent<AgentCoreBase>();
-        _rigidBody = GetComponent<Rigidbody2D>();
-    }
+        GetAgentCore();
+        _rigidBody = AgentCore.AgentRigidBody;
 
-    private void Start()
-    {
-        _agentStats = _agentCore.GetAgentComponent<AgentStats>();
-        _agentInput = _agentCore.GetAgentComponent<AgentInput>();
-        _agentAnimation = _agentCore.GetAgentComponent<AgentAnimation>();
+        _agentStats = AgentCore.GetAgentComponent<AgentStats>();
+        _agentInput = AgentCore.GetAgentComponent<AgentInput>();
+        _agentAnimation = AgentCore.GetAgentComponent<AgentAnimation>();
     }
 
     private void FixedUpdate()
@@ -33,14 +29,11 @@ public class AgentMovement : AgentMonoBehaviourComponent
         HandleMovement();
     }
 
-    private void OnDisable()
-    {
-        _rigidBody.velocity = Vector2.zero;
-    }
-
     public override void DisableComponent()
     {
-        _rigidBody.velocity = Vector2.zero;
+        if(_rigidBody != null)
+            _rigidBody.velocity = Vector2.zero;
+
         this.enabled = false;
     }
 

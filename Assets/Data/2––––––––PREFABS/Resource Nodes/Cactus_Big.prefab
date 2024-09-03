@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1660945438633423600, guid: b8a2b4335fe394c939e52183be66285e, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 4221567447
+      objectReference: {fileID: 0}
     - target: {fileID: 3928874102087209802, guid: b8a2b4335fe394c939e52183be66285e, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -72,6 +76,10 @@ PrefabInstance:
       propertyPath: _nodeResourceDrop
       value: 
       objectReference: {fileID: 11400000, guid: bc6a877fb81fd4171a68224c7889ea85, type: 2}
+    - target: {fileID: 7262521358162469387, guid: b8a2b4335fe394c939e52183be66285e, type: 3}
+      propertyPath: <NodePrefabId>k__BackingField
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8556013764576524049, guid: b8a2b4335fe394c939e52183be66285e, type: 3}
       propertyPath: _maxTicks
       value: 3

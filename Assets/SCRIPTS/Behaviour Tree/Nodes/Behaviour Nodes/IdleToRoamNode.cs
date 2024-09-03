@@ -39,8 +39,8 @@ namespace Youregone.BehaviourTrees
 
         private Vector2 GetRandomRoamPosition()
         {
-            Vector2 randomOffset = new Vector2(Random.Range(-_roamPositionOffsetMax.x, _roamPositionOffsetMax.x),
-                                               Random.Range(-_roamPositionOffsetMax.y, _roamPositionOffsetMax.y));
+            Vector2 randomOffset = new(Random.Range(-_roamPositionOffsetMax.x, _roamPositionOffsetMax.x),
+                                       Random.Range(-_roamPositionOffsetMax.y, _roamPositionOffsetMax.y));
 
             return (Vector2)_enemyBehaviour.transform.position + randomOffset;
         }

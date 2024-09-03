@@ -1,59 +1,53 @@
 using UnityEngine;
+using Unity.Netcode;
 
 [RequireComponent(typeof(AgentInput))]
-public class AgentAttackModule : AgentMonoBehaviourComponent
+public class AgentAttackModule : AgentNetworkBehaviourComponent
 {
     [Header("Config")]
-    [SerializeField] protected ItemHoldPoint _itemHoldPoint;
+    [SerializeField] protected AgentItemHoldPoint _itemHoldPointPrefab;
 
     [Header("Debug Fields")]
-    [SerializeField, HideInInspector] protected Weapon _currentWeapon;
-    [SerializeField, HideInInspector] protected WeaponItemDataSO _currentWeaponItemDataSO;
-    [SerializeField, HideInInspector] protected Tool _currentTool;
-    [SerializeField, HideInInspector] protected ToolItemDataSO _currentToolItemDataSO;
-    [SerializeField, HideInInspector] protected AgentInput _agentInput;
-    [SerializeField, HideInInspector] protected AgentCoreBase _agentCore;
+    [SerializeField] protected AgentItemHoldPoint _itemHoldPoint;
+    [SerializeField] protected Weapon _currentWeapon;
+    [SerializeField] protected WeaponItemDataSO _currentWeaponItemDataSO;
+    [SerializeField] protected AgentInput _agentInput;
 
+    public bool CanAttack => _currentWeapon.ReadyToAttack;
 
-    public bool CanAttack
+    protected WeaponFactory _weaponFactory = new();
+
+    public override void Initialize()
     {
-        get
-        {
-            if (_currentWeapon != null)
-                return _currentWeapon.ReadyToAttack;
-            if (_currentTool != null)
-                return _currentTool.CanSwing;
+        GetAgentCore();
 
-            return false;
-        }
-    }
-
-    protected WeaponFactory _weaponFactory = new WeaponFactory();
-
-    protected virtual void Awake()
-    {
-        _agentCore = GetComponent<AgentCoreBase>();
-    }
-
-    protected virtual void Start()
-    {
-        _agentInput = _agentCore.GetAgentComponent<AgentInput>();
+        _agentInput = AgentCore.GetAgentComponent<AgentInput>();
+        _itemHoldPoint = AgentCore.GetAgentComponent<AgentItemHoldPoint>();
 
         _agentInput.OnMousePrimary += AgentInput_OnAgentAttackTrigger;
     }
 
-    public override void OnDestroy()
+    public override void OnNetworkDespawn()
     {
-        if(_agentInput != null)
+        if (_agentInput != null)
             _agentInput.OnMousePrimary -= AgentInput_OnAgentAttackTrigger;
+    }
+
+    public void UpdateItemHoldPoint()
+    {
+        AgentItemHoldPoint agentItemHoldPoint = transform.GetComponentInChildren<AgentItemHoldPoint>();
+        agentItemHoldPoint.Initialize();
     }
 
     public float GetAttackCooldown()
     {
         if(_currentWeapon != null)
             return _currentWeapon.AttackCooldownCurrent;
-
-        return _currentTool.AttackCooldownCurrent;
+        else
+        {
+            Debug.LogError("Current weapon is null!");
+            return -1f;
+        }
     }
 
     public override void DisableComponent()
@@ -73,54 +67,83 @@ public class AgentAttackModule : AgentMonoBehaviourComponent
 
     protected virtual void Attack()
     {
+        if (!IsOwner)
+            return;
+
         if (_currentWeapon == null || !CanAttack)
             return;
 
-        if (_currentWeapon != null)
-            _currentWeapon.Attack();
-
-        if (_currentTool != null)
-            _currentTool.Attack();
+        _currentWeapon.Attack();
     }
 
     protected void ChangeWeapon(WeaponItemDataSO newWeaponItemDataSO)
     {
-        if (newWeaponItemDataSO == _currentWeaponItemDataSO)
+        if (!IsOwner || newWeaponItemDataSO == null)
             return;
 
         HideCurrentWeapon();
-        HideCurrentTool();
+        int itemDataSOId = MultiplayerPrefabDatabase.Instance.GetIdWithItemDataSO(newWeaponItemDataSO);
 
-        _currentWeaponItemDataSO = newWeaponItemDataSO;
-
-        _currentWeapon = _weaponFactory.CreateWeapon(newWeaponItemDataSO);
-        _currentWeapon.transform.SetParent(_itemHoldPoint.transform);
-
-        _currentWeapon.transform.localPosition = Vector3.zero;
-        _currentWeapon.transform.localRotation = Quaternion.identity;
-        _currentWeapon.transform.localScale = Vector3.one;
-
-        _currentWeapon.SetupWeapon(_agentCore, this, _itemHoldPoint);
+        SpawnWeaponServerRpc(itemDataSOId, AgentCore.NetworkObject, NetworkObject.OwnerClientId);
     }
 
-    protected void ChangeTool(ToolItemDataSO newToolItemDataSO)
+    [Rpc(SendTo.Server)]
+    protected void SpawnWeaponServerRpc(int weaponItemDataSOId, NetworkObjectReference agentCoreNetworkObjectReference, ulong clientId)
     {
-        if (newToolItemDataSO == _currentToolItemDataSO)
-            return;
+        if(agentCoreNetworkObjectReference.TryGet(out NetworkObject agentCoreNetworkObject))
+        {
+            if(agentCoreNetworkObject.TryGetComponent(out AgentCoreBase agentCore))
+            {
+                AgentItemHoldPoint agentItemHoldPoint = agentCore.GetAgentComponent<AgentItemHoldPoint>();
 
-        HideCurrentWeapon();
-        HideCurrentTool();
+                WeaponItemDataSO weaponItemDataSO = MultiplayerPrefabDatabase.Instance.GetItemDataSOWithId(weaponItemDataSOId) as WeaponItemDataSO;
+                Weapon weapon = Instantiate(weaponItemDataSO.WeaponPrefab, agentItemHoldPoint.transform.position, Quaternion.identity);
+                weapon.NetworkObject.Spawn();
+                weapon.transform.SetParent(agentItemHoldPoint.transform);
 
-        _currentToolItemDataSO = newToolItemDataSO;
+                EquipWeaponSingleClientRpc(weapon.NetworkObject, weaponItemDataSOId, RpcTarget.Single(clientId, RpcTargetUse.Temp));
+                UpdateWeaponPositionAllClientRpc(weapon.NetworkObject);
+            }
+            else
+            {
+                Debug.LogError("Couldn't get AgentCoreBase out of agentCoreNetworkObject");
+            }
+        }
+        else
+        {
+            Debug.LogError("Couldn't unpack agentCoreNetworkObject");
+        }
+    }
 
-        _currentTool = _weaponFactory.CreateTool(newToolItemDataSO);
-        _currentTool.transform.SetParent(_itemHoldPoint.transform);
+    [Rpc(SendTo.SpecifiedInParams)]
+    protected void EquipWeaponSingleClientRpc(NetworkObjectReference weaponNetworkObjectReference, int weaponItemDataSOId, RpcParams rpcParams)
+    {
+        if (weaponNetworkObjectReference.TryGet(out NetworkObject weaponNetworkObject) && weaponNetworkObject.TryGetComponent(out Weapon weapon))
+        {
+            WeaponItemDataSO weaponItemDataSO = MultiplayerPrefabDatabase.Instance.GetItemDataSOWithId(weaponItemDataSOId) as WeaponItemDataSO;
+            _currentWeapon = weapon;
+            _currentWeaponItemDataSO = weaponItemDataSO;
+            weapon.InitializeWeapon(AgentCore, this, _itemHoldPoint);
+        }
+        else
+        {
+            Debug.LogError("Couldn't unpack weaponNetworkObject/weaponNetworkObject doesn't contain Weapon script");
+        }
+    }
 
-        _currentTool.transform.localPosition = Vector3.zero;
-        _currentTool.transform.localRotation = Quaternion.identity;
-        _currentTool.transform.localScale = Vector3.one;
-
-        _currentTool.SetUpTool(_agentCore, this);
+    [Rpc(SendTo.ClientsAndHost)]
+    protected void UpdateWeaponPositionAllClientRpc(NetworkObjectReference weaponNetworkObjectReference)
+    {
+        if(weaponNetworkObjectReference.TryGet(out NetworkObject weaponNetworkObject) && weaponNetworkObject.TryGetComponent(out Weapon weapon))
+        {
+            weapon.transform.localPosition = Vector2.zero;
+            weapon.transform.localRotation = Quaternion.identity;
+            weapon.transform.localScale = Vector2.one;
+        }
+        else
+        {
+            Debug.LogError("Couldn't unpack weaponNetworkObject/weaponNetworkObject doesn't contain Weapon script");
+        }
     }
 
     protected void HideCurrentWeapon()
@@ -128,22 +151,30 @@ public class AgentAttackModule : AgentMonoBehaviourComponent
         if (_currentWeapon == null)
             return;
 
-        Destroy(_currentWeapon.gameObject);
+        DespawnWeaponServerRpc(_currentWeapon.NetworkObject, NetworkObject.OwnerClientId);
 
         _currentWeapon = null;
         _currentWeaponItemDataSO = null;
-
     }
 
-    protected void HideCurrentTool()
+    [Rpc(SendTo.Server)]
+    protected void DespawnWeaponServerRpc(NetworkObjectReference weaponNetworkObjectReference, ulong clientId)
     {
-        if (_currentTool == null)
-            return;
-
-        Destroy(_currentTool.gameObject);
-
-        _currentTool = null;
-        _currentToolItemDataSO = null;
+        if(weaponNetworkObjectReference.TryGet(out NetworkObject weaponNetworkObject) && weaponNetworkObject.TryGetComponent(out Weapon weapon))
+        {
+            weaponNetworkObject.Despawn();
+            UnEquipWeaponSingleClientRpc(RpcTarget.Single(clientId, RpcTargetUse.Temp));
+        }
+        else
+        {
+            Debug.LogError("Couldn't unpack NetworkObjectReference!");
+        }
     }
 
+    [Rpc(SendTo.SpecifiedInParams)]
+    private void UnEquipWeaponSingleClientRpc(RpcParams rpcParams)
+    {
+        _currentWeapon = null;
+        _currentWeaponItemDataSO = null;
+    }
 }

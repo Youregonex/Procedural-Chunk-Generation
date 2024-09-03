@@ -9,24 +9,13 @@ public class AgentStatHealthSystem : AgentHealthSystem
     [Header("Debug Fields")]
     [SerializeField] private AgentStats _agentStats;
 
-    public void Initialize()
+    public override void Initialize()
     {
-        _agentCore = GetComponent<AgentCoreBase>();
-        _agentStats = _agentCore.GetAgentComponent<AgentStats>();
+        base.Initialize();
 
+        _agentStats = AgentCore.GetAgentComponent<AgentStats>();
         MaxHealth = CalculateMaxHealth();
         CurrentHealth = MaxHealth;
-    }
-
-    protected override void Start()
-    {
-        _agentCore = GetComponent<AgentCoreBase>();
-        _agentStats = _agentCore.GetAgentComponent<AgentStats>();
-
-        MaxHealth = CalculateMaxHealth();
-        CurrentHealth = MaxHealth;
-
-        base.Start();
     }
 
     private float CalculateMaxHealth()

@@ -38,7 +38,7 @@ public class Item : NetworkBehaviour, IGenerateSaveData
         _capsuleCollider = GetComponent<BoxCollider2D>();
     }
 
-    private void OnEnable()
+    public override void OnNetworkSpawn()
     {
         StartCoroutine(DisableColliderCoroutine());
     }
@@ -52,7 +52,7 @@ public class Item : NetworkBehaviour, IGenerateSaveData
 
     public SaveData GenerateSaveData()
     {
-        ItemSaveData itemSaveData = new ItemSaveData(transform.position, _itemDataSO, _itemQuantity);
+        ItemSaveData itemSaveData = new(transform.position, _itemDataSO, _itemQuantity);
 
         return itemSaveData;
     }

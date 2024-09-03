@@ -63,9 +63,11 @@ GameObject:
   - component: {fileID: 4758298892790681363}
   - component: {fileID: 6524151457122161689}
   - component: {fileID: 787065315744638245}
+  - component: {fileID: 6753827564709569711}
   - component: {fileID: 465963116688875511}
   - component: {fileID: 798849663924346243}
   - component: {fileID: 7912135818131328804}
+  - component: {fileID: 5073364081684078360}
   - component: {fileID: 98385478952016499}
   - component: {fileID: 4340788672296164125}
   - component: {fileID: 639650765066315052}
@@ -95,7 +97,6 @@ Transform:
   - {fileID: 3354325260444797799}
   - {fileID: 5747170332831336647}
   - {fileID: 8966876191707380923}
-  - {fileID: 5336671720563769972}
   - {fileID: 8293439931727362481}
   - {fileID: 8954128586578603165}
   - {fileID: 5817543199220559218}
@@ -163,6 +164,27 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &6753827564709569711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618886201950957018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3876124631
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &465963116688875511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,21 +236,41 @@ MonoBehaviour:
   <DisableOnDeath>k__BackingField: 0
   _faction: 3
   _healthSystem: {fileID: 639650765066315052}
-  _agentAttackModule: {fileID: 0}
+  _agentAttackModule: {fileID: 5073364081684078360}
   _agentMovement: {fileID: 798849663924346243}
   _agentAnimation: {fileID: 4704289380383340896}
   _agentVisual: {fileID: 5658447150834246533}
   _agentHitbox: {fileID: 6779826811798766347}
   _agentInput: {fileID: 465963116688875511}
   _agentStats: {fileID: 4340788672296164125}
-  _agentItemHoldPoint: {fileID: 5590291423628192004}
   _agentAbilitySystem: {fileID: 5835343632778712873}
   _agentCollider: {fileID: 6524151457122161689}
   _rigidBody2D: {fileID: 787065315744638245}
+  <SelfTransform>k__BackingField: {fileID: 0}
+  _agentItemHoldPoint: {fileID: 0}
   _agentComponents: []
   _disableOnDeathComponents: []
   _agentTargetDetectionZone: {fileID: 8833813773217938654}
   _enemyBehaviour: {fileID: 98385478952016499}
+--- !u!114 &5073364081684078360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618886201950957018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5a46cecb395c42459f6e5bbc4d3d235, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <DisableOnDeath>k__BackingField: 1
+  _itemHoldPointPrefab: {fileID: 2295862599987237924, guid: 06d65a163298443a8a159bcf289ce5d8, type: 3}
+  _itemHoldPoint: {fileID: 0}
+  _currentWeapon: {fileID: 0}
+  _currentWeaponItemDataSO: {fileID: 0}
+  _agentInput: {fileID: 0}
+  _agentCore: {fileID: 0}
 --- !u!114 &98385478952016499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,7 +295,7 @@ MonoBehaviour:
   <TimeToStartRoamMax>k__BackingField: 3
   <RoamTimeMax>k__BackingField: 2
   <RoamPositionOffsetMax>k__BackingField: {x: 5, y: 5}
-  <IsSpawned>k__BackingField: 0
+  <AgentSpawned>k__BackingField: 0
   <CurrentRoamPosition>k__BackingField: {x: 0, y: 0}
   <MovementDirection>k__BackingField: {x: 0, y: 0}
   <AimPosition>k__BackingField: {x: 0, y: 0}
@@ -292,14 +334,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <DisableOnDeath>k__BackingField: 0
-  <MaxHealth>k__BackingField: 0
-  <CurrentHealth>k__BackingField: 0
+  _currentHealth: 0
+  _maxHealth: 0
   _destructionDelay: 2
   _damagePopupPosition: {fileID: 3354325260444797799}
   _isDead: 0
   _agentCore: {fileID: 0}
   _agentAnimation: {fileID: 0}
-  _hitbox: {fileID: 0}
   _vitalityToHealthRatio: 5
   _initialHealth: 20
   _agentStats: {fileID: 0}
@@ -677,7 +718,6 @@ MonoBehaviour:
   _detectionZone: {fileID: 0}
   _detectionRadius: 0
   _detectionCooldown: 0
-  _faction: 0
   _agentCore: {fileID: 0}
   <TargetList>k__BackingField: []
 --- !u!1 &4077081396175907911
@@ -5770,7 +5810,6 @@ MonoBehaviour:
   _trailRenderer: {fileID: 0}
   _agentCore: {fileID: 0}
   _agentInput: {fileID: 0}
-  _spriteRenderer: {fileID: 0}
 --- !u!114 &4704289380383340896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5801,69 +5840,6 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 0}
   _initialMaterial: {fileID: 0}
   _agentHealthSystem: {fileID: 639650765066315052}
---- !u!1 &7129358991972083952
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5336671720563769972}
-  - component: {fileID: 5590291423628192004}
-  - component: {fileID: 6316488941480416666}
-  m_Layer: 0
-  m_Name: ItemHoldPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5336671720563769972
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7129358991972083952}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4758298892790681363}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5590291423628192004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7129358991972083952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc7c7af7f881644e2903a97f88b1eb42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 0
-  _agentCore: {fileID: 0}
-  _agentInput: {fileID: 0}
---- !u!114 &6316488941480416666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7129358991972083952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc7c7af7f881644e2903a97f88b1eb42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <DisableOnDeath>k__BackingField: 0
-  _agentCore: {fileID: 0}
-  _agentInput: {fileID: 0}
 --- !u!1 &7850755942010216221
 GameObject:
   m_ObjectHideFlags: 0

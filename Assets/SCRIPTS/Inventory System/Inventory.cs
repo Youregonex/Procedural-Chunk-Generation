@@ -28,7 +28,7 @@ public class Inventory
 
         for (int i = 0; i < _inventorySize; i++)
         {
-            InventorySlot inventorySlot = new InventorySlot();
+            InventorySlot inventorySlot = new();
 
             _inventoryContentList.Add(inventorySlot);
 

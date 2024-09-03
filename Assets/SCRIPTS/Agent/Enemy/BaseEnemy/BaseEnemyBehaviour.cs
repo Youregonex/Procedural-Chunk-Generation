@@ -4,7 +4,7 @@ using System;
 using Youregone.BehaviourTrees;
 using Youregone.Utilities;
 
-public class BaseEnemyBehaviour : AgentMonoBehaviourComponent
+public class BaseEnemyBehaviour : AgentNetworkBehaviourComponent
 {
     public event Action OnTargetInAttackRange;
 
@@ -29,25 +29,21 @@ public class BaseEnemyBehaviour : AgentMonoBehaviourComponent
     [SerializeField] protected Transform _currentTargetTransform;
     [SerializeField] protected AgentTargetDetectionZone _targetDetectionZone;
     [SerializeField] protected AgentAttackModule _agentAttackModule;
-    [SerializeField] protected EnemyCore _enemyCore;
     [SerializeField] protected bool _showGizmos;
 
     // BT
-    protected Selector _behaviourTree;
-    protected BTBuilder _btBuilder = new BTBuilder();
+    protected Composite _behaviourTree;
+    protected BTBuilder _btBuilder = new();
 
     public List<Transform> TargetTransformList => _targetDetectionZone.TargetList;
     public Transform CurrentTargetTransform => _currentTargetTransform;
 
-    protected virtual void Awake()
+    public override void Initialize()
     {
-        _enemyCore = GetComponent<EnemyCore>();
-    }
+        GetAgentCore();
 
-    protected virtual void Start()
-    {
-        _agentAttackModule = _enemyCore.GetAgentComponent<AgentAttackModule>();
-        _enemyCore.GetAgentComponent<AgentAnimation>().OnAgentSpawned += AgentAnimation_OnAgentSpawned;
+        _agentAttackModule = AgentCore.GetAgentComponent<AgentAttackModule>();
+        AgentCore.GetAgentComponent<AgentAnimation>().OnAgentSpawned += AgentAnimation_OnAgentSpawned;
         InitializeAgentTargetDetectionZone();
 
         ConstructBehaviourTree();
@@ -60,9 +56,9 @@ public class BaseEnemyBehaviour : AgentMonoBehaviourComponent
         _behaviourTree.Evaluate();
     }
 
-    public override void OnDestroy()
+    public override void OnNetworkDespawn()
     {
-        _enemyCore.GetAgentComponent<AgentAnimation>().OnAgentSpawned -= AgentAnimation_OnAgentSpawned;
+        AgentCore.GetAgentComponent<AgentAnimation>().OnAgentSpawned -= AgentAnimation_OnAgentSpawned;
     }
 
     public void SetAimPosition(Vector2 aimPosition) => AimPosition = aimPosition;
@@ -146,21 +142,19 @@ public class BaseEnemyBehaviour : AgentMonoBehaviourComponent
             .WithSelector(idleToRoamSelector)
             .Build();
 
-        Composite treeRoot =
+        _behaviourTree =
             _btBuilder.StartBuildingSelector()
             .WithSequence(enemySpawnSequence)
             .WithSequence(combatSequence)
             .WithSequence(roamSequence)
             .WithSequence(idleToRoamSelector)
             .Build();
-
-        _behaviourTree = (Selector)treeRoot;
     }
 
     protected void InitializeAgentTargetDetectionZone()
     {
-        _targetDetectionZone = _enemyCore.GetAgentComponent<AgentTargetDetectionZone>();
-        _targetDetectionZone.SetDetectionRadius(AggroRange);
+        _targetDetectionZone = AgentCore.GetAgentComponent<AgentTargetDetectionZone>();
+        _targetDetectionZone.SetDetectionZoneData(AggroRange);
     }
 
     protected virtual void OnDrawGizmos()

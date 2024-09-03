@@ -14,18 +14,18 @@ public class BossDevilBehaviour : BaseEnemyBehaviour
 
     public BulletShooter BulletShooter => _bulletShooter;
 
-    protected override void Awake()
+    public override void Initialize()
     {
-        base.Awake();
+        GetAgentCore();
 
         _bulletShooter = new BulletShooter(_radial360AttackDataSO, transform, this);
-    }
+        _agentAbilitySystem = AgentCore.GetAgentComponent<AgentAbilitySystem>();
 
-    protected override void Start()
-    {
-        _agentAbilitySystem = _enemyCore.GetAgentComponent<AgentAbilitySystem>();
+        _agentAttackModule = AgentCore.GetAgentComponent<AgentAttackModule>();
+        AgentCore.GetAgentComponent<AgentAnimation>().OnAgentSpawned += AgentAnimation_OnAgentSpawned;
+        InitializeAgentTargetDetectionZone();
 
-        base.Start();
+        ConstructBehaviourTree();
     }
 
     private void OnDisable()
@@ -85,15 +85,13 @@ public class BossDevilBehaviour : BaseEnemyBehaviour
             .WithSelector(idleToRoamSelector)
             .Build();
 
-        Composite treeRoot =
+        _behaviourTree =
             _btBuilder.StartBuildingSelector()
             .WithSequence(spawnSequence)
             .WithSequence(combatSequence)
             .WithSequence(roamSequence)
             .WithSequence(idleSequence)
             .Build();
-
-        _behaviourTree = (Selector)treeRoot;
     }
 
     protected override void OnDrawGizmos()

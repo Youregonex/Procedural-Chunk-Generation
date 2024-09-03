@@ -20,12 +20,16 @@ public abstract class InteractableBuilding : Building, IInteractable
 
         if (!_saveInitialColor)
         {
-            _uninteractColor = new Color(1, 1, 1);
-            _uninteractColor.a = 1f;
+            _uninteractColor = new Color(1, 1, 1)
+            {
+                a = 1f
+            };
         }
 
-        _interactColor = new Color(0, 1, 0);
-        _interactColor.a = .8f;
+        _interactColor = new Color(0, 1, 0)
+        {
+            a = .8f
+        };
     }
 
     public abstract void Interact(GameObject initiator);

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e651dbb3fbac04af2b8f5abf007ddc23, type: 3}
-  m_Name: ChunkPrefab
+  m_Name: PlayerItemHoldPoint
   m_EditorClassIdentifier: 
   IsDefault: 0
   List:
   - Override: 0
-    Prefab: {fileID: 5889536382578013579, guid: 3869156d3cb594c878510c213c972227, type: 3}
+    Prefab: {fileID: 2101187500150917754, guid: 9b539fa80042347f29b54180e8ef48d7, type: 3}
     SourcePrefabToOverride: {fileID: 0}
     SourceHashToOverride: 0
     OverridingTargetPrefab: {fileID: 0}

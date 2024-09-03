@@ -3,23 +3,19 @@ using UnityEngine;
 public class EnemyInput : AgentInput
 {
     [Header("Debug Fields")]
-    [SerializeField] private EnemyCore _enemyCore;
     [SerializeField] private BaseEnemyBehaviour _enemyBehaviour;
 
+    public EnemyCore EnemyCore => AgentCore as EnemyCore;
 
-    private void Awake()
+    public override void Initialize()
     {
-        _enemyCore = GetComponent<EnemyCore>();
-    }
+        GetAgentCore();
 
-    private void Start()
-    {
-        _enemyBehaviour = _enemyCore.GetAgentComponent<BaseEnemyBehaviour>();
-
+        _enemyBehaviour = EnemyCore.GetAgentComponent<BaseEnemyBehaviour>();
         _enemyBehaviour.OnTargetInAttackRange += EnemyBehaviour_OnTargetInAttackRange;
     }
 
-    public override void OnDestroy()
+    public override void OnNetworkDespawn()
     {
         _enemyBehaviour.OnTargetInAttackRange -= EnemyBehaviour_OnTargetInAttackRange;
     }

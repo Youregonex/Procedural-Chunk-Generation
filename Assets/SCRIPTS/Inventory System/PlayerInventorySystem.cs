@@ -3,15 +3,11 @@ using System;
 
 [Serializable]
 [RequireComponent(typeof(PlayerInput))]
-public class PlayerInventorySystem : AgentMonoBehaviourComponent
+public class PlayerInventorySystem : AgentNetworkBehaviourComponent
 {
     private const int HOTBAR_SIZE = 10;
 
-    public static event EventHandler<OnInventoryDisplayRequestedEventArgs> OnInventoryDisplayRequested;
-    public class OnInventoryDisplayRequestedEventArgs : EventArgs
-    {
-        public Inventory inventory;
-    }
+    public static event Action<Inventory> OnInventoryDisplayRequested;
 
     public event EventHandler OnInventoryContentChanged;
 
@@ -24,25 +20,24 @@ public class PlayerInventorySystem : AgentMonoBehaviourComponent
     public Inventory Hotbar => _hotbar;
     public Inventory MainInventory => _mainInventory;
 
-    private void Awake()
+    public override void Initialize()
     {
-        _playerInput = GetComponent<PlayerInput>();
+        GetAgentCore();
+
+        _playerInput = AgentCore.GetAgentComponent<PlayerInput>();
 
         _hotbar = new Inventory();
         _mainInventory = new Inventory();
 
         _hotbar.InitializeInventory(HOTBAR_SIZE);
         _mainInventory.InitializeInventory(_mainInventorySize);
-    }
 
-    private void Start()
-    {
         _playerInput.OnInventoryKeyPressed += PlayerInput_OnInventoryKeyPressed;
         _hotbar.Inventory_OnInventorySlotChanged += Inventory_OnInventorySlotChanged;
         _mainInventory.Inventory_OnInventorySlotChanged += Inventory_OnInventorySlotChanged;
     }
 
-    public override void OnDestroy()
+    public override void OnNetworkDespawn()
     {
         _playerInput.OnInventoryKeyPressed -= PlayerInput_OnInventoryKeyPressed;
         _hotbar.Inventory_OnInventorySlotChanged -= Inventory_OnInventorySlotChanged;
@@ -143,7 +138,7 @@ public class PlayerInventorySystem : AgentMonoBehaviourComponent
         int mainInventorySize = _mainInventory.InventorySize;
         int hotbarSize = _hotbar.InventorySize;
 
-        Inventory combinedPlayerInventories = new Inventory();
+        Inventory combinedPlayerInventories = new();
 
         combinedPlayerInventories.InitializeInventory(mainInventorySize + hotbarSize);
 
@@ -164,9 +159,6 @@ public class PlayerInventorySystem : AgentMonoBehaviourComponent
 
     private void PlayerInput_OnInventoryKeyPressed()
     {
-        OnInventoryDisplayRequested?.Invoke(this, new OnInventoryDisplayRequestedEventArgs
-        {
-            inventory = _mainInventory
-        });
+        OnInventoryDisplayRequested?.Invoke(_mainInventory);
     }
 }

@@ -1,37 +1,36 @@
 using UnityEngine;
 using Youregone.Utilities;
 
-public class PlayerBuildingSystem : AgentMonoBehaviourComponent
+public class PlayerBuildingSystem : AgentNetworkBehaviourComponent
 {
     [Header("Config")]
     [SerializeField] private PendingBuildingItem _pendingBuildingItem;
     [field: SerializeField] private float _buildingRange = 3f;
     
     [Header("Debug Fields")]
-    [SerializeField] private PlayerCore _playerCore;
     [SerializeField] private PlayerItemSelection _playerItemSelection;
     [SerializeField] private BuildingItemDataSO _currentBuildingItemDataSO;
     [SerializeField] private PlayerInput _playerInput;
     [SerializeField] private bool _buildingEnabled = false;
 
-    private void Awake()
+    public override void Initialize()
     {
-        _playerCore = GetComponent<PlayerCore>();
-    }
+        GetAgentCore();
 
-    private void Start()
-    {
-        _playerItemSelection = _playerCore.GetAgentComponent<PlayerItemSelection>();
+        _playerItemSelection = AgentCore.GetAgentComponent<PlayerItemSelection>();
         _playerItemSelection.OnCurrentItemChanged += PlayerItemSelection_OnCurrentItemChanged;
 
-        _playerInput = _playerCore.GetAgentComponent<PlayerInput>();
+        _playerInput = AgentCore.GetAgentComponent<PlayerInput>();
         _playerInput.OnMousePrimary += PlayerInput_OnMousePrimary;
     }
 
-    public override void OnDestroy()
+    public override void OnNetworkDespawn()
     {
-        _playerItemSelection.OnCurrentItemChanged -= PlayerItemSelection_OnCurrentItemChanged;
-        _playerInput.OnMousePrimary -= PlayerInput_OnMousePrimary;
+        if (_playerItemSelection != null)
+            _playerItemSelection.OnCurrentItemChanged -= PlayerItemSelection_OnCurrentItemChanged;
+
+        if (_playerInput != null)
+            _playerInput.OnMousePrimary -= PlayerInput_OnMousePrimary;
     }
 
     public override void DisableComponent()

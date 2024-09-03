@@ -57,7 +57,7 @@ namespace Youregone.BehaviourTrees
         public Composite Build()
         {
             Composite compositeNode = _compositeNode;
-            _compositeNode = new Composite();
+            _compositeNode = null;
 
             return compositeNode;
         }

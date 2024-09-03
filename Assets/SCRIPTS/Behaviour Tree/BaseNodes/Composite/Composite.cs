@@ -4,7 +4,7 @@ namespace Youregone.BehaviourTrees
 {
     public class Composite : Node
     {
-        protected List<Node> _childNodes = new List<Node>();
+        protected List<Node> _childNodes = new();
 
         public Composite(int nodePriority = 0) : base(nodePriority) {}
 

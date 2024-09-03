@@ -1,23 +1,18 @@
 using UnityEngine;
 
-public class PlayerObjectInteraction : AgentMonoBehaviourComponent
+public class PlayerObjectInteraction : AgentNetworkBehaviourComponent
 {
     [Header("Debug Fields")]
-    [SerializeField] private PlayerCore _playerCore;
     [SerializeField] private IInteractable _currentInteractable;
     [SerializeField] private AgentMovement _playerMovement;
     [SerializeField] private PlayerInput _playerInput;
 
-    private void Awake()
+    public override void Initialize()
     {
-        _playerCore = transform.root.GetComponent<PlayerCore>();
-        _playerMovement = _playerCore.GetAgentComponent<AgentMovement>();
-    }
+        GetAgentCore();
+        _playerMovement = AgentCore.GetAgentComponent<AgentMovement>();
 
-    private void Start()
-    {
-        _playerInput = _playerCore.GetAgentComponent<PlayerInput>();
-
+        _playerInput = AgentCore.GetAgentComponent<PlayerInput>();
         _playerInput.OnInteractKeyPressed += PlayerInput_OnInteractKeyPressed;
     }
 
@@ -26,9 +21,10 @@ public class PlayerObjectInteraction : AgentMonoBehaviourComponent
         ManageInteractionColliderAngle();
     }
 
-    public override void OnDestroy()
+    public override void OnNetworkDespawn()
     {
-        _playerInput.OnInteractKeyPressed -= PlayerInput_OnInteractKeyPressed;
+        if (_playerInput != null)
+            _playerInput.OnInteractKeyPressed -= PlayerInput_OnInteractKeyPressed;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -71,7 +67,7 @@ public class PlayerObjectInteraction : AgentMonoBehaviourComponent
 
     private void ManageInteractionColliderAngle()
     {
-        if (_playerCore.IsDead)
+        if (AgentCore.IsDead)
             return;
 
         Vector2 aimDirection = _playerMovement.LastMovementDirection;

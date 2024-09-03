@@ -9,7 +9,19 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1988631764832583236, guid: d07a65e98e0b9484294c62e95c581220, type: 3}
+      propertyPath: _attackOrigin
+      value: 
+      objectReference: {fileID: 5513889776116911927}
+    - target: {fileID: 1988631764832583236, guid: d07a65e98e0b9484294c62e95c581220, type: 3}
       propertyPath: _toolItemDataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 80f41073a50ab446888ab71a4285aa68, type: 2}
+    - target: {fileID: 1988631764832583236, guid: d07a65e98e0b9484294c62e95c581220, type: 3}
+      propertyPath: _weaponAnimation
+      value: 
+      objectReference: {fileID: 5946692527737759581}
+    - target: {fileID: 1988631764832583236, guid: d07a65e98e0b9484294c62e95c581220, type: 3}
+      propertyPath: _weaponItemDataSO
       value: 
       objectReference: {fileID: 11400000, guid: 80f41073a50ab446888ab71a4285aa68, type: 2}
     - target: {fileID: 2604460098103190061, guid: d07a65e98e0b9484294c62e95c581220, type: 3}
@@ -27,6 +39,14 @@ PrefabInstance:
     - target: {fileID: 3423027006737845153, guid: d07a65e98e0b9484294c62e95c581220, type: 3}
       propertyPath: m_Name
       value: Hammer_Iron
+      objectReference: {fileID: 0}
+    - target: {fileID: 4428275262105755396, guid: d07a65e98e0b9484294c62e95c581220, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 514335808
+      objectReference: {fileID: 0}
+    - target: {fileID: 5126940036593304015, guid: d07a65e98e0b9484294c62e95c581220, type: 3}
+      propertyPath: m_Name
+      value: AttackOrigin
       objectReference: {fileID: 0}
     - target: {fileID: 5207203518321506005, guid: d07a65e98e0b9484294c62e95c581220, type: 3}
       propertyPath: m_LocalPosition.x
@@ -96,8 +116,59 @@ PrefabInstance:
       propertyPath: _attackCooldownMax
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2906655859666001652, guid: d07a65e98e0b9484294c62e95c581220, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7621699904942355805, guid: d07a65e98e0b9484294c62e95c581220, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1419050362350279800}
   m_SourcePrefab: {fileID: 100100000, guid: d07a65e98e0b9484294c62e95c581220, type: 3}
+--- !u!4 &5513889776116911927 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6196943772299055142, guid: d07a65e98e0b9484294c62e95c581220, type: 3}
+  m_PrefabInstance: {fileID: 1835975574207536913}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5946692527737759581 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5475347275811682380, guid: d07a65e98e0b9484294c62e95c581220, type: 3}
+  m_PrefabInstance: {fileID: 1835975574207536913}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8124218438464350796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a268e4c61294747759e46d75ce63622f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &8124218438464350796 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7621699904942355805, guid: d07a65e98e0b9484294c62e95c581220, type: 3}
+  m_PrefabInstance: {fileID: 1835975574207536913}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1419050362350279800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8124218438464350796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 164f86ec337fa4df883b2c7ca7201c0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList:
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: 2081823275
+    DestinationState: 1080829965
+    TransitionDuration: 0
+    TriggerNameHash: -1221006659
+    TransitionIndex: 0
+  m_Animator: {fileID: 9212938332543853660}
+--- !u!95 &9212938332543853660 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7395012392896445261, guid: d07a65e98e0b9484294c62e95c581220, type: 3}
+  m_PrefabInstance: {fileID: 1835975574207536913}
+  m_PrefabAsset: {fileID: 0}

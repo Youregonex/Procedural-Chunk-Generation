@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using Youregone.Utilities;
 
@@ -11,13 +10,12 @@ public class PendingBuildingItem : MonoBehaviour
     [SerializeField] private Color _canNotBuildColor;
 
     [Header("Debug Fields")]
-    [SerializeField] private List<Collider2D> _collisions = new List<Collider2D>();
+    [SerializeField] private List<Collider2D> _collisions = new();
     [SerializeField] private SpriteRenderer _spritRenderer;
     [SerializeField] private Transform _playerTransform;
     [SerializeField] private BuildingItemDataSO _currentBuildingItemDataSO;
     [SerializeField] private BoxCollider2D _buildingCollider;
     [SerializeField] private float _buildingRange;
-    [SerializeField] private Camera _mainCamera;
 
     [field: SerializeField] public bool CanPlaceBuilding { get; private set; }
 
@@ -26,7 +24,6 @@ public class PendingBuildingItem : MonoBehaviour
     {
         _spritRenderer = _pendingBuildingItemTransformVisual.GetComponent<SpriteRenderer>();
         _buildingCollider = GetComponent<BoxCollider2D>();
-        _mainCamera = Camera.main;
     }
 
     private void Update()
@@ -34,9 +31,9 @@ public class PendingBuildingItem : MonoBehaviour
         if (_currentBuildingItemDataSO == null)
             return;
 
-        transform.position = GetMouseGridPosition();
+        transform.position = Utility.GetMouseGridPosition();
 
-        if (CheckForCollisions() && Utility.InRange(_buildingRange, _playerTransform.position, GetMouseGridPosition()))
+        if (CheckForCollisions() && Utility.InRange(_buildingRange, _playerTransform.position, Utility.GetMouseGridPosition()))
         {
             CanPlaceBuilding = true;
             ChangeColor(true);
@@ -94,12 +91,5 @@ public class PendingBuildingItem : MonoBehaviour
     private void ChangeColor(bool canBuild)
     {
         _spritRenderer.color = canBuild ? _canBuildColor : _canNotBuildColor;
-    }
-
-    private Vector2 GetMouseGridPosition()
-    {
-        Vector2 mousePosition = _mainCamera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-
-        return new Vector2(Mathf.Round(mousePosition.x), Mathf.Round(mousePosition.y));
     }
 }

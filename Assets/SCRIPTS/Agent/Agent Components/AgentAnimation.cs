@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class AgentAnimation : AgentMonoBehaviourComponent
+public class AgentAnimation : AgentNetworkBehaviourComponent
 {
     public event Action OnAgentSpawned;
     public event Action OnAnimationEnded;
@@ -12,7 +12,7 @@ public class AgentAnimation : AgentMonoBehaviourComponent
 
     private Animator _agentAnimator;
 
-    private void Start()
+    public override void Initialize()
     {
         _agentAnimator = GetComponent<Animator>();
     }

@@ -4,13 +4,19 @@ using Youregone.BehaviourTrees;
 public class DemonMeleeBehaviour : BaseEnemyBehaviour
 {
     [Header("Debug Fields")]
-    [SerializeField] private AgentAbilitySystem _agentAbilitySystem;
+    [SerializeField] private AgentAbilitySystem _demonAbilitySystem;
 
-    protected override void Start()
+    public override void Initialize()
     {
-        _agentAbilitySystem = _enemyCore.GetAgentComponent<AgentAbilitySystem>();
+        GetAgentCore();
 
-        base.Start();
+        _demonAbilitySystem = AgentCore.GetAgentComponent<AgentAbilitySystem>();
+        _agentAttackModule = AgentCore.GetAgentComponent<AgentAttackModule>();
+
+        AgentCore.GetAgentComponent<AgentAnimation>().OnAgentSpawned += AgentAnimation_OnAgentSpawned;
+        InitializeAgentTargetDetectionZone();
+
+        ConstructBehaviourTree();
     }
 
     protected override void ConstructBehaviourTree()
@@ -43,8 +49,8 @@ public class DemonMeleeBehaviour : BaseEnemyBehaviour
         Composite dashSequence =
             _btBuilder.StartBuildingSequence()
             .WithInverter(new Inverter(new TargetInRangeCondition(this, AttackRangeMax)))
-            .WithCondition(new AbilityOffCooldownCondition(_agentAbilitySystem, "DASH"))
-            .WithBehaviour(new CastDashToTargetNode(this, "DASH", _agentAbilitySystem))
+            .WithCondition(new AbilityOffCooldownCondition(_demonAbilitySystem, "DASH"))
+            .WithBehaviour(new CastDashToTargetNode(this, "DASH", _demonAbilitySystem))
             .Build();
 
         Composite combatSelector =
@@ -66,14 +72,12 @@ public class DemonMeleeBehaviour : BaseEnemyBehaviour
             .WithSelector(idleToRoamSelector)
             .Build();
 
-        Composite treeRoot =
+        _behaviourTree =
             _btBuilder.StartBuildingSelector()
             .WithSequence(enemySpawnSequence)
             .WithSequence(combatSequence)
             .WithSequence(roamSequence)
             .WithSequence(idleToRoamSelector)
             .Build();
-
-        _behaviourTree = (Selector)treeRoot;
     }
 }

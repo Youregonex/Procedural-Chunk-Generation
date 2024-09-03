@@ -16,14 +16,14 @@ public class CraftingDetailsDisplay : MonoBehaviour
     [SerializeField] private Button _decreaseCraftAmountButton;
     [SerializeField] private Image _craftProgressBar;
     [SerializeField] private Transform _craftingComponentUIPrefab;
-    [SerializeField] private List<CraftingComponentUI> _craftingComponentUIList = new List<CraftingComponentUI>();
+    [SerializeField] private List<CraftingComponentUI> _craftingComponentUIList = new();
 
     private PlayerInventorySystem _playerInventory;
     private CraftingRecipeSO _currentRecipe;
     private int _currentCraftItemAmount = 1;
     private int _buttonAddCraftAmountShift = 5;
     [Header("Debug Fields")]
-    [SerializeField] private List<CraftingComponentUI> _activeCraftingComponentUIList = new List<CraftingComponentUI>();
+    [SerializeField] private List<CraftingComponentUI> _activeCraftingComponentUIList = new();
 
     private void Awake()
     {

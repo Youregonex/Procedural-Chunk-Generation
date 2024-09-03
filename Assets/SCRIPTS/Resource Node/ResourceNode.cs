@@ -8,12 +8,14 @@ public class ResourceNode : NetworkBehaviour, IContainLoot
     public event Action<Vector2Int> OnDepletion;
     public event Action OnLootDrop;
 
-    [Header("Config")]
+    [field: Header("Config")]
+    [field: SerializeField]public int NodePrefabId { get; private set; }
     [SerializeField] private EToolType _appropriateTool;
     [SerializeField] private DropListDataSO _dropListDataSO;
 
     [Header("Debug Fields")]
     [SerializeField] private ResourceNodeHealthSystem _nodeHealthSystem;
+
 
     public EToolType AppropriateTool => _appropriateTool;
 

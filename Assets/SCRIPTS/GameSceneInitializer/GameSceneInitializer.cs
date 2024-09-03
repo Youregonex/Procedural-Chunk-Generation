@@ -45,7 +45,6 @@ public class GameSceneInitializer : MonoBehaviour
     {
         if (_testMode)
         {
-            Debug.Log($"Starting Setup for Player{NetworkManager.Singleton.LocalClientId} object");
             StartCoroutine(SetupSceneCoroutine(playerCore));
         }
     }
@@ -157,6 +156,6 @@ public class GameSceneInitializer : MonoBehaviour
 
     private void InitializePlayerData()
     {
-        _playerData.Initialize(_playerCore);
+        _playerData.Initialize();
     }
 }

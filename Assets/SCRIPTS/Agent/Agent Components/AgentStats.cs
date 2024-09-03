@@ -2,10 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class AgentStats : AgentMonoBehaviourComponent
+public class AgentStats : AgentNetworkBehaviourComponent
 {
-    [SerializeField] private StatConfigSO _initialStatConfigSO;
-
     public event EventHandler<OnStatChangedEventArgs> OnStatChanged;
     public class OnStatChangedEventArgs : EventArgs
     {
@@ -14,9 +12,12 @@ public class AgentStats : AgentMonoBehaviourComponent
         public float newValue;
     }
 
-    private Dictionary<EStats, Stat> _characterStatDictionary = new Dictionary<EStats, Stat>();
+    [Header("Config")]
+    [SerializeField] private StatConfigSO _initialStatConfigSO;
 
-    private void Awake()
+    private Dictionary<EStats, Stat> _characterStatDictionary = new();
+
+    public override void Initialize()
     {
         InitializeStatDictionary();
     }

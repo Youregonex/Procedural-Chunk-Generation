@@ -10,8 +10,8 @@ public class InventoryDisplay : MonoBehaviour
     [SerializeField] protected MouseItemSlot _mouseItemSlot;
     [SerializeField] protected ItemDescriptionWindow _itemDescriptionWindow;
 
-    protected Dictionary<InventorySlot, InventorySlotUI> _inventorySlotsDictionary = new Dictionary<InventorySlot, InventorySlotUI>();
-    protected List<InventorySlotUI> _inventorySlotsUIList = new List<InventorySlotUI>();
+    protected Dictionary<InventorySlot, InventorySlotUI> _inventorySlotsDictionary = new();
+    protected List<InventorySlotUI> _inventorySlotsUIList = new();
     protected bool _isOpened = false;
     protected Inventory _currentInventory;
 

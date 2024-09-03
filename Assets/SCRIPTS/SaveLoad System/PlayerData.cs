@@ -1,20 +1,21 @@
 using UnityEngine;
 
-public class PlayerData : AgentMonoBehaviourComponent, IDataPersistance
+public class PlayerData : AgentNetworkBehaviourComponent, IDataPersistance
 {
     [Header("Debug Fields")]
     [SerializeField] private Transform _playerTransform;
-    [SerializeField] private PlayerCore _playerCore;
     [SerializeField] private PlayerInventorySystem _playerInventorySystem;
     [SerializeField] private AgentStatHealthSystem _playerHealthSystem;
 
+    public PlayerCore PlayerCore => AgentCore as PlayerCore;
 
-    public void Initialize(PlayerCore playerCore)
+
+    public override void Initialize()
     {
-        _playerCore = playerCore;
+        GetAgentCore();
         _playerInventorySystem = GetComponent<PlayerInventorySystem>();
-        _playerTransform = _playerCore.SelfTransform;
-        _playerHealthSystem = _playerCore.GetAgentComponent<AgentStatHealthSystem>();
+        _playerTransform = PlayerCore.SelfTransform;
+        _playerHealthSystem = PlayerCore.GetAgentComponent<AgentStatHealthSystem>();
     }
 
     public override void DisableComponent()

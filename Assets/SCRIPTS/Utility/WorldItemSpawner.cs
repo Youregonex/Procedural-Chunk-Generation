@@ -8,7 +8,7 @@ public class WorldItemSpawner : MonoBehaviour, IDataPersistance
     [Header("Debug Fields")]
     [SerializeField] private List<Item> _itemList;
 
-    private ItemFactory _itemFactory = new ItemFactory();
+    private ItemFactory _itemFactory = new();
 
     public List<Item> WorldItemList => _itemList;
 

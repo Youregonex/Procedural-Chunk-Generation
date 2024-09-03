@@ -36,7 +36,7 @@ public class HotbarDisplay : InventoryDisplay
 
         int newIndex;
 
-        if (Input.mouseScrollDelta.y > 0)
+        if (Input.mouseScrollDelta.y < 0)
         {
             newIndex = _inventorySlotsUIList.IndexOf(_currentHotbarSlotUI) + 1;
 
@@ -45,7 +45,7 @@ public class HotbarDisplay : InventoryDisplay
 
             SelectSlot(newIndex);
         }
-        else if(Input.mouseScrollDelta.y < 0)
+        else if(Input.mouseScrollDelta.y > 0)
         {
             newIndex = _inventorySlotsUIList.IndexOf(_currentHotbarSlotUI) - 1;
 

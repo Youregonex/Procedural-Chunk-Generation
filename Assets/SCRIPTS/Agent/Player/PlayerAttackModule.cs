@@ -1,25 +1,63 @@
 using Youregone.Utilities;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerAttackModule : AgentAttackModule
 {
     [Header("Debug Field")]
     [SerializeField] private PlayerItemSelection _playerItemSelection;
 
-    protected override void Start()
+    public override void Initialize()
     {
-        base.Start();
+        base.Initialize();
 
-        _playerItemSelection = _agentCore.GetAgentComponent<PlayerItemSelection>();
-
+        _playerItemSelection = AgentCore.GetAgentComponent<PlayerItemSelection>();
         _playerItemSelection.OnCurrentItemChanged += PlayerItemSelection_OnCurrentItemChanged;
+
+        UpdateExistingAgentHoldPoints();
+
+        if (IsOwner)
+            UpdateExistingAgentHoldPoints();
     }
 
-    public override void OnDestroy()
+    public override void OnNetworkDespawn()
     {
-        base.OnDestroy();
+        base.OnNetworkDespawn();
 
-        _playerItemSelection.OnCurrentItemChanged -= PlayerItemSelection_OnCurrentItemChanged;
+        if (_playerItemSelection != null)
+            _playerItemSelection.OnCurrentItemChanged -= PlayerItemSelection_OnCurrentItemChanged;
+    }
+
+    protected override void Attack()
+    {
+        if (_currentWeapon == null || !CanAttack || Utility.PointerOverUIObject())
+            return;
+
+        _currentWeapon.Attack();
+    }
+
+    private List<AgentCoreBase> FindAgentCores()
+    {
+        AgentCoreBase[] playerCores = FindObjectsOfType<AgentCoreBase>();
+        List<AgentCoreBase> playerCoreList = new(playerCores);
+
+        return playerCoreList;
+    }
+
+    private void UpdateExistingAgentHoldPoints()
+    {
+        List<AgentCoreBase> agentCores = FindAgentCores();
+
+        if (agentCores.Count > 1)
+        {
+            for (int i = 0; i < agentCores.Count; i++)
+            {
+                if (agentCores[i] == AgentCore)
+                    continue;
+
+                agentCores[i].UpdateAgentItemHoldPoint();
+            }
+        }
     }
 
     private void PlayerItemSelection_OnCurrentItemChanged(ItemDataSO itemDataSO)
@@ -27,34 +65,10 @@ public class PlayerAttackModule : AgentAttackModule
         if (itemDataSO == null || (itemDataSO.ItemType != EItemType.Weapon && itemDataSO.ItemType != EItemType.Tool))
         {
             HideCurrentWeapon();
-            HideCurrentTool();
             return;
         }
 
-        if(itemDataSO.ItemType == EItemType.Weapon)
-        {
-            WeaponItemDataSO weaponItemDataSO = itemDataSO as WeaponItemDataSO;
-
-            ChangeWeapon(weaponItemDataSO);
-        }
-
-        if (itemDataSO.ItemType == EItemType.Tool)
-        {
-            ToolItemDataSO toolDataItemSO = itemDataSO as ToolItemDataSO;
-
-            ChangeTool(toolDataItemSO);
-        }
-    }
-
-    protected override void Attack()
-    {
-        if ((_currentWeapon == null && _currentTool == null) || !CanAttack || Utility.PointerOverUIObject())
-            return;
-
-        if(_currentWeapon != null)
-            _currentWeapon.Attack();
-
-        if (_currentTool != null)
-            _currentTool.Attack();
+        WeaponItemDataSO weaponItemDataSO = itemDataSO as WeaponItemDataSO;
+        ChangeWeapon(weaponItemDataSO);
     }
 }

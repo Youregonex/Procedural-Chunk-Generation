@@ -16,6 +16,20 @@ public class Projectile : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidBody;
     [SerializeField] private EFactions _senderFaction;
 
+
+    public void Initialize(float projectileSpeed, float projectileRange, DamageStruct projectileDamage)
+    {
+        _rigidBody = GetComponent<Rigidbody2D>();
+
+        _startPosition = transform.position;
+        _projectileSpeed = projectileSpeed;
+        _projectileRange = projectileRange;
+        _projectileDamage = projectileDamage;
+        _senderFaction = projectileDamage.senderFaction;
+
+        _rigidBody.velocity = transform.right * _projectileSpeed;
+    }
+
     private void Update()
     {
         if (!Utility.InRange(_projectileRange, _startPosition, transform.position))
@@ -27,7 +41,7 @@ public class Projectile : MonoBehaviour
         if(collision.TryGetComponent(out IDamageable damageable))
         {
             AgentHitbox senderHitbox = _projectileDamage.damageSender.GetComponent<AgentCoreBase>().GetAgentComponent<AgentHitbox>();
-            Collider2D senderCollider = _projectileDamage.damageSender.GetComponent<AgentCoreBase>().GetAgentCollider();
+            Collider2D senderCollider = _projectileDamage.damageSender.GetComponent<AgentCoreBase>().AgentCollider;
 
             if(ReferenceEquals(senderHitbox, damageable) || ReferenceEquals(senderCollider, collision) || damageable.GetFaction() == _senderFaction)
                 return;
@@ -42,18 +56,5 @@ public class Projectile : MonoBehaviour
             if(!collision.transform.root.TryGetComponent(out AgentCoreBase agentcore))
                 Destroy(gameObject);
         }
-    }
-
-    public void SetupProjectile(float projectileSpeed, float projectileRange, DamageStruct projectileDamage)
-    {
-        _rigidBody = GetComponent<Rigidbody2D>();
-
-        _startPosition = transform.position;
-        _projectileSpeed = projectileSpeed;
-        _projectileRange = projectileRange;
-        _projectileDamage = projectileDamage;
-        _senderFaction = projectileDamage.senderFaction;
-
-        _rigidBody.velocity = transform.right * _projectileSpeed;
     }
 }

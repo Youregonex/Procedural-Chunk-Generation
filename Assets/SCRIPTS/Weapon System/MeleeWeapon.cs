@@ -3,7 +3,7 @@ using UnityEngine;
 public class MeleeWeapon : Weapon
 {
     [Header("Debug Fields")]
-    [SerializeField] private float _attackRadius;
+    [SerializeField] protected float _attackRadius;
 
 
     public override void Attack()
@@ -26,7 +26,7 @@ public class MeleeWeapon : Weapon
                 {
                     damageSender = gameObject,
                     damageAmount = Random.Range(_attackDamageMin, _attackDamageMax),
-                    senderFaction = _agentCore.GetFaction(),
+                    senderFaction = _agentCore.Faction,
                     knockbackForce = _knockbackForce
                 });
             }

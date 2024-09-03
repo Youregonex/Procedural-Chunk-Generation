@@ -1,29 +1,25 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CapsuleCollider2D))]
-public class AgentHitbox : AgentMonoBehaviourComponent, IDamageable
+public class AgentHitbox : AgentNetworkBehaviourComponent, IDamageable
 {
     [Header("Debug Fields")]
-    [SerializeField] private AgentCoreBase _agentCore;
     [SerializeField] private AgentHealthSystem _healthSystem;
     [SerializeField] private CapsuleCollider2D _hitboxCollider;
 
-    private void Awake()
+    public override void Initialize()
     {
+        GetAgentCore();
+
         _hitboxCollider = GetComponent<CapsuleCollider2D>();
-
-        _agentCore = transform.root.GetComponent<AgentCoreBase>();
-    }
-
-    private void Start()
-    {
-        _healthSystem = _agentCore.GetAgentComponent<AgentHealthSystem>();
+        _healthSystem = AgentCore.GetAgentComponent<AgentHealthSystem>();
         _healthSystem.OnDeath += HealthSystem_OnDeath;
     }
 
-    public override void OnDestroy()
+    public override void OnNetworkDespawn()
     {
-        _healthSystem.OnDeath -= HealthSystem_OnDeath;
+        if (_healthSystem != null)
+            _healthSystem.OnDeath -= HealthSystem_OnDeath;
     }
 
     public bool IsDead() => _healthSystem.IsDead;
@@ -42,9 +38,9 @@ public class AgentHitbox : AgentMonoBehaviourComponent, IDamageable
         this.enabled = true;
     }
 
-    public EFactions GetFaction() => _agentCore.GetFaction();
+    public EFactions GetFaction() => AgentCore.Faction;
 
-    private void HealthSystem_OnDeath(AgentHealthSystem obj)
+    private void HealthSystem_OnDeath(AgentHealthSystem agentHealthSystem)
     {
         DisableComponent();
     }

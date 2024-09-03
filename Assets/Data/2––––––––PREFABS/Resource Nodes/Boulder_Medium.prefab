@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1660945438633423600, guid: b8a2b4335fe394c939e52183be66285e, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3953262224
+      objectReference: {fileID: 0}
     - target: {fileID: 3632647951205641331, guid: b8a2b4335fe394c939e52183be66285e, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.1
@@ -100,6 +104,10 @@ PrefabInstance:
       propertyPath: _nodeResourceDrop
       value: 
       objectReference: {fileID: 11400000, guid: 8b9947740971246618ed536368d5cc27, type: 2}
+    - target: {fileID: 7262521358162469387, guid: b8a2b4335fe394c939e52183be66285e, type: 3}
+      propertyPath: <NodePrefabId>k__BackingField
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 9113828938588491295, guid: b8a2b4335fe394c939e52183be66285e, type: 3}
       propertyPath: m_Size.x
       value: 0.8236355

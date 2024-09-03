@@ -13,8 +13,8 @@ public class CraftingListDisplay : MonoBehaviour
     [SerializeField] private Transform _craftRecipeUIParentTransform;
     [SerializeField] private Transform _crafingRecipeUIPrefab;
 
-    private List<CraftingRecipeUI> _craftRecipeUIList = new List<CraftingRecipeUI>();
-    private List<CraftingRecipeUI> _activeRecipeUIList = new List<CraftingRecipeUI>();
+    private List<CraftingRecipeUI> _craftRecipeUIList = new();
+    private List<CraftingRecipeUI> _activeRecipeUIList = new();
 
 
     private void OnDestroy()

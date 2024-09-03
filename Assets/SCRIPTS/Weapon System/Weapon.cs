@@ -1,6 +1,7 @@
 using UnityEngine;
+using Unity.Netcode;
 
-public class Weapon : MonoBehaviour
+public abstract class Weapon : NetworkBehaviour
 {
     [Header("Config")]
     [SerializeField] protected WeaponItemDataSO _weaponItemDataSO;
@@ -15,20 +16,14 @@ public class Weapon : MonoBehaviour
     [SerializeField] protected float _attackCooldownCurrent = 0f;
     [SerializeField] protected AgentCoreBase _agentCore;
     [SerializeField] protected AgentAttackModule _agentAttackModule;
-    [SerializeField] protected ItemHoldPoint _itemHoldPoint;
+    [SerializeField] protected AgentItemHoldPoint _itemHoldPoint;
     [SerializeField] protected bool _showGizmos;
 
     public bool ReadyToAttack => _attackCooldownCurrent <= 0;
     public float AttackCooldownCurrent => _attackCooldownCurrent;
 
 
-    protected void Update()
-    {
-        if(_attackCooldownCurrent > 0)
-            _attackCooldownCurrent -= Time.deltaTime;
-    }
-
-    public void SetupWeapon(AgentCoreBase agentCore, AgentAttackModule agentAttackModule, ItemHoldPoint itemHoldPoint)
+    public virtual void InitializeWeapon(AgentCoreBase agentCore, AgentAttackModule agentAttackModule, AgentItemHoldPoint itemHoldPoint)
     {
         _agentCore = agentCore;
         _agentAttackModule = agentAttackModule;
@@ -37,7 +32,13 @@ public class Weapon : MonoBehaviour
         SetupWeaponStats();
     }
 
-    public virtual void Attack() { }
+    protected void Update()
+    {
+        if(_attackCooldownCurrent > 0)
+            _attackCooldownCurrent -= Time.deltaTime;
+    }
+
+    public abstract void Attack();
 
     protected virtual void SetupWeaponStats()
     {

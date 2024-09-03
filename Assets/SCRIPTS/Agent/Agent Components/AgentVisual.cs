@@ -1,27 +1,23 @@
 using UnityEngine;
 
-public class AgentVisual : AgentMonoBehaviourComponent
+public class AgentVisual : AgentNetworkBehaviourComponent
 {
     [Header("Config")]
     [SerializeField] private GameObject _shadowGameObject;
 
     [Header("Debug Fields")]
     [SerializeField] private TrailRenderer _trailRenderer;
-    [SerializeField] private AgentCoreBase _agentCore;
     [SerializeField] private AgentInput _agentInput;
 
-    private void Awake()
+    public override void Initialize()
     {
-        _agentCore = transform.root.GetComponent<AgentCoreBase>();
+        GetAgentCore();
         _trailRenderer = GetComponent<TrailRenderer>();
 
-        if(_shadowGameObject != null)
+        if (_shadowGameObject != null)
             _shadowGameObject.SetActive(false);
-    }
 
-    private void Start()
-    {
-        _agentInput = _agentCore.GetAgentComponent<AgentInput>();
+        _agentInput = AgentCore.GetAgentComponent<AgentInput>();
     }
 
     private void Update()

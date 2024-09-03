@@ -1,53 +1,22 @@
 using UnityEngine;
 
-public class Tool : MonoBehaviour
+public class Tool : MeleeWeapon
 {
-    [Header("Config")]
-    [SerializeField] private ToolItemDataSO _toolItemDataSO;
-    [SerializeField] private WeaponAnimation _toolAnimation;
-    [SerializeField] private Transform _gatherOrigin;
-
     [Header("Debug Fields")]
-    [SerializeField] private float _attackRadius;
-    [SerializeField] private float _attackDamageMax;
-    [SerializeField] private float _attackDamageMin;
-    [SerializeField] private float _knockbackForce;
-    [SerializeField] private float _attackCooldownMax;
-    [SerializeField] private float _attackCooldownCurrent;
-    [SerializeField] private AgentAttackModule _weaponHolder;
-    [SerializeField] private bool _showGizmos;
     [SerializeField] private EToolType _toolType;
     [SerializeField] private int _ticksPerAttackMin;
     [SerializeField] private int _ticksPerAttackMax;
     [SerializeField] private int _toolTier;
-    [SerializeField] private AgentCoreBase _agentCore;
-
-    public float AttackCooldownCurrent => _attackCooldownCurrent;
-    public bool CanSwing => _attackCooldownCurrent <= 0;
 
 
-    private void Update()
-    {
-        if (_attackCooldownCurrent > 0)
-            _attackCooldownCurrent -= Time.deltaTime;
-    }
-
-    public void SetUpTool(AgentCoreBase agentCore, AgentAttackModule agentAttackModue)
-    {
-        _weaponHolder = agentAttackModue;
-        _agentCore = agentCore;
-
-        SetupToolStats();
-    }
-
-    public void Attack()
+    public override void Attack()
     {
         if (_attackCooldownCurrent > 0)
             return;
 
-        _toolAnimation.PlayWeaponAttackAnimation();
+        _weaponAnimation.PlayWeaponAttackAnimation();
 
-        Collider2D[] targetsHit = Physics2D.OverlapCircleAll(_gatherOrigin.position, _attackRadius);
+        Collider2D[] targetsHit = Physics2D.OverlapCircleAll(_attackOrigin.position, _attackRadius);
 
         foreach (Collider2D hit in targetsHit)
         {
@@ -65,7 +34,7 @@ public class Tool : MonoBehaviour
             });
         }
 
-        targetsHit = Physics2D.OverlapCircleAll(_gatherOrigin.position, _attackRadius);
+        targetsHit = Physics2D.OverlapCircleAll(_attackOrigin.position, _attackRadius);
 
         foreach (Collider2D hit in targetsHit)
         {
@@ -85,27 +54,15 @@ public class Tool : MonoBehaviour
         _attackCooldownCurrent = _attackCooldownMax;
     }
 
-    private void SetupToolStats()
+    protected override void SetupWeaponStats()
     {
-        _attackRadius = _toolItemDataSO.AttackRadius;
-        _attackDamageMin = _toolItemDataSO.AttackDamageMin;
-        _attackDamageMax = _toolItemDataSO.AttackDamageMax;
-        _knockbackForce = _toolItemDataSO.KnockbackForce;
-        _attackCooldownMax = _toolItemDataSO.AttackCooldown;
-        _attackCooldownCurrent = _attackCooldownMax;
+        base.SetupWeaponStats();
 
-        _toolType = _toolItemDataSO.ToolType;
-        _ticksPerAttackMin = _toolItemDataSO.TicksPerHitMin;
-        _ticksPerAttackMax = _toolItemDataSO.TicksPerHitMax;
-        _toolTier = _toolItemDataSO.ToolTier;
-    }
+        ToolItemDataSO toolItemDataSO = _weaponItemDataSO as ToolItemDataSO;
 
-    private void OnDrawGizmos()
-    {
-        if (!_showGizmos)
-            return;
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(_gatherOrigin.transform.position, _attackRadius);
+        _toolType = toolItemDataSO.ToolType;
+        _ticksPerAttackMin = toolItemDataSO.TicksPerHitMin;
+        _ticksPerAttackMax = toolItemDataSO.TicksPerHitMax;
+        _toolTier = toolItemDataSO.ToolTier;
     }
 }

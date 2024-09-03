@@ -16,7 +16,7 @@ public class ShrineMobSpawner : InteractableBuilding
 
     [Header("Debug Fields")]
     [SerializeField] private ResourceNode _resourceNode;
-    [SerializeField] private List<AgentHealthSystem> _aliveEnemies = new List<AgentHealthSystem>();
+    [SerializeField] private List<AgentHealthSystem> _aliveEnemies = new();
     [SerializeField] private int _currentWave = 1;
     [SerializeField] private Transform _currentTarget;
     [SerializeField] private bool _isActive = false;
@@ -74,7 +74,7 @@ public class ShrineMobSpawner : InteractableBuilding
         if (_addExtraEnemiesEveryWave)
             enemiesPerWave += Random.Range(0, _currentWave);
 
-        List<Vector2> validPositions = new List<Vector2>();
+        List<Vector2> validPositions = new();
 
         for (int i = 0; i < enemiesPerWave; i++)
         {
@@ -87,8 +87,8 @@ public class ShrineMobSpawner : InteractableBuilding
             {
                 pickPositionTries++;
 
-                Vector2 randomOffset = new Vector2(Random.Range(-_enemySpawnArea.x, _enemySpawnArea.x),
-                                                   Random.Range(-_enemySpawnArea.y, _enemySpawnArea.y));
+                Vector2 randomOffset = new(Random.Range(-_enemySpawnArea.x, _enemySpawnArea.x),
+                                           Random.Range(-_enemySpawnArea.y, _enemySpawnArea.y));
 
                 randomPositionAroundShrine = (Vector2)transform.position + randomOffset;
 

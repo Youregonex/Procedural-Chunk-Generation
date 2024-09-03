@@ -43,7 +43,7 @@ public class SummonAddsAbility : Ability
         if (_addsSummonPerCast + _currentAddsList.Count > _maxAddsCount)
             addsSummonAmount = _maxAddsCount - _currentAddsList.Count;
 
-        List<Vector2> validPositions = new List<Vector2>();
+        List<Vector2> validPositions = new();
 
         for (int i = 0; i < addsSummonAmount; i++)
         {
@@ -56,9 +56,9 @@ public class SummonAddsAbility : Ability
             {
                 pickPositionTries++;
 
-                Vector2 enemySpawnArea = new Vector2(3f, 3f);
-                Vector2 randomOffset = new Vector2(UnityEngine.Random.Range(-enemySpawnArea.x, enemySpawnArea.x),
-                                                   UnityEngine.Random.Range(-enemySpawnArea.y, enemySpawnArea.y));
+                Vector2 enemySpawnArea = new(3f, 3f);
+                Vector2 randomOffset = new(UnityEngine.Random.Range(-enemySpawnArea.x, enemySpawnArea.x),
+                                           UnityEngine.Random.Range(-enemySpawnArea.y, enemySpawnArea.y));
 
                 randomPositionAroundCaster = (Vector2)Caster.transform.position + randomOffset;
 

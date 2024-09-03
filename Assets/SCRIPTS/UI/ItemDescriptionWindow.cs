@@ -9,6 +9,8 @@ public class ItemDescriptionWindow : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _itemDescriptionText;
 
     private RectTransform _selfRectTransform;
+    private Vector2 _anchorPosition;
+    private Vector2 _pivotPosition;
 
     private void Awake()
     {
@@ -28,47 +30,35 @@ public class ItemDescriptionWindow : MonoBehaviour
         transform.position = position;
         RectTransform panelRect = _itemDescriptionUIPanel.GetComponent<RectTransform>();
 
-        if (_selfRectTransform.anchoredPosition.y >= 0 && _selfRectTransform.anchoredPosition.x <= 0) // Upper left part of screen
+        if (_selfRectTransform.anchoredPosition.y >= 0 &&
+            _selfRectTransform.anchoredPosition.x <= 0) // Upper left part of screen
         {
-            Vector2 bottomRightAnchor = new(1, 0);
-            Vector2 topLeftPivot = new(0, 1);
-
-            panelRect.anchorMin = bottomRightAnchor;
-            panelRect.anchorMax = bottomRightAnchor;
-
-            panelRect.pivot = topLeftPivot;
+            _anchorPosition = new(1, 0);    // Bottom-right
+            _pivotPosition = new(0, 1);     // Top-left
         }
-        else if(_selfRectTransform.anchoredPosition.y < 0 && _selfRectTransform.anchoredPosition.x <= 0) // Bottom left part of screen
+        else if(_selfRectTransform.anchoredPosition.y < 0 &&
+                _selfRectTransform.anchoredPosition.x <= 0) // Bottom left part of screen
         {
-            Vector2 topRightAnchor = new(1, 1);
-            Vector2 bottomLeftPivot = new(0, 0);
-
-            panelRect.anchorMin = topRightAnchor;
-            panelRect.anchorMax = topRightAnchor;
-
-            panelRect.pivot = bottomLeftPivot;
+            _anchorPosition = new(1, 1);    // Top-right
+            _pivotPosition = new(0, 0);     // Bottom-left
         }
-        else if (_selfRectTransform.anchoredPosition.y >= 0 && _selfRectTransform.anchoredPosition.x > 0) // Upper right part of screen
+        else if (_selfRectTransform.anchoredPosition.y >= 0 &&
+                 _selfRectTransform.anchoredPosition.x > 0) // Upper right part of screen
         {
-            Vector2 bottomLeftAnchor = new(0, 0);
-            Vector2 topRightPivot = new(1, 1);
-
-            panelRect.anchorMin = bottomLeftAnchor;
-            panelRect.anchorMax = bottomLeftAnchor;
-
-            panelRect.pivot = topRightPivot;
-
+            _anchorPosition = new(0, 0);    // Bottom-left
+            _pivotPosition = new(1, 1);     // Top-right
         }
-        else if (_selfRectTransform.anchoredPosition.y < 0 && _selfRectTransform.anchoredPosition.x > 0) // Bottom right part of screen
+        else if (_selfRectTransform.anchoredPosition.y < 0 &&
+                 _selfRectTransform.anchoredPosition.x > 0) // Bottom right part of screen
         {
-            Vector2 topLeftAnchor = new(0, 1);
-            Vector2 bottomRightPivot = new(1, 0);
-
-            panelRect.anchorMin = topLeftAnchor;
-            panelRect.anchorMax = topLeftAnchor;
-
-            panelRect.pivot = bottomRightPivot;
+            _anchorPosition = new(0, 1);    // Top-left
+            _pivotPosition = new(1, 0);     //Bottom-right
         }
+
+        panelRect.anchorMin = _anchorPosition;
+        panelRect.anchorMax = _anchorPosition;
+
+        panelRect.pivot = _pivotPosition;
 
         panelRect.sizeDelta = Vector2.zero;
 

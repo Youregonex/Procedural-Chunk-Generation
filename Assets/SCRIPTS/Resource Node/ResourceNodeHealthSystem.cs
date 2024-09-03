@@ -1,8 +1,9 @@
 using System.Collections;
 using UnityEngine;
 using System;
+using Unity.Netcode;
 
-public class ResourceNodeHealthSystem : MonoBehaviour
+public class ResourceNodeHealthSystem : NetworkBehaviour
 {
     public event Action<GatherStruct> OnDamageTaken;
     public event Action<int, int> OnHealthChanged;
@@ -49,7 +50,7 @@ public class ResourceNodeHealthSystem : MonoBehaviour
     {
         _isDepleted = true;
 
-        StartCoroutine(DestroyWithDelay());
+        DestroyNodeWithDelayServerRpc();
     }
 
     private IEnumerator DestroyWithDelay()
@@ -57,5 +58,11 @@ public class ResourceNodeHealthSystem : MonoBehaviour
         yield return new WaitForSeconds(_destructionDelay);
 
         Destroy(gameObject);
+    }
+
+    [Rpc(SendTo.Server)]
+    private void DestroyNodeWithDelayServerRpc()
+    {
+        StartCoroutine(DestroyWithDelay());
     }
 }

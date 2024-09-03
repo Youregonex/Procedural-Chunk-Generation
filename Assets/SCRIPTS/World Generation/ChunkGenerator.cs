@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 using Unity.Netcode;
 using Youregone.Utilities;
 
-public class ChunkGenerator : NetworkBehaviour//, IDataPersistance
+public class ChunkGenerator : NetworkBehaviour
 {
     public static ChunkGenerator Instance { get; private set; }
 
@@ -30,13 +30,13 @@ public class ChunkGenerator : NetworkBehaviour//, IDataPersistance
     [SerializeField] private int _seed;
     [SerializeField] private Vector2 _seamOffset = Vector2.zero;
     [SerializeField] private Noise.NormalizeMode _normalizeMode = Noise.NormalizeMode.Local;
-    [SerializeField] private bool _useRandomSeed = true;
+    //[SerializeField] private bool _useRandomSeed = true;
 
     [Header("Debug Fields")]
     [SerializeField] private bool _showGizmos = false;
+    [SerializeField] private Dictionary<Vector2Int, Chunk> _chunkDictionary = new();
 
-    [SerializeField] private Dictionary<Vector2Int, Chunk> _chunkDictionary = new Dictionary<Vector2Int, Chunk>();
-
+    private int _chunkSideLength => _chunkLayerCount * 2 + 1;
 
     private void Awake()
     {
@@ -44,168 +44,168 @@ public class ChunkGenerator : NetworkBehaviour//, IDataPersistance
             Destroy(gameObject);
 
         Instance = this;
-
-        if(_useRandomSeed)
-            _seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
     }
 
     public override void OnNetworkSpawn()
     {
         if(IsHost)
-            StartGeneration();
+            CreateChunk(Vector2Int.zero);
+
+        Debug.Log("Generator Spawned");
     }
 
-    public void StartGeneration()
+    private void CreateChunk(Vector2Int position)
     {
-        CreateInitialChunk();
+        Chunk chunk = Instantiate(_chunkPrefab, new Vector2(position.x, position.y), Quaternion.identity);
+        chunk.gameObject.name = $"Chunk {position.x}|{position.y}";
+
+        chunk.GenerateNoiseMap(_chunkSideLength, _seed, _noiseScale, _octaves, _persistance, _lacunarity, position, _normalizeMode);
+        _chunkDictionary.Add(position, chunk);
+
+        GenerateNodePositionMap(chunk);
+
+        chunk.NetworkObject.Spawn();
+        chunk.transform.SetParent(_chunkParent);
     }
 
-    //public void SaveData(ref GameData gameData)
-    //{
-    //    if (!IsHost)
-    //        return;
-
-    //    gameData.chunkSaveDataList = new List<ChunkSaveData>();
-
-    //    foreach (KeyValuePair<Vector2Int, Chunk> keyValuePair in _chunkDictionary)
-    //    {
-    //        gameData.chunkSaveDataList.Add(keyValuePair.Value.GenerateSaveData() as ChunkSaveData);
-    //    }
-
-    //    gameData.chunkLayerCount = _chunkLayerCount;
-
-    //    gameData.noiseScale = _noiseScale;
-    //    gameData.octaves = _octaves;
-    //    gameData.persistance = _persistance;
-    //    gameData.lacunarity = _lacunarity;
-    //    gameData.obstacleSpawnThreshold = _obstacleSpawnThreshold;
-    //    gameData.seed = _seed;
-    //    gameData.seamOffset = _seamOffset;
-    //    gameData.normalizeMode = _normalizeMode;
-    //}
-
-    //public void LoadData(GameData gameData)
-    //{
-    //    if (!IsHost)
-    //        return;
-
-    //    _chunkLayerCount = gameData.chunkLayerCount;
-
-    //    _noiseScale = gameData.noiseScale;
-    //    _octaves = gameData.octaves;
-    //    _persistance = gameData.persistance;
-    //    _lacunarity = gameData.lacunarity;
-    //    _obstacleSpawnThreshold = gameData.obstacleSpawnThreshold;
-    //    _seed = gameData.seed;
-    //    _seamOffset = gameData.seamOffset;
-    //    _normalizeMode = gameData.normalizeMode;
-
-    //    for (int i = 0; i < gameData.chunkSaveDataList.Count; i++)
-    //    {
-    //        if (_chunkDictionary.ContainsKey(gameData.chunkSaveDataList[i].position))
-    //        {
-    //            Debug.Log("Chunk already exists!");
-    //            continue;
-    //        }
-
-    //        ChunkSaveData chunkSaveData = gameData.chunkSaveDataList[i];
-
-    //        Chunk chunk = GenerateChunk(chunkSaveData.position, true);
-    //        chunk.LoadFromSaveData(chunkSaveData);
-
-    //        if (chunk.ChunkDataFilled && chunk.IsAnyPlayerInRange)
-    //            StartCoroutine(FillChunkData(chunk));
-    //    }
-    //}
-
-    private void CreateInitialChunk()
+    public void PlayerEnteredChunkRange(Chunk chunk)
     {
-        if (IsHost)
-            GenerateChunk(new Vector2Int(0, 0));
+        StartCoroutine(PlayerEnteredChunkRangeCoroutine(chunk));
     }
 
-    public void PlayerEnteredChunk(Chunk enteredChunk)
+    public IEnumerator PlayerEnteredChunkRangeCoroutine(Chunk chunk)
     {
-        StartCoroutine(PlayerEnteredChunkCoroutine(enteredChunk));
-    }
-
-    private IEnumerator PlayerEnteredChunkCoroutine(Chunk enteredChunk)
-    {
-        if (!enteredChunk.ChunkDataFilled)
+        if(!IsHost && !chunk.IsNoiseMapFilled)
         {
-            yield return StartCoroutine(FillChunkData(enteredChunk));
+            chunk.GenerateNoiseMap(_chunkSideLength, _seed, _noiseScale, _octaves, _persistance, _lacunarity, chunk.Position, _normalizeMode);
         }
 
-        LoadChunk(enteredChunk);
-
-        if (!IsHost)
-            yield break;
-
-        List<Vector2Int> enteredChunkNeighbourPositionList = enteredChunk.NeighbourChunkList;
-
-        foreach (Vector2Int chunkNeighbourPosition in enteredChunkNeighbourPositionList)
+        if (!chunk.IsChunkDataGenerated)
         {
-            if (!_chunkDictionary.ContainsKey(chunkNeighbourPosition))
+            yield return GenerateChunkTileDataCoroutine(chunk);
+
+            SpawnNodesForChunkServerRpc(chunk.NetworkObject);
+        }
+
+        chunk.LoadChunk();
+
+        GenerateChunkNeighboursServerRpc(chunk.NetworkObject);
+    }
+
+    [Rpc(SendTo.Server)]
+    private void GenerateChunkNeighboursServerRpc(NetworkObjectReference chunkNetworkObjectReference)
+    {
+        if (!chunkNetworkObjectReference.TryGet(out NetworkObject networkObject))
+        {
+            Debug.LogError($"Couldn't unpack ChunkNetworkObjectReference");
+            return;
+        }
+
+        Chunk chunk = networkObject.GetComponent<Chunk>();
+        List<Vector2Int> chunkNeighbourPositions = GetChunkNeighbourPositions(chunk);
+
+        foreach (Vector2Int position in chunkNeighbourPositions)
+        {
+            if (!_chunkDictionary.ContainsKey(position))
             {
-                GenerateChunk(chunkNeighbourPosition);
+                CreateChunk(position);
             }
         }
     }
 
-    public void PlayerLeftChunk(Chunk exitChunk)
+    [Rpc(SendTo.Server)]
+    private void SpawnNodesForChunkServerRpc(NetworkObjectReference chunkNetworkObjectReference)
     {
-        if (exitChunk.IsLoadingTiles.Value)
+        if (!chunkNetworkObjectReference.TryGet(out NetworkObject networkObject))
         {
-            exitChunk.OnFinishTileLoading += Chunk_OnFinishTileLoading;
+            Debug.LogError($"Couldn't unpack ChunkNetworkObjectReference");
             return;
         }
 
-        if(!exitChunk.IsAnyPlayerInRange)
-            UnloadChunk(exitChunk);
-    }
+        Chunk chunk = networkObject.GetComponent<Chunk>();
 
-    private void LoadChunk(Chunk chunk) => chunk.LoadChunk();
-    private void UnloadChunk(Chunk chunk) => chunk.UnloadChunk();
-
-    private void Chunk_OnFinishTileLoading(Chunk chunk)
-    {
-        chunk.OnFinishTileLoading -= Chunk_OnFinishTileLoading;
-
-        if (!chunk.IsAnyPlayerInRange)
-            UnloadChunk(chunk);
-    }
-
-    private Chunk GenerateChunk(Vector2Int chunkCenter, bool loadingFromSaveFile = false)
-    {
-        if (_chunkDictionary.ContainsKey(chunkCenter))
+        if (!chunk.AreNodesSpawned)
         {
-            UnityEngine.Debug.Log($"Chunk at {chunkCenter} is already exists!");
-            return null;
+            SpawnResourceNodes(chunk);
         }
 
-        Vector2 chunkPosition = new(chunkCenter.x, chunkCenter.y);
+        NetworkObjectReference[] nodeNetworkObjectReferenceArray = new NetworkObjectReference[chunk.SpawnedNodesDictionary.Count];
 
-        Chunk chunk = Instantiate(_chunkPrefab, chunkPosition, Quaternion.identity);
-        chunk.GetComponent<NetworkObject>().Spawn(true);
-        chunk.transform.SetParent(_chunkParent);
-        chunk.transform.gameObject.name = $"Chunk ({chunkCenter.x} | {chunkCenter.y})";
-        chunk.InitializeChunk(_chunkLayerCount);
-        chunk.GenerateChunkNoiseMap(_seed, _noiseScale, _octaves, _persistance, _lacunarity, chunkCenter + _seamOffset, _normalizeMode);
-
-        _chunkDictionary.Add(chunkCenter, chunk);
-
-        if (!loadingFromSaveFile)
+        int iterator = 0;
+        foreach (KeyValuePair<Vector2Int, ResourceNode> keyValuePair in chunk.SpawnedNodesDictionary)
         {
-            GenerateNodePositionMap(chunk);
+            nodeNetworkObjectReferenceArray[iterator] = keyValuePair.Value.NetworkObject;
+            iterator++;
         }
 
-        return chunk;
+        UpdateSpawnedNodeDictionaryClientRpc(chunkNetworkObjectReference, nodeNetworkObjectReferenceArray);
+    }
+
+    [Rpc(SendTo.ClientsAndHost)]
+    private void UpdateSpawnedNodeDictionaryClientRpc(NetworkObjectReference chunkNetworkObjectReference,
+                                                      NetworkObjectReference[] nodeNetworkObjectReferenceArray)
+    {
+        if (!chunkNetworkObjectReference.TryGet(out NetworkObject networkObject))
+        {
+            Debug.LogError($"Couldn't unpack ChunkNetworkObjectReference");
+            return;
+        }
+
+        Chunk chunk = networkObject.GetComponent<Chunk>();
+
+        if (!IsHost)
+        {
+            Dictionary<Vector2Int, ResourceNode> nodeDictionary = new();
+
+            for (int i = 0; i < nodeNetworkObjectReferenceArray.Length; i++)
+            {
+                if (nodeNetworkObjectReferenceArray[i].TryGet(out networkObject))
+                {
+                    ResourceNode node = networkObject.GetComponent<ResourceNode>();
+                    nodeDictionary.Add(new Vector2Int((int)node.transform.position.x, (int)node.transform.position.y), node);
+                }
+                else
+                {
+                    Debug.LogError($"Couldn't unpack ChunkNetworkObjectReference");
+                    return;
+                }
+            }
+
+            chunk.FinishSpawningNodes(nodeDictionary);
+        }
+
+        if(!chunk.LocalPlayerInRange)
+            chunk.UnloadNodes();
+    }
+
+    public void PlayerLeftChunkRange(Chunk chunk)
+    {
+        if (!chunk.IsLoadingTiles && !chunk.IsGeneratingTileData)
+            chunk.UnloadChunk();
+    }
+
+    private List<Vector2Int> GetChunkNeighbourPositions(Chunk chunk)
+    {
+        List<Vector2Int> chunkNeighbourPositions = new();
+        Vector2Int chunkCenter = chunk.Position;
+
+        for (int x = chunkCenter.x - _chunkSideLength; x <= chunkCenter.x + _chunkSideLength; x += _chunkSideLength)
+            for (int y = chunkCenter.y - _chunkSideLength; y <= chunkCenter.y + _chunkSideLength; y += _chunkSideLength)
+            {
+                if (_chunkDictionary.ContainsKey(new Vector2Int(x, y)))
+                    continue;
+
+                chunkNeighbourPositions.Add(new Vector2Int(x, y));
+            }
+
+
+        return chunkNeighbourPositions;
     }
 
     private void GenerateNodePositionMap(Chunk parentChunk)
     {
         List<Vector2Int> nodeValidPositions = GetNodeValidPositions(parentChunk);
-        Dictionary<ResourceNode, int>  nodesToSpawnDictionary = GetNodesToSpawn(_nodeResourceSpawnConfigSO, out int nodesAmount);
+        Dictionary<ResourceNode, int> nodesToSpawnDictionary = GetNodesToSpawn(_nodeResourceSpawnConfigSO, out int nodesAmount);
 
         if (nodesAmount > nodeValidPositions.Count)
         {
@@ -215,7 +215,7 @@ public class ChunkGenerator : NetworkBehaviour//, IDataPersistance
 
         Dictionary<Vector2Int, ResourceNode> resourceNodeMapDictionary = new();
 
-        foreach(KeyValuePair<ResourceNode, int> keyValuePair in nodesToSpawnDictionary)
+        foreach (KeyValuePair<ResourceNode, int> keyValuePair in nodesToSpawnDictionary)
         {
             for (int i = 0; i < keyValuePair.Value; i++)
             {
@@ -250,8 +250,8 @@ public class ChunkGenerator : NetworkBehaviour//, IDataPersistance
 
     private List<Vector2Int> GetNodeValidPositions(Chunk parentChunk)
     {
-        Vector2Int chunkCenter = parentChunk.GetChunkPositionVector2Int();
-        List<Vector2Int> validNodePositionsList = new List<Vector2Int>();
+        Vector2Int chunkCenter = parentChunk.Position;
+        List<Vector2Int> validNodePositionsList = new();
 
         int loopIndexX = 0;
         int loopIndexY = 0;
@@ -260,7 +260,7 @@ public class ChunkGenerator : NetworkBehaviour//, IDataPersistance
         {
             for (int y = chunkCenter.y - _chunkLayerCount; y <= chunkCenter.y + _chunkLayerCount; y++)
             {
-                float chunkNoiseMapValue = parentChunk.GetChunkNoiseMapValueWithXY(loopIndexX, loopIndexY);
+                float chunkNoiseMapValue = parentChunk.NoiseMapArray[loopIndexX, loopIndexY];
                 ETileType tileType = GetTileTypeWithNoise(chunkNoiseMapValue);
 
                 if (tileType == ETileType.Ground)
@@ -279,24 +279,15 @@ public class ChunkGenerator : NetworkBehaviour//, IDataPersistance
         return validNodePositionsList;
     }
 
-    private IEnumerator FillChunkData(Chunk chunk)
+    private IEnumerator GenerateChunkTileDataCoroutine(Chunk parentChunk)
     {
-        if (chunk.GeneratingTileData.Value || chunk.SpawningNodes.Value)
-            yield break;
-
-        yield return FillChunkTileDataCoroutine(chunk);
-        yield return PlaceResourceNodesCoroutine(chunk);
-    }
-
-    private IEnumerator FillChunkTileDataCoroutine(Chunk parentChunk)
-    {
-        if (parentChunk.GeneratingTileData.Value)
+        if (parentChunk.IsGeneratingTileData)
             yield break;
 
         parentChunk.StartGeneratingTileData();
 
         List<TileData> tileDataMapList = new();
-        Vector2Int chunkCenter = parentChunk.GetChunkPositionVector2Int();
+        Vector2Int chunkCenter = parentChunk.Position;
 
         int loopIndexX = 0;
         int loopIndexY = 0;
@@ -305,11 +296,10 @@ public class ChunkGenerator : NetworkBehaviour//, IDataPersistance
         {
             for (int y = chunkCenter.y - _chunkLayerCount; y <= chunkCenter.y + _chunkLayerCount; y++)
             {
-                int chunkSideLength = _chunkLayerCount * 2 + 1;
-                float[,] chunkNoiseMapValue = Utility.UnflattenArray(parentChunk.NoiseMapArray.Value, chunkSideLength, chunkSideLength);
+                float chunkNoiseMapValue = parentChunk.NoiseMapArray[loopIndexX, loopIndexY];
 
                 Vector2Int tilPlacementPosition = new(x, y);
-                TileBase tile = GetRandomTile(chunkNoiseMapValue[x, y], out ETileType tileType);
+                TileBase tile = GetRandomTile(chunkNoiseMapValue, out ETileType tileType);
                 TileData tileData = new(tile, tilPlacementPosition, tileType);
 
                 tileDataMapList.Add(tileData);
@@ -322,30 +312,27 @@ public class ChunkGenerator : NetworkBehaviour//, IDataPersistance
             yield return new WaitForEndOfFrame();
         }
 
-        parentChunk.FillChunkTileDataMap(tileDataMapList);
-        parentChunk.FinishGeneratingTileData();
+        parentChunk.FinishGeneratingTileData(tileDataMapList);
     }
 
-    private IEnumerator PlaceResourceNodesCoroutine(Chunk parentChunk)
+    private void SpawnResourceNodes(Chunk parentChunk)
     {
-        if (parentChunk.SpawningNodes.Value)
-            yield break;
+        if (parentChunk.IsSpawningNodes)
+            return;
 
         parentChunk.StartSpawningNodes();
 
         Dictionary<Vector2Int, ResourceNode> nodeDictionary = new();
 
-        foreach(KeyValuePair<Vector2Int, ResourceNode> keyValuePair in parentChunk.NodePositionMapDictionary)
+        foreach (KeyValuePair<Vector2Int, ResourceNode> keyValuePair in parentChunk.NodePrefabMapDictionary)
         {
-            ResourceNode resourceNode = Instantiate(keyValuePair.Value, new Vector3(keyValuePair.Key.x, keyValuePair.Key.y, 0f), Quaternion.identity);
+            ResourceNode resourceNode = Instantiate(keyValuePair.Value, new Vector2(keyValuePair.Key.x, keyValuePair.Key.y), Quaternion.identity);
+            resourceNode.NetworkObject.Spawn();
             nodeDictionary.Add(keyValuePair.Key, resourceNode);
             resourceNode.transform.SetParent(parentChunk.transform);
-
-            yield return new WaitForEndOfFrame();
         }
 
-        parentChunk.FillNodeDictionary(nodeDictionary);
-        parentChunk.FinishSpawningNodes();
+        parentChunk.FinishSpawningNodes(nodeDictionary);
     }
 
     private ETileType GetTileTypeWithNoise(float tileNoise)
@@ -357,12 +344,12 @@ public class ChunkGenerator : NetworkBehaviour//, IDataPersistance
     {
         tileType = GetTileTypeWithNoise(tileNoise);
 
-        if(tileType == ETileType.Obstacle)
+        if (tileType == ETileType.Obstacle)
         {
             return _tileConfigSO.ObstacleTiles[0];
         }
 
-        if(tileType == ETileType.Ground)
+        if (tileType == ETileType.Ground)
         {
             float placeDefaultTileChance = UnityEngine.Random.Range(0f, 1f);
             int randomTile;
@@ -385,7 +372,7 @@ public class ChunkGenerator : NetworkBehaviour//, IDataPersistance
 
         Gizmos.color = Color.red;
 
-        foreach(KeyValuePair<Vector2Int, Chunk> keyValuePair in _chunkDictionary)
+        foreach (KeyValuePair<Vector2Int, Chunk> keyValuePair in _chunkDictionary)
         {
             Gizmos.DrawSphere((Vector2)keyValuePair.Key, .5f);
         }

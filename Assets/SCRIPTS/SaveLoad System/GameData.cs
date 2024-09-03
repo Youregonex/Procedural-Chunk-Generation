@@ -12,7 +12,7 @@ public class GameData
     public float playerMaxHealth;
 
     // World Generation
-    public List<ChunkSaveData> chunkSaveDataList = new List<ChunkSaveData>();
+    public List<ChunkSaveData> chunkSaveDataList = new();
 
         // Chunk Settings
     public int chunkLayerCount;
@@ -28,13 +28,13 @@ public class GameData
     public Noise.NormalizeMode normalizeMode;
 
     // World items
-    public List<ItemSaveData> itemSaveDataList = new List<ItemSaveData>();
+    public List<ItemSaveData> itemSaveDataList = new();
 
     // World buildings
 
         // Buildings Save Data
-    public List<BuildingSaveData> buildingSaveDataList = new List<BuildingSaveData>();
+    public List<BuildingSaveData> buildingSaveDataList = new();
 
         // Containers Save Data
-    public List<ContainerSaveData> containerSaveDataList = new List<ContainerSaveData>();
+    public List<ContainerSaveData> containerSaveDataList = new();
 }

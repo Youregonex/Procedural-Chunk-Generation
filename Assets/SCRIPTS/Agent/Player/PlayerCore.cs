@@ -9,20 +9,13 @@ public class PlayerCore : AgentCoreBase
     [SerializeField] private PlayerData _playerData;
     [SerializeField] private PlayerInventorySystem _playerInventorySystem;
     [SerializeField] private PlayerCraftingSystem _playerCraftingSystem;
+    [SerializeField] private PlayerChunkInteraction _playerChunkInteraction;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        SelfTransform = transform;
-    }
-
-    protected override void Start()
-    {
-        base.Start();
-    }
 
     public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
+
         if(IsOwner)
             GameSceneInitializer.Instance.StartSceneSetup(this);
     }
@@ -44,6 +37,7 @@ public class PlayerCore : AgentCoreBase
         _agentComponents.Add(_playerData);
         _agentComponents.Add(_playerInventorySystem);
         _agentComponents.Add(_playerCraftingSystem);
+        _agentComponents.Add(_playerChunkInteraction);
 
         InitializeDisableOnDeathList();
     }

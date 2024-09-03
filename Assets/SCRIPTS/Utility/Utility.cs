@@ -7,7 +7,6 @@ namespace Youregone.Utilities
 {
     public static class Utility
     {
-
         public static bool InRange(float range, Vector2 v1, Vector2 v2)
         {
             var dx = v1.x - v2.x;

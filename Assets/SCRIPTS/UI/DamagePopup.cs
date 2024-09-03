@@ -15,7 +15,7 @@ public class DamagePopup : MonoBehaviour
     [SerializeField] private float _popupFadeTime = .3f;
 
     [Header("Scale Settings")]
-    [SerializeField] private Vector2 _startScale = new Vector2(.75f, .75f);
+    [SerializeField] private Vector2 _startScale = new(.75f, .75f);
     [SerializeField] private Vector2 _targetScale = Vector2.one;
     [SerializeField] private float _popupScaleTime = .3f;
 

@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Collections.Generic;
-using System.Collections;
 
 public class TilePlacer : MonoBehaviour
 {
@@ -11,53 +9,12 @@ public class TilePlacer : MonoBehaviour
     [SerializeField] private Tilemap _groundTilemap;
     [SerializeField] private Tilemap _obstacleTilemap;
 
-    [Header("Debug Fields")]
-    [SerializeField] private List<Chunk> _loadingChunks = new();
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
             Destroy(gameObject);
 
         Instance = this;
-    }
-
-    //public void LoadChunkTiles(Chunk chunk, List<TileData> tileDataList)
-    //{
-    //    if (_loadingChunks.Contains(chunk))
-    //        return;
-
-    //    StartCoroutine(LoadChunkTilesCoroutine(chunk, tileDataList));
-    //}
-
-    //private IEnumerator LoadChunkTilesCoroutine(Chunk chunk, List<TileData> tileDataList)
-    //{
-    //    _loadingChunks.Add(chunk);
-
-    //    int a = 10;
-    //    int b = 0;
-
-    //    for (int i = 0; i < tileDataList.Count; i++)
-    //    {
-    //        SetTile(tileDataList[i]);
-    //        b++;
-
-    //        if(b == a)
-    //        {
-    //            b = 0;
-    //            yield return new WaitForEndOfFrame();
-    //        }
-    //    }
-
-    //    _loadingChunks.Remove(chunk);
-    //}
-
-    public void UnloadChunkTiles(List<TileData> tileDataList)
-    {
-        for (int i = 0; i < tileDataList.Count; i++)
-        {
-            ClearTile(tileDataList[i]);
-        }
     }
 
     public void SetTile(TileData tileData)

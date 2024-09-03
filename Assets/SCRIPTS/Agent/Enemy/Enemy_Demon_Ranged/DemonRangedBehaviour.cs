@@ -7,11 +7,17 @@ public class DemonRangedBehaviour : BaseEnemyBehaviour
     [SerializeField] private AgentAbilitySystem _demonAbilitySystem;
 
 
-    protected override void Start()
+    public override void Initialize()
     {
-        _demonAbilitySystem = _enemyCore.GetAgentComponent<AgentAbilitySystem>();
+        GetAgentCore();
 
-        base.Start();
+        _demonAbilitySystem = AgentCore.GetAgentComponent<AgentAbilitySystem>();
+        _agentAttackModule = AgentCore.GetAgentComponent<AgentAttackModule>();
+
+        AgentCore.GetAgentComponent<AgentAnimation>().OnAgentSpawned += AgentAnimation_OnAgentSpawned;
+        InitializeAgentTargetDetectionZone();
+
+        ConstructBehaviourTree();
     }
 
     protected override void ConstructBehaviourTree()
@@ -67,14 +73,12 @@ public class DemonRangedBehaviour : BaseEnemyBehaviour
             .WithSelector(idleToRoamSelector)
             .Build();
 
-        Composite treeRoot =
+        _behaviourTree =
             _btBuilder.StartBuildingSelector()
             .WithSequence(enemySpawnSequence)
             .WithSequence(combatSequence)
             .WithSequence(roamSequence)
             .WithSequence(idleToRoamSelector)
             .Build();
-
-        _behaviourTree = (Selector)treeRoot;
     }
 }

@@ -2,34 +2,35 @@ using UnityEngine;
 using System;
 using Youregone.Utilities;
 
-public class PlayerItemSelection : AgentMonoBehaviourComponent
+public class PlayerItemSelection : AgentNetworkBehaviourComponent
 {
     public event Action<ItemDataSO> OnCurrentItemChanged;
 
     [Header("Debug Field")]
     [SerializeField] private InventorySlot _currentInventorySlot;
-    [SerializeField] private PlayerCore _playerCore;
     [SerializeField] private PlayerInput _playerInput;
 
-    private void Awake()
+    public override void Initialize()
     {
-        _playerCore = GetComponent<PlayerCore>();
-    }
+        GetAgentCore();
 
-    private void Start()
-    {
-        _playerInput = _playerCore.GetAgentComponent<PlayerInput>();
+        _playerInput = AgentCore.GetAgentComponent<PlayerInput>();
+
+        if (!IsOwner)
+            return;
 
         HotbarDisplay.OnHotbarSlotSelected += HotbarDisplay_OnHotbarSlotSelected;
         _playerInput.OnMouseSecondary += PlayerInput_OnMouseSecondary;
     }
 
-    public override void OnDestroy()
+    public override void OnNetworkDespawn()
     {
         DeselectCurrentSlot();
 
         HotbarDisplay.OnHotbarSlotSelected -= HotbarDisplay_OnHotbarSlotSelected;
-        _playerInput.OnMouseSecondary -= PlayerInput_OnMouseSecondary;
+
+        if (_playerInput != null)
+            _playerInput.OnMouseSecondary -= PlayerInput_OnMouseSecondary;
     }
 
     public override void DisableComponent()
@@ -47,7 +48,7 @@ public class PlayerItemSelection : AgentMonoBehaviourComponent
         if(_currentInventorySlot.ItemDataSO != null &&_currentInventorySlot.ItemDataSO.ItemType == EItemType.ActionItem && !Utility.PointerOverUIObject())
         {
             ActionItemDataSO actionItemDataSO = _currentInventorySlot.ItemDataSO as ActionItemDataSO;
-            actionItemDataSO.Use(_playerCore);
+            actionItemDataSO.Use(AgentCore);
         }
     }
 
@@ -89,6 +90,7 @@ public class PlayerItemSelection : AgentMonoBehaviourComponent
     {
         _currentInventorySlot = inventorySlot;
 
+        Debug.Log($"{NetworkObject.OwnerClientId} CurrentItemChanged");
         OnCurrentItemChanged?.Invoke(inventorySlot.ItemDataSO);
 
         if (inventorySlot.ItemDataSO == null)

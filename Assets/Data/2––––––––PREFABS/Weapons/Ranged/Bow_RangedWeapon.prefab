@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3423027006737845153, guid: 9f0e374b3773b4479b1f53030b94d233, type: 3}
       propertyPath: m_Name
-      value: Bow
+      value: Bow_RangedWeapon
       objectReference: {fileID: 0}
     - target: {fileID: 4896756384749077971, guid: 9f0e374b3773b4479b1f53030b94d233, type: 3}
       propertyPath: m_LocalPosition.x
@@ -100,6 +100,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3423027006737845153, guid: 9f0e374b3773b4479b1f53030b94d233, type: 3}
       insertIndex: -1
       addedObject: {fileID: 430820383454170577}
+    - targetCorrespondingSourceObject: {fileID: 3423027006737845153, guid: 9f0e374b3773b4479b1f53030b94d233, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -9054220549949130593}
   m_SourcePrefab: {fileID: 100100000, guid: 9f0e374b3773b4479b1f53030b94d233, type: 3}
 --- !u!114 &922508819668080274 stripped
 MonoBehaviour:
@@ -149,3 +152,24 @@ MonoBehaviour:
   _projectilePrefab: {fileID: 0}
   _projectileSpeed: 0
   _projectileRange: 0
+--- !u!114 &-9054220549949130593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7543590231505560959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 0
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1

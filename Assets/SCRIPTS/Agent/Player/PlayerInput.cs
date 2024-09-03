@@ -12,31 +12,23 @@ public class PlayerInput : AgentInput
 
     private Camera _mainCamera;
 
-    private void Awake()
+    public override void Initialize()
     {
-        if(_playerInputActions == null)
+        GetAgentCore();
+        if (_playerInputActions == null)
             _playerInputActions = new PlayerInputActions();
 
         _playerInputActions.Player.Enable();
 
         _mainCamera = Camera.main;
-    }
 
-    private void Start()
-    {
         _playerInputActions.Player.MousePrimary.performed += PlayerInputActions_MousePrimary_performed;
         _playerInputActions.Player.Inventory.performed += PlayerInputActions_Inventory_performed;
         _playerInputActions.Player.Interact.performed += PlayerInputActions_Interact_performed;
         _playerInputActions.Player.MouseSecondary.performed += PlayerInputActions_MouseSecondary_performed;
     }
 
-    private void OnDisable()
-    {
-        if(_playerInputActions != null)
-            _playerInputActions.Player.Disable();
-    }
-
-    public override void OnDestroy()
+    public override void OnNetworkDespawn()
     {
         if (_playerInputActions == null)
             return;

@@ -2,30 +2,26 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-public class AgentAbilitySystem : AgentMonoBehaviourComponent
+public class AgentAbilitySystem : AgentNetworkBehaviourComponent
 {
     [Header("Config")]
     [SerializeField] protected List<AbilityDataSO> _abilityDataSOList;
 
     [Header("Debug Fields")]
-    [SerializeField] protected AgentCoreBase _agentCore;
     [SerializeField] protected Ability _currentAbility;
-    [SerializeField] protected Dictionary<string, Ability> _abilityDictionary = new Dictionary<string, Ability>();
+    [SerializeField] protected Dictionary<string, Ability> _abilityDictionary = new();
 
-    protected Dictionary<string, Action<Transform>> _abilityCallbacksDictionary = new Dictionary<string, Action<Transform>>();
+    protected Dictionary<string, Action<Transform>> _abilityCallbacksDictionary = new();
 
-    public Dictionary<string, Ability> AbilityDictionary => _abilityDictionary; // All ability names in upper-case
+    public Dictionary<string, Ability> AbilityDictionary => _abilityDictionary; // All ability names in UPPER-CASE
     public bool IsCastingAbility => _currentAbility != null;
 
-
-    protected virtual void Awake()
+    public override void Initialize()
     {
-        _agentCore = GetComponent<AgentCoreBase>();
+        GetAgentCore();
+
         _currentAbility = null;
-    }
 
-    protected virtual void Start()
-    {
         BuildAbilityCallbacks();
         BuildAbilities();
     }
@@ -108,10 +104,10 @@ public class AgentAbilitySystem : AgentMonoBehaviourComponent
             if(abilityDataSO.HasCallback)
             {
                 Action<Transform> abilityCallback = _abilityCallbacksDictionary[abilityDataSO.AbilityName.ToUpper()];
-                ability = abilityDataSO.BuildAbility(_agentCore, _agentCore.GetAgentComponent<AgentAnimation>(), abilityCallback);
+                ability = abilityDataSO.BuildAbility(AgentCore, AgentCore.GetAgentComponent<AgentAnimation>(), abilityCallback);
             }
             else
-                ability = abilityDataSO.BuildAbility(_agentCore, _agentCore.GetAgentComponent<AgentAnimation>());
+                ability = abilityDataSO.BuildAbility(AgentCore, AgentCore.GetAgentComponent<AgentAnimation>());
             
 
             _abilityDictionary.Add(ability.AbilityName.ToUpper(), ability);

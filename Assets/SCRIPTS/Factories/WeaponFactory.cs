@@ -8,11 +8,4 @@ public class WeaponFactory
 
         return weapon;
     }
-
-    public Tool CreateTool(ToolItemDataSO toolItemDataSO)
-    {
-        Tool tool = GameObject.Instantiate(toolItemDataSO.ToolPrefab);
-
-        return tool;
-    }
 }

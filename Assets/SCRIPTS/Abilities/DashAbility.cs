@@ -70,7 +70,7 @@ public class DashAbility : Ability
     protected void InitializeComponents()
     {
         _casterMovementModule = Caster.GetAgentComponent<AgentMovement>();
-        _casterRigidBody = Caster.GetAgentRigidBody();
+        _casterRigidBody = Caster.AgentRigidBody;
         _agentVisual = Caster.GetAgentComponent<AgentVisual>();
     }
 }

@@ -16,7 +16,7 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
-        _chunkGenerator.StartGeneration();
+        //_chunkGenerator.StartGeneration();
     }
 
     private void Start()

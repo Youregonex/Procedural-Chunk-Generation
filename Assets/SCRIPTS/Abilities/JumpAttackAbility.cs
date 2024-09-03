@@ -149,7 +149,7 @@ public class JumpAttackAbility : Ability
     {
         _enemyBehaviour = Caster.GetAgentComponent<BaseEnemyBehaviour>();
         _casterMovementModule = Caster.GetAgentComponent<AgentMovement>();
-        _casterRigidBody = Caster.GetAgentRigidBody();
+        _casterRigidBody = Caster.AgentRigidBody;
         _agentHitbox = Caster.GetAgentComponent<AgentHitbox>();
         _agentVisual = Caster.GetAgentComponent<AgentVisual>();
         _agentStats = Caster.GetAgentComponent<AgentStats>();

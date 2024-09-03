@@ -12,7 +12,7 @@ public class RangedWeapon : Weapon
         _weaponAnimation.OnAttackAnimationFinished += WeaponAnimation_OnAttackAnimationFinished;
     }
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
         _weaponAnimation.OnAttackAnimationFinished -= WeaponAnimation_OnAttackAnimationFinished;
     }
@@ -47,14 +47,14 @@ public class RangedWeapon : Weapon
     {
         Projectile projectile = Instantiate(_projectilePrefab, _attackOrigin.position, _itemHoldPoint.transform.rotation);
 
-        DamageStruct damageStruct = new DamageStruct()
+        DamageStruct damageStruct = new()
         {
             damageAmount = Random.Range(_attackDamageMin, _attackDamageMax),
             knockbackForce = _knockbackForce,
             damageSender = _agentAttackModule.gameObject,
-            senderFaction = _agentCore.GetFaction()
+            senderFaction = _agentCore.Faction
         };
 
-        projectile.SetupProjectile(_projectileSpeed, _projectileRange, damageStruct);
+        projectile.Initialize(_projectileSpeed, _projectileRange, damageStruct);
     }
 }
